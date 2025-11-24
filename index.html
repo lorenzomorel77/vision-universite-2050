@@ -4,31 +4,397 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vision Université 2050 - Atelier Atrium</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 20px;
-            text-align: center;
-        }
-        h1 {
-            color: #4F46E5;
-        }
-        .info {
-            background: #F3F4F6;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
-        }
+        body { font-family: 'Roboto', sans-serif; background-color: #f3f4f6; }
+        h1, h2, h3, .title-font { font-family: 'Montserrat', sans-serif; }
+        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+        .fade-in { animation: fadeIn 0.5s ease-out forwards; opacity: 0; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .scenario-icon { width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 50%; margin-bottom: 1rem; }
     </style>
 </head>
-<body>
-    <h1>Vision Université 2050 - Atelier Atrium</h1>
-    <div class="info">
-        <p>Ceci est un fichier temporaire.</p>
-        <p>Le contenu complet sera ajouté prochainement.</p>
-        <p>Outil de diagnostic interactif sur l'avenir des universités.</p>
-    </div>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-indigo-900 text-white shadow-lg z-10">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <div class="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center font-bold text-white">A</div>
+                <h1 class="text-xl font-bold tracking-wider">ATELIER ATRIUM</h1>
+            </div>
+            <div class="text-xs uppercase tracking-widest opacity-80">Université & Ville de Demain</div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto px-4 py-8 flex flex-col items-center justify-center" id="game-container">
+        
+        <!-- INTRO SCREEN -->
+        <div id="intro-screen" class="max-w-2xl w-full bg-white rounded-2xl shadow-xl overflow-hidden fade-in">
+            <div class="bg-indigo-600 h-2 w-full"></div>
+            <div class="p-8 text-center">
+                <h2 class="text-3xl font-extrabold text-gray-800 mb-4">Quelle est votre vision de l'Université ?</h2>
+                <p class="text-gray-600 mb-6 text-lg">
+                    Bienvenue, futur urbaniste. <br><br>
+                    L'université est à la croisée des chemins. Entre contraintes budgétaires, révolution numérique et intégration urbaine, 
+                    <strong>quel visage aura l'université de Montpellier en 2050 ?</strong>
+                </p>
+                <div class="bg-indigo-50 p-4 rounded-lg mb-8 text-sm text-indigo-800 text-left">
+                    <p class="font-bold mb-2">Instructions :</p>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li>Vous allez faire face à <strong>7 dilemmes stratégiques</strong> issus du diagnostic territorial.</li>
+                        <li>Vos choix détermineront l'un des <strong>6 Scénarios Futurs</strong> (S1 à S6).</li>
+                        <li>Il n'y a pas de mauvaise réponse, seulement des visions différentes.</li>
+                    </ul>
+                </div>
+                <button onclick="startGame()" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 shadow-md transform hover:scale-105">
+                    Commencer le Diagnostic
+                </button>
+            </div>
+        </div>
+
+        <!-- QUESTION SCREEN -->
+        <div id="question-screen" class="hidden max-w-3xl w-full fade-in">
+            <div class="flex justify-between items-center mb-4">
+                <span class="text-sm font-semibold text-gray-500 uppercase">Enjeu <span id="current-question-num">1</span>/7</span>
+                <div class="w-1/3 bg-gray-200 rounded-full h-2.5">
+                    <div id="progress-bar" class="bg-indigo-600 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-xl p-8 mb-6">
+                <div class="flex items-center mb-6">
+                    <span id="enjeu-badge" class="bg-indigo-100 text-indigo-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded uppercase">Économique</span>
+                    <h2 id="question-text" class="text-2xl font-bold text-gray-800">La question va ici</h2>
+                </div>
+                <p id="question-context" class="text-gray-600 mb-8 italic text-sm border-l-4 border-orange-400 pl-4">Contexte ici...</p>
+                
+                <div id="answers-container" class="grid gap-4 md:grid-cols-1">
+                    <!-- Buttons generated by JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- RESULT SCREEN -->
+        <div id="result-screen" class="hidden max-w-4xl w-full fade-in">
+            <div class="bg-white rounded-2xl shadow-2xl overflow-hidden">
+                <div id="result-header" class="bg-indigo-900 p-8 text-white text-center relative">
+                    <p class="uppercase tracking-widest text-xs opacity-70 mb-2">Votre vision dominante est</p>
+                    <h2 id="scenario-title" class="text-4xl font-extrabold mb-2 title-font text-orange-400">TITRE SCÉNARIO</h2>
+                    <h3 id="scenario-subtitle" class="text-xl font-light italic">Sous-titre scénario</h3>
+                    
+                    <div class="absolute top-4 right-4 text-6xl opacity-20">
+                        <i id="scenario-icon-bg" class="fas fa-city"></i>
+                    </div>
+                </div>
+
+                <div class="p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="font-bold text-gray-800 mb-4 border-b pb-2">Description du Scénario</h4>
+                        <p id="scenario-desc" class="text-gray-600 leading-relaxed text-justify text-sm mb-6">
+                            Description...
+                        </p>
+                        
+                        <h4 class="font-bold text-gray-800 mb-4 border-b pb-2">Enjeux Clés</h4>
+                        <ul id="scenario-issues" class="text-sm text-gray-700 space-y-2 list-disc pl-4">
+                            <!-- Issues list -->
+                        </ul>
+                    </div>
+
+                    <div class="bg-gray-50 rounded-xl p-4 flex flex-col justify-center">
+                        <h4 class="font-bold text-gray-800 mb-4 text-center">Votre profil de Diagnostic</h4>
+                        <canvas id="radarChart"></canvas>
+                        <div class="mt-4 text-center">
+                            <button onclick="restartGame()" class="text-indigo-600 hover:text-indigo-800 text-sm font-semibold underline">Recommencer le diagnostic</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="bg-gray-800 text-gray-400 py-4 mt-auto">
+        <div class="container mx-auto px-4 text-center text-xs">
+            <p>Basé sur le document de travail "ATELIER ATRIUM-9" - Master Projet Urbanisme</p>
+        </div>
+    </footer>
+
+    <script>
+        // DATA FROM PDF
+        const scenarios = {
+            s1: {
+                id: "S1",
+                title: "Rien ne change / La Continuité",
+                subtitle: "Le changement c'est pas maintenant",
+                description: "Ce scénario imagine une évolution dans la continuité. L'université reste un acteur fort du territoire, mais sans révolution. Elle poursuit son ouverture progressive sur la ville, développe des liens avec les quartiers voisins, et améliore les connexions en mobilité douce. L'objectif : réduire la dépendance à la voiture et renforcer les usages partagés sans bouleverser les fondements.",
+                issues: ["Financement des infrastructures", "Massification des étudiants", "Étalement urbain et ZAN", "Mobilité douce"],
+                color: "#60A5FA" // Blue
+            },
+            s2: {
+                id: "S2",
+                title: "Le Hub : Université-Entreprise",
+                subtitle: "L'efficacité et l'innovation avant tout",
+                description: "L'université se transforme en plateforme économique et technologique. Laboratoires, incubateurs, start-ups et multinationales se mêlent. La logique du partenariat public-privé domine, et la formation s'aligne sur les besoins immédiats du marché. C'est la promesse de l'innovation, mais avec un risque de marchandisation du savoir.",
+                issues: ["Partenariat Public/Privé", "Marchandisation du savoir", "Coût de l'enseignement", "Innovation et Start-ups"],
+                color: "#F59E0B" // Amber
+            },
+            s3: {
+                id: "S3",
+                title: "L'Université Sans Murs",
+                subtitle: "Le tout numérique",
+                description: "Le numérique prend le dessus. Les cours sont entièrement en ligne, les échanges se font à distance, et les bâtiments physiques perdent leur fonction centrale. Cela pose la question majeure de la requalification des bâtiments libérés et du maintien d'une vie collective virtuelle.",
+                issues: ["Requalification des bâtiments vides", "Isolement social", "Transformation du métier d'enseignant", "Fracture numérique"],
+                color: "#A78BFA" // Purple
+            },
+            s4: {
+                id: "S4",
+                title: "L'Université Dissoute",
+                subtitle: "La ville est le campus",
+                description: "L'université et la ville se confondent. Il n'existe plus de campus clairement identifiable : les espaces d'enseignement se dispersent dans le tissu urbain (cafés, bibliothèques municipales, tiers-lieux). La ville devient elle-même un campus diffus. Cela favorise l'inclusion mais dilue la visibilité institutionnelle.",
+                issues: ["Disparition du campus physique", "Mixité fonctionnelle extrême", "Gestion d'un réseau éparpillé", "Lien habitants-étudiants"],
+                color: "#10B981" // Emerald
+            },
+            s5: {
+                id: "S5",
+                title: "L'Université Augmentée par l'IA",
+                subtitle: "L'intelligence artificielle au cœur",
+                description: "L'IA transforme en profondeur les façons d'apprendre et de gérer les lieux. Assistants numériques personnalisés, contenus adaptatifs, dépassement des limites géographiques. Sur le plan urbain, les bâtiments deviennent des 'Data Centers' du savoir ou des lieux de rencontre optimisés par algorithme.",
+                issues: ["Éthique et Copyright", "Transformation radicale de l'emploi", "Dépendance technologique", "Obsolescence des méthodes classiques"],
+                color: "#EC4899" // Pink
+            },
+            s6: {
+                id: "S6",
+                title: "La Ville dans la Ville",
+                subtitle: "Le Campus Urbain Autonome",
+                description: "L'université devient une ville dans la ville, où tout est concentré : logements, services, commerces, santé, culture. C'est un espace autonome, hyper-efficace, un 'campus à l'américaine' poussé à l'extrême. Un lieu dense et centralisé qui peut tendre vers l'entre-soi.",
+                issues: ["Mixité fonctionnelle sur site unique", "Gouvernance du foncier (commerces privés sur campus)", "Autarcie", "Densification"],
+                color: "#EF4444" // Red
+            }
+        };
+
+        const questions = [
+            {
+                theme: "Spatial & Foncier",
+                text: "Face au manque de place et à l'objectif ZAN (Zéro Artificialisation Nette), quelle est votre stratégie pour les nouveaux bâtiments ?",
+                context: "Les campus sont saturés et l'étalement urbain n'est plus possible.",
+                options: [
+                    { text: "On densifie au maximum sur le site actuel pour tout avoir sur place (logements, commerces, cours).", impact: "s6" },
+                    { text: "On n'a plus besoin de construire : on bascule massivement les cours en ligne.", impact: "s3" },
+                    { text: "On loue ou rachète des locaux éparpillés dans toute la ville pour s'intégrer aux quartiers.", impact: "s4" },
+                    { text: "On rénove doucement l'existant en améliorant les espaces verts et les pistes cyclables.", impact: "s1" }
+                ]
+            },
+            {
+                theme: "Économique & Gouvernance",
+                text: "Le budget de l'État stagne. Comment financez-vous les nouveaux équipements de pointe ?",
+                context: "L'université doit trouver des ressources pour rester compétitive.",
+                options: [
+                    { text: "Partenariats massifs avec le privé : les entreprises installent leurs R&D sur le campus.", impact: "s2" },
+                    { text: "On optimise les coûts de gestion grâce à l'IA et on réduit le personnel administratif.", impact: "s5" },
+                    { text: "On loue nos espaces (amphithéâtres, terrains) à la ville et aux associations locales.", impact: "s4" },
+                    { text: "On fait avec les moyens du bord, en priorisant la maintenance de base.", impact: "s1" }
+                ]
+            },
+            {
+                theme: "Lien Social",
+                text: "Les étudiants se plaignent d'isolement. Quelle est votre réponse architecturale ?",
+                context: "La vie étudiante ne se résume pas aux cours.",
+                options: [
+                    { text: "Créer un immense centre de vie (type Atrium) avec cinéma, santé et loisirs au cœur du campus.", impact: "s6" },
+                    { text: "Créer un métavers universitaire pour qu'ils socialisent depuis chez eux.", impact: "s3" },
+                    { text: "Encourager la vie dans les cafés du centre-ville plutôt que sur un campus ghetto.", impact: "s4" },
+                    { text: "Développer des incubateurs où étudiants et entrepreneurs travaillent ensemble.", impact: "s2" }
+                ]
+            },
+            {
+                theme: "Technologie",
+                text: "L'Intelligence Artificielle bouleverse l'enseignement. Votre réaction ?",
+                context: "ChatGPT et consorts changent la donne pédagogique.",
+                options: [
+                    { text: "Chaque étudiant reçoit un tuteur IA personnalisé. Les profs deviennent des coachs.", impact: "s5" },
+                    { text: "L'IA sert surtout à optimiser la recherche et les brevets industriels.", impact: "s2" },
+                    { text: "L'IA permet de faire cours sans jamais venir sur le campus.", impact: "s3" },
+                    { text: "On l'intègre doucement comme outil, sans changer la structure des cours magistraux.", impact: "s1" }
+                ]
+            },
+            {
+                theme: "Mobilité & Environnement",
+                text: "Comment les étudiants doivent-ils accéder au savoir ?",
+                context: "La mobilité est un enjeu clé du plan climat.",
+                options: [
+                    { text: "Ils n'ont plus besoin de se déplacer, tout est accessible depuis leur chambre.", impact: "s3" },
+                    { text: "Par une ligne de tramway et des pistes cyclables connectant le campus au reste de la ville.", impact: "s1" },
+                    { text: "Ils vivent, étudient et consomment sur place. Le campus est une ville piétonne autonome.", impact: "s6" },
+                    { text: "Ils se déplacent constamment d'un tiers-lieu à l'autre dans la métropole.", impact: "s4" }
+                ]
+            },
+            {
+                theme: "Innovation",
+                text: "Quelle est la vocation principale de votre université ?",
+                context: "Définir l'identité de l'institution pour 2050.",
+                options: [
+                    { text: "Être un moteur économique et produire des licornes (start-ups).", impact: "s2" },
+                    { text: "Être un service public de proximité, fondu dans la population.", impact: "s4" },
+                    { text: "Être un pôle d'excellence technologique piloté par la data.", impact: "s5" },
+                    { text: "Être un sanctuaire du savoir, préservé et stable.", impact: "s1" }
+                ]
+            },
+            {
+                theme: "Urbanisme",
+                text: "L'Atrium (Learning Center) doit évoluer. Que devient-il ?",
+                context: "Bâtiment emblématique de l'ouverture sur la ville.",
+                options: [
+                    { text: "Le centre névralgique d'une cité autonome, ouvert 24/24 avec tous les services.", impact: "s6" },
+                    { text: "Un showroom technologique pour les entreprises partenaires.", impact: "s2" },
+                    { text: "Un serveur géant gérant les avatars des étudiants.", impact: "s3" },
+                    { text: "Un lieu de passage parmi d'autres dans la ville, ouvert à tous les citoyens.", impact: "s4" }
+                ]
+            }
+        ];
+
+        // STATE
+        let currentQuestionIndex = 0;
+        let scores = { s1: 0, s2: 0, s3: 0, s4: 0, s5: 0, s6: 0 };
+
+        // DOM ELEMENTS
+        const introScreen = document.getElementById('intro-screen');
+        const questionScreen = document.getElementById('question-screen');
+        const resultScreen = document.getElementById('result-screen');
+        const progressBar = document.getElementById('progress-bar');
+        
+        function startGame() {
+            introScreen.classList.add('hidden');
+            questionScreen.classList.remove('hidden');
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const q = questions[currentQuestionIndex];
+            
+            // Update UI Info
+            document.getElementById('current-question-num').innerText = currentQuestionIndex + 1;
+            document.getElementById('enjeu-badge').innerText = q.theme;
+            document.getElementById('question-text').innerText = q.text;
+            document.getElementById('question-context').innerText = q.context;
+            
+            // Progress Bar
+            const progress = ((currentQuestionIndex) / questions.length) * 100;
+            progressBar.style.width = `${progress}%`;
+
+            // Generate Answers
+            const container = document.getElementById('answers-container');
+            container.innerHTML = '';
+            
+            // Shuffle answers for variety
+            const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
+
+            shuffledOptions.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 rounded-xl border-2 border-gray-200 hover:border-indigo-500 hover:bg-indigo-50 transition-all duration-200 flex items-center group card-hover";
+                btn.onclick = () => handleAnswer(opt.impact);
+                
+                btn.innerHTML = `
+                    <div class="w-6 h-6 rounded-full border-2 border-gray-300 group-hover:border-indigo-500 mr-4 flex-shrink-0"></div>
+                    <span class="text-gray-700 font-medium group-hover:text-indigo-900">${opt.text}</span>
+                `;
+                container.appendChild(btn);
+            });
+        }
+
+        function handleAnswer(impact) {
+            // Add points
+            scores[impact] += 1;
+
+            // Next question or result
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                // Fade effect
+                const container = document.getElementById('question-screen');
+                container.classList.remove('fade-in');
+                void container.offsetWidth; // trigger reflow
+                container.classList.add('fade-in');
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            questionScreen.classList.add('hidden');
+            resultScreen.classList.remove('hidden');
+
+            // Calculate Winner
+            let winner = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
+            
+            // Handle tie-breaking (simple check, default to S1 if strict tie)
+            // Just ensure we have a winner.
+            
+            const scenario = scenarios[winner];
+
+            // Fill UI
+            document.getElementById('scenario-title').innerText = scenario.title;
+            document.getElementById('scenario-title').style.color = scenario.color;
+            document.getElementById('scenario-subtitle').innerText = scenario.subtitle;
+            document.getElementById('scenario-desc').innerText = scenario.description;
+            
+            const issuesList = document.getElementById('scenario-issues');
+            issuesList.innerHTML = '';
+            scenario.issues.forEach(issue => {
+                const li = document.createElement('li');
+                li.innerText = issue;
+                issuesList.appendChild(li);
+            });
+
+            // Draw Chart
+            drawChart();
+        }
+
+        function drawChart() {
+            const ctx = document.getElementById('radarChart').getContext('2d');
+            const labels = Object.keys(scenarios).map(k => scenarios[k].id);
+            const dataPoints = Object.keys(scores).map(k => scores[k]);
+            const backgroundColors = Object.keys(scenarios).map(k => scenarios[k].color + '80'); // add transparency
+            const borderColors = Object.keys(scenarios).map(k => scenarios[k].color);
+
+            new Chart(ctx, {
+                type: 'bar', // Bar is easier to read than radar for simple scores
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Points par Scénario',
+                        data: dataPoints,
+                        backgroundColor: backgroundColors,
+                        borderColor: borderColors,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: questions.length // max possible score roughly
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        }
+
+        function restartGame() {
+            currentQuestionIndex = 0;
+            scores = { s1: 0, s2: 0, s3: 0, s4: 0, s5: 0, s6: 0 };
+            resultScreen.classList.add('hidden');
+            introScreen.classList.remove('hidden');
+        }
+
+    </script>
 </body>
 </html>
