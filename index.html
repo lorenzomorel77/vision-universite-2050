@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body { font-family: 'Roboto', sans-serif; background-color: #f3f4f6; }
         h1, h2, h3, .title-font { font-family: 'Montserrat', sans-serif; }
@@ -14,16 +15,19 @@
         .fade-in { animation: fadeIn 0.5s ease-out forwards; opacity: 0; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .scenario-icon { width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 50%; margin-bottom: 1rem; }
+        /* Animation pour le lecteur audio */
+        .audio-pulse { animation: pulse-audio 2s infinite; }
+        @keyframes pulse-audio { 0% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(79, 70, 229, 0); } 100% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0); } }
     </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col relative">
 
     <!-- Header -->
     <header class="bg-indigo-900 text-white shadow-lg z-10">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
             <div class="flex items-center space-x-2">
-                <div class="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center font-bold text-white">A</div>
-                <h1 class="text-xl font-bold tracking-wider">ATELIER ATRIUM</h1>
+                <div class="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center font-bold text-white">U</div>
+                <h1 class="text-xl font-bold tracking-wider">L'UNIVERSITÉ DANS LA VILLE</h1>
             </div>
             <div class="text-xs uppercase tracking-widest opacity-80">Université & Ville de Demain</div>
         </div>
@@ -107,6 +111,33 @@
                     <div class="bg-gray-50 rounded-xl p-4 flex flex-col justify-center">
                         <h4 class="font-bold text-gray-800 mb-4 text-center">Votre profil de Diagnostic</h4>
                         <canvas id="radarChart"></canvas>
+
+                        <!-- AI Feature Button -->
+                        <div class="mt-6 border-t pt-4">
+                            <h4 class="font-bold text-indigo-900 mb-2 text-center text-sm">Vision & Narration IA</h4>
+                            <p class="text-xs text-center text-gray-500 mb-3">Laissez l'IA imaginer et raconter une matinée dans ce futur.</p>
+                            
+                            <button onclick="generateStoryAndAudio()" id="ai-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold py-2 px-4 rounded transition duration-200 flex items-center justify-center gap-2">
+                                <i class="fas fa-headset"></i> Générer Récit Audio
+                            </button>
+
+                            <div id="ai-result" class="hidden mt-4 text-sm text-gray-700 bg-white p-3 rounded border border-gray-200 shadow-inner">
+                                <div id="ai-loading" class="hidden text-center text-indigo-500 text-xs">
+                                    <div class="flex justify-center items-center gap-2">
+                                        <i class="fas fa-circle-notch fa-spin"></i> 
+                                        <span id="loading-text">Génération du texte...</span>
+                                    </div>
+                                </div>
+                                <p id="ai-text" class="leading-relaxed italic mb-3"></p>
+                                
+                                <!-- Audio Player Container -->
+                                <div id="audio-container" class="hidden border-t pt-2 flex flex-col items-center">
+                                    <p class="text-xs text-indigo-600 font-bold mb-2"><i class="fas fa-volume-up"></i> Récit Audio</p>
+                                    <audio id="story-audio" controls class="w-full h-8"></audio>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="mt-4 text-center">
                             <button onclick="restartGame()" class="text-indigo-600 hover:text-indigo-800 text-sm font-semibold underline">Recommencer le diagnostic</button>
                         </div>
@@ -124,7 +155,9 @@
     </footer>
 
     <script>
-        // DATA FROM PDF
+        const apiKey = ""; // API Key fournie par l'environnement
+
+        // DATA FROM PDF (SCENARIOS)
         const scenarios = {
             s1: {
                 id: "S1",
@@ -132,7 +165,7 @@
                 subtitle: "Le changement c'est pas maintenant",
                 description: "Ce scénario imagine une évolution dans la continuité. L'université reste un acteur fort du territoire, mais sans révolution. Elle poursuit son ouverture progressive sur la ville, développe des liens avec les quartiers voisins, et améliore les connexions en mobilité douce. L'objectif : réduire la dépendance à la voiture et renforcer les usages partagés sans bouleverser les fondements.",
                 issues: ["Financement des infrastructures", "Massification des étudiants", "Étalement urbain et ZAN", "Mobilité douce"],
-                color: "#60A5FA" // Blue
+                color: "#60A5FA"
             },
             s2: {
                 id: "S2",
@@ -140,7 +173,7 @@
                 subtitle: "L'efficacité et l'innovation avant tout",
                 description: "L'université se transforme en plateforme économique et technologique. Laboratoires, incubateurs, start-ups et multinationales se mêlent. La logique du partenariat public-privé domine, et la formation s'aligne sur les besoins immédiats du marché. C'est la promesse de l'innovation, mais avec un risque de marchandisation du savoir.",
                 issues: ["Partenariat Public/Privé", "Marchandisation du savoir", "Coût de l'enseignement", "Innovation et Start-ups"],
-                color: "#F59E0B" // Amber
+                color: "#F59E0B"
             },
             s3: {
                 id: "S3",
@@ -148,7 +181,7 @@
                 subtitle: "Le tout numérique",
                 description: "Le numérique prend le dessus. Les cours sont entièrement en ligne, les échanges se font à distance, et les bâtiments physiques perdent leur fonction centrale. Cela pose la question majeure de la requalification des bâtiments libérés et du maintien d'une vie collective virtuelle.",
                 issues: ["Requalification des bâtiments vides", "Isolement social", "Transformation du métier d'enseignant", "Fracture numérique"],
-                color: "#A78BFA" // Purple
+                color: "#A78BFA"
             },
             s4: {
                 id: "S4",
@@ -156,7 +189,7 @@
                 subtitle: "La ville est le campus",
                 description: "L'université et la ville se confondent. Il n'existe plus de campus clairement identifiable : les espaces d'enseignement se dispersent dans le tissu urbain (cafés, bibliothèques municipales, tiers-lieux). La ville devient elle-même un campus diffus. Cela favorise l'inclusion mais dilue la visibilité institutionnelle.",
                 issues: ["Disparition du campus physique", "Mixité fonctionnelle extrême", "Gestion d'un réseau éparpillé", "Lien habitants-étudiants"],
-                color: "#10B981" // Emerald
+                color: "#10B981"
             },
             s5: {
                 id: "S5",
@@ -164,7 +197,7 @@
                 subtitle: "L'intelligence artificielle au cœur",
                 description: "L'IA transforme en profondeur les façons d'apprendre et de gérer les lieux. Assistants numériques personnalisés, contenus adaptatifs, dépassement des limites géographiques. Sur le plan urbain, les bâtiments deviennent des 'Data Centers' du savoir ou des lieux de rencontre optimisés par algorithme.",
                 issues: ["Éthique et Copyright", "Transformation radicale de l'emploi", "Dépendance technologique", "Obsolescence des méthodes classiques"],
-                color: "#EC4899" // Pink
+                color: "#EC4899"
             },
             s6: {
                 id: "S6",
@@ -172,7 +205,7 @@
                 subtitle: "Le Campus Urbain Autonome",
                 description: "L'université devient une ville dans la ville, où tout est concentré : logements, services, commerces, santé, culture. C'est un espace autonome, hyper-efficace, un 'campus à l'américaine' poussé à l'extrême. Un lieu dense et centralisé qui peut tendre vers l'entre-soi.",
                 issues: ["Mixité fonctionnelle sur site unique", "Gouvernance du foncier (commerces privés sur campus)", "Autarcie", "Densification"],
-                color: "#EF4444" // Red
+                color: "#EF4444"
             }
         };
 
@@ -275,21 +308,17 @@
         function loadQuestion() {
             const q = questions[currentQuestionIndex];
             
-            // Update UI Info
             document.getElementById('current-question-num').innerText = currentQuestionIndex + 1;
             document.getElementById('enjeu-badge').innerText = q.theme;
             document.getElementById('question-text').innerText = q.text;
             document.getElementById('question-context').innerText = q.context;
             
-            // Progress Bar
             const progress = ((currentQuestionIndex) / questions.length) * 100;
             progressBar.style.width = `${progress}%`;
 
-            // Generate Answers
             const container = document.getElementById('answers-container');
             container.innerHTML = '';
             
-            // Shuffle answers for variety
             const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
 
             shuffledOptions.forEach(opt => {
@@ -306,16 +335,12 @@
         }
 
         function handleAnswer(impact) {
-            // Add points
             scores[impact] += 1;
-
-            // Next question or result
             currentQuestionIndex++;
             if (currentQuestionIndex < questions.length) {
-                // Fade effect
                 const container = document.getElementById('question-screen');
                 container.classList.remove('fade-in');
-                void container.offsetWidth; // trigger reflow
+                void container.offsetWidth; 
                 container.classList.add('fade-in');
                 loadQuestion();
             } else {
@@ -327,15 +352,9 @@
             questionScreen.classList.add('hidden');
             resultScreen.classList.remove('hidden');
 
-            // Calculate Winner
             let winner = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
-            
-            // Handle tie-breaking (simple check, default to S1 if strict tie)
-            // Just ensure we have a winner.
-            
             const scenario = scenarios[winner];
 
-            // Fill UI
             document.getElementById('scenario-title').innerText = scenario.title;
             document.getElementById('scenario-title').style.color = scenario.color;
             document.getElementById('scenario-subtitle').innerText = scenario.subtitle;
@@ -349,19 +368,38 @@
                 issuesList.appendChild(li);
             });
 
-            // Draw Chart
             drawChart();
+            resetAIUI();
+        }
+
+        function resetAIUI() {
+            const btn = document.getElementById('ai-btn');
+            const resultBox = document.getElementById('ai-result');
+            const audioContainer = document.getElementById('audio-container');
+            const textBox = document.getElementById('ai-text');
+            
+            btn.disabled = false;
+            btn.classList.remove('opacity-50', 'cursor-not-allowed');
+            resultBox.classList.add('hidden');
+            audioContainer.classList.add('hidden');
+            textBox.innerText = "";
+            document.getElementById('story-audio').src = "";
         }
 
         function drawChart() {
             const ctx = document.getElementById('radarChart').getContext('2d');
             const labels = Object.keys(scenarios).map(k => scenarios[k].id);
             const dataPoints = Object.keys(scores).map(k => scores[k]);
-            const backgroundColors = Object.keys(scenarios).map(k => scenarios[k].color + '80'); // add transparency
+            const backgroundColors = Object.keys(scenarios).map(k => scenarios[k].color + '80');
             const borderColors = Object.keys(scenarios).map(k => scenarios[k].color);
 
+            let chartStatus = Chart.getChart("radarChart");
+            if (chartStatus != undefined) {
+              chartStatus.destroy();
+            }
+
             new Chart(ctx, {
-                type: 'bar', // Bar is easier to read than radar for simple scores
+                type: 'bar',
                 data: {
                     labels: labels,
                     datasets: [{
@@ -376,14 +414,10 @@
                     scales: {
                         y: {
                             beginAtZero: true,
-                            max: questions.length // max possible score roughly
+                            max: questions.length
                         }
                     },
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    }
+                    plugins: { legend: { display: false } }
                 }
             });
         }
@@ -393,8 +427,157 @@
             scores = { s1: 0, s2: 0, s3: 0, s4: 0, s5: 0, s6: 0 };
             resultScreen.classList.add('hidden');
             introScreen.classList.remove('hidden');
+            // stop audio if playing
+            const audio = document.getElementById('story-audio');
+            audio.pause();
+            audio.src = "";
         }
 
+        async function generateStoryAndAudio() {
+            const btn = document.getElementById('ai-btn');
+            const resultBox = document.getElementById('ai-result');
+            const loader = document.getElementById('ai-loading');
+            const loadingText = document.getElementById('loading-text');
+            const textBox = document.getElementById('ai-text');
+            const audioContainer = document.getElementById('audio-container');
+            const audioPlayer = document.getElementById('story-audio');
+
+            // Find current winner
+            let winner = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
+            const scenario = scenarios[winner];
+
+            // UI Init
+            btn.disabled = true;
+            btn.classList.add('opacity-50', 'cursor-not-allowed');
+            resultBox.classList.remove('hidden');
+            loader.classList.remove('hidden');
+            loadingText.innerText = "Génération du récit textuel...";
+            textBox.innerText = "";
+            audioContainer.classList.add('hidden');
+
+            // 1. GENERATE TEXT
+            // On demande un ton plus naturel dans le texte aussi
+            const prompt = `Agis comme un habitant de Montpellier en 2050. Rédige un court paragraphe narratif (environ 60-80 mots) à la première personne. Le contexte correspond au scénario : "${scenario.title} : ${scenario.description}". Incorpore des détails sensoriels liés aux enjeux : ${scenario.issues.join(', ')}. Le ton doit être naturel, posé, mature et réfléchi.`;
+
+            let storyText = "";
+            
+            try {
+                // Text Generation Call
+                const responseText = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                });
+
+                if (!responseText.ok) throw new Error("Erreur génération texte");
+                const dataText = await responseText.json();
+                storyText = dataText.candidates?.[0]?.content?.parts?.[0]?.text || "Erreur de génération.";
+                textBox.innerText = storyText;
+
+                // 2. GENERATE AUDIO (TTS)
+                loadingText.innerText = "Création de la voix...";
+                
+                // Prompt for TTS: Style instruction for natural 50yo man
+                const ttsPrompt = `D'une voix masculine naturelle, calme et mature, comme un homme de 50 ans qui raconte un souvenir, dis : ${storyText}`;
+
+                const responseAudio = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: ttsPrompt }] }],
+                        generationConfig: {
+                            responseModalities: ["AUDIO"],
+                            speechConfig: {
+                                voiceConfig: {
+                                    // Orus est souvent plus naturel/standard que Fenrir qui est très "trailer"
+                                    prebuiltVoiceConfig: { voiceName: "Orus" } 
+                                }
+                            }
+                        }
+                    })
+                });
+
+                if (!responseAudio.ok) throw new Error("Erreur génération audio");
+                const dataAudio = await responseAudio.json();
+                const base64Audio = dataAudio.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
+
+                if (base64Audio) {
+                    const binaryString = window.atob(base64Audio);
+                    const len = binaryString.length;
+                    const bytes = new Uint8Array(len);
+                    for (let i = 0; i < len; i++) {
+                        bytes[i] = binaryString.charCodeAt(i);
+                    }
+                    
+                    const wavBlob = pcmToWav(bytes, 24000); 
+                    const audioUrl = URL.createObjectURL(wavBlob);
+                    
+                    audioPlayer.src = audioUrl;
+                    audioContainer.classList.remove('hidden');
+                    audioPlayer.play(); 
+                    
+                    audioPlayer.classList.add("audio-pulse");
+                    setTimeout(() => audioPlayer.classList.remove("audio-pulse"), 3000);
+                }
+
+                loader.classList.add('hidden');
+                btn.disabled = false;
+                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+
+            } catch (error) {
+                console.error(error);
+                loader.classList.add('hidden');
+                textBox.innerHTML += "<br><span class='text-red-500 text-xs'>(Erreur lors de la génération: " + error.message + ")</span>";
+                btn.disabled = false;
+                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        }
+
+        // Helper: Convert Raw PCM16 to WAV Blob
+        function pcmToWav(pcmData, sampleRate) {
+            const numChannels = 1;
+            const bitsPerSample = 16;
+            const byteRate = sampleRate * numChannels * bitsPerSample / 8;
+            const blockAlign = numChannels * bitsPerSample / 8;
+            const wavDataByteLength = pcmData.length;
+            const headerByteLength = 44;
+            const totalLength = headerByteLength + wavDataByteLength;
+
+            const buffer = new ArrayBuffer(totalLength);
+            const view = new DataView(buffer);
+
+            // RIFF chunk descriptor
+            writeString(view, 0, 'RIFF');
+            view.setUint32(4, totalLength - 8, true);
+            writeString(view, 8, 'WAVE');
+
+            // fmt sub-chunk
+            writeString(view, 12, 'fmt ');
+            view.setUint32(16, 16, true); // Subchunk1Size (16 for PCM)
+            view.setUint16(20, 1, true); // AudioFormat (1 for PCM)
+            view.setUint16(22, numChannels, true); // NumChannels
+            view.setUint32(24, sampleRate, true); // SampleRate
+            view.setUint32(28, byteRate, true); // ByteRate
+            view.setUint16(32, blockAlign, true); // BlockAlign
+            view.setUint16(34, bitsPerSample, true); // BitsPerSample
+
+            // data sub-chunk
+            writeString(view, 36, 'data');
+            view.setUint32(40, wavDataByteLength, true);
+
+            // Write PCM data
+            const pcmBytes = new Uint8Array(pcmData);
+            const wavBytes = new Uint8Array(buffer, 44);
+            wavBytes.set(pcmBytes);
+
+            return new Blob([buffer], { type: 'audio/wav' });
+        }
+
+        function writeString(view, offset, string) {
+            for (let i = 0; i < string.length; i++) {
+                view.setUint8(offset + i, string.charCodeAt(i));
+            }
+        }
     </script>
 </body>
 </html>
