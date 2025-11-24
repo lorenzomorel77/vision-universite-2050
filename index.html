@@ -15,21 +15,63 @@
         .fade-in { animation: fadeIn 0.5s ease-out forwards; opacity: 0; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .scenario-icon { width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 50%; margin-bottom: 1rem; }
-        /* Animation pour le lecteur audio */
-        .audio-pulse { animation: pulse-audio 2s infinite; }
-        @keyframes pulse-audio { 0% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(79, 70, 229, 0); } 100% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0); } }
+        
+        /* Animation pour l'indicateur audio */
+        .speaking-animation { display: flex; gap: 4px; justify-content: center; align-items: flex-end; height: 20px; }
+        .bar { width: 4px; background-color: #4F46E5; animation: speak 1s infinite ease-in-out; }
+        .bar:nth-child(1) { animation-delay: 0.0s; height: 10px; }
+        .bar:nth-child(2) { animation-delay: 0.1s; height: 15px; }
+        .bar:nth-child(3) { animation-delay: 0.2s; height: 20px; }
+        .bar:nth-child(4) { animation-delay: 0.3s; height: 12px; }
+        @keyframes speak { 0%, 100% { height: 5px; } 50% { height: 20px; } }
     </style>
 </head>
 <body class="min-h-screen flex flex-col relative">
 
-    <!-- Header -->
-    <header class="bg-indigo-900 text-white shadow-lg z-10">
-        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="flex items-center space-x-2">
-                <div class="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center font-bold text-white">U</div>
-                <h1 class="text-xl font-bold tracking-wider">L'UNIVERSITÉ DANS LA VILLE</h1>
+    <!-- MODAL POPUP FOR SCENARIO DETAILS -->
+    <div id="scenario-modal" class="fixed inset-0 bg-black bg-opacity-60 hidden z-50 flex items-center justify-center p-4 fade-in">
+        <div class="bg-white rounded-xl shadow-2xl max-w-md w-full overflow-hidden relative transform transition-all scale-100">
+            <!-- Close Button -->
+            <button onclick="closeModal()" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600 bg-gray-100 rounded-full w-8 h-8 flex items-center justify-center transition-colors">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <!-- Header with dynamic color -->
+            <div id="modal-header" class="p-6 pb-4 border-b">
+                <div class="text-xs font-bold uppercase tracking-wider text-gray-500 mb-1" id="modal-id">SCÉNARIO</div>
+                <h3 id="modal-title" class="text-2xl font-bold title-font text-gray-800 leading-tight">Titre du Scénario</h3>
+                <p id="modal-subtitle" class="text-sm italic text-gray-600 mt-1">Sous-titre</p>
             </div>
-            <div class="text-xs uppercase tracking-widest opacity-80">Université & Ville de Demain</div>
+            
+            <!-- Content -->
+            <div class="p-6 pt-4 bg-gray-50">
+                <p id="modal-desc" class="text-sm text-gray-700 leading-relaxed text-justify">
+                    Description...
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- NOUVEAU HEADER (Fond Blanc, Texte Bleu, Logos à droite) -->
+    <header class="bg-white text-indigo-900 shadow-md z-10">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            
+            <!-- Partie Gauche : Titre -->
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center font-bold text-white text-xl shadow-sm">U</div>
+                <div class="flex flex-col">
+                    <h1 class="text-xl md:text-2xl font-extrabold tracking-wider uppercase leading-none">L'UNIVERSITÉ DANS LA VILLE</h1>
+                    <span class="text-xs font-semibold tracking-widest opacity-70 uppercase hidden sm:block">Université & Ville de Demain</span>
+                </div>
+            </div>
+
+            <!-- Partie Droite : Logos -->
+            <div class="flex items-center gap-4">
+                <img src="PROJET_NOIR.png" alt="Logo Master Projet" class="h-10 md:h-12 w-auto object-contain">
+                <div class="h-8 w-px bg-gray-300 hidden sm:block"></div> <!-- Séparateur discret -->
+                <img src="UMPV_NOIR.png" alt="Logo Université Paul Valéry" class="h-10 md:h-12 w-auto object-contain">
+            </div>
+
         </div>
     </header>
 
@@ -109,31 +151,40 @@
                     </div>
 
                     <div class="bg-gray-50 rounded-xl p-4 flex flex-col justify-center">
-                        <h4 class="font-bold text-gray-800 mb-4 text-center">Votre profil de Diagnostic</h4>
+                        <h4 class="font-bold text-gray-800 mb-2 text-center">Votre profil de Diagnostic</h4>
+                        <p class="text-xs text-center text-gray-500 mb-4 italic">(Cliquez sur les barres pour voir les détails)</p>
                         <canvas id="radarChart"></canvas>
 
-                        <!-- AI Feature Button -->
+                        <!-- IMMERSION SECTION -->
                         <div class="mt-6 border-t pt-4">
-                            <h4 class="font-bold text-indigo-900 mb-2 text-center text-sm">Vision & Narration IA</h4>
-                            <p class="text-xs text-center text-gray-500 mb-3">Laissez l'IA imaginer et raconter une matinée dans ce futur.</p>
+                            <h4 class="font-bold text-indigo-900 mb-2 text-center text-sm">Immersion Future</h4>
+                            <p class="text-xs text-center text-gray-500 mb-3">Découvrez le témoignage d'un étudiant en 2050.</p>
                             
-                            <button onclick="generateStoryAndAudio()" id="ai-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold py-2 px-4 rounded transition duration-200 flex items-center justify-center gap-2">
-                                <i class="fas fa-headset"></i> Générer Récit Audio
+                            <!-- Step 1: Reveal Text Button -->
+                            <button onclick="revealStory()" id="reveal-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold py-3 px-4 rounded transition duration-200 flex items-center justify-center gap-2">
+                                <i class="fas fa-book-open text-lg"></i> Découvrir le Récit
                             </button>
 
-                            <div id="ai-result" class="hidden mt-4 text-sm text-gray-700 bg-white p-3 rounded border border-gray-200 shadow-inner">
-                                <div id="ai-loading" class="hidden text-center text-indigo-500 text-xs">
-                                    <div class="flex justify-center items-center gap-2">
-                                        <i class="fas fa-circle-notch fa-spin"></i> 
-                                        <span id="loading-text">Génération du texte...</span>
-                                    </div>
-                                </div>
-                                <p id="ai-text" class="leading-relaxed italic mb-3"></p>
+                            <!-- Story Container (Hidden initially) -->
+                            <div id="story-display" class="hidden mt-4 text-sm text-gray-700 bg-white p-4 rounded border border-gray-200 shadow-inner">
+                                <p id="story-text" class="leading-relaxed italic text-gray-800 font-serif mb-4"></p>
                                 
-                                <!-- Audio Player Container -->
-                                <div id="audio-container" class="hidden border-t pt-2 flex flex-col items-center">
-                                    <p class="text-xs text-indigo-600 font-bold mb-2"><i class="fas fa-volume-up"></i> Récit Audio</p>
-                                    <audio id="story-audio" controls class="w-full h-8"></audio>
+                                <!-- Audio Controls (Inside Story Display) -->
+                                <div class="border-t pt-3 flex flex-col items-center justify-center">
+                                    <div id="speaking-indicator" class="hidden mb-2">
+                                        <div class="speaking-animation">
+                                            <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                                        </div>
+                                        <p class="text-center text-xs text-indigo-600 mt-1 font-bold">Narration en cours...</p>
+                                    </div>
+                                    
+                                    <button onclick="playAudio()" id="play-audio-btn" class="text-indigo-600 hover:text-indigo-800 font-bold py-2 px-4 rounded flex items-center gap-2 transition-colors">
+                                        <i class="fas fa-volume-up text-lg"></i> Lancer la narration
+                                    </button>
+
+                                    <button onclick="stopAudio()" id="stop-audio-btn" class="hidden text-red-500 hover:text-red-700 font-bold py-2 px-4 rounded flex items-center gap-2 transition-colors">
+                                        <i class="fas fa-stop-circle text-lg"></i> Arrêter
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -150,12 +201,20 @@
 
     <footer class="bg-gray-800 text-gray-400 py-4 mt-auto">
         <div class="container mx-auto px-4 text-center text-xs">
-            <p>Basé sur le document de travail "ATELIER ATRIUM-9" - Master Projet Urbanisme</p>
+            <p>Master PROJET [PROJET d'aménagement et prospective territoriale]</p>
         </div>
     </footer>
 
     <script>
-        const apiKey = ""; // API Key fournie par l'environnement
+        // RÉCITS PRÉ-DÉFINIS (Pour éviter les bugs d'IA)
+        const scenarioStories = {
+            s1: "Ce matin, le tramway m'a déposé au pied des nouveaux bâtiments rénovés. L'université n'a pas changé de visage du tout au tout, mais elle respire mieux. On sent une transition douce, rassurante. Ici, pas de révolution technologique brutale, mais une continuité apaisée où l'on prend le temps de vivre et d'étudier ensemble, solidement ancrés dans notre quartier.",
+            s2: "Badge scanné, accès autorisé. En entrant dans le Hub, je croise autant de chercheurs que d'entrepreneurs. L'atmosphère est électrique, tournée vers la performance. Ici, chaque idée doit trouver son marché. C'est stimulant d'être au cœur de l'innovation, même si parfois, j'ai l'impression que la rentabilité compte plus que la connaissance pure.",
+            s3: "8h59, je me connecte. Mon salon devient mon amphi. Sur l'écran, des visages du monde entier. C'est une liberté incroyable de pouvoir étudier d'où l'on veut, sans contrainte physique. Pourtant, quand je déconnecte, le silence de l'appartement me rappelle que la vie étudiante, c'était aussi les cafés et les couloirs bruyants qui ont disparu.",
+            s4: "Aujourd'hui, mon séminaire est au musée Fabre, et demain, je travaillerai dans un espace de co-working aux Arceaux. L'université a fait tomber ses murs. La ville entière est devenue ma salle de classe. C'est passionnant de se mêler à la population, même si parfois, on aimerait avoir un vrai campus pour se retrouver entre nous.",
+            s5: "Mon tuteur IA a réorganisé mon programme ce matin après avoir analysé mon sommeil. Le contenu s'adapte exactement à ce que je ne comprends pas. C'est une efficacité pédagogique absolue. On ne perd plus de temps. Mais dans ce monde parfait piloté par les algorithmes, je cherche parfois la place pour l'imprévu et l'erreur humaine.",
+            s6: "Cela fait une semaine que je n'ai pas quitté l'enceinte du campus. Et pourquoi sortir ? J'ai mon studio, ma salle de sport, mon cinéma et mes cours ici. C'est une ville parfaite dans la ville, ultra-sécurisée et pratique. On vit dans un cocon privilégié, efficace, peut-être un peu trop coupé des réalités extérieures."
+        };
 
         // DATA FROM PDF (SCENARIOS)
         const scenarios = {
@@ -187,7 +246,7 @@
                 id: "S4",
                 title: "L'Université Dissoute",
                 subtitle: "La ville est le campus",
-                description: "L'université et la ville se confondent. Il n'existe plus de campus clairement identifiable : les espaces d'enseignement se dispersent dans le tissu urbain (cafés, bibliothèques municipales, tiers-lieux). La ville devient elle-même un campus diffus. Cela favorise l'inclusion mais dilue la visibilité institutionnelle.",
+                description: "L'université et la ville se confondent. Il'existe plus de campus clairement identifiable : les espaces d'enseignement se dispersent dans le tissu urbain (cafés, bibliothèques municipales, tiers-lieux). La ville devient elle-même un campus diffus. Cela favorise l'inclusion mais dilue la visibilité institutionnelle.",
                 issues: ["Disparition du campus physique", "Mixité fonctionnelle extrême", "Gestion d'un réseau éparpillé", "Lien habitants-étudiants"],
                 color: "#10B981"
             },
@@ -292,6 +351,9 @@
         // STATE
         let currentQuestionIndex = 0;
         let scores = { s1: 0, s2: 0, s3: 0, s4: 0, s5: 0, s6: 0 };
+        let synth = window.speechSynthesis;
+        let currentUtterance = null;
+        let currentStoryText = ""; // To store the text for audio reading
 
         // DOM ELEMENTS
         const introScreen = document.getElementById('intro-screen');
@@ -299,6 +361,13 @@
         const resultScreen = document.getElementById('result-screen');
         const progressBar = document.getElementById('progress-bar');
         
+        // MODAL ELEMENTS
+        const modal = document.getElementById('scenario-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalSubtitle = document.getElementById('modal-subtitle');
+        const modalDesc = document.getElementById('modal-desc');
+        const modalId = document.getElementById('modal-id');
+
         function startGame() {
             introScreen.classList.add('hidden');
             questionScreen.classList.remove('hidden');
@@ -369,21 +438,13 @@
             });
 
             drawChart();
-            resetAIUI();
-        }
-
-        function resetAIUI() {
-            const btn = document.getElementById('ai-btn');
-            const resultBox = document.getElementById('ai-result');
-            const audioContainer = document.getElementById('audio-container');
-            const textBox = document.getElementById('ai-text');
+            stopAudio(); // Reset audio if any
             
-            btn.disabled = false;
-            btn.classList.remove('opacity-50', 'cursor-not-allowed');
-            resultBox.classList.add('hidden');
-            audioContainer.classList.add('hidden');
-            textBox.innerText = "";
-            document.getElementById('story-audio').src = "";
+            // Prepare the story text but hide it
+            currentStoryText = scenarioStories[winner];
+            document.getElementById('story-text').innerText = currentStoryText;
+            document.getElementById('story-display').classList.add('hidden');
+            document.getElementById('reveal-btn').classList.remove('hidden');
         }
 
         function drawChart() {
@@ -417,166 +478,101 @@
                             max: questions.length
                         }
                     },
-                    plugins: { legend: { display: false } }
+                    plugins: { legend: { display: false } },
+                    onClick: (evt, activeElements) => {
+                        if (activeElements.length > 0) {
+                            const index = activeElements[0].index;
+                            const scenarioKey = Object.keys(scenarios)[index];
+                            openScenarioModal(scenarioKey);
+                        }
+                    },
+                    onHover: (event, chartElement) => {
+                        event.native.target.style.cursor = chartElement.length ? 'pointer' : 'default';
+                    }
                 }
             });
         }
+        
+        // MODAL FUNCTIONS
+        function openScenarioModal(key) {
+            const s = scenarios[key];
+            modalId.innerText = s.id;
+            modalId.style.color = s.color;
+            modalTitle.innerText = s.title;
+            modalSubtitle.innerText = s.subtitle;
+            modalDesc.innerText = s.description;
+            modal.classList.remove('hidden');
+        }
+        
+        function closeModal() {
+            modal.classList.add('hidden');
+        }
+        
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // STORY REVEAL FUNCTION
+        function revealStory() {
+            document.getElementById('reveal-btn').classList.add('hidden');
+            document.getElementById('story-display').classList.remove('hidden');
+            // Ensure audio is stopped when revealing
+            stopAudioUI();
+        }
+
+        // AUDIO FUNCTIONS (Offline Web Speech API)
+        function playAudio() {
+            // Update UI
+            document.getElementById('play-audio-btn').classList.add('hidden');
+            document.getElementById('stop-audio-btn').classList.remove('hidden');
+            document.getElementById('speaking-indicator').classList.remove('hidden');
+
+            // Speech Synthesis setup
+            if (synth.speaking) {
+                synth.cancel();
+            }
+
+            currentUtterance = new SpeechSynthesisUtterance(currentStoryText);
+            currentUtterance.lang = 'fr-FR';
+            currentUtterance.rate = 0.9; // Posé
+            currentUtterance.pitch = 0.9; // Grave
+
+            // Voice selection logic
+            const voices = synth.getVoices();
+            const frVoice = voices.find(v => v.lang.includes('fr') && v.name.includes('Google')) || voices.find(v => v.lang.includes('fr'));
+            if (frVoice) {
+                currentUtterance.voice = frVoice;
+            }
+
+            currentUtterance.onend = function(event) {
+                stopAudioUI();
+            };
+
+            synth.speak(currentUtterance);
+        }
+
+        function stopAudio() {
+            if (synth.speaking) {
+                synth.cancel();
+            }
+            stopAudioUI();
+        }
+
+        function stopAudioUI() {
+            document.getElementById('play-audio-btn').classList.remove('hidden');
+            document.getElementById('stop-audio-btn').classList.add('hidden');
+            document.getElementById('speaking-indicator').classList.add('hidden');
+        }
 
         function restartGame() {
+            stopAudio();
             currentQuestionIndex = 0;
             scores = { s1: 0, s2: 0, s3: 0, s4: 0, s5: 0, s6: 0 };
+            document.getElementById('story-display').classList.add('hidden');
             resultScreen.classList.add('hidden');
             introScreen.classList.remove('hidden');
-            // stop audio if playing
-            const audio = document.getElementById('story-audio');
-            audio.pause();
-            audio.src = "";
-        }
-
-        async function generateStoryAndAudio() {
-            const btn = document.getElementById('ai-btn');
-            const resultBox = document.getElementById('ai-result');
-            const loader = document.getElementById('ai-loading');
-            const loadingText = document.getElementById('loading-text');
-            const textBox = document.getElementById('ai-text');
-            const audioContainer = document.getElementById('audio-container');
-            const audioPlayer = document.getElementById('story-audio');
-
-            // Find current winner
-            let winner = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
-            const scenario = scenarios[winner];
-
-            // UI Init
-            btn.disabled = true;
-            btn.classList.add('opacity-50', 'cursor-not-allowed');
-            resultBox.classList.remove('hidden');
-            loader.classList.remove('hidden');
-            loadingText.innerText = "Génération du récit textuel...";
-            textBox.innerText = "";
-            audioContainer.classList.add('hidden');
-
-            // 1. GENERATE TEXT
-            // On demande un ton plus naturel dans le texte aussi
-            const prompt = `Agis comme un habitant de Montpellier en 2050. Rédige un court paragraphe narratif (environ 60-80 mots) à la première personne. Le contexte correspond au scénario : "${scenario.title} : ${scenario.description}". Incorpore des détails sensoriels liés aux enjeux : ${scenario.issues.join(', ')}. Le ton doit être naturel, posé, mature et réfléchi.`;
-
-            let storyText = "";
-            
-            try {
-                // Text Generation Call
-                const responseText = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
-                });
-
-                if (!responseText.ok) throw new Error("Erreur génération texte");
-                const dataText = await responseText.json();
-                storyText = dataText.candidates?.[0]?.content?.parts?.[0]?.text || "Erreur de génération.";
-                textBox.innerText = storyText;
-
-                // 2. GENERATE AUDIO (TTS)
-                loadingText.innerText = "Création de la voix...";
-                
-                // Prompt for TTS: Style instruction for natural 50yo man
-                const ttsPrompt = `D'une voix masculine naturelle, calme et mature, comme un homme de 50 ans qui raconte un souvenir, dis : ${storyText}`;
-
-                const responseAudio = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{ parts: [{ text: ttsPrompt }] }],
-                        generationConfig: {
-                            responseModalities: ["AUDIO"],
-                            speechConfig: {
-                                voiceConfig: {
-                                    // Orus est souvent plus naturel/standard que Fenrir qui est très "trailer"
-                                    prebuiltVoiceConfig: { voiceName: "Orus" } 
-                                }
-                            }
-                        }
-                    })
-                });
-
-                if (!responseAudio.ok) throw new Error("Erreur génération audio");
-                const dataAudio = await responseAudio.json();
-                const base64Audio = dataAudio.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
-
-                if (base64Audio) {
-                    const binaryString = window.atob(base64Audio);
-                    const len = binaryString.length;
-                    const bytes = new Uint8Array(len);
-                    for (let i = 0; i < len; i++) {
-                        bytes[i] = binaryString.charCodeAt(i);
-                    }
-                    
-                    const wavBlob = pcmToWav(bytes, 24000); 
-                    const audioUrl = URL.createObjectURL(wavBlob);
-                    
-                    audioPlayer.src = audioUrl;
-                    audioContainer.classList.remove('hidden');
-                    audioPlayer.play(); 
-                    
-                    audioPlayer.classList.add("audio-pulse");
-                    setTimeout(() => audioPlayer.classList.remove("audio-pulse"), 3000);
-                }
-
-                loader.classList.add('hidden');
-                btn.disabled = false;
-                btn.classList.remove('opacity-50', 'cursor-not-allowed');
-
-            } catch (error) {
-                console.error(error);
-                loader.classList.add('hidden');
-                textBox.innerHTML += "<br><span class='text-red-500 text-xs'>(Erreur lors de la génération: " + error.message + ")</span>";
-                btn.disabled = false;
-                btn.classList.remove('opacity-50', 'cursor-not-allowed');
-            }
-        }
-
-        // Helper: Convert Raw PCM16 to WAV Blob
-        function pcmToWav(pcmData, sampleRate) {
-            const numChannels = 1;
-            const bitsPerSample = 16;
-            const byteRate = sampleRate * numChannels * bitsPerSample / 8;
-            const blockAlign = numChannels * bitsPerSample / 8;
-            const wavDataByteLength = pcmData.length;
-            const headerByteLength = 44;
-            const totalLength = headerByteLength + wavDataByteLength;
-
-            const buffer = new ArrayBuffer(totalLength);
-            const view = new DataView(buffer);
-
-            // RIFF chunk descriptor
-            writeString(view, 0, 'RIFF');
-            view.setUint32(4, totalLength - 8, true);
-            writeString(view, 8, 'WAVE');
-
-            // fmt sub-chunk
-            writeString(view, 12, 'fmt ');
-            view.setUint32(16, 16, true); // Subchunk1Size (16 for PCM)
-            view.setUint16(20, 1, true); // AudioFormat (1 for PCM)
-            view.setUint16(22, numChannels, true); // NumChannels
-            view.setUint32(24, sampleRate, true); // SampleRate
-            view.setUint32(28, byteRate, true); // ByteRate
-            view.setUint16(32, blockAlign, true); // BlockAlign
-            view.setUint16(34, bitsPerSample, true); // BitsPerSample
-
-            // data sub-chunk
-            writeString(view, 36, 'data');
-            view.setUint32(40, wavDataByteLength, true);
-
-            // Write PCM data
-            const pcmBytes = new Uint8Array(pcmData);
-            const wavBytes = new Uint8Array(buffer, 44);
-            wavBytes.set(pcmBytes);
-
-            return new Blob([buffer], { type: 'audio/wav' });
-        }
-
-        function writeString(view, offset, string) {
-            for (let i = 0; i < string.length; i++) {
-                view.setUint8(offset + i, string.charCodeAt(i));
-            }
         }
     </script>
 </body>
