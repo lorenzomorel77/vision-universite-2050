@@ -6,19 +6,16 @@
     <title>Vision Université 2050 - Atelier Atrium</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-    
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body { font-family: 'Roboto', sans-serif; background-color: #f3f4f6; }
         h1, h2, h3, .title-font { font-family: 'Montserrat', sans-serif; }
-        
         .card-hover:hover { transform: translateY(-5px); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
         .fade-in { animation: fadeIn 0.5s ease-out forwards; opacity: 0; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .scenario-icon { width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 50%; margin-bottom: 1rem; }
         
-        /* Animation Audio */
+        /* Animation pour l'indicateur audio */
         .speaking-animation { display: flex; gap: 4px; justify-content: center; align-items: flex-end; height: 20px; }
         .bar { width: 4px; background-color: #4F46E5; animation: speak 1s infinite ease-in-out; }
         .bar:nth-child(1) { animation-delay: 0.0s; height: 10px; }
@@ -26,9 +23,39 @@
         .bar:nth-child(3) { animation-delay: 0.2s; height: 20px; }
         .bar:nth-child(4) { animation-delay: 0.3s; height: 12px; }
         @keyframes speak { 0%, 100% { height: 5px; } 50% { height: 20px; } }
+
+        /* Styles spécifiques Frise Chrono */
+        .timeline-line { position: absolute; left: 50%; top: 0; bottom: 0; width: 4px; background: #E0E7FF; transform: translateX(-50%); }
+        .timeline-point { position: absolute; left: 50%; width: 20px; height: 20px; background: #4F46E5; border: 4px solid white; border-radius: 50%; transform: translateX(-50%); z-index: 10; box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.2); }
+        .timeline-card { width: 45%; position: relative; }
+        .timeline-card.left { left: 0; text-align: right; padding-right: 40px; }
+        .timeline-card.right { left: 55%; text-align: left; padding-left: 40px; }
+        
+        .selected-persona { border-color: #4F46E5; background-color: #EEF2FF; transform: scale(1.02); }
+
+        /* Responsive Timeline */
+        @media (max-width: 768px) {
+            .timeline-line { left: 20px; }
+            .timeline-point { left: 20px; }
+            .timeline-card { width: 100%; padding-left: 50px !important; padding-right: 0 !important; text-align: left !important; left: 0 !important; margin-bottom: 2rem; }
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col relative">
+
+    <!-- OVERLAY FACT (LE SAVIEZ-VOUS) -->
+    <div id="fact-overlay" class="fixed inset-0 bg-black bg-opacity-60 hidden z-[70] flex items-center justify-center p-6 fade-in">
+        <div class="bg-white rounded-xl p-8 max-w-lg w-full text-center shadow-2xl relative border-t-8 border-orange-500">
+            <div class="mx-auto w-16 h-16 bg-orange-100 text-orange-500 rounded-full flex items-center justify-center mb-4 text-3xl">
+                <i class="fas fa-info"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-800 mb-4 title-font">Le Saviez-vous ?</h3>
+            <p id="fact-text" class="text-gray-600 mb-8 text-lg leading-relaxed"></p>
+            <button id="close-fact-btn" class="w-full bg-orange-500 text-white px-6 py-3 rounded-lg font-bold hover:bg-orange-600 transition transform hover:scale-[1.02] shadow-md flex items-center justify-center gap-2">
+                Suivant <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+    </div>
 
     <!-- MODAL POPUP FOR SCENARIO DETAILS -->
     <div id="scenario-modal" class="fixed inset-0 bg-black bg-opacity-60 hidden z-50 flex items-center justify-center p-4 fade-in">
@@ -38,7 +65,7 @@
             </button>
             <div id="modal-header" class="p-6 pb-4 border-b">
                 <div class="text-xs font-bold uppercase tracking-wider text-gray-500 mb-1" id="modal-id">SCÉNARIO</div>
-                <h3 id="modal-title" class="text-2xl font-bold title-font text-gray-800 leading-tight">Titre du Scénario</h3>
+                <h3 id="modal-title" class="text-2xl font-bold title-font text-gray-800 leading-tight">Titre</h3>
                 <p id="modal-subtitle" class="text-sm italic text-gray-600 mt-1">Sous-titre</p>
             </div>
             <div class="p-6 pt-4 bg-gray-50">
@@ -56,17 +83,41 @@
                     <span id="page-indicator" class="text-sm bg-gray-700 px-3 py-1 rounded-full whitespace-nowrap">Page 1 / 4</span>
                 </div>
                 <div class="flex items-center gap-3">
-                    <button onclick="prevPdf()" id="btn-prev" class="bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed text-white px-4 py-2 rounded transition-colors shadow-sm flex items-center gap-2"><i class="fas fa-chevron-left"></i> Précédent</button>
-                    <button onclick="nextPdf()" id="btn-next" class="bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed text-white px-4 py-2 rounded transition-colors shadow-sm flex items-center gap-2">Suivant <i class="fas fa-chevron-right"></i></button>
-                    <div class="w-px h-8 bg-gray-700 mx-2 hidden md:block"></div>
-                    <button onclick="closePdfModal()" class="text-white hover:text-red-400 transition-colors text-xl px-2" title="Fermer"><i class="fas fa-times"></i></button>
+                    <button onclick="prevPdf()" id="btn-prev" class="bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white px-4 py-2 rounded transition-colors shadow-sm flex items-center gap-2">
+                        <i class="fas fa-chevron-left"></i> Précédent
+                    </button>
+                    <button onclick="nextPdf()" id="btn-next" class="bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white px-4 py-2 rounded transition-colors shadow-sm flex items-center gap-2">
+                        Suivant <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <button onclick="closePdfModal()" class="text-white hover:text-red-400 transition-colors text-xl px-2">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
             </div>
             <div class="flex-grow bg-gray-200 relative">
-                <iframe id="pdf-frame" src="" class="w-full h-full border-0" title="Visualiseur PDF"></iframe>
+                <iframe id="pdf-frame" src="" class="w-full h-full border-0"></iframe>
             </div>
-            <div class="bg-gray-100 p-3 text-center border-t flex justify-center gap-4">
-                <a id="pdf-download-link" href="" target="_blank" class="text-indigo-600 hover:text-indigo-800 text-sm font-bold flex items-center gap-2 transition-colors"><i class="fas fa-external-link-alt"></i> Ouvrir le fichier actuel dans un nouvel onglet</a>
+        </div>
+    </div>
+
+    <!-- MODAL TIMELINE INTERACTIVE -->
+    <div id="timeline-modal" class="fixed inset-0 bg-black bg-opacity-80 hidden z-[65] flex items-center justify-center p-2 md:p-6 fade-in">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-4xl h-full flex flex-col overflow-hidden relative">
+            <div class="bg-indigo-900 text-white p-6 flex justify-between items-center shadow-md z-10">
+                <div>
+                    <h3 class="text-2xl font-bold title-font"><i class="fas fa-history mr-2 text-orange-400"></i> Histoire du Campus</h3>
+                    <p class="text-xs text-indigo-200 mt-1">De la médecine médiévale à la ville de demain</p>
+                </div>
+                <button onclick="closeTimeline()" class="text-white hover:text-red-400 transition-colors text-2xl">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="flex-grow overflow-y-auto p-6 bg-gray-50 relative" id="timeline-container">
+                <div class="timeline-line"></div>
+                <div id="timeline-content" class="py-10"></div>
+                <div class="text-center mt-10 mb-4">
+                    <p class="text-gray-400 italic text-sm">Fin de la chronologie historique</p>
+                </div>
             </div>
         </div>
     </div>
@@ -82,17 +133,17 @@
                 <span class="text-[10px] md:text-xs font-semibold tracking-widest opacity-70 uppercase hidden sm:block text-indigo-800">Université & Ville de Demain</span>
             </div>
             <div class="flex items-center justify-end gap-3 w-1/4 md:w-1/3">
-                <img src="PROJET_NOIR.png" onerror="this.src='https://via.placeholder.com/100x40?text=Logo+Projet'" alt="Logo Master Projet" class="h-8 md:h-12 w-auto object-contain">
+                <img src="PROJET_NOIR.png" alt="Master" class="h-8 md:h-12 w-auto object-contain">
                 <div class="h-6 md:h-8 w-px bg-gray-300 hidden sm:block"></div>
-                <img src="UMPV_NOIR.png" onerror="this.src='https://via.placeholder.com/100x40?text=Logo+UMPV'" alt="Logo Université Paul Valéry" class="h-8 md:h-12 w-auto object-contain">
+                <img src="UMPV_NOIR.png" alt="UMPV" class="h-8 md:h-12 w-auto object-contain">
             </div>
         </div>
     </header>
 
-    <!-- Main Content -->
+    <!-- MAIN -->
     <main class="flex-grow container mx-auto px-4 py-8 flex flex-col items-center justify-center" id="game-container">
         
-        <!-- INTRO SCREEN -->
+        <!-- INTRO SCREEN (Originale restaurée) -->
         <div id="intro-screen" class="max-w-2xl w-full bg-white rounded-2xl shadow-xl overflow-hidden fade-in">
             <div class="bg-indigo-600 h-2 w-full"></div>
             <div class="p-8 text-center">
@@ -105,18 +156,86 @@
                 <div class="bg-indigo-50 p-4 rounded-lg mb-8 text-sm text-indigo-800 text-left">
                     <p class="font-bold mb-2">Instructions :</p>
                     <ul class="list-disc pl-5 space-y-1">
-                        <li>Vous allez faire face à <strong>7 dilemmes stratégiques</strong> issus du diagnostic territorial.</li>
-                        <li>Vos choix détermineront l'un des <strong>6 Scénarios Futurs</strong> (S1 à S6).</li>
-                        <li>Il n'y a pas de mauvaise réponse, seulement des visions différentes.</li>
+                        <li>Vous allez incarner un acteur clé (Maire, Expert ou Étudiant).</li>
+                        <li>Vous ferez face à <strong>7 dilemmes stratégiques</strong>.</li>
+                        <li>Vos choix détermineront l'un des <strong>6 Scénarios Futurs</strong>.</li>
                     </ul>
                 </div>
-                <button onclick="startGame()" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 shadow-md transform hover:scale-105">
-                    Commencer le Diagnostic
+                <button onclick="goToPersonaSelection()" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 shadow-md transform hover:scale-105">
+                    Commencer l'expérience
                 </button>
             </div>
         </div>
 
-        <!-- QUESTION SCREEN -->
+        <!-- PERSONA SELECTION SCREEN (Nouvelle Étape) -->
+        <div id="persona-screen" class="hidden max-w-4xl w-full bg-white rounded-2xl shadow-xl overflow-hidden fade-in">
+            <div class="bg-indigo-900 h-2 w-full"></div>
+            <div class="p-8 text-center">
+                <h2 class="text-2xl font-extrabold text-gray-800 mb-2">Choisissez votre rôle</h2>
+                <p class="text-gray-600 mb-8 text-sm">
+                    Qui êtes-vous pour mener ce diagnostic ?
+                </p>
+
+                <!-- GRILLE PERSONNAGES -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8 text-left">
+                    
+                    <!-- Politique -->
+                    <div onclick="selectPersona('politique')" id="persona-politique" class="persona-card border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:shadow-lg transition-all group">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-lg"><i class="fas fa-user-tie"></i></div>
+                            <div>
+                                <h4 class="font-bold text-sm text-gray-800">Michaël D.</h4>
+                                <span class="text-xs text-blue-600 font-semibold uppercase">Maire</span>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-500 italic">"L'université doit être une couture urbaine, ouverte sur la ville."</p>
+                    </div>
+
+                    <!-- Expert -->
+                    <div onclick="selectPersona('expert')" id="persona-expert" class="persona-card border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:shadow-lg transition-all group">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="w-10 h-10 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center text-lg"><i class="fas fa-drafting-compass"></i></div>
+                            <div>
+                                <h4 class="font-bold text-sm text-gray-800">Antoine G-D.</h4>
+                                <span class="text-xs text-purple-600 font-semibold uppercase">Architecte</span>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-500 italic">"Respecter le patrimoine du XXe tout en densifiant intelligemment."</p>
+                    </div>
+
+                    <!-- Étudiante -->
+                    <div onclick="selectPersona('etudiante')" id="persona-etudiante" class="persona-card border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:shadow-lg transition-all group">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="w-10 h-10 rounded-full bg-pink-100 text-pink-600 flex items-center justify-center text-lg"><i class="fas fa-user-graduate"></i></div>
+                            <div>
+                                <h4 class="font-bold text-sm text-gray-800">Sarah</h4>
+                                <span class="text-xs text-pink-600 font-semibold uppercase">L3 Arts</span>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-500 italic">"On a besoin de vrais lieux de vie sociale, pas juste des couloirs."</p>
+                    </div>
+
+                    <!-- Étudiant -->
+                    <div onclick="selectPersona('etudiant')" id="persona-etudiant" class="persona-card border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:shadow-lg transition-all group">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="w-10 h-10 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-lg"><i class="fas fa-laptop-code"></i></div>
+                            <div>
+                                <h4 class="font-bold text-sm text-gray-800">Mehdi</h4>
+                                <span class="text-xs text-green-600 font-semibold uppercase">Master Urba</span>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-500 italic">"Le coût du logement et la mobilité sont mes priorités."</p>
+                    </div>
+
+                </div>
+
+                <button onclick="startGame()" id="start-btn" disabled class="bg-gray-300 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 shadow-md cursor-not-allowed w-full md:w-auto">
+                    Choisir un personnage
+                </button>
+            </div>
+        </div>
+
+        <!-- QUESTIONS -->
         <div id="question-screen" class="hidden max-w-3xl w-full fade-in">
             <div class="flex justify-between items-center mb-4">
                 <span class="text-sm font-semibold text-gray-500 uppercase">Enjeu <span id="current-question-num">1</span>/7</span>
@@ -128,87 +247,57 @@
             <div class="bg-white rounded-2xl shadow-xl p-8 mb-6">
                 <div class="flex items-center mb-6">
                     <span id="enjeu-badge" class="bg-indigo-100 text-indigo-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded uppercase">Économique</span>
-                    <h2 id="question-text" class="text-2xl font-bold text-gray-800">La question va ici</h2>
+                    <h2 id="question-text" class="text-2xl font-bold text-gray-800">Question</h2>
                 </div>
-                <p id="question-context" class="text-gray-600 mb-8 italic text-sm border-l-4 border-orange-400 pl-4">Contexte ici...</p>
-                
-                <div id="answers-container" class="grid gap-4 md:grid-cols-1">
-                    <!-- Buttons generated by JS -->
-                </div>
+                <p id="question-context" class="text-gray-600 mb-8 italic text-sm border-l-4 border-orange-400 pl-4">Contexte...</p>
+                <div id="answers-container" class="grid gap-4 md:grid-cols-1"></div>
             </div>
         </div>
 
-        <!-- RESULT SCREEN -->
+        <!-- RESULT -->
         <div id="result-screen" class="hidden max-w-4xl w-full fade-in">
             <div class="bg-white rounded-2xl shadow-2xl overflow-hidden">
                 <div id="result-header" class="bg-indigo-900 p-8 text-white text-center relative">
                     <p class="uppercase tracking-widest text-xs opacity-70 mb-2">Votre vision dominante est</p>
-                    <h2 id="scenario-title" class="text-4xl font-extrabold mb-2 title-font text-orange-400">TITRE SCÉNARIO</h2>
-                    <h3 id="scenario-subtitle" class="text-xl font-light italic">Sous-titre scénario</h3>
-                    
-                    <div class="absolute top-4 right-4 text-6xl opacity-20">
-                        <i id="scenario-icon-bg" class="fas fa-city"></i>
-                    </div>
+                    <h2 id="scenario-title" class="text-4xl font-extrabold mb-2 title-font text-orange-400">TITRE</h2>
+                    <h3 id="scenario-subtitle" class="text-xl font-light italic">Sous-titre</h3>
+                    <div class="absolute top-4 right-4 text-6xl opacity-20"><i class="fas fa-city"></i></div>
                 </div>
 
                 <div class="p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div>
+                        <!-- SECTION PERSONNAGE FEEDBACK -->
+                        <div id="persona-feedback" class="bg-indigo-50 border-l-4 border-indigo-500 p-4 mb-6 rounded-r">
+                            <h4 id="persona-feedback-title" class="font-bold text-indigo-900 text-sm mb-1">Le mot de l'expert</h4>
+                            <p id="persona-feedback-text" class="text-sm text-indigo-800 italic">Analysis...</p>
+                        </div>
+
                         <h4 class="font-bold text-gray-800 mb-4 border-b pb-2">Description du Scénario</h4>
-                        <p id="scenario-desc" class="text-gray-600 leading-relaxed text-justify text-sm mb-6">
-                            Description...
-                        </p>
-                        
+                        <p id="scenario-desc" class="text-gray-600 leading-relaxed text-justify text-sm mb-6">Desc...</p>
                         <h4 class="font-bold text-gray-800 mb-4 border-b pb-2">Enjeux Clés</h4>
-                        <ul id="scenario-issues" class="text-sm text-gray-700 space-y-2 list-disc pl-4">
-                            <!-- Issues list -->
-                        </ul>
+                        <ul id="scenario-issues" class="text-sm text-gray-700 space-y-2 list-disc pl-4"></ul>
                     </div>
 
                     <div class="bg-gray-50 rounded-xl p-4 flex flex-col justify-center">
                         <h4 class="font-bold text-gray-800 mb-2 text-center">Votre profil de Diagnostic</h4>
-                        <p class="text-xs text-center text-gray-500 mb-4 italic">(Cliquez sur les barres pour voir les détails)</p>
                         <canvas id="radarChart"></canvas>
 
-                        <!-- SOCIAL STATS SECTION (FIREBASE) -->
-                        <div id="social-stats" class="mt-6 p-4 bg-indigo-50 rounded-xl border border-indigo-100 text-center hidden fade-in">
-                            <h5 class="text-sm font-bold text-indigo-900 mb-2 flex items-center justify-center gap-2">
-                                <i class="fas fa-globe"></i> Résultats de la Communauté
-                            </h5>
-                            <p id="social-msg" class="text-sm text-gray-600 leading-snug">Chargement des données...</p>
-                            
-                            <!-- Jauge visuelle -->
-                            <div class="w-full bg-gray-200 rounded-full h-3 mt-3 relative overflow-hidden">
-                                <div id="social-bar" class="bg-orange-500 h-3 rounded-full transition-all duration-1000 ease-out" style="width: 0%"></div>
-                            </div>
-                            
-                            <p id="social-detail" class="text-[10px] text-gray-400 mt-2 italic">Mise à jour en temps réel depuis le site.</p>
-                        </div>
-
-                        <!-- IMMERSION TEXTE -->
+                        <!-- IMMERSION -->
                         <div class="mt-6 border-t pt-4">
                             <h4 class="font-bold text-indigo-900 mb-2 text-center text-sm">Immersion Future</h4>
-                            <p class="text-xs text-center text-gray-500 mb-3">Découvrez le témoignage d'un étudiant en 2050.</p>
-                            
                             <button onclick="revealStory()" id="reveal-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold py-3 px-4 rounded transition duration-200 flex items-center justify-center gap-2">
                                 <i class="fas fa-book-open text-lg"></i> Découvrir le Récit
                             </button>
-
                             <div id="story-display" class="hidden mt-4 text-sm text-gray-700 bg-white p-4 rounded border border-gray-200 shadow-inner">
                                 <p id="story-text" class="leading-relaxed italic text-gray-800 font-serif mb-4"></p>
-                                
-                                <!-- Audio Controls -->
                                 <div class="border-t pt-3 flex flex-col items-center justify-center">
                                     <div id="speaking-indicator" class="hidden mb-2">
-                                        <div class="speaking-animation">
-                                            <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
-                                        </div>
+                                        <div class="speaking-animation"><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
                                         <p class="text-center text-xs text-indigo-600 mt-1 font-bold">Narration en cours...</p>
                                     </div>
-                                    
                                     <button onclick="playAudio()" id="play-audio-btn" class="text-indigo-600 hover:text-indigo-800 font-bold py-2 px-4 rounded flex items-center gap-2 transition-colors">
-                                        <i class="fas fa-volume-up text-lg"></i> Lancer la narration
+                                        <i class="fas fa-volume-up text-lg"></i> Lire
                                     </button>
-
                                     <button onclick="stopAudio()" id="stop-audio-btn" class="hidden text-red-500 hover:text-red-700 font-bold py-2 px-4 rounded flex items-center gap-2 transition-colors">
                                         <i class="fas fa-stop-circle text-lg"></i> Arrêter
                                     </button>
@@ -217,10 +306,9 @@
                         </div>
 
                         <div class="mt-6 flex flex-col gap-3 text-center">
-                            <button onclick="restartGame()" class="text-gray-600 hover:text-gray-800 text-sm font-semibold underline">Recommencer le diagnostic</button>
-                            
+                            <button onclick="restartGame()" class="text-gray-600 hover:text-gray-800 text-sm font-semibold underline">Recommencer</button>
                             <button onclick="showWorks()" class="bg-white border-2 border-indigo-600 text-indigo-600 hover:bg-indigo-600 hover:text-white font-bold py-3 px-6 rounded-full text-sm transition duration-300 shadow-md flex items-center justify-center gap-2">
-                                <i class="fas fa-project-diagram"></i> Découvrir nos travaux sur le sujet
+                                <i class="fas fa-project-diagram"></i> Découvrir nos travaux
                             </button>
                         </div>
                     </div>
@@ -234,12 +322,11 @@
                 <h2 class="text-4xl font-extrabold text-indigo-900 mb-2 title-font">L'EXPOSITION VIRTUELLE</h2>
                 <div class="h-1 w-24 bg-orange-500 mx-auto mb-4"></div>
                 <p class="text-gray-600 max-w-2xl mx-auto">
-                    Retrouvez ici les planches de recherche et de communication réalisées par l'atelier du Master Projet.
-                    Une exploration graphique des enjeux de l'université dans la cité.
+                    Planches de recherche et projets urbains réalisés par le Master Projet.
                 </p>
             </div>
-
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 px-4">
+                <!-- CARTE 1 : COMMS -->
                 <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border border-gray-100 group">
                     <div class="h-48 bg-indigo-900 flex items-center justify-center relative overflow-hidden">
                         <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
@@ -247,38 +334,47 @@
                     </div>
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-gray-800 mb-2">Communication & Scénographie</h3>
+                        <p class="text-sm text-gray-500 mb-4">Présentation générale de la démarche, Histoire et Plan de Masse.</p>
+                        
+                        <div class="space-y-3">
+                            <button onclick="openCommsGallery()" class="w-full bg-gray-100 hover:bg-indigo-100 text-indigo-700 font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors">
+                                <i class="fas fa-images"></i> Voir les planches (PDF)
+                            </button>
+                            <button onclick="openTimeline()" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors">
+                                <i class="fas fa-history"></i> Voir la Frise Chronologique
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARTE 2 : ATRIUM & ROUTE DE MENDE (PROJET 1) -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border border-gray-100 group">
+                    <div class="h-48 bg-green-600 flex items-center justify-center relative overflow-hidden">
+                        <i class="fas fa-road text-6xl text-white group-hover:scale-110 transition-transform duration-500"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">La Révolution de la Route de Mende</h3>
                         <p class="text-sm text-gray-500 mb-4">
-                            Présentation générale de la démarche (4 planches) : Page de Garde, Histoire, Modèles de Construction et Plan de Masse.
+                            Transformation d'une coupure routière en boulevard urbain apaisé. Arrivée du Tram 5, élargissement des trottoirs et pistes cyclables pour relier le campus à la ville.
                         </p>
-                        <button onclick="openCommsGallery()" class="w-full bg-gray-100 hover:bg-indigo-100 text-indigo-700 font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors">
-                            <i class="fas fa-images"></i> Voir les 4 Planches
-                        </button>
+                        <div class="mt-2 text-xs text-gray-400 italic"><i class="fas fa-check-circle mr-1"></i> Projet en cours</div>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border border-gray-100 opacity-75">
-                    <div class="h-48 bg-gray-200 flex items-center justify-center">
-                        <i class="fas fa-search-location text-5xl text-gray-400"></i>
+                <!-- CARTE 3 : ATRIUM ROTULE (PROJET 2) -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border border-gray-100 group">
+                    <div class="h-48 bg-blue-600 flex items-center justify-center relative overflow-hidden">
+                        <i class="fas fa-archway text-6xl text-white group-hover:scale-110 transition-transform duration-500"></i>
                     </div>
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-600 mb-2">Diagnostic Territorial</h3>
-                        <p class="text-sm text-gray-400 mb-4">Analyse spatiale, foncière et sociale. (Bientôt disponible)</p>
-                        <button disabled class="w-full bg-gray-50 text-gray-300 font-bold py-3 px-4 rounded-lg cursor-not-allowed flex items-center justify-center gap-2"><i class="fas fa-lock"></i> Bientôt disponible</button>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border border-gray-100 opacity-75">
-                    <div class="h-48 bg-gray-200 flex items-center justify-center">
-                        <i class="fas fa-drafting-compass text-5xl text-gray-400"></i>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-600 mb-2">Projets Urbains</h3>
-                        <p class="text-sm text-gray-400 mb-4">Propositions d'aménagement. (Bientôt disponible)</p>
-                        <button disabled class="w-full bg-gray-50 text-gray-300 font-bold py-3 px-4 rounded-lg cursor-not-allowed flex items-center justify-center gap-2"><i class="fas fa-lock"></i> Bientôt disponible</button>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">L'Atrium : Une Place Publique</h3>
+                        <p class="text-sm text-gray-500 mb-4">
+                            Plus qu'une bibliothèque, l'Atrium est pensé comme une "rotule" urbaine. Construit sur un ancien parking, il offre 15 000 m² ouverts aux habitants, brisant l'isolement du campus.
+                        </p>
+                        <div class="mt-2 text-xs text-gray-400 italic"><i class="fas fa-check-circle mr-1"></i> Livré en 2023</div>
                     </div>
                 </div>
             </div>
-
             <div class="mt-12 text-center">
                 <button onclick="closeWorks()" class="text-indigo-600 hover:text-orange-500 font-semibold flex items-center justify-center gap-2 mx-auto transition-colors">
                     <i class="fas fa-arrow-left"></i> Retour aux résultats
@@ -294,125 +390,70 @@
         </div>
     </footer>
 
-    <!-- IMPORT FIREBASE (MODULE TYPE) -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, onSnapshot, setDoc, increment, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        // --- CONFIG FIREBASE ---
-        const firebaseConfig = JSON.parse(__firebase_config);
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-
-        let currentUser = null;
-        // Données initiales simulées pour éviter un graphique vide au début
-        let globalStats = { s1: 5, s2: 3, s3: 2, s4: 4, s5: 1, s6: 2 }; 
-
-        // --- AUTHENTIFICATION ANONYME (Requise pour la BDD) ---
-        signInAnonymously(auth).then(() => {
-            console.log("Connecté anonymement à Firebase");
-        }).catch((error) => {
-            console.error("Erreur Auth:", error);
-        });
-
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                currentUser = user;
-                initRealtimeStats(); // Lancer l'écouteur
-            }
-        });
-
-        // --- ÉCOUTEUR TEMPS RÉEL (La magie opère ici) ---
-        function initRealtimeStats() {
-            // On écoute le document 'summary' dans la collection 'site_votes'
-            const statsRef = doc(db, 'artifacts', appId, 'public', 'data', 'site_votes', 'summary');
-            
-            onSnapshot(statsRef, (docSnap) => {
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    // On fusionne avec les stats par défaut pour éviter les undefined
-                    globalStats = { ...globalStats, ...data };
-                    
-                    // Si l'écran de résultat est affiché, on met à jour l'interface tout de suite
-                    if (window.currentWinner && !document.getElementById('result-screen').classList.contains('hidden')) {
-                        updateSocialStatsUI(window.currentWinner);
-                    }
-                }
-            }, (error) => {
-                console.warn("Erreur lecture stats (normal si 1er lancement):", error);
-            });
-        }
-
-        // --- FONCTION DE VOTE (Appelée quand on gagne) ---
-        window.sendVoteToCloud = async function(winnerKey) {
-            if (!currentUser) return;
-            
-            // Petite sécurité locale pour ne pas spammer le compteur (optionnel)
-            const hasVoted = localStorage.getItem('has_voted_v2');
-            if (hasVoted) {
-                console.log("Déjà voté sur cet appareil");
-                return; 
-            }
-
-            const statsRef = doc(db, 'artifacts', appId, 'public', 'data', 'site_votes', 'summary');
-            
-            try {
-                // Incrémente de +1 le champ correspondant au gagnant (s1, s2...)
-                await setDoc(statsRef, {
-                    [winnerKey]: increment(1)
-                }, { merge: true });
-                
-                localStorage.setItem('has_voted_v2', 'true');
-                console.log("Vote envoyé !");
-            } catch (e) {
-                console.error("Erreur lors du vote:", e);
-            }
-        }
-
-        // --- LOGIQUE D'AFFICHAGE (UI) ---
-        window.updateSocialStatsUI = function(userWinner) {
-            const container = document.getElementById('social-stats');
-            const msgEl = document.getElementById('social-msg');
-            const barEl = document.getElementById('social-bar');
-            const detailEl = document.getElementById('social-detail');
-
-            const total = Object.values(globalStats).reduce((a, b) => a + b, 0);
-            const userCount = globalStats[userWinner] || 0;
-            const userPercent = total > 0 ? Math.round((userCount / total) * 100) : 0;
-
-            // Trouver la majorité
-            let majorityId = Object.keys(globalStats).reduce((a, b) => globalStats[a] > globalStats[b] ? a : b);
-            let majorityPercent = total > 0 ? Math.round((globalStats[majorityId] / total) * 100) : 0;
-            
-            // Titres des scénarios (pour l'affichage)
-            // On doit accéder à l'objet 'scenarios' défini dans le script principal
-            // Astuce : on utilise window.scenariosData s'il est exposé, sinon on utilise les clés
-            
-            let msg = "";
-            if (userWinner === majorityId) {
-                msg = `Vous faites partie de la majorité ! <strong class="text-indigo-600">${userPercent}%</strong> des visiteurs ont aussi choisi ce scénario.`;
-            } else {
-                msg = `Vous êtes <strong class="text-indigo-600">${userPercent}%</strong> à avoir ce profil. La majorité (<strong class="text-orange-500">${majorityPercent}%</strong>) privilégie plutôt le scénario <strong>${majorityId.toUpperCase()}</strong>.`;
-            }
-
-            msgEl.innerHTML = msg;
-            
-            // Animation
-            setTimeout(() => {
-                barEl.style.width = `${userPercent}%`;
-                barEl.className = `h-3 rounded-full transition-all duration-1000 ease-out ${userWinner === majorityId ? 'bg-indigo-600' : 'bg-orange-500'}`;
-            }, 100);
-            
-            detailEl.innerText = `${userCount} votes pour votre scénario sur un total de ${total} participations enregistrées.`;
-            container.classList.remove('hidden');
-        }
-    </script>
-
     <script>
-        // RÉCITS COMPLETS
+        // NAVIGATION ET LOGIQUE PERSONNAGES
+        const introScreen = document.getElementById('intro-screen');
+        const personaScreen = document.getElementById('persona-screen');
+        const questionScreen = document.getElementById('question-screen');
+        const resultScreen = document.getElementById('result-screen');
+        const worksScreen = document.getElementById('works-screen');
+        const factOverlay = document.getElementById('fact-overlay');
+        const factText = document.getElementById('fact-text');
+        const closeFactBtn = document.getElementById('close-fact-btn');
+
+        // 1. NAVIGATION VERS CHOIX PERSO
+        function goToPersonaSelection() {
+            introScreen.classList.add('hidden');
+            personaScreen.classList.remove('hidden');
+        }
+
+        // 2. LOGIQUE SÉLECTION PERSONNAGE
+        const personas = {
+            politique: {
+                name: "Michaël Delafosse", role: "Maire / Président Métropole",
+                quote: "L'enjeu est la couture urbaine. L'université ne doit plus être une île, mais un quartier de la ville relié par le tramway gratuit.",
+                focus: "Intégration Urbaine"
+            },
+            expert: {
+                name: "Antoine Garcia-Diaz", role: "Architecte Urbaniste",
+                quote: "Le plan guide doit respecter l'histoire de ce campus 'Patrimoine du XXe siècle' tout en permettant sa densification nécessaire.",
+                focus: "Patrimoine & Forme Urbaine"
+            },
+            etudiante: {
+                name: "Sarah", role: "Étudiante L3 Arts",
+                quote: "Je passe ma vie ici. On a besoin de vrais lieux de vie sociale, pas juste des couloirs. L'isolement est un vrai problème.",
+                focus: "Vie Sociale & Culturelle"
+            },
+            etudiant: {
+                name: "Mehdi", role: "Étudiant Master Urbanisme",
+                quote: "Sans voiture, c'est compliqué. J'attends la ligne 5 avec impatience. Le coût du logement à côté de la fac est aussi critique.",
+                focus: "Mobilité & Logement"
+            }
+        };
+
+        let currentPersona = null;
+
+        function selectPersona(id) {
+            currentPersona = id;
+            document.querySelectorAll('.persona-card').forEach(el => el.classList.remove('selected-persona', 'ring-2', 'ring-indigo-500'));
+            document.getElementById('persona-' + id).classList.add('selected-persona', 'ring-2', 'ring-indigo-500');
+            
+            const btn = document.getElementById('start-btn');
+            btn.disabled = false;
+            btn.classList.remove('bg-gray-300', 'cursor-not-allowed');
+            btn.classList.add('bg-orange-500', 'hover:bg-orange-600', 'cursor-pointer');
+            btn.innerHTML = `Valider et Démarrer`;
+        }
+
+        // 3. DÉMARRAGE DU JEU
+        function startGame() { 
+            if(!currentPersona) return;
+            personaScreen.classList.add('hidden'); 
+            questionScreen.classList.remove('hidden'); 
+            loadQuestion(); 
+        }
+
+        // ... RESTE DU CODE (SCÉNARIOS, QUESTIONS, GRAPHIQUES) ...
         const scenarioStories = {
             s1: "Ce matin, le tramway m'a déposé au pied des nouveaux bâtiments rénovés. L'université n'a pas changé de visage du tout au tout, mais elle respire mieux. On sent une transition douce, rassurante. Ici, pas de révolution technologique brutale, mais une continuité apaisée où l'on prend le temps de vivre et d'étudier ensemble, solidement ancrés dans notre quartier.",
             s2: "Badge scanné, accès autorisé. En entrant dans le Hub, je croise autant de chercheurs que d'entrepreneurs. L'atmosphère est électrique, tournée vers la performance. Ici, chaque idée doit trouver son marché. C'est stimulant d'être au cœur de l'innovation, même si parfois, j'ai l'impression que la rentabilité compte plus que la connaissance pure.",
@@ -422,64 +463,45 @@
             s6: "Cela fait une semaine que je n'ai pas quitté l'enceinte du campus. Et pourquoi sortir ? J'ai mon studio, ma salle de sport, mon cinéma et mes cours ici. C'est une ville parfaite dans la ville, ultra-sécurisée et pratique. On vit dans un cocon privilégié, efficace, peut-être un peu trop coupé des réalités extérieures."
         };
 
-        // SCÉNARIOS COMPLETS
         const scenarios = {
             s1: {
-                id: "S1",
-                title: "Rien ne change / La Continuité",
-                subtitle: "Le changement c'est pas maintenant",
+                id: "S1", title: "Rien ne change / La Continuité", subtitle: "Le changement c'est pas maintenant",
                 description: "Ce scénario imagine une évolution dans la continuité. L'université reste un acteur fort du territoire, mais sans révolution. Elle poursuit son ouverture progressive sur la ville, développe des liens avec les quartiers voisins, et améliore les connexions en mobilité douce. L'objectif : réduire la dépendance à la voiture et renforcer les usages partagés sans bouleverser les fondements.",
-                issues: ["Financement des infrastructures", "Massification des étudiants", "Étalement urbain et ZAN", "Mobilité douce"],
-                color: "#60A5FA"
+                issues: ["Financement des infrastructures", "Massification des étudiants", "Étalement urbain et ZAN", "Mobilité douce"], color: "#60A5FA"
             },
             s2: {
-                id: "S2",
-                title: "Le Hub : Université-Entreprise",
-                subtitle: "L'efficacité et l'innovation avant tout",
+                id: "S2", title: "Le Hub : Université-Entreprise", subtitle: "L'efficacité et l'innovation avant tout",
                 description: "L'université se transforme en plateforme économique et technologique. Laboratoires, incubateurs, start-ups et multinationales se mêlent. La logique du partenariat public-privé domine, et la formation s'aligne sur les besoins immédiats du marché. C'est la promesse de l'innovation, mais avec un risque de marchandisation du savoir.",
-                issues: ["Partenariat Public/Privé", "Marchandisation du savoir", "Coût de l'enseignement", "Innovation et Start-ups"],
-                color: "#F59E0B"
+                issues: ["Partenariat Public/Privé", "Marchandisation du savoir", "Coût de l'enseignement", "Innovation et Start-ups"], color: "#F59E0B"
             },
             s3: {
-                id: "S3",
-                title: "L'Université Sans Murs",
-                subtitle: "Le tout numérique",
+                id: "S3", title: "L'Université Sans Murs", subtitle: "Le tout numérique",
                 description: "Le numérique prend le dessus. Les cours sont entièrement en ligne, les échanges se font à distance, et les bâtiments physiques perdent leur fonction centrale. Cela pose la question majeure de la requalification des bâtiments libérés et du maintien d'une vie collective virtuelle.",
-                issues: ["Requalification des bâtiments vides", "Isolement social", "Transformation du métier d'enseignant", "Fracture numérique"],
-                color: "#A78BFA"
+                issues: ["Requalification des bâtiments vides", "Isolement social", "Transformation du métier d'enseignant", "Fracture numérique"], color: "#A78BFA"
             },
             s4: {
-                id: "S4",
-                title: "L'Université Dissoute",
-                subtitle: "La ville est le campus",
+                id: "S4", title: "L'Université Dissoute", subtitle: "La ville est le campus",
                 description: "L'université et la ville se confondent. Il n'existe plus de campus clairement identifiable : les espaces d'enseignement se dispersent dans le tissu urbain (cafés, bibliothèques municipales, tiers-lieux). La ville devient elle-même un campus diffus. Cela favorise l'inclusion mais dilue la visibilité institutionnelle.",
-                issues: ["Disparition du campus physique", "Mixité fonctionnelle extrême", "Gestion d'un réseau éparpillé", "Lien habitants-étudiants"],
-                color: "#10B981"
+                issues: ["Disparition du campus physique", "Mixité fonctionnelle extrême", "Gestion d'un réseau éparpillé", "Lien habitants-étudiants"], color: "#10B981"
             },
             s5: {
-                id: "S5",
-                title: "L'Université Augmentée par l'IA",
-                subtitle: "L'intelligence artificielle au cœur",
+                id: "S5", title: "L'Université Augmentée par l'IA", subtitle: "L'intelligence artificielle au cœur",
                 description: "L'IA transforme en profondeur les façons d'apprendre et de gérer les lieux. Assistants numériques personnalisés, contenus adaptatifs, dépassement des limites géographiques. Sur le plan urbain, les bâtiments deviennent des 'Data Centers' du savoir ou des lieux de rencontre optimisés par algorithme.",
-                issues: ["Éthique et Copyright", "Transformation radicale de l'emploi", "Dépendance technologique", "Obsolescence des méthodes classiques"],
-                color: "#EC4899"
+                issues: ["Éthique et Copyright", "Transformation radicale de l'emploi", "Dépendance technologique", "Obsolescence des méthodes classiques"], color: "#EC4899"
             },
             s6: {
-                id: "S6",
-                title: "La Ville dans la Ville",
-                subtitle: "Le Campus Urbain Autonome",
+                id: "S6", title: "La Ville dans la Ville", subtitle: "Le Campus Urbain Autonome",
                 description: "L'université devient une ville dans la ville, où tout est concentré : logements, services, commerces, santé, culture. C'est un espace autonome, hyper-efficace, un 'campus à l'américaine' poussé à l'extrême. Un lieu dense et centralisé qui peut tendre vers l'entre-soi.",
-                issues: ["Mixité fonctionnelle sur site unique", "Gouvernance du foncier (commerces privés sur campus)", "Autarcie", "Densification"],
-                color: "#EF4444"
+                issues: ["Mixité fonctionnelle sur site unique", "Gouvernance du foncier (commerces privés sur campus)", "Autarcie", "Densification"], color: "#EF4444"
             }
         };
 
-        // QUESTIONS COMPLÈTES
         const questions = [
             {
                 theme: "Spatial & Foncier",
                 text: "Face au manque de place et à l'objectif ZAN (Zéro Artificialisation Nette), quelle est votre stratégie pour les nouveaux bâtiments ?",
                 context: "Les campus sont saturés et l'étalement urbain n'est plus possible.",
+                didYouKnow: "Le campus Paul Valéry, labellisé 'Patrimoine du XXe siècle', était prévu pour 8 500 étudiants à sa construction. Il en accueille aujourd'hui plus de 22 000, créant une véritable saturation spatiale.",
                 options: [
                     { text: "On densifie au maximum sur le site actuel pour tout avoir sur place (logements, commerces, cours).", impact: "s6" },
                     { text: "On n'a plus besoin de construire : on bascule massivement les cours en ligne.", impact: "s3" },
@@ -491,6 +513,7 @@
                 theme: "Économique & Gouvernance",
                 text: "Le budget de l'État stagne. Comment financez-vous les nouveaux équipements de pointe ?",
                 context: "L'université doit trouver des ressources pour rester compétitive.",
+                didYouKnow: "Le budget de l'Atrium s'élève à 32 millions d'euros HT (pour 57 M€ TTC). Ce Learning Center de 15 000 m² a nécessité des financements croisés entre l'État, la Région et la Métropole.",
                 options: [
                     { text: "Partenariats massifs avec le privé : les entreprises installent leurs R&D sur le campus.", impact: "s2" },
                     { text: "On optimise les coûts de gestion grâce à l'IA et on réduit le personnel administratif.", impact: "s5" },
@@ -502,6 +525,7 @@
                 theme: "Lien Social",
                 text: "Les étudiants se plaignent d'isolement. Quelle est votre réponse architecturale ?",
                 context: "La vie étudiante ne se résume pas aux cours.",
+                didYouKnow: "Pour lutter contre l'isolement, l'Atrium a été conçu explicitement comme une 'place publique du savoir', ouverte aux habitants, et non plus comme une simple bibliothèque fermée.",
                 options: [
                     { text: "Créer un immense centre de vie (type Atrium) avec cinéma, santé et loisirs au cœur du campus.", impact: "s6" },
                     { text: "Créer un métavers universitaire pour qu'ils socialisent depuis chez eux.", impact: "s3" },
@@ -513,6 +537,7 @@
                 theme: "Technologie",
                 text: "L'Intelligence Artificielle bouleverse l'enseignement. Votre réaction ?",
                 context: "ChatGPT et consorts changent la donne pédagogique.",
+                didYouKnow: "Depuis 2020, l'usage des outils numériques a explosé. Le diagnostic montre cependant que le 'tout distanciel' affaiblit le lien social, un enjeu majeur pour 88% des étudiants interrogés.",
                 options: [
                     { text: "Chaque étudiant reçoit un tuteur IA personnalisé. Les profs deviennent des coachs.", impact: "s5" },
                     { text: "L'IA sert surtout à optimiser la recherche et les brevets industriels.", impact: "s2" },
@@ -524,6 +549,7 @@
                 theme: "Mobilité & Environnement",
                 text: "Comment les étudiants doivent-ils accéder au savoir ?",
                 context: "La mobilité est un enjeu clé du plan climat.",
+                didYouKnow: "Entre 2016 et 2023, l'usage de la voiture par le personnel est passé de 72% à 43%, tandis que le vélo a triplé (11% à 32%). L'arrivée de la Ligne 5 vise à réduire encore cette dépendance.",
                 options: [
                     { text: "Ils n'ont plus besoin de se déplacer, tout est accessible depuis leur chambre.", impact: "s3" },
                     { text: "Par une ligne de tramway et des pistes cyclables connectant le campus au reste de la ville.", impact: "s1" },
@@ -535,6 +561,7 @@
                 theme: "Innovation",
                 text: "Quelle est la vocation principale de votre université ?",
                 context: "Définir l'identité de l'institution pour 2050.",
+                didYouKnow: "Montpellier mise sur 'MedVallée' (Santé/Environnement). L'université n'est plus isolée, elle devient un moteur économique direct et structurant pour le territoire métropolitain.",
                 options: [
                     { text: "Être un moteur économique et produire des licornes (start-ups).", impact: "s2" },
                     { text: "Être un service public de proximité, fondu dans la population.", impact: "s4" },
@@ -546,6 +573,7 @@
                 theme: "Urbanisme",
                 text: "L'Atrium (Learning Center) doit évoluer. Que devient-il ?",
                 context: "Bâtiment emblématique de l'ouverture sur la ville.",
+                didYouKnow: "L'Atrium a été construit sur un ancien parking. Il symbolise le passage du 'tout voiture' des années 60 à un espace piéton et végétalisé, redonnant 15 000 m² aux usagers.",
                 options: [
                     { text: "Le centre névralgique d'une cité autonome, ouvert 24/24 avec tous les services.", impact: "s6" },
                     { text: "Un showroom technologique pour les entreprises partenaires.", impact: "s2" },
@@ -555,22 +583,24 @@
             }
         ];
 
-        // STATE
+        const timelineData = [
+            { year: 1220, title: "Fondation Faculté Médecine", desc: "La plus ancienne faculté de médecine en activité au monde, marquant l'identité 'ville de savoir'.", side: "left" },
+            { year: 1289, title: "Bulle Papale", desc: "Création officielle de l'Université de Montpellier (Médecine, Droit) par le Pape Nicolas IV.", side: "right" },
+            { year: 1593, title: "Jardin des Plantes", desc: "Création du plus ancien jardin botanique de France par Henri IV, pour la recherche médicale.", side: "left" },
+            { year: 1966, title: "Inauguration Campus", desc: "Le campus Paul Valéry est inauguré au nord de la ville. Un modèle 'américain' excentré et isolé.", side: "right" },
+            { year: 1971, title: "Université Paul Valéry", desc: "Naissance de l'Université Montpellier III (Lettres & Sciences Humaines) suite à la Loi Faure.", side: "left" },
+            { year: 2008, title: "Opération Campus", desc: "Lancement du plan national de rénovation. Montpellier est l'une des 6 villes lauréates.", side: "right" },
+            { year: 2011, title: "Label Patrimoine XXe", desc: "Reconnaissance de l'architecture singulière du campus (Egger, Jaulmes) comme patrimoine remarquable.", side: "left" },
+            { year: 2023, title: "Livraison de l'Atrium", desc: "Ouverture du Learning Center (15 000 m²), conçu comme une porte ouverte sur la ville.", side: "right" },
+            { year: 2025, title: "Tramway Ligne 5", desc: "Désenclavement majeur du campus nord avec une desserte directe. Couture urbaine 'Ville-Campus'.", side: "left" }
+        ];
+
+        // LOGIC SUITE
         let currentQuestionIndex = 0;
         let scores = { s1: 0, s2: 0, s3: 0, s4: 0, s5: 0, s6: 0 };
         let synth = window.speechSynthesis;
         let currentUtterance = null;
         let currentStoryText = "";
-
-        // DOM ELEMENTS
-        const introScreen = document.getElementById('intro-screen');
-        const questionScreen = document.getElementById('question-screen');
-        const resultScreen = document.getElementById('result-screen');
-        const worksScreen = document.getElementById('works-screen');
-        const modal = document.getElementById('scenario-modal');
-        const pdfModal = document.getElementById('pdf-modal');
-
-        function startGame() { introScreen.classList.add('hidden'); questionScreen.classList.remove('hidden'); loadQuestion(); }
 
         function loadQuestion() {
             const q = questions[currentQuestionIndex];
@@ -591,6 +621,20 @@
 
         function handleAnswer(impact) {
             scores[impact]++;
+            const fact = questions[currentQuestionIndex].didYouKnow;
+            if(fact) {
+                factText.innerText = fact;
+                factOverlay.classList.remove('hidden');
+                closeFactBtn.onclick = function() {
+                    factOverlay.classList.add('hidden');
+                    nextStep();
+                };
+            } else {
+                nextStep();
+            }
+        }
+
+        function nextStep() {
             currentQuestionIndex++;
             if (currentQuestionIndex < questions.length) loadQuestion();
             else showResult();
@@ -598,9 +642,24 @@
 
         function showResult() {
             questionScreen.classList.add('hidden'); resultScreen.classList.remove('hidden');
-            let winner = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
-            window.currentWinner = winner; // EXPOSE POUR FIREBASE
+            
+            if(currentPersona) {
+                const p = personas[currentPersona];
+                const feedbackDiv = document.getElementById('persona-feedback');
+                const feedbackTitle = document.getElementById('persona-feedback-title');
+                const feedbackText = document.getElementById('persona-feedback-text');
+                
+                let titlePrefix = "Le mot de ";
+                if (currentPersona === 'politique') titlePrefix = "Le mot de l'Élu";
+                else if (currentPersona === 'expert') titlePrefix = "L'œil de l'Expert";
+                else if (currentPersona === 'etudiante') titlePrefix = "L'avis de l'Étudiante";
+                else titlePrefix = "L'avis de l'Étudiant";
 
+                feedbackTitle.innerText = `${titlePrefix} (${p.name})`;
+                feedbackText.innerText = `"${p.quote}"`;
+            }
+
+            let winner = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
             const s = scenarios[winner];
             document.getElementById('scenario-title').innerText = s.title;
             document.getElementById('scenario-title').style.color = s.color;
@@ -609,11 +668,6 @@
             const ul = document.getElementById('scenario-issues'); ul.innerHTML = '';
             s.issues.forEach(i => { const li = document.createElement('li'); li.innerText = i; ul.appendChild(li); });
             drawChart();
-            
-            // APPEL FIREBASE
-            if(window.sendVoteToCloud) window.sendVoteToCloud(winner);
-            if(window.updateSocialStatsUI) window.updateSocialStatsUI(winner); // Affichage immédiat (avant retour serveur)
-
             currentStoryText = scenarioStories[winner];
             document.getElementById('story-text').innerText = currentStoryText;
             document.getElementById('story-display').classList.add('hidden');
@@ -634,19 +688,11 @@
             });
         }
 
-        // --- WORKS SCREEN LOGIC ---
-        function showWorks() {
-            resultScreen.classList.add('hidden');
-            worksScreen.classList.remove('hidden');
-            stopAudio();
-        }
-
-        function closeWorks() {
-            worksScreen.classList.add('hidden');
-            resultScreen.classList.remove('hidden');
-        }
-
-        // --- MODAL LOGIC ---
+        // NAVIGATION & MODALS
+        function showWorks() { resultScreen.classList.add('hidden'); worksScreen.classList.remove('hidden'); stopAudio(); }
+        function closeWorks() { worksScreen.classList.add('hidden'); resultScreen.classList.remove('hidden'); }
+        
+        const modal = document.getElementById('scenario-modal');
         function openScenarioModal(key) {
             const s = scenarios[key];
             document.getElementById('modal-id').innerText = s.id; document.getElementById('modal-id').style.color = s.color;
@@ -657,66 +703,61 @@
         function closeModal() { modal.classList.add('hidden'); }
         modal.addEventListener('click', e => { if(e.target === modal) closeModal(); });
 
-        // --- MULTI-PAGE PDF LOGIC (NEW) ---
+        // PDF LOGIC
+        const pdfModal = document.getElementById('pdf-modal');
         const commsPdfs = [
             { file: "PAGE DE GARDE.pdf", title: "Page de Garde" },
             { file: "DE L’HISTOIRE A LA PLANIFICATION  LE CAS MONTPELLIERAIN.pdf", title: "Histoire & Planification" },
             { file: "LES DIFFÉRENTS MODÈLES DE CONSTRCUTION DES UNIVERSITÉS.pdf", title: "Modèles de Construction" },
             { file: "PLAN DE MASSE-1.pdf", title: "Plan de Masse" }
         ];
-
-        let currentPdfIndex = 0;
-        let currentPdfList = [];
-
-        function openCommsGallery() {
-            currentPdfList = commsPdfs;
-            currentPdfIndex = 0;
-            updatePdfViewer();
-            pdfModal.classList.remove('hidden');
-        }
-
+        let currentPdfIndex = 0; let currentPdfList = [];
+        
+        function openCommsGallery() { currentPdfList = commsPdfs; currentPdfIndex = 0; updatePdfViewer(); pdfModal.classList.remove('hidden'); }
         function updatePdfViewer() {
             const pdfObj = currentPdfList[currentPdfIndex];
             document.getElementById('pdf-title').innerHTML = `<i class="fas fa-book-open mr-2"></i> ${pdfObj.title}`;
             document.getElementById('page-indicator').innerText = `Page ${currentPdfIndex + 1} / ${currentPdfList.length}`;
             document.getElementById('pdf-frame').src = pdfObj.file;
-            document.getElementById('pdf-download-link').href = pdfObj.file;
-            
-            const btnPrev = document.getElementById('btn-prev');
-            const btnNext = document.getElementById('btn-next');
-            
-            btnPrev.disabled = (currentPdfIndex === 0);
-            btnNext.disabled = (currentPdfIndex === currentPdfList.length - 1);
-            
-            btnPrev.classList.toggle('opacity-50', currentPdfIndex === 0);
-            btnPrev.classList.toggle('cursor-not-allowed', currentPdfIndex === 0);
-            
-            btnNext.classList.toggle('opacity-50', currentPdfIndex === currentPdfList.length - 1);
-            btnNext.classList.toggle('cursor-not-allowed', currentPdfIndex === currentPdfList.length - 1);
+            document.getElementById('btn-prev').disabled = (currentPdfIndex === 0);
+            document.getElementById('btn-next').disabled = (currentPdfIndex === currentPdfList.length - 1);
+            document.getElementById('btn-prev').classList.toggle('opacity-50', currentPdfIndex === 0);
+            document.getElementById('btn-next').classList.toggle('opacity-50', currentPdfIndex === currentPdfList.length - 1);
         }
-
-        function nextPdf() {
-            if (currentPdfIndex < currentPdfList.length - 1) {
-                currentPdfIndex++;
-                updatePdfViewer();
-            }
-        }
-
-        function prevPdf() {
-            if (currentPdfIndex > 0) {
-                currentPdfIndex--;
-                updatePdfViewer();
-            }
-        }
-
-        function closePdfModal() {
-            pdfModal.classList.add('hidden');
-            document.getElementById('pdf-frame').src = ""; // Stop loading
-        }
-        
+        function nextPdf() { if (currentPdfIndex < currentPdfList.length - 1) { currentPdfIndex++; updatePdfViewer(); } }
+        function prevPdf() { if (currentPdfIndex > 0) { currentPdfIndex--; updatePdfViewer(); } }
+        function closePdfModal() { pdfModal.classList.add('hidden'); document.getElementById('pdf-frame').src = ""; }
         pdfModal.addEventListener('click', e => { if(e.target === pdfModal) closePdfModal(); });
 
-        // --- AUDIO LOGIC ---
+        // TIMELINE LOGIC
+        const timelineModal = document.getElementById('timeline-modal');
+        function openTimeline() {
+            const container = document.getElementById('timeline-content');
+            container.innerHTML = '';
+            timelineData.forEach((item, index) => {
+                const isLeft = item.side === 'left';
+                const delay = index * 100;
+                const cardHtml = `
+                    <div class="relative w-full h-32 md:h-24 mb-8 fade-in" style="animation-delay: ${delay}ms">
+                        <div class="timeline-point" style="top: 15px;"></div>
+                        <div class="absolute top-0 timeline-card ${item.side}">
+                            <div class="bg-white p-4 rounded-lg shadow-md border-l-4 ${isLeft ? 'border-orange-500' : 'border-indigo-500'} hover:shadow-lg transition-shadow">
+                                <span class="text-2xl font-bold text-gray-200 absolute top-2 ${isLeft ? 'right-4' : 'left-4'} select-none z-0">${item.year}</span>
+                                <div class="relative z-10">
+                                    <h4 class="font-bold text-indigo-900 text-lg">${item.title}</h4>
+                                    <p class="text-sm text-gray-600 leading-snug">${item.desc}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+                container.innerHTML += cardHtml;
+            });
+            timelineModal.classList.remove('hidden');
+        }
+        function closeTimeline() { timelineModal.classList.add('hidden'); }
+        timelineModal.addEventListener('click', e => { if(e.target === timelineModal) closeTimeline(); });
+
+        // AUDIO
         function revealStory() { document.getElementById('reveal-btn').classList.add('hidden'); document.getElementById('story-display').classList.remove('hidden'); stopAudioUI(); }
         function playAudio() {
             document.getElementById('play-audio-btn').classList.add('hidden'); document.getElementById('stop-audio-btn').classList.remove('hidden'); document.getElementById('speaking-indicator').classList.remove('hidden');
@@ -731,7 +772,17 @@
 
         function restartGame() {
             stopAudio(); currentQuestionIndex = 0; scores = { s1: 0, s2: 0, s3: 0, s4: 0, s5: 0, s6: 0 };
-            document.getElementById('story-display').classList.add('hidden'); resultScreen.classList.add('hidden'); introScreen.classList.remove('hidden');
+            document.getElementById('story-display').classList.add('hidden'); resultScreen.classList.add('hidden'); 
+            introScreen.classList.remove('hidden'); // Retour à l'intro, pas au choix perso
+            
+            // Reset Persona UI
+            currentPersona = null;
+            document.querySelectorAll('.persona-card').forEach(el => el.classList.remove('selected-persona', 'ring-2', 'ring-indigo-500'));
+            const btn = document.getElementById('start-btn');
+            btn.disabled = true;
+            btn.classList.add('bg-gray-300', 'cursor-not-allowed');
+            btn.classList.remove('bg-orange-500', 'hover:bg-orange-600', 'cursor-pointer');
+            btn.innerText = "Choisir un personnage";
         }
     </script>
 </body>
