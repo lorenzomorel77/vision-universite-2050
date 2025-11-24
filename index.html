@@ -52,26 +52,71 @@
         </div>
     </div>
 
+    <!-- MODAL PDF VIEWER (MULTI-PAGE) -->
+    <div id="pdf-modal" class="fixed inset-0 bg-black bg-opacity-80 hidden z-[60] flex items-center justify-center p-2 md:p-8 fade-in">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-6xl h-full flex flex-col overflow-hidden relative">
+            <!-- Header PDF Navigation -->
+            <div class="bg-gray-900 text-white p-4 flex flex-col md:flex-row justify-between items-center shadow-md z-10 gap-4">
+                <div class="flex items-center gap-4 overflow-hidden w-full md:w-auto">
+                    <h3 id="pdf-title" class="text-lg font-bold truncate"><i class="fas fa-book-open mr-2"></i> Planches</h3>
+                    <span id="page-indicator" class="text-sm bg-gray-700 px-3 py-1 rounded-full whitespace-nowrap">Page 1 / 4</span>
+                </div>
+                
+                <div class="flex items-center gap-3">
+                    <!-- Nav Buttons -->
+                    <button onclick="prevPdf()" id="btn-prev" class="bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed text-white px-4 py-2 rounded transition-colors shadow-sm flex items-center gap-2">
+                        <i class="fas fa-chevron-left"></i> Précédent
+                    </button>
+                    <button onclick="nextPdf()" id="btn-next" class="bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed text-white px-4 py-2 rounded transition-colors shadow-sm flex items-center gap-2">
+                        Suivant <i class="fas fa-chevron-right"></i>
+                    </button>
+                    
+                    <div class="w-px h-8 bg-gray-700 mx-2 hidden md:block"></div>
+                    
+                    <button onclick="closePdfModal()" class="text-white hover:text-red-400 transition-colors text-xl px-2" title="Fermer">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="flex-grow bg-gray-200 relative">
+                <iframe id="pdf-frame" src="" class="w-full h-full border-0" title="Visualiseur PDF"></iframe>
+                <!-- Fallback si iframe ne charge pas -->
+                <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
+                    <div class="text-center">
+                        <i class="fas fa-spinner fa-spin text-4xl text-gray-400 mb-4"></i>
+                        <p class="text-gray-500">Chargement du document...</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-gray-100 p-3 text-center border-t flex justify-center gap-4">
+                <a id="pdf-download-link" href="" target="_blank" class="text-indigo-600 hover:text-indigo-800 text-sm font-bold flex items-center gap-2 transition-colors">
+                    <i class="fas fa-external-link-alt"></i> Ouvrir le fichier actuel dans un nouvel onglet
+                </a>
+            </div>
+        </div>
+    </div>
+
     <!-- HEADER CENTRÉ (Fond Blanc, Texte Bleu) -->
     <header class="bg-white text-indigo-900 shadow-md z-10">
-        <!-- Utilisation de w-full au lieu de container pour aller jusqu'au bord -->
         <div class="w-full px-4 py-3 flex justify-between items-center relative">
             
-            <!-- Partie Gauche : Icone U (Reste à gauche) -->
+            <!-- Partie Gauche : Icone U -->
             <div class="flex items-center justify-start w-1/4 md:w-1/3">
                 <div class="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center font-bold text-white text-xl shadow-sm">U</div>
             </div>
 
-            <!-- Partie Centrale : Titre et Sous-titre (Centrés) -->
+            <!-- Partie Centrale : Titre et Sous-titre -->
             <div class="flex flex-col items-center justify-center text-center w-1/2 md:w-1/3 md:absolute md:left-1/2 md:transform md:-translate-x-1/2">
                 <h1 class="text-sm md:text-2xl font-extrabold tracking-wider uppercase leading-tight text-indigo-900">L'UNIVERSITÉ DANS LA VILLE</h1>
                 <span class="text-[10px] md:text-xs font-semibold tracking-widest opacity-70 uppercase hidden sm:block text-indigo-800">Université & Ville de Demain</span>
             </div>
 
-            <!-- Partie Droite : Logos (Restent à droite) -->
+            <!-- Partie Droite : Logos -->
             <div class="flex items-center justify-end gap-3 w-1/4 md:w-1/3">
                 <img src="PROJET_NOIR.png" alt="Logo Master Projet" class="h-8 md:h-12 w-auto object-contain">
-                <div class="h-6 md:h-8 w-px bg-gray-300 hidden sm:block"></div> <!-- Séparateur discret -->
+                <div class="h-6 md:h-8 w-px bg-gray-300 hidden sm:block"></div>
                 <img src="UMPV_NOIR.png" alt="Logo Université Paul Valéry" class="h-8 md:h-12 w-auto object-contain">
             </div>
 
@@ -172,7 +217,7 @@
                             <div id="story-display" class="hidden mt-4 text-sm text-gray-700 bg-white p-4 rounded border border-gray-200 shadow-inner">
                                 <p id="story-text" class="leading-relaxed italic text-gray-800 font-serif mb-4"></p>
                                 
-                                <!-- Audio Controls (Inside Story Display) -->
+                                <!-- Audio Controls -->
                                 <div class="border-t pt-3 flex flex-col items-center justify-center">
                                     <div id="speaking-indicator" class="hidden mb-2">
                                         <div class="speaking-animation">
@@ -192,11 +237,87 @@
                             </div>
                         </div>
 
-                        <div class="mt-4 text-center">
-                            <button onclick="restartGame()" class="text-indigo-600 hover:text-indigo-800 text-sm font-semibold underline">Recommencer le diagnostic</button>
+                        <div class="mt-6 flex flex-col gap-3 text-center">
+                            <button onclick="restartGame()" class="text-gray-600 hover:text-gray-800 text-sm font-semibold underline">Recommencer le diagnostic</button>
+                            
+                            <!-- BOUTON DECOUVERTE TRAVAUX -->
+                            <button onclick="showWorks()" class="bg-white border-2 border-indigo-600 text-indigo-600 hover:bg-indigo-600 hover:text-white font-bold py-3 px-6 rounded-full text-sm transition duration-300 shadow-md flex items-center justify-center gap-2">
+                                <i class="fas fa-project-diagram"></i> Découvrir nos travaux sur le sujet
+                            </button>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- WORKS SCREEN (NOUVELLE PAGE) -->
+        <div id="works-screen" class="hidden max-w-6xl w-full fade-in">
+            <div class="text-center mb-10">
+                <h2 class="text-4xl font-extrabold text-indigo-900 mb-2 title-font">L'EXPOSITION VIRTUELLE</h2>
+                <div class="h-1 w-24 bg-orange-500 mx-auto mb-4"></div>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    Retrouvez ici les planches de recherche et de communication réalisées par l'atelier du Master Projet.
+                    Une exploration graphique des enjeux de l'université dans la cité.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 px-4">
+                
+                <!-- Carte Planche 1 (Multi-PDF) -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border border-gray-100 group">
+                    <div class="h-48 bg-indigo-900 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+                        <i class="fas fa-bullhorn text-6xl text-orange-400 group-hover:scale-110 transition-transform duration-500"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Communication & Scénographie</h3>
+                        <p class="text-sm text-gray-500 mb-4">
+                            Présentation générale de la démarche (4 planches) : Page de Garde, Histoire, Modèles de Construction et Plan de Masse.
+                        </p>
+                        <button onclick="openCommsGallery()" class="w-full bg-gray-100 hover:bg-indigo-100 text-indigo-700 font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors">
+                            <i class="fas fa-images"></i> Voir les 4 Planches
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Carte Planche 2 (Placeholder) -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border border-gray-100 opacity-75">
+                    <div class="h-48 bg-gray-200 flex items-center justify-center">
+                        <i class="fas fa-search-location text-5xl text-gray-400"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-600 mb-2">Diagnostic Territorial</h3>
+                        <p class="text-sm text-gray-400 mb-4">
+                            Analyse spatiale, foncière et sociale du quartier Hôpitaux-Facultés. (Bientôt disponible)
+                        </p>
+                        <button disabled class="w-full bg-gray-50 text-gray-300 font-bold py-3 px-4 rounded-lg cursor-not-allowed flex items-center justify-center gap-2">
+                            <i class="fas fa-lock"></i> Bientôt disponible
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Carte Planche 3 (Placeholder) -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border border-gray-100 opacity-75">
+                    <div class="h-48 bg-gray-200 flex items-center justify-center">
+                        <i class="fas fa-drafting-compass text-5xl text-gray-400"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-600 mb-2">Projets Urbains</h3>
+                        <p class="text-sm text-gray-400 mb-4">
+                            Propositions d'aménagement et scénarios prospectifs pour 2050. (Bientôt disponible)
+                        </p>
+                        <button disabled class="w-full bg-gray-50 text-gray-300 font-bold py-3 px-4 rounded-lg cursor-not-allowed flex items-center justify-center gap-2">
+                            <i class="fas fa-lock"></i> Bientôt disponible
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="mt-12 text-center">
+                <button onclick="closeWorks()" class="text-indigo-600 hover:text-orange-500 font-semibold flex items-center justify-center gap-2 mx-auto transition-colors">
+                    <i class="fas fa-arrow-left"></i> Retour aux résultats
+                </button>
             </div>
         </div>
 
@@ -209,7 +330,7 @@
     </footer>
 
     <script>
-        // RÉCITS PRÉ-DÉFINIS (Pour éviter les bugs d'IA)
+        // RÉCITS COMPLETS
         const scenarioStories = {
             s1: "Ce matin, le tramway m'a déposé au pied des nouveaux bâtiments rénovés. L'université n'a pas changé de visage du tout au tout, mais elle respire mieux. On sent une transition douce, rassurante. Ici, pas de révolution technologique brutale, mais une continuité apaisée où l'on prend le temps de vivre et d'étudier ensemble, solidement ancrés dans notre quartier.",
             s2: "Badge scanné, accès autorisé. En entrant dans le Hub, je croise autant de chercheurs que d'entrepreneurs. L'atmosphère est électrique, tournée vers la performance. Ici, chaque idée doit trouver son marché. C'est stimulant d'être au cœur de l'innovation, même si parfois, j'ai l'impression que la rentabilité compte plus que la connaissance pure.",
@@ -219,7 +340,7 @@
             s6: "Cela fait une semaine que je n'ai pas quitté l'enceinte du campus. Et pourquoi sortir ? J'ai mon studio, ma salle de sport, mon cinéma et mes cours ici. C'est une ville parfaite dans la ville, ultra-sécurisée et pratique. On vit dans un cocon privilégié, efficace, peut-être un peu trop coupé des réalités extérieures."
         };
 
-        // DATA FROM PDF (SCENARIOS)
+        // SCÉNARIOS COMPLETS
         const scenarios = {
             s1: {
                 id: "S1",
@@ -249,7 +370,7 @@
                 id: "S4",
                 title: "L'Université Dissoute",
                 subtitle: "La ville est le campus",
-                description: "L'université et la ville se confondent. Il'existe plus de campus clairement identifiable : les espaces d'enseignement se dispersent dans le tissu urbain (cafés, bibliothèques municipales, tiers-lieux). La ville devient elle-même un campus diffus. Cela favorise l'inclusion mais dilue la visibilité institutionnelle.",
+                description: "L'université et la ville se confondent. Il n'existe plus de campus clairement identifiable : les espaces d'enseignement se dispersent dans le tissu urbain (cafés, bibliothèques municipales, tiers-lieux). La ville devient elle-même un campus diffus. Cela favorise l'inclusion mais dilue la visibilité institutionnelle.",
                 issues: ["Disparition du campus physique", "Mixité fonctionnelle extrême", "Gestion d'un réseau éparpillé", "Lien habitants-étudiants"],
                 color: "#10B981"
             },
@@ -271,6 +392,7 @@
             }
         };
 
+        // QUESTIONS COMPLÈTES
         const questions = [
             {
                 theme: "Spatial & Foncier",
@@ -356,226 +478,179 @@
         let scores = { s1: 0, s2: 0, s3: 0, s4: 0, s5: 0, s6: 0 };
         let synth = window.speechSynthesis;
         let currentUtterance = null;
-        let currentStoryText = ""; // To store the text for audio reading
+        let currentStoryText = "";
 
         // DOM ELEMENTS
         const introScreen = document.getElementById('intro-screen');
         const questionScreen = document.getElementById('question-screen');
         const resultScreen = document.getElementById('result-screen');
-        const progressBar = document.getElementById('progress-bar');
-        
-        // MODAL ELEMENTS
+        const worksScreen = document.getElementById('works-screen');
         const modal = document.getElementById('scenario-modal');
-        const modalTitle = document.getElementById('modal-title');
-        const modalSubtitle = document.getElementById('modal-subtitle');
-        const modalDesc = document.getElementById('modal-desc');
-        const modalId = document.getElementById('modal-id');
+        const pdfModal = document.getElementById('pdf-modal');
 
-        function startGame() {
-            introScreen.classList.add('hidden');
-            questionScreen.classList.remove('hidden');
-            loadQuestion();
-        }
+        function startGame() { introScreen.classList.add('hidden'); questionScreen.classList.remove('hidden'); loadQuestion(); }
 
         function loadQuestion() {
             const q = questions[currentQuestionIndex];
-            
             document.getElementById('current-question-num').innerText = currentQuestionIndex + 1;
             document.getElementById('enjeu-badge').innerText = q.theme;
             document.getElementById('question-text').innerText = q.text;
             document.getElementById('question-context').innerText = q.context;
-            
-            const progress = ((currentQuestionIndex) / questions.length) * 100;
-            progressBar.style.width = `${progress}%`;
-
-            const container = document.getElementById('answers-container');
-            container.innerHTML = '';
-            
-            const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
-
-            shuffledOptions.forEach(opt => {
+            document.getElementById('progress-bar').style.width = `${((currentQuestionIndex)/questions.length)*100}%`;
+            const container = document.getElementById('answers-container'); container.innerHTML = '';
+            [...q.options].sort(() => Math.random() - 0.5).forEach(opt => {
                 const btn = document.createElement('button');
                 btn.className = "w-full text-left p-4 rounded-xl border-2 border-gray-200 hover:border-indigo-500 hover:bg-indigo-50 transition-all duration-200 flex items-center group card-hover";
                 btn.onclick = () => handleAnswer(opt.impact);
-                
-                btn.innerHTML = `
-                    <div class="w-6 h-6 rounded-full border-2 border-gray-300 group-hover:border-indigo-500 mr-4 flex-shrink-0"></div>
-                    <span class="text-gray-700 font-medium group-hover:text-indigo-900">${opt.text}</span>
-                `;
+                btn.innerHTML = `<div class="w-6 h-6 rounded-full border-2 border-gray-300 group-hover:border-indigo-500 mr-4 flex-shrink-0"></div><span class="text-gray-700 font-medium group-hover:text-indigo-900">${opt.text}</span>`;
                 container.appendChild(btn);
             });
         }
 
         function handleAnswer(impact) {
-            scores[impact] += 1;
+            scores[impact]++;
             currentQuestionIndex++;
-            if (currentQuestionIndex < questions.length) {
-                const container = document.getElementById('question-screen');
-                container.classList.remove('fade-in');
-                void container.offsetWidth; 
-                container.classList.add('fade-in');
-                loadQuestion();
-            } else {
-                showResult();
-            }
+            if (currentQuestionIndex < questions.length) loadQuestion();
+            else showResult();
         }
 
         function showResult() {
-            questionScreen.classList.add('hidden');
-            resultScreen.classList.remove('hidden');
-
+            questionScreen.classList.add('hidden'); resultScreen.classList.remove('hidden');
             let winner = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
-            const scenario = scenarios[winner];
-
-            document.getElementById('scenario-title').innerText = scenario.title;
-            document.getElementById('scenario-title').style.color = scenario.color;
-            document.getElementById('scenario-subtitle').innerText = scenario.subtitle;
-            document.getElementById('scenario-desc').innerText = scenario.description;
-            
-            const issuesList = document.getElementById('scenario-issues');
-            issuesList.innerHTML = '';
-            scenario.issues.forEach(issue => {
-                const li = document.createElement('li');
-                li.innerText = issue;
-                issuesList.appendChild(li);
-            });
-
+            const s = scenarios[winner];
+            document.getElementById('scenario-title').innerText = s.title;
+            document.getElementById('scenario-title').style.color = s.color;
+            document.getElementById('scenario-subtitle').innerText = s.subtitle;
+            document.getElementById('scenario-desc').innerText = s.description;
+            const ul = document.getElementById('scenario-issues'); ul.innerHTML = '';
+            s.issues.forEach(i => { const li = document.createElement('li'); li.innerText = i; ul.appendChild(li); });
             drawChart();
-            stopAudio(); // Reset audio if any
-            
-            // Prepare the story text but hide it
             currentStoryText = scenarioStories[winner];
             document.getElementById('story-text').innerText = currentStoryText;
             document.getElementById('story-display').classList.add('hidden');
             document.getElementById('reveal-btn').classList.remove('hidden');
+            stopAudio();
         }
 
         function drawChart() {
             const ctx = document.getElementById('radarChart').getContext('2d');
             const labels = Object.keys(scenarios).map(k => scenarios[k].id);
-            const dataPoints = Object.keys(scores).map(k => scores[k]);
-            const backgroundColors = Object.keys(scenarios).map(k => scenarios[k].color + '80');
-            const borderColors = Object.keys(scenarios).map(k => scenarios[k].color);
-
-            let chartStatus = Chart.getChart("radarChart");
-            if (chartStatus != undefined) {
-              chartStatus.destroy();
-            }
-
-            new Chart(ctx, {
+            const data = Object.keys(scores).map(k => scores[k]);
+            const colors = Object.keys(scenarios).map(k => scenarios[k].color);
+            if(window.myChart) window.myChart.destroy();
+            window.myChart = new Chart(ctx, {
                 type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Points par Scénario',
-                        data: dataPoints,
-                        backgroundColor: backgroundColors,
-                        borderColor: borderColors,
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: questions.length
-                        }
-                    },
-                    plugins: { legend: { display: false } },
-                    onClick: (evt, activeElements) => {
-                        if (activeElements.length > 0) {
-                            const index = activeElements[0].index;
-                            const scenarioKey = Object.keys(scenarios)[index];
-                            openScenarioModal(scenarioKey);
-                        }
-                    },
-                    onHover: (event, chartElement) => {
-                        event.native.target.style.cursor = chartElement.length ? 'pointer' : 'default';
-                    }
-                }
+                data: { labels: labels, datasets: [{ label: 'Points', data: data, backgroundColor: colors.map(c=>c+'80'), borderColor: colors, borderWidth: 1 }] },
+                options: { scales: { y: { beginAtZero: true, max: 7 } }, plugins: { legend: { display: false } }, onClick: (e, el) => { if(el.length) openScenarioModal(Object.keys(scenarios)[el[0].index]); }, onHover: (e, el) => e.native.target.style.cursor = el.length ? 'pointer' : 'default' }
             });
         }
-        
-        // MODAL FUNCTIONS
+
+        // --- WORKS SCREEN LOGIC ---
+        function showWorks() {
+            resultScreen.classList.add('hidden');
+            worksScreen.classList.remove('hidden');
+            stopAudio();
+        }
+
+        function closeWorks() {
+            worksScreen.classList.add('hidden');
+            resultScreen.classList.remove('hidden');
+        }
+
+        // --- MODAL LOGIC ---
         function openScenarioModal(key) {
             const s = scenarios[key];
-            modalId.innerText = s.id;
-            modalId.style.color = s.color;
-            modalTitle.innerText = s.title;
-            modalSubtitle.innerText = s.subtitle;
-            modalDesc.innerText = s.description;
+            document.getElementById('modal-id').innerText = s.id; document.getElementById('modal-id').style.color = s.color;
+            document.getElementById('modal-title').innerText = s.title; document.getElementById('modal-subtitle').innerText = s.subtitle;
+            document.getElementById('modal-desc').innerText = s.description;
             modal.classList.remove('hidden');
         }
-        
-        function closeModal() {
-            modal.classList.add('hidden');
+        function closeModal() { modal.classList.add('hidden'); }
+        modal.addEventListener('click', e => { if(e.target === modal) closeModal(); });
+
+        // --- MULTI-PAGE PDF LOGIC (NEW) ---
+        // Liste des fichiers pour simuler un PDF multi-pages
+        const commsPdfs = [
+            { file: "PAGE DE GARDE.pdf", title: "Page de Garde" },
+            { file: "DE L’HISTOIRE A LA PLANIFICATION  LE CAS MONTPELLIERAIN.pdf", title: "Histoire & Planification" },
+            { file: "LES DIFFÉRENTS MODÈLES DE CONSTRCUTION DES UNIVERSITÉS.pdf", title: "Modèles de Construction" },
+            { file: "PLAN DE MASSE-1.pdf", title: "Plan de Masse" }
+        ];
+
+        let currentPdfIndex = 0;
+        let currentPdfList = [];
+
+        function openCommsGallery() {
+            currentPdfList = commsPdfs;
+            currentPdfIndex = 0;
+            updatePdfViewer();
+            pdfModal.classList.remove('hidden');
         }
-        
-        modal.addEventListener('click', function(e) {
-            if (e.target === modal) {
-                closeModal();
+
+        function updatePdfViewer() {
+            const pdfObj = currentPdfList[currentPdfIndex];
+            
+            // Mise à jour Titre & Indicateur de page
+            document.getElementById('pdf-title').innerHTML = `<i class="fas fa-book-open mr-2"></i> ${pdfObj.title}`;
+            document.getElementById('page-indicator').innerText = `Page ${currentPdfIndex + 1} / ${currentPdfList.length}`;
+            
+            // Chargement du fichier PDF dans l'iframe
+            document.getElementById('pdf-frame').src = pdfObj.file;
+            document.getElementById('pdf-download-link').href = pdfObj.file;
+
+            // Gestion de l'état des boutons (désactivés si début/fin)
+            const btnPrev = document.getElementById('btn-prev');
+            const btnNext = document.getElementById('btn-next');
+            
+            btnPrev.disabled = (currentPdfIndex === 0);
+            btnNext.disabled = (currentPdfIndex === currentPdfList.length - 1);
+            
+            // Style visuel pour boutons désactivés
+            btnPrev.classList.toggle('opacity-50', currentPdfIndex === 0);
+            btnPrev.classList.toggle('cursor-not-allowed', currentPdfIndex === 0);
+            
+            btnNext.classList.toggle('opacity-50', currentPdfIndex === currentPdfList.length - 1);
+            btnNext.classList.toggle('cursor-not-allowed', currentPdfIndex === currentPdfList.length - 1);
+        }
+
+        function nextPdf() {
+            if (currentPdfIndex < currentPdfList.length - 1) {
+                currentPdfIndex++;
+                updatePdfViewer();
             }
-        });
-
-        // STORY REVEAL FUNCTION
-        function revealStory() {
-            document.getElementById('reveal-btn').classList.add('hidden');
-            document.getElementById('story-display').classList.remove('hidden');
-            // Ensure audio is stopped when revealing
-            stopAudioUI();
         }
 
-        // AUDIO FUNCTIONS (Offline Web Speech API)
+        function prevPdf() {
+            if (currentPdfIndex > 0) {
+                currentPdfIndex--;
+                updatePdfViewer();
+            }
+        }
+
+        function closePdfModal() {
+            pdfModal.classList.add('hidden');
+            document.getElementById('pdf-frame').src = ""; // Stop loading
+        }
+        
+        // Fermer si clic en dehors
+        pdfModal.addEventListener('click', e => { if(e.target === pdfModal) closePdfModal(); });
+
+        // --- AUDIO LOGIC ---
+        function revealStory() { document.getElementById('reveal-btn').classList.add('hidden'); document.getElementById('story-display').classList.remove('hidden'); stopAudioUI(); }
         function playAudio() {
-            // Update UI
-            document.getElementById('play-audio-btn').classList.add('hidden');
-            document.getElementById('stop-audio-btn').classList.remove('hidden');
-            document.getElementById('speaking-indicator').classList.remove('hidden');
-
-            // Speech Synthesis setup
-            if (synth.speaking) {
-                synth.cancel();
-            }
-
+            document.getElementById('play-audio-btn').classList.add('hidden'); document.getElementById('stop-audio-btn').classList.remove('hidden'); document.getElementById('speaking-indicator').classList.remove('hidden');
+            if(synth.speaking) synth.cancel();
             currentUtterance = new SpeechSynthesisUtterance(currentStoryText);
-            currentUtterance.lang = 'fr-FR';
-            currentUtterance.rate = 0.9; // Posé
-            currentUtterance.pitch = 0.9; // Grave
-
-            // Voice selection logic
-            const voices = synth.getVoices();
-            const frVoice = voices.find(v => v.lang.includes('fr') && v.name.includes('Google')) || voices.find(v => v.lang.includes('fr'));
-            if (frVoice) {
-                currentUtterance.voice = frVoice;
-            }
-
-            currentUtterance.onend = function(event) {
-                stopAudioUI();
-            };
-
+            currentUtterance.lang = 'fr-FR'; currentUtterance.rate = 0.9; currentUtterance.pitch = 0.9;
+            currentUtterance.onend = stopAudioUI;
             synth.speak(currentUtterance);
         }
-
-        function stopAudio() {
-            if (synth.speaking) {
-                synth.cancel();
-            }
-            stopAudioUI();
-        }
-
-        function stopAudioUI() {
-            document.getElementById('play-audio-btn').classList.remove('hidden');
-            document.getElementById('stop-audio-btn').classList.add('hidden');
-            document.getElementById('speaking-indicator').classList.add('hidden');
-        }
+        function stopAudio() { if(synth.speaking) synth.cancel(); stopAudioUI(); }
+        function stopAudioUI() { document.getElementById('play-audio-btn').classList.remove('hidden'); document.getElementById('stop-audio-btn').classList.add('hidden'); document.getElementById('speaking-indicator').classList.add('hidden'); }
 
         function restartGame() {
-            stopAudio();
-            currentQuestionIndex = 0;
-            scores = { s1: 0, s2: 0, s3: 0, s4: 0, s5: 0, s6: 0 };
-            document.getElementById('story-display').classList.add('hidden');
-            resultScreen.classList.add('hidden');
-            introScreen.classList.remove('hidden');
+            stopAudio(); currentQuestionIndex = 0; scores = { s1: 0, s2: 0, s3: 0, s4: 0, s5: 0, s6: 0 };
+            document.getElementById('story-display').classList.add('hidden'); resultScreen.classList.add('hidden'); introScreen.classList.remove('hidden');
         }
     </script>
 </body>
