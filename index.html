@@ -6,17 +6,19 @@
     <title>Vision Université 2050 - Atelier Atrium</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body { font-family: 'Roboto', sans-serif; background-color: #f3f4f6; }
         h1, h2, h3, .title-font { font-family: 'Montserrat', sans-serif; }
+        
         .card-hover:hover { transform: translateY(-5px); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
         .fade-in { animation: fadeIn 0.5s ease-out forwards; opacity: 0; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .scenario-icon { width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 50%; margin-bottom: 1rem; }
         
-        /* Animation pour l'indicateur audio */
+        /* Animation Audio */
         .speaking-animation { display: flex; gap: 4px; justify-content: center; align-items: flex-end; height: 20px; }
         .bar { width: 4px; background-color: #4F46E5; animation: speak 1s infinite ease-in-out; }
         .bar:nth-child(1) { animation-delay: 0.0s; height: 10px; }
@@ -31,95 +33,59 @@
     <!-- MODAL POPUP FOR SCENARIO DETAILS -->
     <div id="scenario-modal" class="fixed inset-0 bg-black bg-opacity-60 hidden z-50 flex items-center justify-center p-4 fade-in">
         <div class="bg-white rounded-xl shadow-2xl max-w-md w-full overflow-hidden relative transform transition-all scale-100">
-            <!-- Close Button -->
             <button onclick="closeModal()" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600 bg-gray-100 rounded-full w-8 h-8 flex items-center justify-center transition-colors">
                 <i class="fas fa-times"></i>
             </button>
-            
-            <!-- Header with dynamic color -->
             <div id="modal-header" class="p-6 pb-4 border-b">
                 <div class="text-xs font-bold uppercase tracking-wider text-gray-500 mb-1" id="modal-id">SCÉNARIO</div>
                 <h3 id="modal-title" class="text-2xl font-bold title-font text-gray-800 leading-tight">Titre du Scénario</h3>
                 <p id="modal-subtitle" class="text-sm italic text-gray-600 mt-1">Sous-titre</p>
             </div>
-            
-            <!-- Content -->
             <div class="p-6 pt-4 bg-gray-50">
-                <p id="modal-desc" class="text-sm text-gray-700 leading-relaxed text-justify">
-                    Description...
-                </p>
+                <p id="modal-desc" class="text-sm text-gray-700 leading-relaxed text-justify">Description...</p>
             </div>
         </div>
     </div>
 
-    <!-- MODAL PDF VIEWER (MULTI-PAGE) -->
+    <!-- MODAL PDF VIEWER -->
     <div id="pdf-modal" class="fixed inset-0 bg-black bg-opacity-80 hidden z-[60] flex items-center justify-center p-2 md:p-8 fade-in">
         <div class="bg-white rounded-xl shadow-2xl w-full max-w-6xl h-full flex flex-col overflow-hidden relative">
-            <!-- Header PDF Navigation -->
             <div class="bg-gray-900 text-white p-4 flex flex-col md:flex-row justify-between items-center shadow-md z-10 gap-4">
                 <div class="flex items-center gap-4 overflow-hidden w-full md:w-auto">
                     <h3 id="pdf-title" class="text-lg font-bold truncate"><i class="fas fa-book-open mr-2"></i> Planches</h3>
                     <span id="page-indicator" class="text-sm bg-gray-700 px-3 py-1 rounded-full whitespace-nowrap">Page 1 / 4</span>
                 </div>
-                
                 <div class="flex items-center gap-3">
-                    <!-- Nav Buttons -->
-                    <button onclick="prevPdf()" id="btn-prev" class="bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed text-white px-4 py-2 rounded transition-colors shadow-sm flex items-center gap-2">
-                        <i class="fas fa-chevron-left"></i> Précédent
-                    </button>
-                    <button onclick="nextPdf()" id="btn-next" class="bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed text-white px-4 py-2 rounded transition-colors shadow-sm flex items-center gap-2">
-                        Suivant <i class="fas fa-chevron-right"></i>
-                    </button>
-                    
+                    <button onclick="prevPdf()" id="btn-prev" class="bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed text-white px-4 py-2 rounded transition-colors shadow-sm flex items-center gap-2"><i class="fas fa-chevron-left"></i> Précédent</button>
+                    <button onclick="nextPdf()" id="btn-next" class="bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed text-white px-4 py-2 rounded transition-colors shadow-sm flex items-center gap-2">Suivant <i class="fas fa-chevron-right"></i></button>
                     <div class="w-px h-8 bg-gray-700 mx-2 hidden md:block"></div>
-                    
-                    <button onclick="closePdfModal()" class="text-white hover:text-red-400 transition-colors text-xl px-2" title="Fermer">
-                        <i class="fas fa-times"></i>
-                    </button>
+                    <button onclick="closePdfModal()" class="text-white hover:text-red-400 transition-colors text-xl px-2" title="Fermer"><i class="fas fa-times"></i></button>
                 </div>
             </div>
-            
             <div class="flex-grow bg-gray-200 relative">
                 <iframe id="pdf-frame" src="" class="w-full h-full border-0" title="Visualiseur PDF"></iframe>
-                <!-- Fallback si iframe ne charge pas -->
-                <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
-                    <div class="text-center">
-                        <i class="fas fa-spinner fa-spin text-4xl text-gray-400 mb-4"></i>
-                        <p class="text-gray-500">Chargement du document...</p>
-                    </div>
-                </div>
             </div>
-            
             <div class="bg-gray-100 p-3 text-center border-t flex justify-center gap-4">
-                <a id="pdf-download-link" href="" target="_blank" class="text-indigo-600 hover:text-indigo-800 text-sm font-bold flex items-center gap-2 transition-colors">
-                    <i class="fas fa-external-link-alt"></i> Ouvrir le fichier actuel dans un nouvel onglet
-                </a>
+                <a id="pdf-download-link" href="" target="_blank" class="text-indigo-600 hover:text-indigo-800 text-sm font-bold flex items-center gap-2 transition-colors"><i class="fas fa-external-link-alt"></i> Ouvrir le fichier actuel dans un nouvel onglet</a>
             </div>
         </div>
     </div>
 
-    <!-- HEADER CENTRÉ (Fond Blanc, Texte Bleu) -->
+    <!-- HEADER -->
     <header class="bg-white text-indigo-900 shadow-md z-10">
         <div class="w-full px-4 py-3 flex justify-between items-center relative">
-            
-            <!-- Partie Gauche : Icone U -->
             <div class="flex items-center justify-start w-1/4 md:w-1/3">
                 <div class="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center font-bold text-white text-xl shadow-sm">U</div>
             </div>
-
-            <!-- Partie Centrale : Titre et Sous-titre -->
             <div class="flex flex-col items-center justify-center text-center w-1/2 md:w-1/3 md:absolute md:left-1/2 md:transform md:-translate-x-1/2">
                 <h1 class="text-sm md:text-2xl font-extrabold tracking-wider uppercase leading-tight text-indigo-900">L'UNIVERSITÉ DANS LA VILLE</h1>
                 <span class="text-[10px] md:text-xs font-semibold tracking-widest opacity-70 uppercase hidden sm:block text-indigo-800">Université & Ville de Demain</span>
             </div>
-
-            <!-- Partie Droite : Logos -->
             <div class="flex items-center justify-end gap-3 w-1/4 md:w-1/3">
-                <img src="PROJET_NOIR.png" alt="Logo Master Projet" class="h-8 md:h-12 w-auto object-contain">
+                <img src="PROJET_NOIR.png" onerror="this.src='https://via.placeholder.com/100x40?text=Logo+Projet'" alt="Logo Master Projet" class="h-8 md:h-12 w-auto object-contain">
                 <div class="h-6 md:h-8 w-px bg-gray-300 hidden sm:block"></div>
-                <img src="UMPV_NOIR.png" alt="Logo Université Paul Valéry" class="h-8 md:h-12 w-auto object-contain">
+                <img src="UMPV_NOIR.png" onerror="this.src='https://via.placeholder.com/100x40?text=Logo+UMPV'" alt="Logo Université Paul Valéry" class="h-8 md:h-12 w-auto object-contain">
             </div>
-
         </div>
     </header>
 
@@ -203,17 +169,30 @@
                         <p class="text-xs text-center text-gray-500 mb-4 italic">(Cliquez sur les barres pour voir les détails)</p>
                         <canvas id="radarChart"></canvas>
 
-                        <!-- IMMERSION SECTION -->
+                        <!-- SOCIAL STATS SECTION (FIREBASE) -->
+                        <div id="social-stats" class="mt-6 p-4 bg-indigo-50 rounded-xl border border-indigo-100 text-center hidden fade-in">
+                            <h5 class="text-sm font-bold text-indigo-900 mb-2 flex items-center justify-center gap-2">
+                                <i class="fas fa-globe"></i> Résultats de la Communauté
+                            </h5>
+                            <p id="social-msg" class="text-sm text-gray-600 leading-snug">Chargement des données...</p>
+                            
+                            <!-- Jauge visuelle -->
+                            <div class="w-full bg-gray-200 rounded-full h-3 mt-3 relative overflow-hidden">
+                                <div id="social-bar" class="bg-orange-500 h-3 rounded-full transition-all duration-1000 ease-out" style="width: 0%"></div>
+                            </div>
+                            
+                            <p id="social-detail" class="text-[10px] text-gray-400 mt-2 italic">Mise à jour en temps réel depuis le site.</p>
+                        </div>
+
+                        <!-- IMMERSION TEXTE -->
                         <div class="mt-6 border-t pt-4">
                             <h4 class="font-bold text-indigo-900 mb-2 text-center text-sm">Immersion Future</h4>
                             <p class="text-xs text-center text-gray-500 mb-3">Découvrez le témoignage d'un étudiant en 2050.</p>
                             
-                            <!-- Step 1: Reveal Text Button -->
                             <button onclick="revealStory()" id="reveal-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold py-3 px-4 rounded transition duration-200 flex items-center justify-center gap-2">
                                 <i class="fas fa-book-open text-lg"></i> Découvrir le Récit
                             </button>
 
-                            <!-- Story Container (Hidden initially) -->
                             <div id="story-display" class="hidden mt-4 text-sm text-gray-700 bg-white p-4 rounded border border-gray-200 shadow-inner">
                                 <p id="story-text" class="leading-relaxed italic text-gray-800 font-serif mb-4"></p>
                                 
@@ -240,7 +219,6 @@
                         <div class="mt-6 flex flex-col gap-3 text-center">
                             <button onclick="restartGame()" class="text-gray-600 hover:text-gray-800 text-sm font-semibold underline">Recommencer le diagnostic</button>
                             
-                            <!-- BOUTON DECOUVERTE TRAVAUX -->
                             <button onclick="showWorks()" class="bg-white border-2 border-indigo-600 text-indigo-600 hover:bg-indigo-600 hover:text-white font-bold py-3 px-6 rounded-full text-sm transition duration-300 shadow-md flex items-center justify-center gap-2">
                                 <i class="fas fa-project-diagram"></i> Découvrir nos travaux sur le sujet
                             </button>
@@ -250,7 +228,7 @@
             </div>
         </div>
 
-        <!-- WORKS SCREEN (NOUVELLE PAGE) -->
+        <!-- WORKS SCREEN -->
         <div id="works-screen" class="hidden max-w-6xl w-full fade-in">
             <div class="text-center mb-10">
                 <h2 class="text-4xl font-extrabold text-indigo-900 mb-2 title-font">L'EXPOSITION VIRTUELLE</h2>
@@ -262,8 +240,6 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 px-4">
-                
-                <!-- Carte Planche 1 (Multi-PDF) -->
                 <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border border-gray-100 group">
                     <div class="h-48 bg-indigo-900 flex items-center justify-center relative overflow-hidden">
                         <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
@@ -280,38 +256,27 @@
                     </div>
                 </div>
 
-                <!-- Carte Planche 2 (Placeholder) -->
                 <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border border-gray-100 opacity-75">
                     <div class="h-48 bg-gray-200 flex items-center justify-center">
                         <i class="fas fa-search-location text-5xl text-gray-400"></i>
                     </div>
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-gray-600 mb-2">Diagnostic Territorial</h3>
-                        <p class="text-sm text-gray-400 mb-4">
-                            Analyse spatiale, foncière et sociale du quartier Hôpitaux-Facultés. (Bientôt disponible)
-                        </p>
-                        <button disabled class="w-full bg-gray-50 text-gray-300 font-bold py-3 px-4 rounded-lg cursor-not-allowed flex items-center justify-center gap-2">
-                            <i class="fas fa-lock"></i> Bientôt disponible
-                        </button>
+                        <p class="text-sm text-gray-400 mb-4">Analyse spatiale, foncière et sociale. (Bientôt disponible)</p>
+                        <button disabled class="w-full bg-gray-50 text-gray-300 font-bold py-3 px-4 rounded-lg cursor-not-allowed flex items-center justify-center gap-2"><i class="fas fa-lock"></i> Bientôt disponible</button>
                     </div>
                 </div>
 
-                <!-- Carte Planche 3 (Placeholder) -->
                 <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border border-gray-100 opacity-75">
                     <div class="h-48 bg-gray-200 flex items-center justify-center">
                         <i class="fas fa-drafting-compass text-5xl text-gray-400"></i>
                     </div>
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-gray-600 mb-2">Projets Urbains</h3>
-                        <p class="text-sm text-gray-400 mb-4">
-                            Propositions d'aménagement et scénarios prospectifs pour 2050. (Bientôt disponible)
-                        </p>
-                        <button disabled class="w-full bg-gray-50 text-gray-300 font-bold py-3 px-4 rounded-lg cursor-not-allowed flex items-center justify-center gap-2">
-                            <i class="fas fa-lock"></i> Bientôt disponible
-                        </button>
+                        <p class="text-sm text-gray-400 mb-4">Propositions d'aménagement. (Bientôt disponible)</p>
+                        <button disabled class="w-full bg-gray-50 text-gray-300 font-bold py-3 px-4 rounded-lg cursor-not-allowed flex items-center justify-center gap-2"><i class="fas fa-lock"></i> Bientôt disponible</button>
                     </div>
                 </div>
-
             </div>
 
             <div class="mt-12 text-center">
@@ -328,6 +293,123 @@
             <p>Master PROJET [PROJET d'aménagement et prospective territoriale]</p>
         </div>
     </footer>
+
+    <!-- IMPORT FIREBASE (MODULE TYPE) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, onSnapshot, setDoc, increment, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // --- CONFIG FIREBASE ---
+        const firebaseConfig = JSON.parse(__firebase_config);
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+
+        let currentUser = null;
+        // Données initiales simulées pour éviter un graphique vide au début
+        let globalStats = { s1: 5, s2: 3, s3: 2, s4: 4, s5: 1, s6: 2 }; 
+
+        // --- AUTHENTIFICATION ANONYME (Requise pour la BDD) ---
+        signInAnonymously(auth).then(() => {
+            console.log("Connecté anonymement à Firebase");
+        }).catch((error) => {
+            console.error("Erreur Auth:", error);
+        });
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                initRealtimeStats(); // Lancer l'écouteur
+            }
+        });
+
+        // --- ÉCOUTEUR TEMPS RÉEL (La magie opère ici) ---
+        function initRealtimeStats() {
+            // On écoute le document 'summary' dans la collection 'site_votes'
+            const statsRef = doc(db, 'artifacts', appId, 'public', 'data', 'site_votes', 'summary');
+            
+            onSnapshot(statsRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    // On fusionne avec les stats par défaut pour éviter les undefined
+                    globalStats = { ...globalStats, ...data };
+                    
+                    // Si l'écran de résultat est affiché, on met à jour l'interface tout de suite
+                    if (window.currentWinner && !document.getElementById('result-screen').classList.contains('hidden')) {
+                        updateSocialStatsUI(window.currentWinner);
+                    }
+                }
+            }, (error) => {
+                console.warn("Erreur lecture stats (normal si 1er lancement):", error);
+            });
+        }
+
+        // --- FONCTION DE VOTE (Appelée quand on gagne) ---
+        window.sendVoteToCloud = async function(winnerKey) {
+            if (!currentUser) return;
+            
+            // Petite sécurité locale pour ne pas spammer le compteur (optionnel)
+            const hasVoted = localStorage.getItem('has_voted_v2');
+            if (hasVoted) {
+                console.log("Déjà voté sur cet appareil");
+                return; 
+            }
+
+            const statsRef = doc(db, 'artifacts', appId, 'public', 'data', 'site_votes', 'summary');
+            
+            try {
+                // Incrémente de +1 le champ correspondant au gagnant (s1, s2...)
+                await setDoc(statsRef, {
+                    [winnerKey]: increment(1)
+                }, { merge: true });
+                
+                localStorage.setItem('has_voted_v2', 'true');
+                console.log("Vote envoyé !");
+            } catch (e) {
+                console.error("Erreur lors du vote:", e);
+            }
+        }
+
+        // --- LOGIQUE D'AFFICHAGE (UI) ---
+        window.updateSocialStatsUI = function(userWinner) {
+            const container = document.getElementById('social-stats');
+            const msgEl = document.getElementById('social-msg');
+            const barEl = document.getElementById('social-bar');
+            const detailEl = document.getElementById('social-detail');
+
+            const total = Object.values(globalStats).reduce((a, b) => a + b, 0);
+            const userCount = globalStats[userWinner] || 0;
+            const userPercent = total > 0 ? Math.round((userCount / total) * 100) : 0;
+
+            // Trouver la majorité
+            let majorityId = Object.keys(globalStats).reduce((a, b) => globalStats[a] > globalStats[b] ? a : b);
+            let majorityPercent = total > 0 ? Math.round((globalStats[majorityId] / total) * 100) : 0;
+            
+            // Titres des scénarios (pour l'affichage)
+            // On doit accéder à l'objet 'scenarios' défini dans le script principal
+            // Astuce : on utilise window.scenariosData s'il est exposé, sinon on utilise les clés
+            
+            let msg = "";
+            if (userWinner === majorityId) {
+                msg = `Vous faites partie de la majorité ! <strong class="text-indigo-600">${userPercent}%</strong> des visiteurs ont aussi choisi ce scénario.`;
+            } else {
+                msg = `Vous êtes <strong class="text-indigo-600">${userPercent}%</strong> à avoir ce profil. La majorité (<strong class="text-orange-500">${majorityPercent}%</strong>) privilégie plutôt le scénario <strong>${majorityId.toUpperCase()}</strong>.`;
+            }
+
+            msgEl.innerHTML = msg;
+            
+            // Animation
+            setTimeout(() => {
+                barEl.style.width = `${userPercent}%`;
+                barEl.className = `h-3 rounded-full transition-all duration-1000 ease-out ${userWinner === majorityId ? 'bg-indigo-600' : 'bg-orange-500'}`;
+            }, 100);
+            
+            detailEl.innerText = `${userCount} votes pour votre scénario sur un total de ${total} participations enregistrées.`;
+            container.classList.remove('hidden');
+        }
+    </script>
 
     <script>
         // RÉCITS COMPLETS
@@ -517,6 +599,8 @@
         function showResult() {
             questionScreen.classList.add('hidden'); resultScreen.classList.remove('hidden');
             let winner = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
+            window.currentWinner = winner; // EXPOSE POUR FIREBASE
+
             const s = scenarios[winner];
             document.getElementById('scenario-title').innerText = s.title;
             document.getElementById('scenario-title').style.color = s.color;
@@ -525,6 +609,11 @@
             const ul = document.getElementById('scenario-issues'); ul.innerHTML = '';
             s.issues.forEach(i => { const li = document.createElement('li'); li.innerText = i; ul.appendChild(li); });
             drawChart();
+            
+            // APPEL FIREBASE
+            if(window.sendVoteToCloud) window.sendVoteToCloud(winner);
+            if(window.updateSocialStatsUI) window.updateSocialStatsUI(winner); // Affichage immédiat (avant retour serveur)
+
             currentStoryText = scenarioStories[winner];
             document.getElementById('story-text').innerText = currentStoryText;
             document.getElementById('story-display').classList.add('hidden');
@@ -569,7 +658,6 @@
         modal.addEventListener('click', e => { if(e.target === modal) closeModal(); });
 
         // --- MULTI-PAGE PDF LOGIC (NEW) ---
-        // Liste des fichiers pour simuler un PDF multi-pages
         const commsPdfs = [
             { file: "PAGE DE GARDE.pdf", title: "Page de Garde" },
             { file: "DE L’HISTOIRE A LA PLANIFICATION  LE CAS MONTPELLIERAIN.pdf", title: "Histoire & Planification" },
@@ -589,23 +677,17 @@
 
         function updatePdfViewer() {
             const pdfObj = currentPdfList[currentPdfIndex];
-            
-            // Mise à jour Titre & Indicateur de page
             document.getElementById('pdf-title').innerHTML = `<i class="fas fa-book-open mr-2"></i> ${pdfObj.title}`;
             document.getElementById('page-indicator').innerText = `Page ${currentPdfIndex + 1} / ${currentPdfList.length}`;
-            
-            // Chargement du fichier PDF dans l'iframe
             document.getElementById('pdf-frame').src = pdfObj.file;
             document.getElementById('pdf-download-link').href = pdfObj.file;
-
-            // Gestion de l'état des boutons (désactivés si début/fin)
+            
             const btnPrev = document.getElementById('btn-prev');
             const btnNext = document.getElementById('btn-next');
             
             btnPrev.disabled = (currentPdfIndex === 0);
             btnNext.disabled = (currentPdfIndex === currentPdfList.length - 1);
             
-            // Style visuel pour boutons désactivés
             btnPrev.classList.toggle('opacity-50', currentPdfIndex === 0);
             btnPrev.classList.toggle('cursor-not-allowed', currentPdfIndex === 0);
             
@@ -632,7 +714,6 @@
             document.getElementById('pdf-frame').src = ""; // Stop loading
         }
         
-        // Fermer si clic en dehors
         pdfModal.addEventListener('click', e => { if(e.target === pdfModal) closePdfModal(); });
 
         // --- AUDIO LOGIC ---
