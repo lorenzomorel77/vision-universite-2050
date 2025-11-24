@@ -33,6 +33,10 @@
         
         .selected-persona { border-color: #4F46E5; background-color: #EEF2FF; transform: scale(1.02); }
 
+        /* Animation Nuage de mots */
+        @keyframes popIn { 0% { transform: scale(0); opacity: 0; } 70% { transform: scale(1.1); } 100% { transform: scale(1); opacity: 1; } }
+        .word-tag { animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; display: inline-block; }
+
         /* Responsive Timeline */
         @media (max-width: 768px) {
             .timeline-line { left: 20px; }
@@ -143,7 +147,7 @@
     <!-- MAIN -->
     <main class="flex-grow container mx-auto px-4 py-8 flex flex-col items-center justify-center" id="game-container">
         
-        <!-- INTRO SCREEN (Originale restaurée) -->
+        <!-- INTRO SCREEN -->
         <div id="intro-screen" class="max-w-2xl w-full bg-white rounded-2xl shadow-xl overflow-hidden fade-in">
             <div class="bg-indigo-600 h-2 w-full"></div>
             <div class="p-8 text-center">
@@ -167,7 +171,7 @@
             </div>
         </div>
 
-        <!-- PERSONA SELECTION SCREEN (Nouvelle Étape) -->
+        <!-- PERSONA SELECTION SCREEN -->
         <div id="persona-screen" class="hidden max-w-4xl w-full bg-white rounded-2xl shadow-xl overflow-hidden fade-in">
             <div class="bg-indigo-900 h-2 w-full"></div>
             <div class="p-8 text-center">
@@ -304,6 +308,22 @@
                                 </div>
                             </div>
                         </div>
+
+                         <!-- NUAGE DE MOTS - MUR DES DOLÉANCES -->
+                         <div class="mt-6 border-t pt-4 bg-white rounded-lg p-3 shadow-sm border border-gray-100">
+                             <h4 class="font-bold text-indigo-900 mb-3 text-center text-sm"><i class="fas fa-comment-dots text-orange-500 mr-2"></i>Le Mur des Idées</h4>
+                             <p class="text-xs text-gray-500 text-center mb-3">Un mot pour l'université de demain ?</p>
+                             
+                             <div class="flex gap-2 mb-4">
+                                 <input type="text" id="user-word" placeholder="Ex: Verte, Inclusive..." class="flex-grow border border-gray-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500">
+                                 <button onclick="addWord()" class="bg-indigo-600 text-white rounded-lg px-3 py-2 text-xs font-bold hover:bg-indigo-700 transition">Publier</button>
+                             </div>
+ 
+                             <!-- Nuage de mots interactif -->
+                             <div id="word-cloud" class="flex flex-wrap justify-center items-center gap-2 min-h-[120px] max-h-[200px] overflow-y-auto p-2 bg-gray-50 rounded-lg border border-gray-100">
+                                 <!-- Le contenu sera généré par JS -->
+                             </div>
+                         </div>
 
                         <div class="mt-6 flex flex-col gap-3 text-center">
                             <button onclick="restartGame()" class="text-gray-600 hover:text-gray-800 text-sm font-semibold underline">Recommencer</button>
@@ -673,6 +693,9 @@
             document.getElementById('story-display').classList.add('hidden');
             document.getElementById('reveal-btn').classList.remove('hidden');
             stopAudio();
+
+            // INITIALISER LE NUAGE DE MOTS
+            renderWordCloud();
         }
 
         function drawChart() {
@@ -687,6 +710,109 @@
                 options: { scales: { y: { beginAtZero: true, max: 7 } }, plugins: { legend: { display: false } }, onClick: (e, el) => { if(el.length) openScenarioModal(Object.keys(scenarios)[el[0].index]); }, onHover: (e, el) => e.native.target.style.cursor = el.length ? 'pointer' : 'default' }
             });
         }
+
+        // --- NOUVEAU CODE : GESTION DU NUAGE DE MOTS AVEC LOCALSTORAGE ---
+        
+        // 1. Initialisation avec des mots par défaut (tirés du PDF)
+        const defaultWords = {
+            "Mixité": 5,
+            "Tram 5": 8,
+            "Ouverture": 6,
+            "ZAN": 3,
+            "Végétalisation": 4,
+            "Lien Social": 7,
+            "Atrium": 5,
+            "Innovation": 2,
+            "Patrimoine": 3,
+            "Mobilité": 5
+        };
+
+        // 2. Charger les mots depuis le LocalStorage ou utiliser les défauts
+        function getWords() {
+            const stored = localStorage.getItem('atrium_words');
+            if (stored) {
+                return JSON.parse(stored);
+            } else {
+                localStorage.setItem('atrium_words', JSON.stringify(defaultWords));
+                return defaultWords;
+            }
+        }
+
+        // 3. Ajouter un mot
+        function addWord() {
+            const input = document.getElementById('user-word');
+            const word = input.value.trim();
+            
+            // Validation simple : pas vide, pas trop long, pas de caractères bizarres
+            if(word && word.length < 20) {
+                // Capitaliser la première lettre
+                const formattedWord = word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+                
+                let words = getWords();
+                
+                // Si le mot existe, on incrémente, sinon on initialise à 1
+                if (words[formattedWord]) {
+                    words[formattedWord]++;
+                } else {
+                    words[formattedWord] = 1;
+                }
+                
+                // Sauvegarder
+                localStorage.setItem('atrium_words', JSON.stringify(words));
+                
+                // Vider l'input et rafraîchir
+                input.value = '';
+                renderWordCloud();
+            } else if (word.length >= 20) {
+                alert("Mot trop long ! Essayez d'être concis.");
+            }
+        }
+
+        // 4. Afficher le nuage
+        function renderWordCloud() {
+            const container = document.getElementById('word-cloud');
+            container.innerHTML = '';
+            
+            const words = getWords();
+            
+            // Transformer l'objet en tableau pour trier ou mélanger
+            // Ici, on garde un ordre un peu aléatoire pour l'effet "nuage"
+            const entries = Object.entries(words);
+            
+            // Couleurs dispos (thème Atrium)
+            const colors = ['bg-indigo-100 text-indigo-800', 'bg-orange-100 text-orange-800', 'bg-blue-100 text-blue-800', 'bg-green-100 text-green-800', 'bg-gray-100 text-gray-700'];
+            
+            entries.forEach(([text, count]) => {
+                const span = document.createElement('span');
+                
+                // Logique de taille basée sur la fréquence (count)
+                // Base class + taille variable
+                let sizeClass = 'text-xs';
+                if(count > 8) sizeClass = 'text-xl font-bold';
+                else if(count > 5) sizeClass = 'text-lg font-semibold';
+                else if(count > 3) sizeClass = 'text-base font-medium';
+                else if(count > 1) sizeClass = 'text-sm';
+
+                // Couleur aléatoire
+                const colorClass = colors[Math.floor(Math.random() * colors.length)];
+
+                span.className = `word-tag px-3 py-1 rounded-full shadow-sm cursor-default select-none transition hover:scale-105 ${sizeClass} ${colorClass}`;
+                span.innerText = text;
+                span.title = `${count} contributions`; // Tooltip
+                
+                container.appendChild(span);
+            });
+        }
+
+        // 5. Écouter les changements dans d'autres fenêtres (pour le côté "temps réel" sur une même machine)
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'atrium_words') {
+                renderWordCloud();
+            }
+        });
+
+        // --- FIN GESTION NUAGE DE MOTS ---
+
 
         // NAVIGATION & MODALS
         function showWorks() { resultScreen.classList.add('hidden'); worksScreen.classList.remove('hidden'); stopAudio(); }
