@@ -2,8 +2,8 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <!-- AJOUT: user-scalable=yes et maximum-scale pour forcer la possibilité de zoomer/dézoomer sur mobile -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <!-- AJOUT: user-scalable=yes et maximum-scale augmenté pour permettre le zoom/dézoom libre -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=10.0, user-scalable=yes">
     <title>Vision Université 2050 - Atelier Atrium</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
@@ -153,7 +153,7 @@
         </div>
     </div>
 
-    <!-- MODAL PDF VIEWER (CORRIGÉ POUR MOBILE : PLEIN ÉCRAN) -->
+    <!-- MODAL PDF VIEWER (CORRIGÉ POUR MOBILE : PLEIN ÉCRAN ET ZOOMABLE) -->
     <div id="pdf-modal" class="fixed inset-0 bg-black bg-opacity-95 hidden z-[60] flex items-center justify-center p-0 md:p-8 fade-in">
         <!-- class: w-full h-full sur mobile pour maximiser l'espace, rounded enlevé sur mobile -->
         <div class="bg-white md:rounded-xl shadow-2xl w-full h-full md:h-[90vh] md:max-w-7xl flex flex-col overflow-hidden relative">
@@ -174,7 +174,8 @@
                     </button>
                 </div>
             </div>
-            <div class="flex-grow bg-gray-200 relative">
+            <!-- AJOUT: -webkit-overflow-scrolling: touch et overflow-y: scroll sur le conteneur pour aider le tactile -->
+            <div class="flex-grow bg-gray-200 relative" style="-webkit-overflow-scrolling: touch; overflow-y: scroll;">
                 <!-- Iframe en absolute inset-0 pour garantir le scroll interne -->
                 <iframe id="pdf-frame" src="" class="absolute inset-0 w-full h-full border-0"></iframe>
             </div>
@@ -1074,8 +1075,8 @@
             const pdfObj = currentPdfList[currentPdfIndex];
             document.getElementById('pdf-title').innerHTML = `<i class="fas fa-book-open mr-2"></i> ${pdfObj.title}`;
             document.getElementById('page-indicator').innerText = `Page ${currentPdfIndex + 1} / ${currentPdfList.length}`;
-            // AJOUT: #view=Fit pour forcer l'affichage "Page Entière" par défaut
-            document.getElementById('pdf-frame').src = pdfObj.file + "#view=Fit";
+            // AJOUT: #zoom=page-fit pour forcer un affichage global plutôt que zoomé
+            document.getElementById('pdf-frame').src = pdfObj.file + "#zoom=page-fit";
             document.getElementById('btn-prev').disabled = (currentPdfIndex === 0);
             document.getElementById('btn-next').disabled = (currentPdfIndex === currentPdfList.length - 1);
             document.getElementById('btn-prev').classList.toggle('opacity-50', currentPdfIndex === 0);
