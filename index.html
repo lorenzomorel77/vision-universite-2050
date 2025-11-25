@@ -2,8 +2,8 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <!-- AJOUT: user-scalable=yes et maximum-scale augmenté pour permettre le zoom/dézoom libre -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=10.0, user-scalable=yes">
+    <!-- AJOUT: user-scalable=yes pour permettre le zoom manuel sur tout l'écran si besoin -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>Vision Université 2050 - Atelier Atrium</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
@@ -153,9 +153,8 @@
         </div>
     </div>
 
-    <!-- MODAL PDF VIEWER (CORRIGÉ POUR MOBILE : PLEIN ÉCRAN ET ZOOMABLE) -->
+    <!-- MODAL PDF VIEWER (NOUVELLE STRATÉGIE : OBJECT TAG + RESET) -->
     <div id="pdf-modal" class="fixed inset-0 bg-black bg-opacity-95 hidden z-[60] flex items-center justify-center p-0 md:p-8 fade-in">
-        <!-- class: w-full h-full sur mobile pour maximiser l'espace, rounded enlevé sur mobile -->
         <div class="bg-white md:rounded-xl shadow-2xl w-full h-full md:h-[90vh] md:max-w-7xl flex flex-col overflow-hidden relative">
             <div class="bg-gray-900 text-white p-3 md:p-4 flex flex-col md:flex-row justify-between items-center shadow-md z-10 gap-2 shrink-0">
                 <div class="flex items-center gap-4 overflow-hidden w-full md:w-auto justify-between md:justify-start">
@@ -174,10 +173,10 @@
                     </button>
                 </div>
             </div>
-            <!-- AJOUT: -webkit-overflow-scrolling: touch et overflow-y: scroll sur le conteneur pour aider le tactile -->
-            <div class="flex-grow bg-gray-200 relative" style="-webkit-overflow-scrolling: touch; overflow-y: scroll;">
-                <!-- Iframe en absolute inset-0 pour garantir le scroll interne -->
-                <iframe id="pdf-frame" src="" class="absolute inset-0 w-full h-full border-0"></iframe>
+            
+            <!-- Zone PDF avec scrolling activé -->
+            <div id="pdf-container" class="flex-grow bg-gray-200 relative w-full h-full overflow-y-auto" style="-webkit-overflow-scrolling: touch;">
+                <!-- LE CONTENU SERA INJECTÉ ICI PAR JS (Objet au lieu d'iframe) -->
             </div>
         </div>
     </div>
@@ -1071,20 +1070,51 @@
         let currentPdfIndex = 0; let currentPdfList = [];
         
         function openCommsGallery() { currentPdfList = commsPdfs; currentPdfIndex = 0; updatePdfViewer(); pdfModal.classList.remove('hidden'); }
+        
         function updatePdfViewer() {
             const pdfObj = currentPdfList[currentPdfIndex];
             document.getElementById('pdf-title').innerHTML = `<i class="fas fa-book-open mr-2"></i> ${pdfObj.title}`;
             document.getElementById('page-indicator').innerText = `Page ${currentPdfIndex + 1} / ${currentPdfList.length}`;
-            // AJOUT: #zoom=page-fit pour forcer un affichage global plutôt que zoomé
-            document.getElementById('pdf-frame').src = pdfObj.file + "#zoom=page-fit";
+            
+            // CHANGEMENT DE STRATÉGIE : Utilisation d'un conteneur d'objet dynamique
+            // Cela force le rechargement et utilise le moteur natif (souvent mieux que iframe sur mobile)
+            const container = document.getElementById('pdf-container');
+            
+            // On vide d'abord
+            container.innerHTML = '';
+            
+            // On injecte la balise <object>
+            const objectTag = document.createElement('object');
+            objectTag.data = pdfObj.file;
+            objectTag.type = "application/pdf";
+            objectTag.className = "w-full h-full"; // Tailwind CSS
+            objectTag.style.minHeight = "100%";
+            
+            // Fallback content si le navigateur ne supporte pas l'affichage
+            objectTag.innerHTML = `
+                <div class="flex flex-col items-center justify-center h-full text-gray-500 p-4 text-center">
+                    <p class="mb-4"><i class="fas fa-file-pdf text-4xl text-red-500 mb-2"></i><br>L'affichage intégré n'est pas supporté par votre mobile.</p>
+                    <a href="${pdfObj.file}" target="_blank" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-full shadow-lg transition flex items-center gap-2">
+                        <i class="fas fa-external-link-alt"></i> Ouvrir le PDF (Zoomable)
+                    </a>
+                </div>
+            `;
+            
+            container.appendChild(objectTag);
+
             document.getElementById('btn-prev').disabled = (currentPdfIndex === 0);
             document.getElementById('btn-next').disabled = (currentPdfIndex === currentPdfList.length - 1);
             document.getElementById('btn-prev').classList.toggle('opacity-50', currentPdfIndex === 0);
             document.getElementById('btn-next').classList.toggle('opacity-50', currentPdfIndex === currentPdfList.length - 1);
         }
+
         function nextPdf() { if (currentPdfIndex < currentPdfList.length - 1) { currentPdfIndex++; updatePdfViewer(); } }
         function prevPdf() { if (currentPdfIndex > 0) { currentPdfIndex--; updatePdfViewer(); } }
-        function closePdfModal() { pdfModal.classList.add('hidden'); document.getElementById('pdf-frame').src = ""; }
+        function closePdfModal() { 
+            pdfModal.classList.add('hidden'); 
+            // Nettoyer pour économiser la mémoire et arrêter les processus de fond
+            document.getElementById('pdf-container').innerHTML = ''; 
+        }
         pdfModal.addEventListener('click', e => { if(e.target === pdfModal) closePdfModal(); });
 
         // TIMELINE LOGIC
