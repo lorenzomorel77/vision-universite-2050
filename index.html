@@ -2,7 +2,8 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- AJOUT: user-scalable=yes et maximum-scale pour forcer la possibilité de zoomer/dézoomer sur mobile -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>Vision Université 2050 - Atelier Atrium</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
@@ -1073,7 +1074,8 @@
             const pdfObj = currentPdfList[currentPdfIndex];
             document.getElementById('pdf-title').innerHTML = `<i class="fas fa-book-open mr-2"></i> ${pdfObj.title}`;
             document.getElementById('page-indicator').innerText = `Page ${currentPdfIndex + 1} / ${currentPdfList.length}`;
-            document.getElementById('pdf-frame').src = pdfObj.file;
+            // AJOUT: #view=Fit pour forcer l'affichage "Page Entière" par défaut
+            document.getElementById('pdf-frame').src = pdfObj.file + "#view=Fit";
             document.getElementById('btn-prev').disabled = (currentPdfIndex === 0);
             document.getElementById('btn-next').disabled = (currentPdfIndex === currentPdfList.length - 1);
             document.getElementById('btn-prev').classList.toggle('opacity-50', currentPdfIndex === 0);
