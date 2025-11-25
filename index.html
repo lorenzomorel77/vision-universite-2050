@@ -100,7 +100,7 @@
         <div class="relative w-full max-w-5xl aspect-video bg-indigo-800 rounded-xl overflow-hidden shadow-2xl border border-indigo-600 group">
             
             <!-- Carte Image -->
-            <img src="1024px-BlankMap-World.svg.png" alt="Carte du Monde" class="absolute inset-0 w-full h-full object-fill opacity-90 group-hover:opacity-100 transition-opacity duration-500">
+            <img src="1024px-BlankMap-World.svg.png" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/World_map_blank_without_borders.svg/1024px-World_map_blank_without_borders.svg.png'" alt="Carte du Monde" class="absolute inset-0 w-full h-full object-fill opacity-90 group-hover:opacity-100 transition-opacity duration-500">
             
             <!-- Points chauds (Positions ajustées pour la nouvelle carte) -->
             <!-- USA -->
@@ -211,9 +211,9 @@
                 <span class="text-[10px] md:text-xs font-semibold tracking-widest opacity-70 uppercase hidden sm:block text-indigo-800">Université & Ville de Demain</span>
             </div>
             <div class="flex items-center justify-end gap-3 w-1/4 md:w-1/3">
-                <img src="PROJET_NOIR.png" alt="Master" class="h-8 md:h-12 w-auto object-contain">
+                <img src="PROJET_NOIR.png" onerror="this.src='https://via.placeholder.com/150x50?text=PROJET'" alt="Master" class="h-8 md:h-12 w-auto object-contain">
                 <div class="h-6 md:h-8 w-px bg-gray-300 hidden sm:block"></div>
-                <img src="UMPV_NOIR.png" alt="UMPV" class="h-8 md:h-12 w-auto object-contain">
+                <img src="UMPV_NOIR.png" onerror="this.src='https://via.placeholder.com/150x50?text=UMPV'" alt="UMPV" class="h-8 md:h-12 w-auto object-contain">
             </div>
         </div>
     </header>
@@ -340,6 +340,9 @@
                     <h2 id="scenario-title" class="text-4xl font-extrabold mb-2 title-font text-orange-400">TITRE</h2>
                     <h3 id="scenario-subtitle" class="text-xl font-light italic">Sous-titre</h3>
                     <div class="absolute top-4 right-4 text-6xl opacity-20"><i class="fas fa-city"></i></div>
+                    
+                    <!-- NEW: Zone pour les statistiques Firebase -->
+                    <p id="resultat-texte" class="mt-4 text-sm font-bold text-orange-300 bg-indigo-800 bg-opacity-50 inline-block px-4 py-2 rounded-lg">Chargement des données communautaires...</p>
                 </div>
 
                 <div class="p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -751,6 +754,70 @@
             else showResult();
         }
 
+        // ==========================================
+        // FONCTIONS FIREBASE AJOUTÉES ICI
+        // ==========================================
+        
+        // Enregistrer un vote (Adapté pour S1-S6 au lieu de A/B)
+        async function enregistrerReponse(winningScenarioId) {
+            // winningScenarioId est ex: "s1", "s2"...
+            if (!window.db || !window.doc) return; // Sécurité si Firebase charge mal
+
+            const statsRef = window.doc(window.db, "resultats", "global_stats");
+            try {
+                // Tente de mettre à jour si le document existe
+                await window.updateDoc(statsRef, {
+                    [winningScenarioId]: window.increment(1),
+                    total: window.increment(1)
+                });
+                afficherResultats();
+            } catch (e) {
+                // Crée le document si c'est le tout premier vote
+                await window.setDoc(statsRef, {
+                    s1: winningScenarioId === 's1' ? 1 : 0,
+                    s2: winningScenarioId === 's2' ? 1 : 0,
+                    s3: winningScenarioId === 's3' ? 1 : 0,
+                    s4: winningScenarioId === 's4' ? 1 : 0,
+                    s5: winningScenarioId === 's5' ? 1 : 0,
+                    s6: winningScenarioId === 's6' ? 1 : 0,
+                    total: 1
+                });
+                afficherResultats();
+            }
+        }
+
+        // Afficher les résultats globaux
+        async function afficherResultats() {
+            if (!window.db || !window.doc) return;
+            
+            const statsRef = window.doc(window.db, "resultats", "global_stats");
+            const docSnap = await window.getDoc(statsRef);
+            
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                const total = data.total || 1;
+                
+                // Calcul du top scénario ou affichage simple
+                // Pour simplifier, on affiche le scénario le plus populaire
+                let topScenario = 's1';
+                let maxVotes = 0;
+                
+                for (const [key, value] of Object.entries(data)) {
+                    if (key !== 'total' && value > maxVotes) {
+                        maxVotes = value;
+                        topScenario = key;
+                    }
+                }
+
+                const pourcentage = Math.round((maxVotes / total) * 100);
+                const scenarioName = scenarios[topScenario] ? scenarios[topScenario].title.split('/')[0] : "Inconnu";
+                
+                document.getElementById("resultat-texte").innerHTML = 
+                    `<i class="fas fa-users mr-2"></i>La communauté a choisi majoritairement : <br> <strong>${scenarioName} (${pourcentage}%)</strong>`;
+            }
+        }
+        // ==========================================
+
         function showResult() {
             questionScreen.classList.add('hidden'); resultScreen.classList.remove('hidden');
             
@@ -771,6 +838,10 @@
             }
 
             let winner = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
+            
+            // APPEL FIREBASE ICI : Sauvegarder le résultat final
+            enregistrerReponse(winner);
+
             const s = scenarios[winner];
             document.getElementById('scenario-title').innerText = s.title;
             document.getElementById('scenario-title').style.color = s.color;
@@ -1066,6 +1137,34 @@
             btn.classList.remove('bg-orange-500', 'hover:bg-orange-600', 'cursor-pointer');
             btn.innerText = "Choisir un personnage";
         }
+    </script>
+    <script type="module">
+        // Importes les fonctions Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+        import { getFirestore, doc, updateDoc, getDoc, increment, setDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+      
+        // Ta configuration Firebase (déjà remplie !)
+        const firebaseConfig = {
+          apiKey: "AIzaSyAe7Hc2bT-Scvf032sLHh8TXG9aHnFB-D0",
+          authDomain: "atelier-atrium-d951b.firebaseapp.com",
+          projectId: "atelier-atrium-d951b",
+          storageBucket: "atelier-atrium-d951b.firebasestorage.app",
+          messagingSenderId: "716967590598",
+          appId: "1:716967590598:web:5116e96917e2243fcbb5c7",
+          measurementId: "G-JQ634TGS4M"
+        };
+      
+        // Initialisation
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+      
+        // Rendre accessible globalement
+        window.db = db;
+        window.doc = doc;
+        window.updateDoc = updateDoc;
+        window.increment = increment;
+        window.getDoc = getDoc;
+        window.setDoc = setDoc;
     </script>
 </body>
 </html>
