@@ -203,6 +203,78 @@
         </div>
     </div>
 
+    <!-- MODAL CGU (NOUVEAU) -->
+    <div id="cgu-modal" class="fixed inset-0 bg-black bg-opacity-80 hidden z-[90] flex items-center justify-center p-4 fade-in">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-3xl h-[80vh] flex flex-col overflow-hidden relative">
+            <div class="bg-gray-800 text-white p-4 flex justify-between items-center shadow-md z-10 flex-shrink-0">
+                <h3 class="text-lg font-bold"><i class="fas fa-file-contract mr-2"></i> Conditions Générales d'Utilisation</h3>
+                <button onclick="closeCgu()" class="text-white hover:text-red-400 transition-colors text-xl">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="flex-grow overflow-y-auto p-8 text-gray-700 text-sm leading-relaxed" style="-webkit-overflow-scrolling: touch;">
+                <h4 class="text-xl font-bold text-indigo-900 mb-4">1. Objet des CGU</h4>
+                <p class="mb-4">Les présentes Conditions Générales d'Utilisation (ci-après « CGU ») ont pour objet de définir les modalités d'accès et d'utilisation du site (ci-après « le Site »), destiné à présenter et diffuser les productions, travaux, recherches et contenus liés au master de l'éditeur du Site.<br>Toute utilisation du Site implique l'acceptation pleine et entière des présentes CGU.</p>
+
+                <h4 class="text-xl font-bold text-indigo-900 mb-4">2. Mentions légales</h4>
+                <ul class="list-disc pl-5 mb-4">
+                    <li><strong>Éditeur du Site :</strong> Lorenzo Morel / Master Projet / universite.vision.2050@gmail.com</li>
+                    <li><strong>Responsable de publication :</strong> Lorenzo Morel / Master PROJET</li>
+                    <li><strong>Hébergement :</strong> Github.io</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-indigo-900 mb-4">3. Accès au Site</h4>
+                <p class="mb-4">L'accès au Site est gratuit. L'éditeur se réserve le droit de suspendre, limiter ou fermer l'accès au Site, sans préavis, pour maintenance, mise à jour ou toute autre raison jugée nécessaire.</p>
+
+                <h4 class="text-xl font-bold text-indigo-900 mb-4">4. Propriété intellectuelle</h4>
+                <p class="mb-4">L'ensemble des contenus présents sur le Site (textes, images, vidéos, sons, musiques, productions artistiques ou scientifiques, recherches, graphismes, logos, mises en page, documents téléchargeables, etc.) sont protégés par le Code de la propriété intellectuelle et sont la propriété exclusive de l'éditeur du Site ou de leurs auteurs respectifs.</p>
+                <p class="mb-4">Toute reproduction, représentation, diffusion, modification, adaptation, exploitation ou utilisation, totale ou partielle, de quelque nature que ce soit, sans autorisation écrite préalable, est strictement interdite.</p>
+                <p class="mb-2">Les utilisateurs s'engagent à :</p>
+                <ul class="list-disc pl-5 mb-4">
+                    <li>ne pas réutiliser ou extraire de manière substantielle les contenus du Site,</li>
+                    <li>ne pas contourner les mesures techniques de protection,</li>
+                    <li>respecter les droits moraux et patrimoniaux des auteurs.</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-indigo-900 mb-4">5. Contributions et publications</h4>
+                <p class="mb-2">Si le Site permet la mise en ligne de contributions externes (commentaires, documents, recherches, etc.) :</p>
+                <ul class="list-disc pl-5 mb-4">
+                    <li>l'utilisateur garantit être titulaire des droits sur les contenus qu'il publie ;</li>
+                    <li>l'utilisateur cède à l'éditeur, à titre non exclusif et pour le monde entier, le droit de reproduire, représenter et diffuser lesdits contenus sur le Site, pour toute la durée légale des droits d'auteur ;</li>
+                    <li>l'éditeur se réserve le droit de modérer, refuser ou supprimer toute contribution jugée inappropriée ou illicite.</li>
+                </ul>
+
+                <h4 class="text-xl font-bold text-indigo-900 mb-4">6. Protection des données personnelles</h4>
+                <p class="mb-4">Le Site peut collecter des données personnelles pour assurer son fonctionnement (formulaire de contact, newsletter, espace utilisateur, etc.).</p>
+                <p class="mb-4">Les données collectées sont traitées conformément au Règlement Général sur la Protection des Données (RGPD).</p>
+                <p class="mb-4">Les utilisateurs disposent d'un droit d'accès, de rectification, d'opposition, de suppression et de portabilité de leurs données. Toute demande peut être adressée à : <a href="mailto:universite.vision.2050@gmail.com" class="text-indigo-600 hover:underline">universite.vision.2050@gmail.com</a>.</p>
+                <p class="mb-4">Aucune donnée personnelle n'est transférée à des tiers sans consentement explicite.</p>
+
+                <h4 class="text-xl font-bold text-indigo-900 mb-4">7. Responsabilité</h4>
+                <p class="mb-2">L'éditeur ne saurait être tenu responsable :</p>
+                <ul class="list-disc pl-5 mb-4">
+                    <li>en cas d'interruption du Site ou de dysfonctionnement,</li>
+                    <li>en cas de dommages indirects résultant de l'utilisation du Site,</li>
+                    <li>du contenu des sites tiers vers lesquels des liens peuvent renvoyer.</li>
+                </ul>
+                <p class="mb-4">L'utilisateur s'engage à utiliser le Site conformément aux lois et règlements en vigueur, et à ne pas tenter de porter atteinte à son bon fonctionnement.</p>
+
+                <h4 class="text-xl font-bold text-indigo-900 mb-4">8. Liens hypertextes</h4>
+                <p class="mb-4">Le Site peut contenir des liens vers d'autres sites. L'éditeur n'exerce aucun contrôle sur ces sites et décline toute responsabilité concernant leur contenu ou leurs pratiques. Toute création d'un lien vers le Site doit être autorisée au préalable par l'éditeur.</p>
+
+                <h4 class="text-xl font-bold text-indigo-900 mb-4">9. Cookies</h4>
+                <p class="mb-4">Le Site peut utiliser des cookies afin d'améliorer l'expérience utilisateur. L'utilisateur peut configurer son navigateur pour refuser les cookies. Le refus peut toutefois altérer certaines fonctionnalités du Site.</p>
+
+                <h4 class="text-xl font-bold text-indigo-900 mb-4">10. Modification des CGU</h4>
+                <p class="mb-4">L'éditeur se réserve le droit de modifier à tout moment les présentes CGU. Les utilisateurs sont invités à les consulter régulièrement.</p>
+
+                <h4 class="text-xl font-bold text-indigo-900 mb-4">11. Droit applicable et juridiction compétente</h4>
+                <p class="mb-4">Les présentes CGU sont régies par le droit français. En cas de litige, et à défaut de résolution amiable, les tribunaux français seront seuls compétents.</p>
+                <p class="mt-8 pt-4 border-t border-gray-200 text-center italic">Pour toute question concernant ces CGU, merci de contacter : <a href="mailto:universite.vision.2050@gmail.com" class="text-indigo-600 hover:underline">universite.vision.2050@gmail.com</a>.</p>
+            </div>
+        </div>
+    </div>
+
     <!-- HEADER -->
     <header class="bg-white text-indigo-900 shadow-md z-10">
         <div class="w-full px-4 py-3 flex justify-between items-center relative">
@@ -502,8 +574,10 @@
     </main>
 
     <footer class="bg-gray-800 text-gray-400 py-4 mt-auto">
-        <div class="container mx-auto px-4 text-center text-xs">
+        <div class="container mx-auto px-4 text-center text-xs flex flex-col md:flex-row justify-center items-center gap-2">
             <p>Master PROJET [PROJET d'aménagement et prospective territoriale]</p>
+            <span class="hidden md:inline">|</span>
+            <button onclick="openCgu()" class="hover:text-white underline transition-colors">Mentions Légales & CGU</button>
         </div>
     </footer>
 
@@ -1045,7 +1119,13 @@
 
 
         // NAVIGATION & MODALS
-        function showWorks() { resultScreen.classList.add('hidden'); worksScreen.classList.remove('hidden'); stopAudio(); }
+        function showWorks() { 
+            resultScreen.classList.add('hidden'); 
+            worksScreen.classList.remove('hidden'); 
+            stopAudio(); 
+            // AJOUT : Scroll en haut de la page lors de l'ouverture
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
         function closeWorks() { worksScreen.classList.add('hidden'); resultScreen.classList.remove('hidden'); }
         
         const modal = document.getElementById('scenario-modal');
@@ -1144,6 +1224,12 @@
         }
         function closeTimeline() { timelineModal.classList.add('hidden'); }
         timelineModal.addEventListener('click', e => { if(e.target === timelineModal) closeTimeline(); });
+
+        // CGU LOGIC
+        const cguModal = document.getElementById('cgu-modal');
+        function openCgu() { cguModal.classList.remove('hidden'); }
+        function closeCgu() { cguModal.classList.add('hidden'); }
+        cguModal.addEventListener('click', (e) => { if(e.target === cguModal) closeCgu(); });
 
         // AUDIO
         function revealStory() { document.getElementById('reveal-btn').classList.add('hidden'); document.getElementById('story-display').classList.remove('hidden'); stopAudioUI(); }
