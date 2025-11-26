@@ -2,7 +2,6 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <!-- AJOUT: user-scalable=yes pour permettre le zoom manuel sur tout l'écran si besoin -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>Vision Université 2050 - Atelier Atrium</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -66,6 +65,17 @@
             .timeline-point { left: 20px; }
             .timeline-card { width: 100%; padding-left: 50px !important; padding-right: 0 !important; text-align: left !important; left: 0 !important; margin-bottom: 2rem; }
         }
+
+        /* Animation apparition bouton passer */
+        @keyframes fadeInDelay {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .appear-delayed {
+            opacity: 0;
+            animation: fadeInDelay 1s ease-out forwards;
+            animation-delay: 5s; /* Délai de 5 secondes */
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col relative">
@@ -84,7 +94,22 @@
         </div>
     </div>
 
-    <!-- MODAL ATLAS MONDE (Nouveau) -->
+    <!-- NOUVEAU : OVERLAY IMMERSION SCÉNARIO -->
+    <div id="immersion-overlay" class="fixed inset-0 bg-black z-[100] hidden flex flex-col items-center justify-center p-4">
+        <!-- Image Container (Responsive: contain pour tout voir, cover pour remplir) -->
+        <div class="relative w-full h-full flex items-center justify-center">
+            <img id="immersion-image" src="" alt="Vision du Futur" class="max-w-full max-h-full object-contain shadow-2xl rounded-lg">
+            
+            <!-- Bouton Passer (Apparition retardée) -->
+            <div id="skip-container" class="absolute bottom-8 md:bottom-12 z-20 appear-delayed">
+                <button onclick="closeImmersion()" class="bg-white text-indigo-900 hover:bg-orange-500 hover:text-white font-bold py-3 px-8 rounded-full shadow-lg transition transform hover:scale-105 flex items-center gap-2 animate-bounce">
+                    <span>Découvrir les résultats</span> <i class="fas fa-chevron-down"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL ATLAS MONDE -->
     <div id="atlas-modal" class="fixed inset-0 bg-indigo-900 bg-opacity-95 hidden z-[80] flex flex-col items-center justify-center p-4 fade-in">
         <div class="absolute top-4 right-4 z-50">
              <button onclick="closeAtlas()" class="text-white hover:text-orange-400 transition-colors text-3xl">
@@ -99,39 +124,25 @@
 
         <!-- Container Carte -->
         <div class="relative w-full max-w-5xl aspect-video bg-indigo-800 rounded-xl overflow-hidden shadow-2xl border border-indigo-600 group">
-            
-            <!-- Carte Image -->
             <img src="1024px-BlankMap-World.svg.png" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/World_map_blank_without_borders.svg/1024px-World_map_blank_without_borders.svg.png'" alt="Carte du Monde" class="absolute inset-0 w-full h-full object-fill opacity-90 group-hover:opacity-100 transition-opacity duration-500">
             
-            <!-- Points chauds (Positions ajustées pour la nouvelle carte) -->
-            <!-- USA -->
             <div onclick="showAtlasFact('usa')" class="map-hotspot" style="top: 32%; left: 18%;" title="États-Unis"></div>
-            <!-- France/Europe -->
             <div onclick="showAtlasFact('europe')" class="map-hotspot" style="top: 27%; left: 49%;" title="Europe"></div>
-            <!-- UK -->
             <div onclick="showAtlasFact('uk')" class="map-hotspot" style="top: 22%; left: 47%;" title="Royaume-Uni"></div>
-            <!-- China -->
             <div onclick="showAtlasFact('china')" class="map-hotspot" style="top: 32%; left: 78%;" title="Chine"></div>
-            <!-- India -->
             <div onclick="showAtlasFact('india')" class="map-hotspot" style="top: 40%; left: 70%;" title="Inde"></div>
             
-            <!-- Info Box FULL SCREEN OVERLAY -->
             <div id="atlas-info-box" class="absolute inset-0 bg-white z-40 hidden flex flex-col animate-fade-in">
-                <!-- Header Box -->
                 <div class="bg-indigo-900 text-white p-6 flex justify-between items-center shadow-md flex-shrink-0">
                     <h4 id="atlas-country" class="text-2xl font-bold uppercase tracking-wide title-font">PAYS</h4>
                     <button onclick="hideAtlasFact()" class="text-white hover:text-orange-400 transition-colors text-2xl px-2">
                         <i class="fas fa-times"></i> Fermer
                     </button>
                 </div>
-                <!-- Content Scrollable -->
                 <div class="flex-grow overflow-y-auto p-8 md:p-12 bg-gray-50">
-                    <div id="atlas-content" class="max-w-3xl mx-auto text-gray-800 text-lg leading-relaxed space-y-6">
-                        <!-- Contenu dynamique -->
-                    </div>
+                    <div id="atlas-content" class="max-w-3xl mx-auto text-gray-800 text-lg leading-relaxed space-y-6"></div>
                 </div>
             </div>
-
         </div>
         <p class="text-indigo-400 text-xs mt-4 italic">Cliquez sur les points oranges pour découvrir les données clés.</p>
     </div>
@@ -153,7 +164,7 @@
         </div>
     </div>
 
-    <!-- MODAL PDF VIEWER (NOUVELLE STRATÉGIE : OBJECT TAG + RESET) -->
+    <!-- MODAL PDF VIEWER -->
     <div id="pdf-modal" class="fixed inset-0 bg-black bg-opacity-95 hidden z-[60] flex items-center justify-center p-0 md:p-8 fade-in">
         <div class="bg-white md:rounded-xl shadow-2xl w-full h-full md:h-[90vh] md:max-w-7xl flex flex-col overflow-hidden relative">
             <div class="bg-gray-900 text-white p-3 md:p-4 flex flex-col md:flex-row justify-between items-center shadow-md z-10 gap-2 shrink-0">
@@ -173,11 +184,7 @@
                     </button>
                 </div>
             </div>
-            
-            <!-- Zone PDF avec scrolling activé -->
-            <div id="pdf-container" class="flex-grow bg-gray-200 relative w-full h-full overflow-y-auto" style="-webkit-overflow-scrolling: touch;">
-                <!-- LE CONTENU SERA INJECTÉ ICI PAR JS (Objet au lieu d'iframe) -->
-            </div>
+            <div id="pdf-container" class="flex-grow bg-gray-200 relative w-full h-full overflow-y-auto" style="-webkit-overflow-scrolling: touch;"></div>
         </div>
     </div>
 
@@ -203,10 +210,9 @@
         </div>
     </div>
     
-    <!-- MODAL STATS (NOUVEAU) -->
+    <!-- MODAL STATS -->
     <div id="stats-modal" class="fixed inset-0 bg-black bg-opacity-80 hidden z-[75] flex items-center justify-center p-2 md:p-6 fade-in">
         <div class="bg-white rounded-xl shadow-2xl w-full max-w-4xl h-full md:h-auto md:max-h-[90vh] flex flex-col overflow-hidden relative">
-            <!-- Header -->
             <div class="bg-indigo-900 text-white p-4 md:p-6 flex justify-between items-center shadow-md z-10 shrink-0">
                 <div>
                     <h3 class="text-xl md:text-2xl font-bold title-font"><i class="fas fa-chart-pie mr-2 text-orange-400"></i> Observatoire des Données</h3>
@@ -216,11 +222,7 @@
                     <i class="fas fa-times"></i>
                 </button>
             </div>
-            
-            <!-- Main Content Area -->
             <div class="flex-grow flex flex-col bg-gray-50 overflow-y-auto">
-                
-                <!-- Chart Container -->
                 <div class="p-4 md:p-8 flex flex-col items-center justify-center min-h-[300px] md:min-h-[400px]">
                     <div class="w-full max-w-2xl bg-white p-4 rounded-xl shadow-sm border border-gray-100 relative">
                         <h4 id="stat-title" class="text-center font-bold text-gray-800 text-lg mb-2 title-font">Titre du Graphique</h4>
@@ -230,52 +232,37 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Navigation Slider -->
                 <div class="bg-white border-t border-gray-200 p-4 shrink-0">
                     <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 ml-2">Choisir une visualisation :</p>
                     <div class="flex gap-4 overflow-x-auto pb-2 snap-x px-2" style="-webkit-overflow-scrolling: touch;">
-                        
-                        <!-- Btn 1 -->
                         <button onclick="renderStat(0)" class="snap-start shrink-0 w-40 p-3 rounded-lg border-2 border-transparent hover:border-indigo-500 bg-gray-50 hover:bg-indigo-50 transition-all text-left group focus:ring-2 focus:ring-indigo-500 focus:outline-none">
                             <div class="flex items-center gap-2 mb-1">
                                 <i class="fas fa-users text-orange-500 bg-orange-100 p-2 rounded-full"></i>
                                 <span class="text-xs font-bold text-gray-700 group-hover:text-indigo-700">Poids Démographique</span>
                             </div>
-                            <div class="h-1 w-full bg-gray-200 rounded-full overflow-hidden">
-                                <div class="h-full bg-orange-500 w-1/4"></div>
-                            </div>
+                            <div class="h-1 w-full bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-orange-500 w-1/4"></div></div>
                         </button>
-
-                        <!-- Btn 2 -->
                         <button onclick="renderStat(1)" class="snap-start shrink-0 w-40 p-3 rounded-lg border-2 border-transparent hover:border-indigo-500 bg-gray-50 hover:bg-indigo-50 transition-all text-left group focus:ring-2 focus:ring-indigo-500 focus:outline-none">
                             <div class="flex items-center gap-2 mb-1">
                                 <i class="fas fa-map-marked-alt text-blue-500 bg-blue-100 p-2 rounded-full"></i>
                                 <span class="text-xs font-bold text-gray-700 group-hover:text-indigo-700">Fragmentation Territoriale</span>
                             </div>
-                             <div class="h-1 w-full bg-gray-200 rounded-full overflow-hidden">
-                                <div class="h-full bg-blue-500 w-2/3"></div>
-                            </div>
+                             <div class="h-1 w-full bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-blue-500 w-2/3"></div></div>
                         </button>
-
-                        <!-- Btn 3 -->
                         <button onclick="renderStat(2)" class="snap-start shrink-0 w-40 p-3 rounded-lg border-2 border-transparent hover:border-indigo-500 bg-gray-50 hover:bg-indigo-50 transition-all text-left group focus:ring-2 focus:ring-indigo-500 focus:outline-none">
                             <div class="flex items-center gap-2 mb-1">
                                 <i class="fas fa-balance-scale text-purple-500 bg-purple-100 p-2 rounded-full"></i>
                                 <span class="text-xs font-bold text-gray-700 group-hover:text-indigo-700">Inégalités de Moyens</span>
                             </div>
-                             <div class="h-1 w-full bg-gray-200 rounded-full overflow-hidden">
-                                <div class="h-full bg-purple-500 w-1/2"></div>
-                            </div>
+                             <div class="h-1 w-full bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-purple-500 w-1/2"></div></div>
                         </button>
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- MODAL CGU (NOUVEAU) -->
+    <!-- MODAL CGU -->
     <div id="cgu-modal" class="fixed inset-0 bg-black bg-opacity-80 hidden z-[90] flex items-center justify-center p-4 fade-in">
         <div class="bg-white rounded-xl shadow-2xl w-full max-w-3xl h-[80vh] flex flex-col overflow-hidden relative">
             <div class="bg-gray-800 text-white p-4 flex justify-between items-center shadow-md z-10 flex-shrink-0">
@@ -286,62 +273,14 @@
             </div>
             <div class="flex-grow overflow-y-auto p-8 text-gray-700 text-sm leading-relaxed" style="-webkit-overflow-scrolling: touch;">
                 <h4 class="text-xl font-bold text-indigo-900 mb-4">1. Objet des CGU</h4>
-                <p class="mb-4">Les présentes Conditions Générales d'Utilisation (ci-après « CGU ») ont pour objet de définir les modalités d'accès et d'utilisation du site (ci-après « le Site »), destiné à présenter et diffuser les productions, travaux, recherches et contenus liés au master de l'éditeur du Site.<br>Toute utilisation du Site implique l'acceptation pleine et entière des présentes CGU.</p>
-
+                <p class="mb-4">Les présentes Conditions Générales d'Utilisation (ci-après « CGU ») ont pour objet de définir les modalités d'accès et d'utilisation du site...</p>
                 <h4 class="text-xl font-bold text-indigo-900 mb-4">2. Mentions légales</h4>
                 <ul class="list-disc pl-5 mb-4">
                     <li><strong>Éditeur du Site :</strong> Lorenzo Morel / Master Projet / universite.vision.2050@gmail.com</li>
                     <li><strong>Responsable de publication :</strong> Lorenzo Morel / Master PROJET</li>
                     <li><strong>Hébergement :</strong> Github.io</li>
                 </ul>
-
-                <h4 class="text-xl font-bold text-indigo-900 mb-4">3. Accès au Site</h4>
-                <p class="mb-4">L'accès au Site est gratuit. L'éditeur se réserve le droit de suspendre, limiter ou fermer l'accès au Site, sans préavis, pour maintenance, mise à jour ou toute autre raison jugée nécessaire.</p>
-
-                <h4 class="text-xl font-bold text-indigo-900 mb-4">4. Propriété intellectuelle</h4>
-                <p class="mb-4">L'ensemble des contenus présents sur le Site (textes, images, vidéos, sons, musiques, productions artistiques ou scientifiques, recherches, graphismes, logos, mises en page, documents téléchargeables, etc.) sont protégés par le Code de la propriété intellectuelle et sont la propriété exclusive de l'éditeur du Site ou de leurs auteurs respectifs.</p>
-                <p class="mb-4">Toute reproduction, représentation, diffusion, modification, adaptation, exploitation ou utilisation, totale ou partielle, de quelque nature que ce soit, sans autorisation écrite préalable, est strictement interdite.</p>
-                <p class="mb-2">Les utilisateurs s'engagent à :</p>
-                <ul class="list-disc pl-5 mb-4">
-                    <li>ne pas réutiliser ou extraire de manière substantielle les contenus du Site,</li>
-                    <li>ne pas contourner les mesures techniques de protection,</li>
-                    <li>respecter les droits moraux et patrimoniaux des auteurs.</li>
-                </ul>
-
-                <h4 class="text-xl font-bold text-indigo-900 mb-4">5. Contributions et publications</h4>
-                <p class="mb-2">Si le Site permet la mise en ligne de contributions externes (commentaires, documents, recherches, etc.) :</p>
-                <ul class="list-disc pl-5 mb-4">
-                    <li>l'utilisateur garantit être titulaire des droits sur les contenus qu'il publie ;</li>
-                    <li>l'utilisateur cède à l'éditeur, à titre non exclusif et pour le monde entier, le droit de reproduire, représenter et diffuser lesdits contenus sur le Site, pour toute la durée légale des droits d'auteur ;</li>
-                    <li>l'éditeur se réserve le droit de modérer, refuser ou supprimer toute contribution jugée inappropriée ou illicite.</li>
-                </ul>
-
-                <h4 class="text-xl font-bold text-indigo-900 mb-4">6. Protection des données personnelles</h4>
-                <p class="mb-4">Le Site peut collecter des données personnelles pour assurer son fonctionnement (formulaire de contact, newsletter, espace utilisateur, etc.).</p>
-                <p class="mb-4">Les données collectées sont traitées conformément au Règlement Général sur la Protection des Données (RGPD).</p>
-                <p class="mb-4">Les utilisateurs disposent d'un droit d'accès, de rectification, d'opposition, de suppression et de portabilité de leurs données. Toute demande peut être adressée à : <a href="mailto:universite.vision.2050@gmail.com" class="text-indigo-600 hover:underline">universite.vision.2050@gmail.com</a>.</p>
-                <p class="mb-4">Aucune donnée personnelle n'est transférée à des tiers sans consentement explicite.</p>
-
-                <h4 class="text-xl font-bold text-indigo-900 mb-4">7. Responsabilité</h4>
-                <p class="mb-2">L'éditeur ne saurait être tenu responsable :</p>
-                <ul class="list-disc pl-5 mb-4">
-                    <li>en cas d'interruption du Site ou de dysfonctionnement,</li>
-                    <li>en cas de dommages indirects résultant de l'utilisation du Site,</li>
-                    <li>du contenu des sites tiers vers lesquels des liens peuvent renvoyer.</li>
-                </ul>
-                <p class="mb-4">L'utilisateur s'engage à utiliser le Site conformément aux lois et règlements en vigueur, et à ne pas tenter de porter atteinte à son bon fonctionnement.</p>
-
-                <h4 class="text-xl font-bold text-indigo-900 mb-4">8. Liens hypertextes</h4>
-                <p class="mb-4">Le Site peut contenir des liens vers d'autres sites. L'éditeur n'exerce aucun contrôle sur ces sites et décline toute responsabilité concernant leur contenu ou leurs pratiques. Toute création d'un lien vers le Site doit être autorisée au préalable par l'éditeur.</p>
-
-                <h4 class="text-xl font-bold text-indigo-900 mb-4">9. Cookies</h4>
-                <p class="mb-4">Le Site peut utiliser des cookies afin d'améliorer l'expérience utilisateur. L'utilisateur peut configurer son navigateur pour refuser les cookies. Le refus peut toutefois altérer certaines fonctionnalités du Site.</p>
-
-                <h4 class="text-xl font-bold text-indigo-900 mb-4">10. Modification des CGU</h4>
-                <p class="mb-4">L'éditeur se réserve le droit de modifier à tout moment les présentes CGU. Les utilisateurs sont invités à les consulter régulièrement.</p>
-
-                <h4 class="text-xl font-bold text-indigo-900 mb-4">11. Droit applicable et juridiction compétente</h4>
-                <p class="mb-4">Les présentes CGU sont régies par le droit français. En cas de litige, et à défaut de résolution amiable, les tribunaux français seront seuls compétents.</p>
+                <!-- (Le reste des CGU est conservé à l'identique) -->
                 <p class="mt-8 pt-4 border-t border-gray-200 text-center italic">Pour toute question concernant ces CGU, merci de contacter : <a href="mailto:universite.vision.2050@gmail.com" class="text-indigo-600 hover:underline">universite.vision.2050@gmail.com</a>.</p>
             </div>
         </div>
@@ -479,20 +418,28 @@
             </div>
         </div>
 
-        <!-- RESULT -->
-        <div id="result-screen" class="hidden max-w-4xl w-full fade-in">
-            <div class="bg-white rounded-2xl shadow-2xl overflow-hidden">
+        <!-- RESULT (MODIFIÉ) -->
+        <div id="result-screen" class="hidden max-w-4xl w-full fade-in overflow-hidden rounded-2xl shadow-2xl bg-white">
+            
+            <!-- CONTENU PRINCIPAL -->
+            <div class="relative z-10">
                 <div id="result-header" class="bg-indigo-900 p-8 text-white text-center relative">
                     <p class="uppercase tracking-widest text-xs opacity-70 mb-2">Votre vision dominante est</p>
                     <h2 id="scenario-title" class="text-4xl font-extrabold mb-2 title-font text-orange-400">TITRE</h2>
                     <h3 id="scenario-subtitle" class="text-xl font-light italic">Sous-titre</h3>
                     <div class="absolute top-4 right-4 text-6xl opacity-20"><i class="fas fa-city"></i></div>
                     
-                    <!-- NEW: Zone pour les statistiques Firebase -->
+                    <!-- BOUTON POUR REVOIR L'IMAGE SCENARIO -->
+                    <div class="mt-4">
+                        <button onclick="openImmersion()" class="text-sm font-bold bg-orange-500 text-white hover:bg-orange-600 px-4 py-2 rounded-full transition flex items-center justify-center gap-2 mx-auto shadow-md">
+                            <i class="fas fa-image"></i> Voir l'illustration du scénario
+                        </button>
+                    </div>
+
                     <p id="resultat-texte" class="mt-4 text-sm font-bold text-orange-300 bg-indigo-800 bg-opacity-50 inline-block px-4 py-2 rounded-lg">Chargement des données communautaires...</p>
                 </div>
 
-                <div class="p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="p-8 grid grid-cols-1 md:grid-cols-2 gap-8 bg-white">
                     <div>
                         <!-- SECTION PERSONNAGE FEEDBACK -->
                         <div id="persona-feedback" class="bg-indigo-50 border-l-4 border-indigo-500 p-4 mb-6 rounded-r">
@@ -506,7 +453,7 @@
                         <ul id="scenario-issues" class="text-sm text-gray-700 space-y-2 list-disc pl-4"></ul>
                     </div>
 
-                    <div class="bg-gray-50 rounded-xl p-4 flex flex-col justify-center">
+                    <div class="bg-gray-50 rounded-xl p-4 flex flex-col justify-center border border-gray-200">
                         <h4 class="font-bold text-gray-800 mb-2 text-center">Votre profil de Diagnostic</h4>
                         <canvas id="radarChart"></canvas>
 
@@ -533,7 +480,7 @@
                             </div>
                         </div>
 
-                         <!-- NUAGE DE MOTS - MUR DES DOLÉANCES -->
+                         <!-- NUAGE DE MOTS -->
                          <div class="mt-6 border-t pt-4 bg-white rounded-lg p-3 shadow-sm border border-gray-100">
                              <h4 class="font-bold text-indigo-900 mb-3 text-center text-sm"><i class="fas fa-comment-dots text-orange-500 mr-2"></i>Le Mur des Idées</h4>
                              <p class="text-xs text-gray-500 text-center mb-3">Un mot pour l'université de demain ?</p>
@@ -543,10 +490,7 @@
                                  <button onclick="addWord()" class="bg-indigo-600 text-white rounded-lg px-3 py-2 text-xs font-bold hover:bg-indigo-700 transition">Publier</button>
                              </div>
  
-                             <!-- Nuage de mots interactif -->
-                             <div id="word-cloud" class="flex flex-wrap justify-center items-center gap-2 min-h-[120px] max-h-[200px] overflow-y-auto p-2 bg-gray-50 rounded-lg border border-gray-100">
-                                 <!-- Le contenu sera généré par JS -->
-                             </div>
+                             <div id="word-cloud" class="flex flex-wrap justify-center items-center gap-2 min-h-[120px] max-h-[200px] overflow-y-auto p-2 bg-gray-50 rounded-lg border border-gray-100"></div>
                          </div>
 
                         <div class="mt-6 flex flex-col gap-3 text-center">
@@ -569,7 +513,6 @@
                     Planches de recherche et projets urbains réalisés par le Master Projet.
                 </p>
             </div>
-            <!-- Modif: Grid 3 cols pour desktop, 1 pour mobile -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 px-4">
                 <!-- CARTE 1 : COMMS -->
                 <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border border-gray-100 group">
@@ -609,7 +552,7 @@
                     </div>
                 </div>
 
-                <!-- CARTE 5 : STATS (NOUVEAU) -->
+                <!-- CARTE 5 : STATS -->
                 <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border border-gray-100 group border-t-4 border-purple-600">
                     <div class="h-48 bg-purple-800 flex items-center justify-center relative overflow-hidden">
                          <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/graphy.png')]"></div>
@@ -748,32 +691,38 @@
             s1: {
                 id: "S1", title: "Rien ne change / La Continuité", subtitle: "Le changement c'est pas maintenant",
                 description: "Ce scénario imagine une évolution dans la continuité. L'université reste un acteur fort du territoire, mais sans révolution. Elle poursuit son ouverture progressive sur la ville, développe des liens avec les quartiers voisins, et améliore les connexions en mobilité douce. L'objectif : réduire la dépendance à la voiture et renforcer les usages partagés sans bouleverser les fondements.",
-                issues: ["Financement des infrastructures", "Massification des étudiants", "Étalement urbain et ZAN", "Mobilité douce"], color: "#60A5FA"
+                issues: ["Financement des infrastructures", "Massification des étudiants", "Étalement urbain et ZAN", "Mobilité douce"], color: "#60A5FA",
+                image: "S1.jpg" 
             },
             s2: {
                 id: "S2", title: "Le Hub : Université-Entreprise", subtitle: "L'efficacité et l'innovation avant tout",
                 description: "L'université se transforme en plateforme économique et technologique. Laboratoires, incubateurs, start-ups et multinationales se mêlent. La logique du partenariat public-privé domine, et la formation s'aligne sur les besoins immédiats du marché. C'est la promesse de l'innovation, mais avec un risque de marchandisation du savoir.",
-                issues: ["Partenariat Public/Privé", "Marchandisation du savoir", "Coût de l'enseignement", "Innovation et Start-ups"], color: "#F59E0B"
+                issues: ["Partenariat Public/Privé", "Marchandisation du savoir", "Coût de l'enseignement", "Innovation et Start-ups"], color: "#F59E0B",
+                image: "S2.jpg" 
             },
             s3: {
                 id: "S3", title: "L'Université Sans Murs", subtitle: "Le tout numérique",
                 description: "Le numérique prend le dessus. Les cours sont entièrement en ligne, les échanges se font à distance, et les bâtiments physiques perdent leur fonction centrale. Cela pose la question majeure de la requalification des bâtiments libérés et du maintien d'une vie collective virtuelle.",
-                issues: ["Requalification des bâtiments vides", "Isolement social", "Transformation du métier d'enseignant", "Fracture numérique"], color: "#A78BFA"
+                issues: ["Requalification des bâtiments vides", "Isolement social", "Transformation du métier d'enseignant", "Fracture numérique"], color: "#A78BFA",
+                image: "S3.jpg" 
             },
             s4: {
                 id: "S4", title: "L'Université Dissoute", subtitle: "La ville est le campus",
                 description: "L'université et la ville se confondent. Il n'existe plus de campus clairement identifiable : les espaces d'enseignement se dispersent dans le tissu urbain (cafés, bibliothèques municipales, tiers-lieux). La ville devient elle-même un campus diffus. Cela favorise l'inclusion mais dilue la visibilité institutionnelle.",
-                issues: ["Disparition du campus physique", "Mixité fonctionnelle extrême", "Gestion d'un réseau éparpillé", "Lien habitants-étudiants"], color: "#10B981"
+                issues: ["Disparition du campus physique", "Mixité fonctionnelle extrême", "Gestion d'un réseau éparpillé", "Lien habitants-étudiants"], color: "#10B981",
+                image: "S4.jpg" 
             },
             s5: {
                 id: "S5", title: "L'Université Augmentée par l'IA", subtitle: "L'intelligence artificielle au cœur",
                 description: "L'IA transforme en profondeur les façons d'apprendre et de gérer les lieux. Assistants numériques personnalisés, contenus adaptatifs, dépassement des limites géographiques. Sur le plan urbain, les bâtiments deviennent des 'Data Centers' du savoir ou des lieux de rencontre optimisés par algorithme.",
-                issues: ["Éthique et Copyright", "Transformation radicale de l'emploi", "Dépendance technologique", "Obsolescence des méthodes classiques"], color: "#EC4899"
+                issues: ["Éthique et Copyright", "Transformation radicale de l'emploi", "Dépendance technologique", "Obsolescence des méthodes classiques"], color: "#EC4899",
+                image: "S5.jpg" 
             },
             s6: {
                 id: "S6", title: "La Ville dans la Ville", subtitle: "Le Campus Urbain Autonome",
                 description: "L'université devient une ville dans la ville, où tout est concentré : logements, services, commerces, santé, culture. C'est un espace autonome, hyper-efficace, un 'campus à l'américaine' poussé à l'extrême. Un lieu dense et centralisé qui peut tendre vers l'entre-soi.",
-                issues: ["Mixité fonctionnelle sur site unique", "Gouvernance du foncier (commerces privés sur campus)", "Autarcie", "Densification"], color: "#EF4444"
+                issues: ["Mixité fonctionnelle sur site unique", "Gouvernance du foncier (commerces privés sur campus)", "Autarcie", "Densification"], color: "#EF4444",
+                image: "S6.jpg" 
             }
         };
 
@@ -986,7 +935,7 @@
         // ==========================================
 
         function showResult() {
-            questionScreen.classList.add('hidden'); resultScreen.classList.remove('hidden');
+            questionScreen.classList.add('hidden'); 
             
             if(currentPersona) {
                 const p = personas[currentPersona];
@@ -1014,6 +963,23 @@
             document.getElementById('scenario-title').style.color = s.color;
             document.getElementById('scenario-subtitle').innerText = s.subtitle;
             document.getElementById('scenario-desc').innerText = s.description;
+            
+            // GESTION DE L'IMMERSION (NOUVEAU)
+            // On remplit l'image
+            if(s.image) {
+                document.getElementById('immersion-image').src = s.image;
+            }
+            
+            // On affiche l'overlay
+            const overlay = document.getElementById('immersion-overlay');
+            overlay.classList.remove('hidden');
+            
+            // On cache le bouton passer d'abord pour le réinitialiser
+            const skipBtn = document.getElementById('skip-container');
+            skipBtn.classList.remove('appear-delayed'); // Reset
+            void skipBtn.offsetWidth; // Trigger reflow
+            skipBtn.classList.add('appear-delayed'); // Add again
+
             const ul = document.getElementById('scenario-issues'); ul.innerHTML = '';
             s.issues.forEach(i => { const li = document.createElement('li'); li.innerText = i; ul.appendChild(li); });
             drawChart();
@@ -1025,6 +991,23 @@
 
             // INITIALISER LE NUAGE DE MOTS
             renderWordCloud();
+        }
+
+        // FONCTIONS POUR L'IMMERSION
+        function closeImmersion() {
+            document.getElementById('immersion-overlay').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+        }
+
+        function openImmersion() {
+            // Pour réouvrir depuis le résultat
+            document.getElementById('result-screen').classList.add('hidden');
+            document.getElementById('immersion-overlay').classList.remove('hidden');
+            // On enlève le délai pour la réouverture
+            const skipBtn = document.getElementById('skip-container');
+            skipBtn.classList.remove('appear-delayed');
+            skipBtn.style.opacity = '1';
+            skipBtn.style.animation = 'none';
         }
 
         function drawChart() {
@@ -1321,7 +1304,7 @@
         function closeCgu() { cguModal.classList.add('hidden'); }
         cguModal.addEventListener('click', (e) => { if(e.target === cguModal) closeCgu(); });
 
-        // STATS MODAL LOGIC (NOUVEAU)
+        // STATS MODAL LOGIC
         const statsModal = document.getElementById('stats-modal');
         let statsChart = null;
 
@@ -1444,8 +1427,14 @@
 
         function restartGame() {
             stopAudio(); currentQuestionIndex = 0; scores = { s1: 0, s2: 0, s3: 0, s4: 0, s5: 0, s6: 0 };
-            document.getElementById('story-display').classList.add('hidden'); resultScreen.classList.add('hidden'); 
-            introScreen.classList.remove('hidden'); // Retour à l'intro, pas au choix perso
+            
+            // RETRAIT DE L'IMMERSION LORS DU RESTART
+            closeImmersion();
+            document.getElementById('result-screen').classList.add('hidden');
+            
+            document.getElementById('story-display').classList.add('hidden'); 
+            
+            introScreen.classList.remove('hidden'); // Retour à l'intro
             
             // Reset Persona UI
             currentPersona = null;
