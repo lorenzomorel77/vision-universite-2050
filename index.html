@@ -202,6 +202,78 @@
             </div>
         </div>
     </div>
+    
+    <!-- MODAL STATS (NOUVEAU) -->
+    <div id="stats-modal" class="fixed inset-0 bg-black bg-opacity-80 hidden z-[75] flex items-center justify-center p-2 md:p-6 fade-in">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-4xl h-full md:h-auto md:max-h-[90vh] flex flex-col overflow-hidden relative">
+            <!-- Header -->
+            <div class="bg-indigo-900 text-white p-4 md:p-6 flex justify-between items-center shadow-md z-10 shrink-0">
+                <div>
+                    <h3 class="text-xl md:text-2xl font-bold title-font"><i class="fas fa-chart-pie mr-2 text-orange-400"></i> Observatoire des Données</h3>
+                    <p class="text-xs text-indigo-200 mt-1">L'impact universitaire en chiffres</p>
+                </div>
+                <button onclick="closeStats()" class="text-white hover:text-red-400 transition-colors text-2xl">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <!-- Main Content Area -->
+            <div class="flex-grow flex flex-col bg-gray-50 overflow-y-auto">
+                
+                <!-- Chart Container -->
+                <div class="p-4 md:p-8 flex flex-col items-center justify-center min-h-[300px] md:min-h-[400px]">
+                    <div class="w-full max-w-2xl bg-white p-4 rounded-xl shadow-sm border border-gray-100 relative">
+                        <h4 id="stat-title" class="text-center font-bold text-gray-800 text-lg mb-2 title-font">Titre du Graphique</h4>
+                        <p id="stat-desc" class="text-center text-sm text-gray-500 mb-4 px-4 italic">Description...</p>
+                        <div class="relative h-64 md:h-80 w-full">
+                            <canvas id="statsCanvas"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Slider -->
+                <div class="bg-white border-t border-gray-200 p-4 shrink-0">
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 ml-2">Choisir une visualisation :</p>
+                    <div class="flex gap-4 overflow-x-auto pb-2 snap-x px-2" style="-webkit-overflow-scrolling: touch;">
+                        
+                        <!-- Btn 1 -->
+                        <button onclick="renderStat(0)" class="snap-start shrink-0 w-40 p-3 rounded-lg border-2 border-transparent hover:border-indigo-500 bg-gray-50 hover:bg-indigo-50 transition-all text-left group focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                            <div class="flex items-center gap-2 mb-1">
+                                <i class="fas fa-users text-orange-500 bg-orange-100 p-2 rounded-full"></i>
+                                <span class="text-xs font-bold text-gray-700 group-hover:text-indigo-700">Poids Démographique</span>
+                            </div>
+                            <div class="h-1 w-full bg-gray-200 rounded-full overflow-hidden">
+                                <div class="h-full bg-orange-500 w-1/4"></div>
+                            </div>
+                        </button>
+
+                        <!-- Btn 2 -->
+                        <button onclick="renderStat(1)" class="snap-start shrink-0 w-40 p-3 rounded-lg border-2 border-transparent hover:border-indigo-500 bg-gray-50 hover:bg-indigo-50 transition-all text-left group focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                            <div class="flex items-center gap-2 mb-1">
+                                <i class="fas fa-map-marked-alt text-blue-500 bg-blue-100 p-2 rounded-full"></i>
+                                <span class="text-xs font-bold text-gray-700 group-hover:text-indigo-700">Fragmentation Territoriale</span>
+                            </div>
+                             <div class="h-1 w-full bg-gray-200 rounded-full overflow-hidden">
+                                <div class="h-full bg-blue-500 w-2/3"></div>
+                            </div>
+                        </button>
+
+                        <!-- Btn 3 -->
+                        <button onclick="renderStat(2)" class="snap-start shrink-0 w-40 p-3 rounded-lg border-2 border-transparent hover:border-indigo-500 bg-gray-50 hover:bg-indigo-50 transition-all text-left group focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                            <div class="flex items-center gap-2 mb-1">
+                                <i class="fas fa-balance-scale text-purple-500 bg-purple-100 p-2 rounded-full"></i>
+                                <span class="text-xs font-bold text-gray-700 group-hover:text-indigo-700">Inégalités de Moyens</span>
+                            </div>
+                             <div class="h-1 w-full bg-gray-200 rounded-full overflow-hidden">
+                                <div class="h-full bg-purple-500 w-1/2"></div>
+                            </div>
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- MODAL CGU (NOUVEAU) -->
     <div id="cgu-modal" class="fixed inset-0 bg-black bg-opacity-80 hidden z-[90] flex items-center justify-center p-4 fade-in">
@@ -497,6 +569,7 @@
                     Planches de recherche et projets urbains réalisés par le Master Projet.
                 </p>
             </div>
+            <!-- Modif: Grid 3 cols pour desktop, 1 pour mobile -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 px-4">
                 <!-- CARTE 1 : COMMS -->
                 <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border border-gray-100 group">
@@ -519,7 +592,7 @@
                     </div>
                 </div>
 
-                <!-- CARTE 4 : ATLAS MONDE (Nouvelle) -->
+                <!-- CARTE 4 : ATLAS MONDE -->
                 <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border border-gray-100 group border-t-4 border-indigo-600">
                     <div class="h-48 bg-indigo-800 flex items-center justify-center relative overflow-hidden">
                          <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/world-map.png')]"></div>
@@ -532,6 +605,23 @@
                         </p>
                         <button onclick="openAtlas()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors shadow-md">
                             <i class="fas fa-map-marked-alt"></i> Ouvrir l'Atlas
+                        </button>
+                    </div>
+                </div>
+
+                <!-- CARTE 5 : STATS (NOUVEAU) -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border border-gray-100 group border-t-4 border-purple-600">
+                    <div class="h-48 bg-purple-800 flex items-center justify-center relative overflow-hidden">
+                         <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/graphy.png')]"></div>
+                         <i class="fas fa-chart-pie text-6xl text-purple-300 group-hover:text-white group-hover:scale-110 transition-all duration-500"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Observatoire Statistique</h3>
+                        <p class="text-sm text-gray-500 mb-4">
+                            Explorez les chiffres clés : poids démographique des étudiants, fragmentation des campus et inégalités de moyens.
+                        </p>
+                        <button onclick="openStats()" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors shadow-md">
+                            <i class="fas fa-chart-line"></i> Voir les Stats
                         </button>
                     </div>
                 </div>
@@ -1230,6 +1320,114 @@
         function openCgu() { cguModal.classList.remove('hidden'); }
         function closeCgu() { cguModal.classList.add('hidden'); }
         cguModal.addEventListener('click', (e) => { if(e.target === cguModal) closeCgu(); });
+
+        // STATS MODAL LOGIC (NOUVEAU)
+        const statsModal = document.getElementById('stats-modal');
+        let statsChart = null;
+
+        const statsData = [
+            {
+                type: 'pie',
+                title: "Montpellier, Ville Étudiante",
+                desc: "1 habitant sur 4 est étudiant (26,1%). Une proportion qui façonne l'urbain.",
+                data: {
+                    labels: ['Étudiants', 'Reste de la population'],
+                    datasets: [{
+                        data: [26.1, 73.9],
+                        backgroundColor: ['#F97316', '#E5E7EB'], // Orange / Gris
+                        borderWidth: 0
+                    }]
+                }
+            },
+            {
+                type: 'doughnut',
+                title: "Une Université Fragmentée",
+                desc: "Répartition des étudiants par campus : une constellation éclatée plutôt qu'un centre unique.",
+                data: {
+                    labels: ['Route de Mende', 'Triolet', 'Richter', 'Saint-Priest', 'Santé', 'Autres'],
+                    datasets: [{
+                        data: [29.2, 20.8, 16.7, 13.9, 11.1, 8.3],
+                        backgroundColor: ['#4F46E5', '#3B82F6', '#6366F1', '#818CF8', '#A5B4FC', '#C7D2FE'],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                }
+            },
+            {
+                type: 'radar',
+                title: "Moyens & Personnels",
+                desc: "Comparaison des ressources (Budget/Étudiant vs Personnels) entre grandes universités.",
+                data: {
+                    labels: ['Aix-Marseille', 'Lyon 1', 'U. Montpellier', 'Lille', 'Paris-Saclay', 'Paul-Valéry', 'Toulouse'],
+                    datasets: [{
+                        label: 'Budget / Étudiant (€)',
+                        data: [10850, 10600, 9825, 7500, 8300, 7000, 5500],
+                        fill: true,
+                        backgroundColor: 'rgba(249, 115, 22, 0.2)',
+                        borderColor: 'rgb(249, 115, 22)',
+                        pointBackgroundColor: 'rgb(249, 115, 22)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(249, 115, 22)'
+                    }, {
+                        label: 'Personnels',
+                        data: [8000, 4900, 4800, 8000, 11000, 1500, 3100],
+                        fill: true,
+                        backgroundColor: 'rgba(79, 70, 229, 0.2)',
+                        borderColor: 'rgb(79, 70, 229)',
+                        pointBackgroundColor: 'rgb(79, 70, 229)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(79, 70, 229)'
+                    }]
+                },
+                options: {
+                    elements: { line: { borderWidth: 3 } },
+                    scales: { r: { angleLines: { display: true }, suggestedMin: 0 } }
+                }
+            }
+        ];
+
+        function openStats() {
+            statsModal.classList.remove('hidden');
+            // Render first chart by default with a slight delay for layout
+            setTimeout(() => renderStat(0), 100);
+        }
+
+        function closeStats() {
+            statsModal.classList.add('hidden');
+            if(statsChart) { statsChart.destroy(); statsChart = null; }
+        }
+
+        function renderStat(index) {
+            const ctx = document.getElementById('statsCanvas').getContext('2d');
+            const stat = statsData[index];
+
+            // Update Text
+            document.getElementById('stat-title').innerText = stat.title;
+            document.getElementById('stat-desc').innerText = stat.desc;
+
+            // Destroy previous chart
+            if (statsChart) statsChart.destroy();
+
+            // Create new chart
+            statsChart = new Chart(ctx, {
+                type: stat.type,
+                data: stat.data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    },
+                    ...stat.options // Merge custom options (for radar)
+                }
+            });
+        }
+
+        // Fermer en cliquant dehors
+        statsModal.addEventListener('click', (e) => { if(e.target === statsModal) closeStats(); });
+
 
         // AUDIO
         function revealStory() { document.getElementById('reveal-btn').classList.add('hidden'); document.getElementById('story-display').classList.remove('hidden'); stopAudioUI(); }
