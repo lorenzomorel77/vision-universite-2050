@@ -2,7 +2,6 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <!-- AJOUT: user-scalable=yes pour permettre le zoom manuel sur tout l'écran si besoin -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>Vision Université 2050 - Atelier Atrium</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -60,6 +59,88 @@
             100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(249, 115, 22, 0); }
         }
 
+        /* --- Styles pour le Slider Avant/Après (Comparaison) --- */
+        .comparison-slider {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            cursor: ew-resize;
+            background-color: #111827; /* Fond sombre pour le letterbox */
+            
+            /* CORRECTION VOILE BLEU : Empêche la sélection de texte */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            touch-action: none; /* Empêche le scroll vertical sur mobile pendant le drag */
+        }
+
+        .comparison-slider img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* CORRECTION ZOOM : Affiche l'image en entier sans couper */
+            object-position: center;
+            pointer-events: none; /* Empêche le drag natif de l'image */
+        }
+
+        .comparison-slider .after-image {
+            z-index: 1;
+        }
+
+        .comparison-slider .before-image-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 50%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 2;
+            border-right: 3px solid white;
+            box-shadow: 5px 0 15px -5px rgba(0,0,0,0.4);
+            background-color: #111827; /* Important pour masquer l'image du dessous */
+        }
+
+        /* CORRECTION IMAGE STATIQUE */
+        /* L'image à l'intérieur du conteneur masqué doit avoir la taille du conteneur parent (le slider) */
+        /* width: 100vw fonctionne car le modal est plein écran. Cela empêche l'image de s'écraser. */
+        .comparison-slider .before-image-container img {
+            width: 100vw; 
+            height: 100%;
+            max-width: none;
+        }
+
+        .comparison-handle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 44px;
+            height: 44px;
+            background-color: white;
+            border-radius: 50%;
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4F46E5;
+            font-size: 1.2rem;
+            pointer-events: none;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Boutons Scénarios Actifs */
+        .btn-scenario.active {
+            background-color: #F97316; /* Orange */
+            color: white;
+            border-color: #F97316;
+            box-shadow: 0 0 10px rgba(249, 115, 22, 0.5);
+        }
+        /* --------------------------------------------------------- */
+
         /* Responsive Timeline */
         @media (max-width: 768px) {
             .timeline-line { left: 20px; }
@@ -84,25 +165,72 @@
         </div>
     </div>
 
-    <!-- AJOUT : MODAL RÉVÉLATION SCÉNARIO (IMAGE) -->
+    <!-- MODAL RÉVÉLATION SCÉNARIO (IMAGE) -->
     <div id="scenario-image-overlay" class="fixed inset-0 bg-black z-[100] hidden flex flex-col items-center justify-center fade-in">
         <div class="absolute top-0 w-full bg-gradient-to-b from-black/80 to-transparent text-white text-center p-6 z-10">
             <h2 class="text-2xl md:text-3xl font-bold tracking-widest uppercase title-font shadow-black drop-shadow-lg">Votre Vision se dessine...</h2>
         </div>
         
-        <!-- Conteneur Image -->
         <div class="w-full h-full flex items-center justify-center p-4 bg-black">
-            <!-- L'image sera injectée ici. Note : on gère l'erreur JPG pour la démo, mais le src par défaut sera PNG -->
             <img id="scenario-reveal-img" src="" 
                  onerror="this.onerror=null; this.src=this.src.replace('.png', '.jpg');" 
                  alt="Illustration Scénario" 
                  class="max-w-full max-h-screen object-contain shadow-2xl">
         </div>
 
-        <!-- Bouton Passer (Apparaît après 5s) -->
         <button id="skip-scenario-btn" onclick="closeScenarioImage()" class="absolute bottom-10 bg-white text-indigo-900 hover:bg-orange-500 hover:text-white font-bold py-3 px-8 rounded-full shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all transform hover:scale-105 hidden flex items-center gap-3 z-50 text-lg border-2 border-indigo-900">
             <span>Découvrir le résultat</span> <i class="fas fa-arrow-right"></i>
         </button>
+    </div>
+
+    <!-- MODAL SLIDER ATRIUM (AVANT/APRÈS) -->
+    <div id="atrium-modal" class="fixed inset-0 bg-black z-[95] hidden flex flex-col fade-in">
+        <!-- Header -->
+        <div class="absolute top-0 left-0 right-0 p-4 z-50 flex justify-between items-start bg-gradient-to-b from-black/80 to-transparent pointer-events-none">
+            <div class="pointer-events-auto text-white drop-shadow-md">
+                <h2 class="text-xl md:text-2xl font-bold title-font"><i class="fas fa-exchange-alt mr-2 text-orange-500"></i>L'ATRIUM 2050</h2>
+                <p class="text-xs md:text-sm opacity-90">Comparaison : 2023 vs Vision Future</p>
+            </div>
+            <button onclick="closeAtrium()" class="pointer-events-auto bg-white/20 hover:bg-white/40 backdrop-blur-sm text-white rounded-full w-10 h-10 flex items-center justify-center transition-colors shadow-lg">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+
+        <!-- Slider Area -->
+        <div class="flex-grow relative w-full h-full bg-gray-900">
+            <div id="atrium-comparison-slider" class="comparison-slider">
+                <!-- Image "Après" (2050) - Image de fond -->
+                <img id="atrium-after-img" src="" alt="Atrium 2050 (Après)" class="after-image">
+                
+                <!-- Image "Avant" (2023) - Dans le conteneur redimensionnable -->
+                <div class="before-image-container" style="width: 50%;">
+                    <!-- Image de base (Format PNG) -->
+                    <img id="atrium-before-img" src="Atrium 2023.png" onerror="this.onerror=null; this.src='Atrium 2023.jpg';" alt="Atrium 2023 (Avant)">
+                </div>
+
+                <!-- Handle -->
+                <div class="comparison-handle" style="left: 50%;">
+                    <i class="fas fa-arrows-alt-h"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Controls -->
+        <div class="bg-black/90 text-white p-4 pb-8 flex flex-col items-center gap-3 z-50 border-t border-gray-800">
+            <!-- Zone de texte descriptive ajoutée -->
+            <div id="atrium-scenario-label" class="text-sm md:text-base text-center mb-2 px-4 min-h-[1.5em] transition-all duration-300">
+                <span class="text-gray-400 italic">Sélectionnez un scénario ci-dessous...</span>
+            </div>
+
+            <div class="flex flex-wrap justify-center gap-2">
+                <button onclick="setAtriumScenario('S1')" id="btn-s1" class="btn-scenario px-3 py-1.5 rounded border border-white/30 hover:bg-white/10 text-xs font-bold transition-all">S1</button>
+                <button onclick="setAtriumScenario('S2')" id="btn-s2" class="btn-scenario px-3 py-1.5 rounded border border-white/30 hover:bg-white/10 text-xs font-bold transition-all">S2</button>
+                <button onclick="setAtriumScenario('S3')" id="btn-s3" class="btn-scenario px-3 py-1.5 rounded border border-white/30 hover:bg-white/10 text-xs font-bold transition-all">S3</button>
+                <button onclick="setAtriumScenario('S4')" id="btn-s4" class="btn-scenario px-3 py-1.5 rounded border border-white/30 hover:bg-white/10 text-xs font-bold transition-all">S4</button>
+                <button onclick="setAtriumScenario('S5')" id="btn-s5" class="btn-scenario px-3 py-1.5 rounded border border-white/30 hover:bg-white/10 text-xs font-bold transition-all">S5</button>
+                <button onclick="setAtriumScenario('S6')" id="btn-s6" class="btn-scenario px-3 py-1.5 rounded border border-white/30 hover:bg-white/10 text-xs font-bold transition-all">S6</button>
+            </div>
+        </div>
     </div>
 
     <!-- MODAL ATLAS MONDE -->
@@ -125,31 +253,32 @@
             <img src="1024px-BlankMap-World.svg.png" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/World_map_blank_without_borders.svg/1024px-World_map_blank_without_borders.svg.png'" alt="Carte du Monde" class="absolute inset-0 w-full h-full object-fill opacity-90 group-hover:opacity-100 transition-opacity duration-500">
             
             <!-- Points chauds -->
-            <div onclick="showAtlasFact('usa')" class="map-hotspot" style="top: 32%; left: 18%;" title="États-Unis"></div>
-            <div onclick="showAtlasFact('europe')" class="map-hotspot" style="top: 27%; left: 49%;" title="Europe"></div>
-            <div onclick="showAtlasFact('uk')" class="map-hotspot" style="top: 22%; left: 47%;" title="Royaume-Uni"></div>
+            <div onclick="showAtlasFact('usa')" class="map-hotspot" style="top: 33%; left: 24%;" title="États-Unis"></div>
+            <div onclick="showAtlasFact('europe')" class="map-hotspot" style="top: 27%; left: 49.5%;" title="Europe"></div>
+            <div onclick="showAtlasFact('uk')" class="map-hotspot" style="top: 23%; left: 47%;" title="Royaume-Uni"></div>
             <div onclick="showAtlasFact('china')" class="map-hotspot" style="top: 32%; left: 78%;" title="Chine"></div>
-            <div onclick="showAtlasFact('india')" class="map-hotspot" style="top: 40%; left: 70%;" title="Inde"></div>
+            <div onclick="showAtlasFact('india')" class="map-hotspot" style="top: 40%; left: 69%;" title="Inde"></div>
+            <div onclick="showAtlasFact('philippines')" class="map-hotspot" style="top: 48%; left: 83%;" title="Philippines"></div>
             
-            <!-- Info Box FULL SCREEN OVERLAY -->
-            <div id="atlas-info-box" class="absolute inset-0 bg-white z-40 hidden flex flex-col animate-fade-in">
-                <!-- Header Box -->
-                <div class="bg-indigo-900 text-white p-6 flex justify-between items-center shadow-md flex-shrink-0">
-                    <h4 id="atlas-country" class="text-2xl font-bold uppercase tracking-wide title-font">PAYS</h4>
-                    <button onclick="hideAtlasFact()" class="text-white hover:text-orange-400 transition-colors text-2xl px-2">
-                        <i class="fas fa-times"></i> Fermer
-                    </button>
-                </div>
-                <!-- Content Scrollable -->
-                <div class="flex-grow overflow-y-auto p-8 md:p-12 bg-gray-50">
-                    <div id="atlas-content" class="max-w-3xl mx-auto text-gray-800 text-lg leading-relaxed space-y-6">
-                        <!-- Contenu dynamique -->
-                    </div>
-                </div>
-            </div>
-
         </div>
         <p class="text-indigo-400 text-xs mt-4 italic">Cliquez sur les points oranges pour découvrir les données clés.</p>
+    </div>
+
+    <!-- Info Box FULL SCREEN OVERLAY pour l'Atlas -->
+    <div id="atlas-info-box" class="fixed inset-0 bg-white z-[85] hidden flex flex-col animate-fade-in">
+        <!-- Header Box -->
+        <div class="bg-indigo-900 text-white p-6 flex justify-between items-center shadow-md flex-shrink-0">
+            <h4 id="atlas-country" class="text-2xl font-bold uppercase tracking-wide title-font">PAYS</h4>
+            <button onclick="hideAtlasFact()" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-6 rounded-full transition-colors flex items-center gap-2">
+                <span>Fermer</span> <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <!-- Content Scrollable -->
+        <div class="flex-grow overflow-y-auto p-8 md:p-12 bg-gray-50">
+            <div id="atlas-content" class="max-w-4xl mx-auto text-gray-800 text-lg leading-relaxed space-y-6">
+                <!-- Contenu dynamique -->
+            </div>
+        </div>
     </div>
 
     <!-- MODAL POPUP FOR SCENARIO DETAILS -->
@@ -501,7 +630,7 @@
             </div>
         </div>
 
-        <!-- WORKS SCREEN (Identique) -->
+        <!-- WORKS SCREEN -->
         <div id="works-screen" class="hidden max-w-6xl w-full fade-in">
             <!-- (Contenu identique) -->
             <div class="text-center mb-10">
@@ -566,14 +695,26 @@
                         <div class="mt-2 text-xs text-gray-400 italic"><i class="fas fa-check-circle mr-1"></i> Projet en cours</div>
                     </div>
                 </div>
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border border-gray-100 group">
+
+                <!-- CARTE MODIFIÉE : ATRIUM AVEC BOUTON PLEIN ÉCRAN (Cliquable entièrement) -->
+                <div onclick="openAtrium()" class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border border-gray-100 group cursor-pointer">
                     <div class="h-48 bg-blue-600 flex items-center justify-center relative overflow-hidden">
-                        <i class="fas fa-archway text-6xl text-white group-hover:scale-110 transition-transform duration-500"></i>
+                        <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+                        <i class="fas fa-archway text-6xl text-white group-hover:scale-110 transition-transform duration-500 z-10"></i>
+                        <!-- Image de fond floue pour le style (Utilise la nouvelle image) -->
+                        <img src="Atrium 2023.png" onerror="this.src='Atrium 2023.jpg'" class="absolute inset-0 w-full h-full object-cover opacity-30" alt="">
                     </div>
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">L'Atrium : Une Place Publique</h3>
-                        <p class="text-sm text-gray-500 mb-4">Plus qu'une bibliothèque, l'Atrium est pensé comme une "rotule" urbaine. Construit sur un ancien parking, il offre 15 000 m² ouverts aux habitants, brisant l'isolement du campus.</p>
-                        <div class="mt-2 text-xs text-gray-400 italic"><i class="fas fa-check-circle mr-1"></i> Livré en 2023</div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">L'Atrium : Une Place Publique (2023 vs 2050)</h3>
+                        <p class="text-sm text-gray-500 mb-4">
+                            Découvrez la métamorphose de l'Atrium à travers un slider interactif Avant/Après. Cliquez pour voir l'évolution en détail.
+                        </p>
+                        
+                        <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors shadow-md">
+                            <i class="fas fa-expand"></i> Ouvrir le Comparateur
+                        </button>
+
+                        <div class="mt-2 text-xs text-gray-400 italic"><i class="fas fa-check-circle mr-1"></i> Visualisation immersive</div>
                     </div>
                 </div>
             </div>
@@ -871,30 +1012,102 @@
         }
         window.addEventListener('storage', (e) => { if (e.key === 'atrium_words') renderWordCloud(); });
 
-        // ATLAS DATA (Identique)
+        // ATLAS DATA ENRICHIE AVEC LE PDF
         const atlasData = {
-            usa: { country: "États-Unis", content: `<p class="font-bold text-orange-600 mb-1">Coût Exorbitant vs France</p><p>Un étudiant américain paie en moyenne <strong>11 950$ à 31 880$</strong> par an, contre <strong>175€ à 250€</strong> en France.</p><div class="h-px bg-gray-200 my-2"></div><p class="font-bold text-indigo-600 mb-1">Domination Académique</p><p><strong>38 universités</strong> américaines sont dans le top 100 mondial (Shanghai). Harvard y est #1 depuis 22 ans.</p><p class="text-xs text-gray-500 mt-1">Note : Berry College fait 110km², soit la taille de Paris.</p>` },
-            europe: { country: "Europe & France", content: `<p class="font-bold text-indigo-600 mb-1">Massification Réussie</p><p>En France, la part de bacheliers est passée de <strong>20% (1970)</strong> à près de <strong>80%</strong> aujourd'hui. L'accès au savoir s'est démocratisé.</p><div class="h-px bg-gray-200 my-2"></div><p class="font-bold text-green-600 mb-1">Modèle Public</p><p>En Europe, <strong>70%</strong> des institutions sont publiques (contre seulement 32% aux USA). L'éducation reste un bien commun.</p><p class="text-xs text-gray-500 mt-1">Dans les grandes métropoles comme Paris ou Berlin, 5% de la population est étudiante.</p>` },
-            uk: { country: "Royaume-Uni", content: `<p class="font-bold text-indigo-600 mb-1">Attractivité Mondiale</p><p>Le pays accueille <strong>633 910 étudiants internationaux</strong>, soit 14% de tous les étudiants mobiles de l'OCDE.</p><div class="h-px bg-gray-200 my-2"></div><p>Un modèle hybride puissant, alliant tradition universitaire séculaire (Oxford, Cambridge) et stratégie d'exportation du savoir.</p>` },
-            china: { country: "Chine", content: `<p class="font-bold text-red-600 mb-1">Explosion Scientifique</p><p>La Chine a publié <strong>898 949 articles scientifiques</strong> en 2022, une augmentation de <strong>96%</strong> par rapport à 2010.</p><div class="h-px bg-gray-200 my-2"></div><p class="font-bold text-indigo-600 mb-1">Mobilité Sortante</p><p>L'Asie représente <strong>58%</strong> des étudiants internationaux mobiles dans le monde.</p>` },
-            india: { country: "Inde", content: `<p class="font-bold text-orange-600 mb-1">Gigantisme Universitaire</p><p>L'Inde compte <strong>8 410 universités</strong>, plus que tout autre pays au monde.</p><div class="h-px bg-gray-200 my-2"></div><p>Un défi colossal : former la plus grande jeunesse du monde tout en élevant les standards de recherche.</p>` }
+            usa: { 
+                country: "États-Unis", 
+                content: `
+                    <p class="font-bold text-orange-600 mb-1">Puissance & Classements</p>
+                    <p>Avec <strong>38 universités dans le top 100</strong> (Shanghai 2024), les USA dominent. Harvard est #1 depuis 22 ans.</p>
+                    <div class="h-px bg-gray-200 my-4"></div>
+                    <p class="font-bold text-indigo-600 mb-1">Modèle Campus Géant</p>
+                    <p>Le <strong>Berry College</strong> s'étend sur 110 km², soit la taille de Paris !</p>
+                    <p>Coût moyen : 11 950$ à 31 880$/an (vs ~200€ en France).</p>
+                    <div class="h-px bg-gray-200 my-4"></div>
+                    <p class="text-sm italic">Accueille 20% des étudiants internationaux de l'OCDE.</p>
+                ` 
+            },
+            europe: { 
+                country: "Europe & France", 
+                content: `
+                    <p class="font-bold text-green-600 mb-1">Accès Massif</p>
+                    <p>Taux d'inscription de <strong>79%</strong> (vs 43% moyenne mondiale).</p>
+                    <p>L'Europe compte 19.2% des institutions mondiales pour seulement 10% de la population.</p>
+                    <div class="h-px bg-gray-200 my-4"></div>
+                    <p class="font-bold text-indigo-600 mb-1">Focus France</p>
+                    <p>L'<strong>Université Paris-Saclay</strong> est 13ème mondiale (Shanghai 2025). La France accueille 364 756 étudiants internationaux (5% mondial).</p>
+                ` 
+            },
+            uk: { 
+                country: "Royaume-Uni", 
+                content: `
+                    <p class="font-bold text-indigo-600 mb-1">Excellence Européenne</p>
+                    <p><strong>Oxford</strong> (#1) et Cambridge (#3) dominent le classement européen QS 2024.</p>
+                    <div class="h-px bg-gray-200 my-4"></div>
+                    <p class="font-bold text-orange-600 mb-1">Attractivité</p>
+                    <p>Accueille <strong>633 910 étudiants internationaux</strong> (14% des étudiants mobiles OCDE).</p>
+                    <p>Un modèle hybride puissant alliant tradition et export du savoir.</p>
+                ` 
+            },
+            china: { 
+                country: "Chine", 
+                content: `
+                    <p class="font-bold text-red-600 mb-1">Explosion Scientifique</p>
+                    <p>#1 Mondial en production scientifique avec <strong>898 949 articles</strong> publiés en 2022 (+96% depuis 2010).</p>
+                    <div class="h-px bg-gray-200 my-4"></div>
+                    <p class="font-bold text-indigo-600 mb-1">Montée en puissance</p>
+                    <p>225 universités dans le top 1000 mondial. La Chine est le 2ème pays avec le plus d'universités classées.</p>
+                ` 
+            },
+            india: { 
+                country: "Inde", 
+                content: `
+                    <p class="font-bold text-orange-600 mb-1">Record du Monde</p>
+                    <p>Compte <strong>8 410 universités</strong>, le plus grand nombre au monde !</p>
+                    <div class="h-px bg-gray-200 my-4"></div>
+                    <p class="font-bold text-indigo-600 mb-1">Gigantisme</p>
+                    <p>L'Université <strong>G.B. Pant</strong> est 116 fois plus grande que le Vatican.</p>
+                    <p>Un défi colossal : +268% d'étudiants entre 2000 et 2020.</p>
+                ` 
+            },
+            philippines: {
+                country: "Philippines / Asie SE",
+                content: `
+                    <p class="font-bold text-blue-600 mb-1">Densité Extrême</p>
+                    <p>L'université <strong>UP Diliman</strong> accueille 47 627 étudiants sur seulement 5 km².</p>
+                    <p>C'est 22x plus compact que le Berry College américain.</p>
+                    <div class="h-px bg-gray-200 my-4"></div>
+                    <p class="font-bold text-indigo-600 mb-1">Dynamique Régionale</p>
+                    <p>L'Asie de l'Est et du Sud-Est représente 58% des étudiants internationaux mobiles de l'OCDE.</p>
+                `
+            }
         };
 
         const atlasModal = document.getElementById('atlas-modal');
         const atlasInfoBox = document.getElementById('atlas-info-box');
+        
         function openAtlas() { atlasModal.classList.remove('hidden'); }
         function closeAtlas() { atlasModal.classList.add('hidden'); hideAtlasFact(); }
+        
         function showAtlasFact(countryKey) {
             const data = atlasData[countryKey];
             if(!data) return;
             document.getElementById('atlas-country').innerText = data.country;
             document.getElementById('atlas-content').innerHTML = data.content;
+            
+            // Affichage en grand (fixed overlay)
             atlasInfoBox.classList.remove('hidden');
-            atlasInfoBox.style.opacity = '0'; atlasInfoBox.style.transform = 'translateY(10px)';
-            setTimeout(() => { atlasInfoBox.style.opacity = '1'; atlasInfoBox.style.transform = 'translateY(0)'; }, 50);
+            atlasInfoBox.classList.add('flex'); // Important pour le layout
         }
-        function hideAtlasFact() { atlasInfoBox.classList.add('hidden'); }
+        
+        function hideAtlasFact() { 
+            atlasInfoBox.classList.add('hidden');
+            atlasInfoBox.classList.remove('flex');
+        }
+        
+        // Fermer Atlas en cliquant dehors
         atlasModal.addEventListener('click', (e) => { if (e.target === atlasModal) closeAtlas(); });
+
 
         function showWorks() { 
             resultScreen.classList.add('hidden'); worksScreen.classList.remove('hidden'); 
@@ -1011,7 +1224,83 @@
             document.querySelectorAll('.persona-card').forEach(el => el.classList.remove('selected-persona', 'ring-2', 'ring-indigo-500'));
             const btn = document.getElementById('start-btn');
             btn.disabled = true; btn.classList.add('bg-gray-300', 'cursor-not-allowed'); btn.classList.remove('bg-orange-500', 'hover:bg-orange-600', 'cursor-pointer'); btn.innerText = "Choisir un personnage";
+            // Reset slider state (pas besoin car il est dans le modal maintenant)
         }
+
+        // --- LOGIQUE MODAL ATRIUM (NOUVEAU) ---
+        const atriumModal = document.getElementById('atrium-modal');
+        const atriumAfterImg = document.getElementById('atrium-after-img');
+        
+        function openAtrium() {
+            atriumModal.classList.remove('hidden');
+            
+            // Charger l'image du scénario gagnant ou défaut S1
+            const scenarioId = winnerScenarioId || 's1';
+            setAtriumScenario(scenarioId.toUpperCase());
+        }
+
+        function closeAtrium() {
+            atriumModal.classList.add('hidden');
+        }
+
+        function setAtriumScenario(scenarioId) {
+            // Format: "S1"
+            const safeId = scenarioId.toUpperCase(); // S1
+            const imageName = `${safeId} Atrium.png`;
+            
+            atriumAfterImg.src = imageName;
+            atriumAfterImg.onerror = function() { 
+                this.onerror = null; 
+                this.src = this.src.replace('.png', '.jpg'); 
+            };
+
+            // Mise à jour UI boutons
+            document.querySelectorAll('.btn-scenario').forEach(btn => {
+                btn.classList.remove('active');
+                if(btn.id === `btn-${safeId.toLowerCase()}`) btn.classList.add('active');
+            });
+
+            // Mise à jour du texte descriptif
+            const s = scenarios[safeId.toLowerCase()];
+            const label = document.getElementById('atrium-scenario-label');
+            if (s && label) {
+                label.innerHTML = `<span style="color:${s.color}" class="font-bold">${s.title}</span> : ${s.subtitle}`;
+            }
+        }
+
+        // --- LOGIQUE DU SLIDER AVANT/APRÈS ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const slider = document.getElementById('atrium-comparison-slider');
+            const beforeContainer = slider.querySelector('.before-image-container');
+            const handle = slider.querySelector('.comparison-handle');
+            let isDragging = false;
+
+            const getPositionX = (event) => {
+                const rect = slider.getBoundingClientRect();
+                let clientX = event.clientX || event.touches[0].clientX;
+                let x = clientX - rect.left;
+                x = Math.max(0, Math.min(x, rect.width)); 
+                return (x / rect.width) * 100; 
+            };
+
+            const moveSlider = (xPercent) => {
+                beforeContainer.style.width = `${xPercent}%`;
+                handle.style.left = `${xPercent}%`;
+            };
+
+            // Mouse events
+            slider.addEventListener('mousedown', (e) => { isDragging = true; moveSlider(getPositionX(e)); });
+            window.addEventListener('mouseup', () => { isDragging = false; });
+            window.addEventListener('mousemove', (e) => { if (!isDragging) return; moveSlider(getPositionX(e)); });
+
+            // Touch events (pour mobile)
+            slider.addEventListener('touchstart', (e) => { isDragging = true; moveSlider(getPositionX(e)); }, { passive: true });
+            window.addEventListener('touchend', () => { isDragging = false; });
+            window.addEventListener('touchmove', (e) => { if (!isDragging) return; moveSlider(getPositionX(e)); }, { passive: true });
+
+            // Centrer au départ
+            moveSlider(50);
+        });
     </script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
