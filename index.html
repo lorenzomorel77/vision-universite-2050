@@ -6,16 +6,23 @@
     <title>Vision Université 2050 - Atelier Atrium</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Roboto:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { font-family: 'Roboto', sans-serif; background-color: #f3f4f6; }
+        body { font-family: 'Roboto', sans-serif; background-color: #f3f4f6; transition: background-color 0.3s ease; }
         h1, h2, h3, .title-font { font-family: 'Montserrat', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        
         .card-hover:hover { transform: translateY(-5px); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
         .fade-in { animation: fadeIn 0.5s ease-out forwards; opacity: 0; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* Animation pour l'indicateur audio */
+        /* Styles spécifiques Frise Chrono & Audio */
+        .timeline-line { position: absolute; left: 50%; top: 0; bottom: 0; width: 4px; background: #E0E7FF; transform: translateX(-50%); }
+        .timeline-point { position: absolute; left: 50%; width: 20px; height: 20px; background: #4F46E5; border: 4px solid white; border-radius: 50%; transform: translateX(-50%); z-index: 10; box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.2); }
+        .timeline-card { width: 45%; position: relative; }
+        .timeline-card.left { left: 0; text-align: right; padding-right: 40px; }
+        .timeline-card.right { left: 55%; text-align: left; padding-left: 40px; }
         .speaking-animation { display: flex; gap: 4px; justify-content: center; align-items: flex-end; height: 20px; }
         .bar { width: 4px; background-color: #4F46E5; animation: speak 1s infinite ease-in-out; }
         .bar:nth-child(1) { animation-delay: 0.0s; height: 10px; }
@@ -23,123 +30,79 @@
         .bar:nth-child(3) { animation-delay: 0.2s; height: 20px; }
         .bar:nth-child(4) { animation-delay: 0.3s; height: 12px; }
         @keyframes speak { 0%, 100% { height: 5px; } 50% { height: 20px; } }
-
-        /* Styles spécifiques Frise Chrono */
-        .timeline-line { position: absolute; left: 50%; top: 0; bottom: 0; width: 4px; background: #E0E7FF; transform: translateX(-50%); }
-        .timeline-point { position: absolute; left: 50%; width: 20px; height: 20px; background: #4F46E5; border: 4px solid white; border-radius: 50%; transform: translateX(-50%); z-index: 10; box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.2); }
-        .timeline-card { width: 45%; position: relative; }
-        .timeline-card.left { left: 0; text-align: right; padding-right: 40px; }
-        .timeline-card.right { left: 55%; text-align: left; padding-left: 40px; }
-        
         .selected-persona { border-color: #4F46E5; background-color: #EEF2FF; transform: scale(1.02); }
-
-        /* Animation Nuage de mots */
-        @keyframes popIn { 0% { transform: scale(0); opacity: 0; } 70% { transform: scale(1.1); } 100% { transform: scale(1); opacity: 1; } }
-        .word-tag { animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; display: inline-block; }
-
-        /* Styles Atlas Monde */
-        .map-hotspot {
-            position: absolute;
-            width: 24px;
-            height: 24px;
-            background-color: #F97316; /* Orange-500 */
-            border: 3px solid rgba(255, 255, 255, 0.8);
-            border-radius: 50%;
-            cursor: pointer;
-            box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.7);
-            animation: pulse-orange 2s infinite;
-            transition: transform 0.3s ease;
-            z-index: 20;
-        }
+        
+        /* Atlas Map Styles */
+        .map-hotspot { position: absolute; width: 24px; height: 24px; background-color: #F97316; border: 3px solid rgba(255, 255, 255, 0.8); border-radius: 50%; cursor: pointer; box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.7); animation: pulse-orange 2s infinite; transition: transform 0.3s ease; z-index: 20; }
         .map-hotspot:hover { transform: scale(1.5); background-color: #4F46E5; z-index: 30; }
+        @keyframes pulse-orange { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(249, 115, 22, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(249, 115, 22, 0); } }
+
+        /* Comparison Slider */
+        .comparison-slider { position: relative; width: 100%; height: 100%; overflow: hidden; cursor: ew-resize; background-color: #111827; user-select: none; touch-action: none; }
+        .comparison-slider img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; object-position: center; pointer-events: none; }
+        .comparison-slider .after-image { z-index: 1; }
+        .comparison-slider .before-image-container { position: absolute; top: 0; left: 0; width: 50%; height: 100%; overflow: hidden; z-index: 2; border-right: 3px solid white; box-shadow: 5px 0 15px -5px rgba(0,0,0,0.4); background-color: #111827; }
+        .comparison-slider .before-image-container img { width: 100vw; height: 100%; max-width: none; }
+        .comparison-handle { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 44px; height: 44px; background-color: white; border-radius: 50%; z-index: 3; display: flex; align-items: center; justify-content: center; color: #4F46E5; font-size: 1.2rem; pointer-events: none; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3); }
+        .btn-scenario.active { background-color: #F97316; color: white; border-color: #F97316; box-shadow: 0 0 10px rgba(249, 115, 22, 0.5); }
+
+        /* --- STYLES MODE EXPERT AMÉLIORÉS --- */
+        /* Toggle Switch Styling */
+        .expert-toggle-wrapper { display: flex; align-items: center; gap: 0.75rem; cursor: pointer; padding: 0.5rem; border-radius: 0.5rem; transition: background 0.2s; }
+        .expert-toggle-wrapper:hover { background-color: #F3F4F6; }
+        .expert-toggle-track { width: 3rem; height: 1.5rem; background-color: #D1D5DB; border-radius: 9999px; position: relative; transition: background-color 0.3s ease-in-out; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); }
+        .expert-toggle-thumb { width: 1.25rem; height: 1.25rem; background-color: white; border-radius: 50%; position: absolute; top: 0.125rem; left: 0.125rem; transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1); box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
         
-        @keyframes pulse-orange {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(249, 115, 22, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(249, 115, 22, 0); }
-        }
-
-        /* --- Styles pour le Slider Avant/Après (Comparaison) --- */
-        .comparison-slider {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            cursor: ew-resize;
-            background-color: #111827; /* Fond sombre pour le letterbox */
-            
-            /* CORRECTION VOILE BLEU : Empêche la sélection de texte */
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            touch-action: none; /* Empêche le scroll vertical sur mobile pendant le drag */
-        }
-
-        .comparison-slider img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: contain; /* CORRECTION ZOOM : Affiche l'image en entier sans couper */
-            object-position: center;
-            pointer-events: none; /* Empêche le drag natif de l'image */
-        }
-
-        .comparison-slider .after-image {
-            z-index: 1;
-        }
-
-        .comparison-slider .before-image-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 50%;
-            height: 100%;
-            overflow: hidden;
-            z-index: 2;
-            border-right: 3px solid white;
-            box-shadow: 5px 0 15px -5px rgba(0,0,0,0.4);
-            background-color: #111827; /* Important pour masquer l'image du dessous */
-        }
-
-        /* CORRECTION IMAGE STATIQUE */
-        /* L'image à l'intérieur du conteneur masqué doit avoir la taille du conteneur parent (le slider) */
-        /* width: 100vw fonctionne car le modal est plein écran. Cela empêche l'image de s'écraser. */
-        .comparison-slider .before-image-container img {
-            width: 100vw; 
-            height: 100%;
-            max-width: none;
-        }
-
-        .comparison-handle {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 44px;
-            height: 44px;
-            background-color: white;
-            border-radius: 50%;
-            z-index: 3;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #4F46E5;
-            font-size: 1.2rem;
-            pointer-events: none;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+        /* État Actif */
+        body.is-expert-mode .expert-toggle-track { background-color: #2563EB; }
+        body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.5rem); }
+        
+        /* Contenu Expert - ÉCRITURE PLUS DOUCE */
+        .expert-content { 
+            display: none; 
+            font-family: 'Roboto', sans-serif; /* Changement police pour plus de douceur */
+            font-size: 0.8rem; /* Légèrement augmenté pour lisibilité */
+            font-weight: 400;
+            color: #374151; 
+            background-color: #F8FAFC; 
+            border-left: 4px solid #2563EB; /* Bleu accordé au badge */
+            padding: 0.75rem 1rem; 
+            margin-top: 0.5rem; 
+            border-radius: 0 0.5rem 0.5rem 0;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            line-height: 1.6;
         }
         
-        /* Boutons Scénarios Actifs */
-        .btn-scenario.active {
-            background-color: #F97316; /* Orange */
-            color: white;
-            border-color: #F97316;
-            box-shadow: 0 0 10px rgba(249, 115, 22, 0.5);
+        /* Badge Expert - BLEU ET BLANC */
+        .expert-badge {
+            display: inline-block;
+            background-color: #2563EB; /* Bleu */
+            color: #FFFFFF; /* Blanc */
+            font-size: 0.6rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            margin-bottom: 0.5rem;
         }
-        /* --------------------------------------------------------- */
+
+        .expert-ref {
+            font-style: italic;
+            color: #6B7280;
+            margin-top: 0.25rem;
+            display: block;
+            font-size: 0.75rem;
+        }
+
+        /* Apparition conditionnelle */
+        body.is-expert-mode .expert-content { display: block; animation: fadeIn 0.4s ease-out; }
+        body.is-expert-mode .normal-context { display: none; }
+        
+        /* Ajustements globaux en mode expert */
+        /* On enlève la font monospace pour garder la douceur */
+        body.is-expert-mode #question-text { font-family: 'Montserrat', sans-serif; letter-spacing: -0.01em; }
+        body.is-expert-mode .persona-card { border-style: dashed; border-color: #93C5FD; }
 
         /* Responsive Timeline */
         @media (max-width: 768px) {
@@ -149,9 +112,15 @@
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col relative">
+<body class="min-h-screen flex flex-col relative transition-colors duration-500">
 
-    <!-- OVERLAY FACT (LE SAVIEZ-VOUS) -->
+    <!-- BOUTON GLOSSAIRE FIXE GAUCHE -->
+    <button onclick="openGlossary()" class="fixed left-0 top-1/2 transform -translate-y-1/2 z-40 bg-white hover:bg-indigo-50 text-indigo-900 shadow-[0_4px_20px_rgba(0,0,0,0.15)] border-y border-r border-indigo-100 rounded-r-xl py-4 px-2 flex flex-col items-center gap-2 transition-all duration-300 hover:pl-4 hover:border-orange-200 group">
+        <i class="fas fa-book text-2xl text-orange-500 group-hover:scale-110 transition-transform duration-300"></i>
+        <span class="text-[10px] font-bold uppercase tracking-widest text-indigo-800 hidden md:block" style="writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg);">Glossaire</span>
+    </button>
+
+    <!-- OVERLAYS ET MODALS -->
     <div id="fact-overlay" class="fixed inset-0 bg-black bg-opacity-60 hidden z-[70] flex items-center justify-center p-6 fade-in">
         <div class="bg-white rounded-xl p-8 max-w-lg w-full text-center shadow-2xl relative border-t-8 border-orange-500">
             <div class="mx-auto w-16 h-16 bg-orange-100 text-orange-500 rounded-full flex items-center justify-center mb-4 text-3xl">
@@ -159,69 +128,53 @@
             </div>
             <h3 class="text-2xl font-bold text-gray-800 mb-4 title-font">Le Saviez-vous ?</h3>
             <p id="fact-text" class="text-gray-600 mb-8 text-lg leading-relaxed"></p>
+            
+            <!-- CONTENU EXPERT ADDITIONNEL DANS LE FACT -->
+            <div id="expert-fact-addition" class="expert-content mb-6 text-left">
+                <!-- Injecté par JS -->
+            </div>
+
             <button id="close-fact-btn" class="w-full bg-orange-500 text-white px-6 py-3 rounded-lg font-bold hover:bg-orange-600 transition transform hover:scale-[1.02] shadow-md flex items-center justify-center gap-2">
                 Suivant <i class="fas fa-arrow-right"></i>
             </button>
         </div>
     </div>
 
-    <!-- MODAL RÉVÉLATION SCÉNARIO (IMAGE) -->
+    <!-- MODAL RÉVÉLATION SCÉNARIO -->
     <div id="scenario-image-overlay" class="fixed inset-0 bg-black z-[100] hidden flex flex-col items-center justify-center fade-in">
         <div class="absolute top-0 w-full bg-gradient-to-b from-black/80 to-transparent text-white text-center p-6 z-10">
             <h2 class="text-2xl md:text-3xl font-bold tracking-widest uppercase title-font shadow-black drop-shadow-lg">Votre Vision se dessine...</h2>
         </div>
-        
         <div class="w-full h-full flex items-center justify-center p-4 bg-black">
-            <img id="scenario-reveal-img" src="" 
-                 onerror="this.onerror=null; this.src=this.src.replace('.png', '.jpg');" 
-                 alt="Illustration Scénario" 
-                 class="max-w-full max-h-screen object-contain shadow-2xl">
+            <img id="scenario-reveal-img" src="" onerror="this.onerror=null; this.src=this.src.replace('.png', '.jpg');" alt="Illustration Scénario" class="max-w-full max-h-screen object-contain shadow-2xl">
         </div>
-
         <button id="skip-scenario-btn" onclick="closeScenarioImage()" class="absolute bottom-10 bg-white text-indigo-900 hover:bg-orange-500 hover:text-white font-bold py-3 px-8 rounded-full shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all transform hover:scale-105 hidden flex items-center gap-3 z-50 text-lg border-2 border-indigo-900">
             <span>Découvrir le résultat</span> <i class="fas fa-arrow-right"></i>
         </button>
     </div>
 
-    <!-- MODAL SLIDER ATRIUM (AVANT/APRÈS) -->
+    <!-- MODAL SLIDER ATRIUM -->
     <div id="atrium-modal" class="fixed inset-0 bg-black z-[95] hidden flex flex-col fade-in">
-        <!-- Header -->
         <div class="absolute top-0 left-0 right-0 p-4 z-50 flex justify-between items-start bg-gradient-to-b from-black/80 to-transparent pointer-events-none">
             <div class="pointer-events-auto text-white drop-shadow-md">
                 <h2 class="text-xl md:text-2xl font-bold title-font"><i class="fas fa-exchange-alt mr-2 text-orange-500"></i>L'ATRIUM 2050</h2>
                 <p class="text-xs md:text-sm opacity-90">Comparaison : 2023 vs Vision Future</p>
             </div>
-            <button onclick="closeAtrium()" class="pointer-events-auto bg-white/20 hover:bg-white/40 backdrop-blur-sm text-white rounded-full w-10 h-10 flex items-center justify-center transition-colors shadow-lg">
-                <i class="fas fa-times text-xl"></i>
-            </button>
+            <button onclick="closeAtrium()" class="pointer-events-auto bg-white/20 hover:bg-white/40 backdrop-blur-sm text-white rounded-full w-10 h-10 flex items-center justify-center transition-colors shadow-lg"><i class="fas fa-times text-xl"></i></button>
         </div>
-
-        <!-- Slider Area -->
         <div class="flex-grow relative w-full h-full bg-gray-900">
             <div id="atrium-comparison-slider" class="comparison-slider">
-                <!-- Image "Après" (2050) - Image de fond -->
                 <img id="atrium-after-img" src="" alt="Atrium 2050 (Après)" class="after-image">
-                
-                <!-- Image "Avant" (2023) - Dans le conteneur redimensionnable -->
                 <div class="before-image-container" style="width: 50%;">
-                    <!-- Image de base (Format PNG) -->
                     <img id="atrium-before-img" src="Atrium 2023.png" onerror="this.onerror=null; this.src='Atrium 2023.jpg';" alt="Atrium 2023 (Avant)">
                 </div>
-
-                <!-- Handle -->
-                <div class="comparison-handle" style="left: 50%;">
-                    <i class="fas fa-arrows-alt-h"></i>
-                </div>
+                <div class="comparison-handle" style="left: 50%;"><i class="fas fa-arrows-alt-h"></i></div>
             </div>
         </div>
-
-        <!-- Footer Controls -->
         <div class="bg-black/90 text-white p-4 pb-8 flex flex-col items-center gap-3 z-50 border-t border-gray-800">
-            <!-- Zone de texte descriptive ajoutée -->
             <div id="atrium-scenario-label" class="text-sm md:text-base text-center mb-2 px-4 min-h-[1.5em] transition-all duration-300">
                 <span class="text-gray-400 italic">Sélectionnez un scénario ci-dessous...</span>
             </div>
-
             <div class="flex flex-wrap justify-center gap-2">
                 <button onclick="setAtriumScenario('S1')" id="btn-s1" class="btn-scenario px-3 py-1.5 rounded border border-white/30 hover:bg-white/10 text-xs font-bold transition-all">S1</button>
                 <button onclick="setAtriumScenario('S2')" id="btn-s2" class="btn-scenario px-3 py-1.5 rounded border border-white/30 hover:bg-white/10 text-xs font-bold transition-all">S2</button>
@@ -233,72 +186,44 @@
         </div>
     </div>
 
-    <!-- MODAL ATLAS MONDE -->
     <div id="atlas-modal" class="fixed inset-0 bg-indigo-900 bg-opacity-95 hidden z-[80] flex flex-col items-center justify-center p-4 fade-in">
-        <div class="absolute top-4 right-4 z-50">
-             <button onclick="closeAtlas()" class="text-white hover:text-orange-400 transition-colors text-3xl">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        
+        <div class="absolute top-4 right-4 z-50"><button onclick="closeAtlas()" class="text-white hover:text-orange-400 transition-colors text-3xl"><i class="fas fa-times"></i></button></div>
         <div class="text-center mb-6 text-white z-10">
             <h2 class="text-3xl font-extrabold title-font tracking-wider"><i class="fas fa-globe-americas mr-2 text-orange-500"></i>ATLAS UNIVERSITAIRE</h2>
             <p class="text-indigo-200 text-sm">Explorez les dynamiques mondiales de l'enseignement supérieur</p>
         </div>
-
-        <!-- Container Carte -->
         <div class="relative w-full max-w-5xl aspect-video bg-indigo-800 rounded-xl overflow-hidden shadow-2xl border border-indigo-600 group">
-            
-            <!-- Carte Image -->
             <img src="1024px-BlankMap-World.svg.png" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/World_map_blank_without_borders.svg/1024px-World_map_blank_without_borders.svg.png'" alt="Carte du Monde" class="absolute inset-0 w-full h-full object-fill opacity-90 group-hover:opacity-100 transition-opacity duration-500">
-            
-            <!-- Points chauds -->
             <div onclick="showAtlasFact('usa')" class="map-hotspot" style="top: 33%; left: 24%;" title="États-Unis"></div>
             <div onclick="showAtlasFact('europe')" class="map-hotspot" style="top: 27%; left: 49.5%;" title="Europe"></div>
             <div onclick="showAtlasFact('uk')" class="map-hotspot" style="top: 23%; left: 47%;" title="Royaume-Uni"></div>
             <div onclick="showAtlasFact('china')" class="map-hotspot" style="top: 32%; left: 78%;" title="Chine"></div>
             <div onclick="showAtlasFact('india')" class="map-hotspot" style="top: 40%; left: 69%;" title="Inde"></div>
             <div onclick="showAtlasFact('philippines')" class="map-hotspot" style="top: 48%; left: 83%;" title="Philippines"></div>
-            
         </div>
         <p class="text-indigo-400 text-xs mt-4 italic">Cliquez sur les points oranges pour découvrir les données clés.</p>
     </div>
 
-    <!-- Info Box FULL SCREEN OVERLAY pour l'Atlas -->
     <div id="atlas-info-box" class="fixed inset-0 bg-white z-[85] hidden flex flex-col animate-fade-in">
-        <!-- Header Box -->
         <div class="bg-indigo-900 text-white p-6 flex justify-between items-center shadow-md flex-shrink-0">
             <h4 id="atlas-country" class="text-2xl font-bold uppercase tracking-wide title-font">PAYS</h4>
-            <button onclick="hideAtlasFact()" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-6 rounded-full transition-colors flex items-center gap-2">
-                <span>Fermer</span> <i class="fas fa-times"></i>
-            </button>
+            <button onclick="hideAtlasFact()" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-6 rounded-full transition-colors flex items-center gap-2"><span>Fermer</span> <i class="fas fa-times"></i></button>
         </div>
-        <!-- Content Scrollable -->
-        <div class="flex-grow overflow-y-auto p-8 md:p-12 bg-gray-50">
-            <div id="atlas-content" class="max-w-4xl mx-auto text-gray-800 text-lg leading-relaxed space-y-6">
-                <!-- Contenu dynamique -->
-            </div>
-        </div>
+        <div class="flex-grow overflow-y-auto p-8 md:p-12 bg-gray-50"><div id="atlas-content" class="max-w-4xl mx-auto text-gray-800 text-lg leading-relaxed space-y-6"></div></div>
     </div>
 
-    <!-- MODAL POPUP FOR SCENARIO DETAILS -->
     <div id="scenario-modal" class="fixed inset-0 bg-black bg-opacity-60 hidden z-50 flex items-center justify-center p-4 fade-in">
         <div class="bg-white rounded-xl shadow-2xl max-w-md w-full overflow-hidden relative transform transition-all scale-100">
-            <button onclick="closeModal()" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600 bg-gray-100 rounded-full w-8 h-8 flex items-center justify-center transition-colors">
-                <i class="fas fa-times"></i>
-            </button>
+            <button onclick="closeModal()" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600 bg-gray-100 rounded-full w-8 h-8 flex items-center justify-center transition-colors"><i class="fas fa-times"></i></button>
             <div id="modal-header" class="p-6 pb-4 border-b">
                 <div class="text-xs font-bold uppercase tracking-wider text-gray-500 mb-1" id="modal-id">SCÉNARIO</div>
                 <h3 id="modal-title" class="text-2xl font-bold title-font text-gray-800 leading-tight">Titre</h3>
                 <p id="modal-subtitle" class="text-sm italic text-gray-600 mt-1">Sous-titre</p>
             </div>
-            <div class="p-6 pt-4 bg-gray-50">
-                <p id="modal-desc" class="text-sm text-gray-700 leading-relaxed text-justify">Description...</p>
-            </div>
+            <div class="p-6 pt-4 bg-gray-50"><p id="modal-desc" class="text-sm text-gray-700 leading-relaxed text-justify">Description...</p></div>
         </div>
     </div>
 
-    <!-- MODAL PDF VIEWER -->
     <div id="pdf-modal" class="fixed inset-0 bg-black bg-opacity-95 hidden z-[60] flex items-center justify-center p-0 md:p-8 fade-in">
         <div class="bg-white md:rounded-xl shadow-2xl w-full h-full md:h-[90vh] md:max-w-7xl flex flex-col overflow-hidden relative">
             <div class="bg-gray-900 text-white p-3 md:p-4 flex flex-col md:flex-row justify-between items-center shadow-md z-10 gap-2 shrink-0">
@@ -307,89 +232,56 @@
                     <span id="page-indicator" class="text-sm bg-gray-700 px-3 py-1 rounded-full whitespace-nowrap">Page 1 / 4</span>
                 </div>
                 <div class="flex items-center gap-3 w-full md:w-auto justify-center">
-                    <button onclick="prevPdf()" id="btn-prev" class="bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white px-4 py-2 rounded transition-colors shadow-sm flex items-center gap-2">
-                        <i class="fas fa-chevron-left"></i> <span class="hidden md:inline">Précédent</span>
-                    </button>
-                    <button onclick="nextPdf()" id="btn-next" class="bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white px-4 py-2 rounded transition-colors shadow-sm flex items-center gap-2">
-                        <span class="hidden md:inline">Suivant</span> <i class="fas fa-chevron-right"></i>
-                    </button>
-                    <button onclick="closePdfModal()" class="text-white hover:text-red-400 transition-colors text-2xl px-2 ml-auto md:ml-0">
-                        <i class="fas fa-times"></i>
-                    </button>
+                    <button onclick="prevPdf()" id="btn-prev" class="bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white px-4 py-2 rounded transition-colors shadow-sm flex items-center gap-2"><i class="fas fa-chevron-left"></i> <span class="hidden md:inline">Précédent</span></button>
+                    <button onclick="nextPdf()" id="btn-next" class="bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white px-4 py-2 rounded transition-colors shadow-sm flex items-center gap-2"><span class="hidden md:inline">Suivant</span> <i class="fas fa-chevron-right"></i></button>
+                    <button onclick="closePdfModal()" class="text-white hover:text-red-400 transition-colors text-2xl px-2 ml-auto md:ml-0"><i class="fas fa-times"></i></button>
                 </div>
             </div>
-            <div id="pdf-container" class="flex-grow bg-gray-200 relative w-full h-full overflow-y-auto" style="-webkit-overflow-scrolling: touch;">
-                <!-- LE CONTENU SERA INJECTÉ ICI PAR JS -->
-            </div>
+            <div id="pdf-container" class="flex-grow bg-gray-200 relative w-full h-full overflow-y-auto" style="-webkit-overflow-scrolling: touch;"></div>
         </div>
     </div>
 
-    <!-- MODAL TIMELINE INTERACTIVE -->
     <div id="timeline-modal" class="fixed inset-0 bg-black bg-opacity-80 hidden z-[65] flex items-center justify-center p-2 md:p-6 fade-in">
         <div class="bg-white rounded-xl shadow-2xl w-full max-w-4xl h-full flex flex-col overflow-hidden relative">
             <div class="bg-indigo-900 text-white p-6 flex justify-between items-center shadow-md z-10">
-                <div>
-                    <h3 class="text-2xl font-bold title-font"><i class="fas fa-history mr-2 text-orange-400"></i> Histoire du Campus</h3>
-                    <p class="text-xs text-indigo-200 mt-1">De la médecine médiévale à la ville de demain</p>
-                </div>
-                <button onclick="closeTimeline()" class="text-white hover:text-red-400 transition-colors text-2xl">
-                    <i class="fas fa-times"></i>
-                </button>
+                <div><h3 class="text-2xl font-bold title-font"><i class="fas fa-history mr-2 text-orange-400"></i> Histoire du Campus</h3><p class="text-xs text-indigo-200 mt-1">De la médecine médiévale à la ville de demain</p></div>
+                <button onclick="closeTimeline()" class="text-white hover:text-red-400 transition-colors text-2xl"><i class="fas fa-times"></i></button>
             </div>
             <div class="flex-grow overflow-y-auto p-6 bg-gray-50 relative" id="timeline-container">
                 <div class="timeline-line"></div>
                 <div id="timeline-content" class="py-10"></div>
-                <div class="text-center mt-10 mb-4">
-                    <p class="text-gray-400 italic text-sm">Fin de la chronologie historique</p>
-                </div>
+                <div class="text-center mt-10 mb-4"><p class="text-gray-400 italic text-sm">Fin de la chronologie historique</p></div>
             </div>
         </div>
     </div>
     
-    <!-- MODAL STATS -->
     <div id="stats-modal" class="fixed inset-0 bg-black bg-opacity-80 hidden z-[75] flex items-center justify-center p-2 md:p-6 fade-in">
         <div class="bg-white rounded-xl shadow-2xl w-full max-w-4xl h-full md:h-auto md:max-h-[90vh] flex flex-col overflow-hidden relative">
             <div class="bg-indigo-900 text-white p-4 md:p-6 flex justify-between items-center shadow-md z-10 shrink-0">
-                <div>
-                    <h3 class="text-xl md:text-2xl font-bold title-font"><i class="fas fa-chart-pie mr-2 text-orange-400"></i> Observatoire des Données</h3>
-                    <p class="text-xs text-indigo-200 mt-1">L'impact universitaire en chiffres</p>
-                </div>
-                <button onclick="closeStats()" class="text-white hover:text-red-400 transition-colors text-2xl">
-                    <i class="fas fa-times"></i>
-                </button>
+                <div><h3 class="text-xl md:text-2xl font-bold title-font"><i class="fas fa-chart-pie mr-2 text-orange-400"></i> Observatoire des Données</h3><p class="text-xs text-indigo-200 mt-1">L'impact universitaire en chiffres</p></div>
+                <button onclick="closeStats()" class="text-white hover:text-red-400 transition-colors text-2xl"><i class="fas fa-times"></i></button>
             </div>
             <div class="flex-grow flex flex-col bg-gray-50 overflow-y-auto">
                 <div class="p-4 md:p-8 flex flex-col items-center justify-center min-h-[300px] md:min-h-[400px]">
                     <div class="w-full max-w-2xl bg-white p-4 rounded-xl shadow-sm border border-gray-100 relative">
                         <h4 id="stat-title" class="text-center font-bold text-gray-800 text-lg mb-2 title-font">Titre du Graphique</h4>
                         <p id="stat-desc" class="text-center text-sm text-gray-500 mb-4 px-4 italic">Description...</p>
-                        <div class="relative h-64 md:h-80 w-full">
-                            <canvas id="statsCanvas"></canvas>
-                        </div>
+                        <div class="relative h-64 md:h-80 w-full"><canvas id="statsCanvas"></canvas></div>
                     </div>
                 </div>
                 <div class="bg-white border-t border-gray-200 p-4 shrink-0">
                     <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 ml-2">Choisir une visualisation :</p>
                     <div class="flex gap-4 overflow-x-auto pb-2 snap-x px-2" style="-webkit-overflow-scrolling: touch;">
                         <button onclick="renderStat(0)" class="snap-start shrink-0 w-40 p-3 rounded-lg border-2 border-transparent hover:border-indigo-500 bg-gray-50 hover:bg-indigo-50 transition-all text-left group focus:ring-2 focus:ring-indigo-500 focus:outline-none">
-                            <div class="flex items-center gap-2 mb-1">
-                                <i class="fas fa-users text-orange-500 bg-orange-100 p-2 rounded-full"></i>
-                                <span class="text-xs font-bold text-gray-700 group-hover:text-indigo-700">Poids Démographique</span>
-                            </div>
+                            <div class="flex items-center gap-2 mb-1"><i class="fas fa-users text-orange-500 bg-orange-100 p-2 rounded-full"></i><span class="text-xs font-bold text-gray-700 group-hover:text-indigo-700">Poids Démographique</span></div>
                             <div class="h-1 w-full bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-orange-500 w-1/4"></div></div>
                         </button>
                         <button onclick="renderStat(1)" class="snap-start shrink-0 w-40 p-3 rounded-lg border-2 border-transparent hover:border-indigo-500 bg-gray-50 hover:bg-indigo-50 transition-all text-left group focus:ring-2 focus:ring-indigo-500 focus:outline-none">
-                            <div class="flex items-center gap-2 mb-1">
-                                <i class="fas fa-map-marked-alt text-blue-500 bg-blue-100 p-2 rounded-full"></i>
-                                <span class="text-xs font-bold text-gray-700 group-hover:text-indigo-700">Fragmentation Territoriale</span>
-                            </div>
+                            <div class="flex items-center gap-2 mb-1"><i class="fas fa-map-marked-alt text-blue-500 bg-blue-100 p-2 rounded-full"></i><span class="text-xs font-bold text-gray-700 group-hover:text-indigo-700">Fragmentation Territoriale</span></div>
                              <div class="h-1 w-full bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-blue-500 w-2/3"></div></div>
                         </button>
                         <button onclick="renderStat(2)" class="snap-start shrink-0 w-40 p-3 rounded-lg border-2 border-transparent hover:border-indigo-500 bg-gray-50 hover:bg-indigo-50 transition-all text-left group focus:ring-2 focus:ring-indigo-500 focus:outline-none">
-                            <div class="flex items-center gap-2 mb-1">
-                                <i class="fas fa-balance-scale text-purple-500 bg-purple-100 p-2 rounded-full"></i>
-                                <span class="text-xs font-bold text-gray-700 group-hover:text-indigo-700">Inégalités de Moyens</span>
-                            </div>
+                            <div class="flex items-center gap-2 mb-1"><i class="fas fa-balance-scale text-purple-500 bg-purple-100 p-2 rounded-full"></i><span class="text-xs font-bold text-gray-700 group-hover:text-indigo-700">Inégalités de Moyens</span></div>
                              <div class="h-1 w-full bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-purple-500 w-1/2"></div></div>
                         </button>
                     </div>
@@ -398,14 +290,11 @@
         </div>
     </div>
 
-    <!-- MODAL CGU -->
     <div id="cgu-modal" class="fixed inset-0 bg-black bg-opacity-80 hidden z-[90] flex items-center justify-center p-4 fade-in">
         <div class="bg-white rounded-xl shadow-2xl w-full max-w-3xl h-[80vh] flex flex-col overflow-hidden relative">
             <div class="bg-gray-800 text-white p-4 flex justify-between items-center shadow-md z-10 flex-shrink-0">
                 <h3 class="text-lg font-bold"><i class="fas fa-file-contract mr-2"></i> Conditions Générales d'Utilisation</h3>
-                <button onclick="closeCgu()" class="text-white hover:text-red-400 transition-colors text-xl">
-                    <i class="fas fa-times"></i>
-                </button>
+                <button onclick="closeCgu()" class="text-white hover:text-red-400 transition-colors text-xl"><i class="fas fa-times"></i></button>
             </div>
             <div class="flex-grow overflow-y-auto p-8 text-gray-700 text-sm leading-relaxed" style="-webkit-overflow-scrolling: touch;">
                 <h4 class="text-xl font-bold text-indigo-900 mb-4">1. Objet des CGU</h4>
@@ -415,8 +304,25 @@
         </div>
     </div>
 
-    <!-- HEADER -->
-    <header class="bg-white text-indigo-900 shadow-md z-10">
+    <div id="glossary-modal" class="fixed inset-0 bg-black bg-opacity-80 hidden z-[95] flex items-center justify-center p-4 fade-in">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-xl max-h-[70vh] flex flex-col overflow-hidden relative border-t-4 border-indigo-500">
+            <div class="bg-indigo-900 text-white p-4 flex justify-between items-center shadow-md shrink-0">
+                <h3 class="text-lg font-bold"><i class="fas fa-book mr-2"></i> Glossaire Urbain</h3>
+                <button onclick="closeGlossary()" class="text-white hover:text-red-400 transition-colors text-xl"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="p-6 bg-gray-50 flex-grow overflow-y-auto">
+                <p class="text-sm text-gray-500 mb-6 italic text-center">Cliquez sur un terme pour afficher sa définition.</p>
+                <div class="flex flex-wrap gap-2 justify-center mb-6" id="glossary-buttons"></div>
+                <div id="glossary-definition" class="p-4 bg-white border border-indigo-100 rounded-lg shadow-sm hidden transition-all">
+                    <h4 id="def-title" class="font-bold text-indigo-900 text-lg mb-2"></h4>
+                    <p id="def-text" class="text-sm text-gray-700 leading-relaxed"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HEADER AVEC BOUTON MODE EXPERT -->
+    <header class="bg-white text-indigo-900 shadow-md z-10 transition-colors duration-300">
         <div class="w-full px-4 py-3 flex justify-between items-center relative">
             <div class="flex items-center justify-start w-1/4 md:w-1/3">
                 <div class="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center font-bold text-white text-xl shadow-sm">U</div>
@@ -425,10 +331,15 @@
                 <h1 class="text-sm md:text-2xl font-extrabold tracking-wider uppercase leading-tight text-indigo-900">L'UNIVERSITÉ DANS LA VILLE</h1>
                 <span class="text-[10px] md:text-xs font-semibold tracking-widest opacity-70 uppercase hidden sm:block text-indigo-800">Université & Ville de Demain</span>
             </div>
-            <div class="flex items-center justify-end gap-2 md:gap-3 w-1/4 md:w-1/3">
-                <img src="PROJET_NOIR.png" onerror="this.src='https://via.placeholder.com/150x50?text=PROJET'" alt="Master" class="h-3 sm:h-8 md:h-12 w-auto object-contain">
-                <div class="h-4 sm:h-6 md:h-8 w-px bg-gray-300 hidden sm:block"></div>
-                <img src="UMPV_NOIR.png" onerror="this.src='https://via.placeholder.com/150x50?text=UMPV'" alt="UMPV" class="h-3 sm:h-8 md:h-12 w-auto object-contain">
+            
+            <!-- BOUTON MODE EXPERT AMÉLIORÉ -->
+            <div class="flex items-center justify-end gap-3 w-1/4 md:w-1/3">
+                <div class="flex flex-col items-end mr-2">
+                    <div id="expert-toggle" class="expert-toggle-wrapper" onclick="toggleExpertMode()">
+                        <span class="text-[10px] md:text-xs font-bold uppercase tracking-wider text-gray-500 transition-colors mr-2" id="expert-label">Mode Expert</span>
+                        <div class="expert-toggle-track"><div class="expert-toggle-thumb"></div></div>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
@@ -462,14 +373,12 @@
 
         <!-- PERSONA SELECTION SCREEN -->
         <div id="persona-screen" class="hidden max-w-4xl w-full bg-white rounded-2xl shadow-xl overflow-hidden fade-in">
-            <!-- (Contenu persona identique) -->
             <div class="bg-indigo-900 h-2 w-full"></div>
             <div class="p-8 text-center">
                 <h2 class="text-2xl font-extrabold text-gray-800 mb-2">Choisissez votre rôle</h2>
                 <p class="text-gray-600 mb-8 text-sm">Qui êtes-vous pour mener ce diagnostic ?</p>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8 text-left">
                     
-                    <!-- Politique -->
                     <div onclick="selectPersona('politique')" id="persona-politique" class="persona-card border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:shadow-lg transition-all group">
                         <div class="flex items-center gap-3 mb-2">
                             <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-lg"><i class="fas fa-user-tie"></i></div>
@@ -479,9 +388,9 @@
                             </div>
                         </div>
                         <p class="text-xs text-gray-500 italic">"L'université doit être une couture urbaine, ouverte sur la ville."</p>
+                        <div class="expert-content mt-2"><span class="expert-badge">Acteur</span> Décideur Politique<br><span class="expert-ref">Logique : Territoriale & Électorale</span></div>
                     </div>
 
-                    <!-- Expert -->
                     <div onclick="selectPersona('expert')" id="persona-expert" class="persona-card border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:shadow-lg transition-all group">
                         <div class="flex items-center gap-3 mb-2">
                             <div class="w-10 h-10 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center text-lg"><i class="fas fa-drafting-compass"></i></div>
@@ -491,9 +400,9 @@
                             </div>
                         </div>
                         <p class="text-xs text-gray-500 italic">"Respecter le patrimoine du XXe tout en densifiant intelligemment."</p>
+                        <div class="expert-content mt-2"><span class="expert-badge">Acteur</span> Maîtrise d'Œuvre<br><span class="expert-ref">Logique : Formelle & Patrimoniale</span></div>
                     </div>
 
-                    <!-- Étudiante -->
                     <div onclick="selectPersona('etudiante')" id="persona-etudiante" class="persona-card border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:shadow-lg transition-all group">
                         <div class="flex items-center gap-3 mb-2">
                             <div class="w-10 h-10 rounded-full bg-pink-100 text-pink-600 flex items-center justify-center text-lg"><i class="fas fa-user-graduate"></i></div>
@@ -503,9 +412,9 @@
                             </div>
                         </div>
                         <p class="text-xs text-gray-500 italic">"On a besoin de vrais lieux de vie sociale, pas juste des couloirs."</p>
+                        <div class="expert-content mt-2"><span class="expert-badge">Usager</span> Étudiant Licence<br><span class="expert-ref">Logique : Usage & Convivialité</span></div>
                     </div>
 
-                    <!-- Étudiant -->
                     <div onclick="selectPersona('etudiant')" id="persona-etudiant" class="persona-card border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:shadow-lg transition-all group">
                         <div class="flex items-center gap-3 mb-2">
                             <div class="w-10 h-10 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-lg"><i class="fas fa-laptop-code"></i></div>
@@ -515,6 +424,7 @@
                             </div>
                         </div>
                         <p class="text-xs text-gray-500 italic">"Le coût du logement et la mobilité sont mes priorités."</p>
+                        <div class="expert-content mt-2"><span class="expert-badge">Usager</span> Étudiant Master<br><span class="expert-ref">Logique : Économique & Fonctionnelle</span></div>
                     </div>
 
                 </div>
@@ -539,7 +449,13 @@
                     <span id="enjeu-badge" class="bg-indigo-100 text-indigo-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded uppercase">Économique</span>
                     <h2 id="question-text" class="text-2xl font-bold text-gray-800">Question</h2>
                 </div>
-                <p id="question-context" class="text-gray-600 mb-8 italic text-sm border-l-4 border-orange-400 pl-4">Contexte...</p>
+                
+                <!-- ZONE EXPERT CONTEXT -->
+                <div id="question-expert-context" class="expert-content mb-6 shadow-sm border-l-4 border-indigo-600 bg-gray-50">
+                     <!-- Contexte expert injecté ici -->
+                </div>
+                
+                <p id="question-context" class="text-gray-600 mb-8 italic text-sm border-l-4 border-orange-400 pl-4 normal-context">Contexte...</p>
                 <div id="answers-container" class="grid gap-4 md:grid-cols-1"></div>
             </div>
         </div>
@@ -553,8 +469,12 @@
                     <h3 id="scenario-subtitle" class="text-xl font-light italic">Sous-titre</h3>
                     <div class="absolute top-4 right-4 text-6xl opacity-20"><i class="fas fa-city"></i></div>
                     
-                    <!-- NEW: Zone pour les statistiques Firebase -->
                     <p id="resultat-texte" class="mt-4 text-sm font-bold text-orange-300 bg-indigo-800 bg-opacity-50 inline-block px-4 py-2 rounded-lg">Chargement des données communautaires...</p>
+                </div>
+
+                <!-- ANALYSE EXPERT RESULTAT -->
+                <div id="result-expert-analysis" class="expert-content m-6 relative z-10 shadow-md bg-slate-100 border-l-4 border-indigo-900 p-4">
+                    <!-- Injecté par JS -->
                 </div>
 
                 <div class="p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -744,7 +664,39 @@
         const worksScreen = document.getElementById('works-screen');
         const factOverlay = document.getElementById('fact-overlay');
         const factText = document.getElementById('fact-text');
+        const expertFactAddition = document.getElementById('expert-fact-addition');
         const closeFactBtn = document.getElementById('close-fact-btn');
+
+        // GESTION MODE EXPERT AVEC MÉMOIRE
+        let isExpertMode = false;
+        
+        function toggleExpertMode() {
+            isExpertMode = !isExpertMode;
+            const body = document.body;
+            const toggleWrapper = document.getElementById('expert-toggle');
+            const label = document.getElementById('expert-label');
+            
+            if (isExpertMode) {
+                body.classList.add('is-expert-mode');
+                label.innerText = "Mode Expert ACTIF";
+                label.classList.remove('text-gray-500');
+                label.classList.add('text-orange-600');
+            } else {
+                body.classList.remove('is-expert-mode');
+                label.innerText = "Mode Expert";
+                label.classList.add('text-gray-500');
+                label.classList.remove('text-orange-600');
+            }
+            
+            // Mise à jour live sans rechargement
+            if (!questionScreen.classList.contains('hidden')) {
+                // On met à jour l'affichage expert du DidYouKnow si ouvert
+                if(!factOverlay.classList.contains('hidden')) {
+                    if(isExpertMode) expertFactAddition.style.display = 'block';
+                    else expertFactAddition.style.display = 'none';
+                }
+            }
+        }
 
         // GESTION IMAGE OVERLAY
         const scenarioImageOverlay = document.getElementById('scenario-image-overlay');
@@ -795,22 +747,113 @@
         };
 
         const scenarios = {
-            s1: { id: "S1", title: "Rien ne change / La Continuité", subtitle: "Le changement c'est pas maintenant", description: "Ce scénario imagine une évolution dans la continuité. L'université reste un acteur fort du territoire, mais sans révolution. Elle poursuit son ouverture progressive sur la ville, développe des liens avec les quartiers voisins, et améliore les connexions en mobilité douce.", issues: ["Financement des infrastructures", "Massification des étudiants", "Étalement urbain et ZAN", "Mobilité douce"], color: "#60A5FA" },
-            s2: { id: "S2", title: "Le Hub : Université-Entreprise", subtitle: "L'efficacité et l'innovation avant tout", description: "L'université se transforme en plateforme économique et technologique. Laboratoires, incubateurs, start-ups et multinationales se mêlent. La logique du partenariat public-privé domine.", issues: ["Partenariat Public/Privé", "Marchandisation du savoir", "Coût de l'enseignement", "Innovation et Start-ups"], color: "#F59E0B" },
-            s3: { id: "S3", title: "L'Université Sans Murs", subtitle: "Le tout numérique", description: "Le numérique prend le dessus. Les cours sont entièrement en ligne, les échanges se font à distance, et les bâtiments physiques perdent leur fonction centrale.", issues: ["Requalification des bâtiments vides", "Isolement social", "Transformation du métier d'enseignant", "Fracture numérique"], color: "#A78BFA" },
-            s4: { id: "S4", title: "L'Université Dissoute", subtitle: "La ville est le campus", description: "L'université et la ville se confondent. Il n'existe plus de campus clairement identifiable : les espaces d'enseignement se dispersent dans le tissu urbain (cafés, bibliothèques municipales, tiers-lieux).", issues: ["Disparition du campus physique", "Mixité fonctionnelle extrême", "Gestion d'un réseau éparpillé", "Lien habitants-étudiants"], color: "#10B981" },
-            s5: { id: "S5", title: "L'Université Augmentée par l'IA", subtitle: "L'intelligence artificielle au cœur", description: "L'IA transforme en profondeur les façons d'apprendre et de gérer les lieux. Assistants numériques personnalisés, contenus adaptatifs, dépassement des limites géographiques.", issues: ["Éthique et Copyright", "Transformation radicale de l'emploi", "Dépendance technologique", "Obsolescence des méthodes classiques"], color: "#EC4899" },
-            s6: { id: "S6", title: "La Ville dans la Ville", subtitle: "Le Campus Urbain Autonome", description: "L'université devient une ville dans la ville, où tout est concentré : logements, services, commerces, santé, culture. C'est un espace autonome, hyper-efficace.", issues: ["Mixité fonctionnelle sur site unique", "Gouvernance du foncier", "Autarcie", "Densification"], color: "#EF4444" }
+            s1: { id: "S1", title: "Rien ne change / La Continuité", subtitle: "Le changement c'est pas maintenant", description: "Ce scénario imagine une évolution dans la continuité. L'université reste un acteur fort du territoire, mais sans révolution. Elle poursuit son ouverture progressive sur la ville, développe des liens avec les quartiers voisins, et améliore les connexions en mobilité douce.", issues: ["Financement des infrastructures", "Massification des étudiants", "Étalement urbain et ZAN", "Mobilité douce"], color: "#60A5FA", expert: "Modèle de l'Incrémentalisme (C.E. Lindblom). Évolution par petits pas ('muddling through') évitant les ruptures brutales mais risquant l'inertie institutionnelle face aux crises climatiques." },
+            s2: { id: "S2", title: "Le Hub : Université-Entreprise", subtitle: "L'efficacité et l'innovation avant tout", description: "L'université se transforme en plateforme économique et technologique. Laboratoires, incubateurs, start-ups et multinationales se mêlent. La logique du partenariat public-privé domine.", issues: ["Partenariat Public/Privé", "Marchandisation du savoir", "Coût de l'enseignement", "Innovation et Start-ups"], color: "#F59E0B", expert: "Modèle de la 'Triple Hélice' (Etzkowitz & Leydesdorff) : Synergie Université-Industrie-Gouvernement. Risque de dérive vers le 'Capitalisme Académique' (Slaughter & Leslie) où la recherche fondamentale non rentable est marginalisée." },
+            s3: { id: "S3", title: "L'Université Sans Murs", subtitle: "Le tout numérique", description: "Le numérique prend le dessus. Les cours sont entièrement en ligne, les échanges se font à distance, et les bâtiments physiques perdent leur fonction centrale.", issues: ["Requalification des bâtiments vides", "Isolement social", "Transformation du métier d'enseignant", "Fracture numérique"], color: "#A78BFA", expert: "Référence à la 'Deschooling Society' (Ivan Illich) revisitée par la Silicon Valley. Déterritorialisation totale du savoir. Enjeu critique : la 'Fracture Numérique' (P. Norris) et la perte de la sérendipité sociale." },
+            s4: { id: "S4", title: "L'Université Dissoute", subtitle: "La ville est le campus", description: "L'université et la ville se confondent. Il n'existe plus de campus clairement identifiable : les espaces d'enseignement se dispersent dans le tissu urbain (cafés, bibliothèques municipales, tiers-lieux).", issues: ["Disparition du campus physique", "Mixité fonctionnelle extrême", "Gestion d'un réseau éparpillé", "Lien habitants-étudiants"], color: "#10B981", expert: "Concept de 'City as a Campus' ou 'Town-Gown Fusion'. Dilution des frontières institutionnelles. Référence aux travaux de Jan Gehl sur la 'ville à échelle humaine' et la mixité fonctionnelle totale." },
+            s5: { id: "S5", title: "L'Université Augmentée par l'IA", subtitle: "L'intelligence artificielle au cœur", description: "L'IA transforme en profondeur les façons d'apprendre et de gérer les lieux. Assistants numériques personnalisés, contenus adaptatifs, dépassement des limites géographiques.", issues: ["Éthique et Copyright", "Transformation radicale de l'emploi", "Dépendance technologique", "Obsolescence des méthodes classiques"], color: "#EC4899", expert: "Paradigme du 'Smart Campus' poussé à l'extrême. Automatisation cognitive et gestion algorithmique des espaces. Enjeu éthique majeur : le 'Capitalisme de Surveillance' (Shoshana Zuboff) appliqué à l'éducation." },
+            s6: { id: "S6", title: "La Ville dans la Ville", subtitle: "Le Campus Urbain Autonome", description: "L'université devient une ville dans la ville, où tout est concentré : logements, services, commerces, santé, culture. C'est un espace autonome, hyper-efficace.", issues: ["Mixité fonctionnelle sur site unique", "Gouvernance du foncier", "Autarcie", "Densification"], color: "#EF4444", expert: "Concept de 'Total Institution' (E. Goffman) ou 'Gated Community' universitaire. Autarcie fonctionnelle et repli sur soi, créant une enclave d'élite (Gentrification insulaire) opposée à la 'Couture Urbaine'." }
         };
 
         const questions = [
-            { theme: "Spatial & Foncier", text: "Face au manque de place et à l'objectif ZAN (Zéro Artificialisation Nette), quelle est votre stratégie pour les nouveaux bâtiments ?", context: "Les campus sont saturés et l'étalement urbain n'est plus possible.", didYouKnow: "Le campus Paul Valéry, labellisé 'Patrimoine du XXe siècle', était prévu pour 8 500 étudiants à sa construction. Il en accueille aujourd'hui plus de 22 000, créant une véritable saturation spatiale.", options: [{ text: "On densifie au maximum sur le site actuel pour tout avoir sur place (logements, commerces, cours).", impact: "s6" }, { text: "On n'a plus besoin de construire : on bascule massivement les cours en ligne.", impact: "s3" }, { text: "On loue ou rachète des locaux éparpillés dans toute la ville pour s'intégrer aux quartiers.", impact: "s4" }, { text: "On rénove doucement l'existant en améliorant les espaces verts et les pistes cyclables.", impact: "s1" }] },
-            { theme: "Économique & Gouvernance", text: "Le budget de l'État stagne. Comment financez-vous les nouveaux équipements de pointe ?", context: "L'université doit trouver des ressources pour rester compétitive.", didYouKnow: "Le budget de l'Atrium s'élève à 32 millions d'euros HT (pour 57 M€ TTC). Ce Learning Center de 15 000 m² a nécessité des financements croisés entre l'État, la Région et la Métropole.", options: [{ text: "Partenariats massifs avec le privé : les entreprises installent leurs R&D sur le campus.", impact: "s2" }, { text: "On optimise les coûts de gestion grâce à l'IA et on réduit le personnel administratif.", impact: "s5" }, { text: "On loue nos espaces (amphithéâtres, terrains) à la ville et aux associations locales.", impact: "s4" }, { text: "On fait avec les moyens du bord, en priorisant la maintenance de base.", impact: "s1" }] },
-            { theme: "Lien Social", text: "Les étudiants se plaignent d'isolement. Quelle est votre réponse architecturale ?", context: "La vie étudiante ne se résume pas aux cours.", didYouKnow: "Pour lutter contre l'isolement, l'Atrium a été conçu explicitement comme une 'place publique du savoir', ouverte aux habitants, et non plus comme une simple bibliothèque fermée.", options: [{ text: "Créer un immense centre de vie (type Atrium) avec cinéma, santé et loisirs au cœur du campus.", impact: "s6" }, { text: "Créer un métavers universitaire pour qu'ils socialisent depuis chez eux.", impact: "s3" }, { text: "Encourager la vie dans les cafés du centre-ville plutôt que sur un campus ghetto.", impact: "s4" }, { text: "Développer des incubateurs où étudiants et entrepreneurs travaillent ensemble.", impact: "s2" }] },
-            { theme: "Technologie", text: "L'Intelligence Artificielle bouleverse l'enseignement. Votre réaction ?", context: "ChatGPT et consorts changent la donne pédagogique.", didYouKnow: "Depuis 2020, l'usage des outils numériques a explosé. Le diagnostic montre cependant que le 'tout distanciel' affaiblit le lien social, un enjeu majeur pour 88% des étudiants interrogés.", options: [{ text: "Chaque étudiant reçoit un tuteur IA personnalisé. Les profs deviennent des coachs.", impact: "s5" }, { text: "L'IA sert surtout à optimiser la recherche et les brevets industriels.", impact: "s2" }, { text: "L'IA permet de faire cours sans jamais venir sur le campus.", impact: "s3" }, { text: "On l'intègre doucement comme outil, sans changer la structure des cours magistraux.", impact: "s1" }] },
-            { theme: "Mobilité & Environnement", text: "Comment les étudiants doivent-ils accéder au savoir ?", context: "La mobilité est un enjeu clé du plan climat.", didYouKnow: "Entre 2016 et 2023, l'usage de la voiture par le personnel est passé de 72% à 43%, tandis que le vélo a triplé (11% à 32%). L'arrivée de la Ligne 5 vise à réduire encore cette dépendance.", options: [{ text: "Ils n'ont plus besoin de se déplacer, tout est accessible depuis leur chambre.", impact: "s3" }, { text: "Par une ligne de tramway et des pistes cyclables connectant le campus au reste de la ville.", impact: "s1" }, { text: "Ils vivent, étudient et consomment sur place. Le campus est une ville piétonne autonome.", impact: "s6" }, { text: "Ils se déplacent constamment d'un tiers-lieu à l'autre dans la métropole.", impact: "s4" }] },
-            { theme: "Innovation", text: "Quelle est la vocation principale de votre université ?", context: "Définir l'identité de l'institution pour 2050.", didYouKnow: "Montpellier mise sur 'MedVallée' (Santé/Environnement). L'université n'est plus isolée, elle devient un moteur économique direct et structurant pour le territoire métropolitain.", options: [{ text: "Être un moteur économique et produire des licornes (start-ups).", impact: "s2" }, { text: "Être un service public de proximité, fondu dans la population.", impact: "s4" }, { text: "Être un pôle d'excellence technologique piloté par la data.", impact: "s5" }, { text: "Être un sanctuaire du savoir, préservé et stable.", impact: "s1" }] },
-            { theme: "Urbanisme", text: "L'Atrium (Learning Center) doit évoluer. Que devient-il ?", context: "Bâtiment emblématique de l'ouverture sur la ville.", didYouKnow: "L'Atrium a été construit sur un ancien parking. Il symbolise le passage du 'tout voiture' des années 60 à un espace piéton et végétalisé, redonnant 15 000 m² aux usagers.", options: [{ text: "Le centre névralgique d'une cité autonome, ouvert 24/24 avec tous les services.", impact: "s6" }, { text: "Un showroom technologique pour les entreprises partenaires.", impact: "s2" }, { text: "Un serveur géant gérant les avatars des étudiants.", impact: "s3" }, { text: "Un lieu de passage parmi d'autres dans la ville, ouvert à tous les citoyens.", impact: "s4" }] }
+            { 
+                theme: "Spatial & Foncier", 
+                text: "Face au manque de place et à l'objectif ZAN (Zéro Artificialisation Nette), quelle est votre stratégie pour les nouveaux bâtiments ?", 
+                context: "Les campus sont saturés et l'étalement urbain n'est plus possible.", 
+                expertContext: "Contexte Loi Climat & Résilience (2021) : Objectif ZAN en 2050. Le foncier universitaire devient une ressource critique finie, obligeant à passer de l'extension à l'intensification.",
+                didYouKnow: "Le campus Paul Valéry, labellisé 'Patrimoine du XXe siècle', était prévu pour 8 500 étudiants à sa construction. Il en accueille aujourd'hui plus de 22 000, créant une véritable saturation spatiale.", 
+                expertFact: "Label 'Architecture contemporaine remarquable'. Architectes : J-C. Deshons & P. Jaulmes (1966). Densité actuelle critique : < 10m²/étudiant (Norme recommandée : 15m²).",
+                options: [
+                    { text: "On densifie au maximum sur le site actuel pour tout avoir sur place (logements, commerces, cours).", impact: "s6", expertInfo: "Densification verticale (High-rise). Modèle asiatique de l'intensité urbaine." }, 
+                    { text: "On n'a plus besoin de construire : on bascule massivement les cours en ligne.", impact: "s3", expertInfo: "Dématérialisation foncière. Économie radicale de Capex (Capital Expenditure)." }, 
+                    { text: "On loue ou rachète des locaux éparpillés dans toute la ville pour s'intégrer aux quartiers.", impact: "s4", expertInfo: "Stratégie de 'diffuse campus' / Renouvellement urbain diffus." }, 
+                    { text: "On rénove doucement l'existant en améliorant les espaces verts et les pistes cyclables.", impact: "s1", expertInfo: "Réhabilitation thermique & Paysagère. Approche conservatrice mais soutenable." }
+                ] 
+            },
+            { 
+                theme: "Économique & Gouvernance", 
+                text: "Le budget de l'État stagne. Comment financez-vous les nouveaux équipements de pointe ?", 
+                context: "L'université doit trouver des ressources pour rester compétitive.", 
+                expertContext: "Loi LRU (2007) : Autonomie financière des universités. Baisse relative des dotations d'État par étudiant (-10% en 10 ans en € constant) obligeant à chercher des fonds propres.",
+                didYouKnow: "Le budget de l'Atrium s'élève à 32 millions d'euros HT (pour 57 M€ TTC). Ce Learning Center de 15 000 m² a nécessité des financements croisés entre l'État, la Région et la Métropole.", 
+                expertFact: "Montage financier complexe : CPER (Contrat de Plan État-Région) + Fonds propres + Emprunt BEI. Coût fonctionnement annuel estimé : 1,5 M€ (Fluides + RH).",
+                options: [
+                    { text: "Partenariats massifs avec le privé : les entreprises installent leurs R&D sur le campus.", impact: "s2", expertInfo: "Modèle anglo-saxon. Fundraising, Naming & Chaires d'entreprises." }, 
+                    { text: "On optimise les coûts de gestion grâce à l'IA et on réduit le personnel administratif.", impact: "s5", expertInfo: "New Public Management & Lean Management via l'IA. Rationalisation." }, 
+                    { text: "On loue nos espaces (amphithéâtres, terrains) à la ville et aux associations locales.", impact: "s4", expertInfo: "Valorisation domaniale. Hybridation des usages (Chronotopie)." }, 
+                    { text: "On fait avec les moyens du bord, en priorisant la maintenance de base.", impact: "s1", expertInfo: "Gestion de pénurie. Risque de paupérisation des infrastructures." }
+                ] 
+            },
+            { 
+                theme: "Lien Social", 
+                text: "Les étudiants se plaignent d'isolement. Quelle est votre réponse architecturale ?", 
+                context: "La vie étudiante ne se résume pas aux cours.", 
+                expertContext: "Sociologie de l'éducation : L'étudiant n'est plus un 'héritier' (Bourdieu) mais un usager mobile. Besoin de 'Tiers-Lieux' (Ray Oldenburg) pour recréer du lien.",
+                didYouKnow: "Pour lutter contre l'isolement, l'Atrium a été conçu explicitement comme une 'place publique du savoir', ouverte aux habitants, et non plus comme une simple bibliothèque fermée.", 
+                expertFact: "Architecture : Le concept de 'Learning Centre' (ex: Rolex Center EPFL) vise à briser les silos (Silence vs Bruit) pour créer des 'Social Hubs' favorisant la sérendipité.",
+                options: [
+                    { text: "Créer un immense centre de vie (type Atrium) avec cinéma, santé et loisirs au cœur du campus.", impact: "s6", expertInfo: "Centralité forte. Effet 'Village Olympique' introverti." }, 
+                    { text: "Créer un métavers universitaire pour qu'ils socialisent depuis chez eux.", impact: "s3", expertInfo: "Socialisation avatarisée. Risque d'effet 'Hikikomori' (Retrait social)." }, 
+                    { text: "Encourager la vie dans les cafés du centre-ville plutôt que sur un campus ghetto.", impact: "s4", expertInfo: "Désenclavement social. Mixité intergénérationnelle dans l'espace public." }, 
+                    { text: "Développer des incubateurs où étudiants et entrepreneurs travaillent ensemble.", impact: "s2", expertInfo: "Réseautage professionnel (Networking) précoce. Socialisation utilitariste." }
+                ] 
+            },
+            { 
+                theme: "Technologie", 
+                text: "L'Intelligence Artificielle bouleverse l'enseignement. Votre réaction ?", 
+                context: "ChatGPT et consorts changent la donne pédagogique.", 
+                expertContext: "Rapport Villani (2018) sur l'IA. Enjeu de souveraineté numérique et de transformation des cognitions (Mémoire externe, Esprit critique).",
+                didYouKnow: "Depuis 2020, l'usage des outils numériques a explosé. Le diagnostic montre cependant que le 'tout distanciel' affaiblit le lien social, un enjeu majeur pour 88% des étudiants interrogés.", 
+                expertFact: "Pédagogie : Taux d'échec en L1 à distance > 60%. La présence physique reste le facteur #1 de réussite (Tinto's Integration Model).",
+                options: [
+                    { text: "Chaque étudiant reçoit un tuteur IA personnalisé. Les profs deviennent des coachs.", impact: "s5", expertInfo: "Personnalisation algorithmique (Adaptive Learning). Fin du cours magistral." }, 
+                    { text: "L'IA sert surtout à optimiser la recherche et les brevets industriels.", impact: "s2", expertInfo: "IA comme levier de R&D compétitive (Machine Learning appliqué)." }, 
+                    { text: "L'IA permet de faire cours sans jamais venir sur le campus.", impact: "s3", expertInfo: "E-learning asynchrone massif (MOOCs). Industrialisation de la formation." }, 
+                    { text: "On l'intègre doucement comme outil, sans changer la structure des cours magistraux.", impact: "s1", expertInfo: "Hybridation prudente. 'Blended Learning' limité. Résistance au changement." }
+                ] 
+            },
+            { 
+                theme: "Mobilité & Environnement", 
+                text: "Comment les étudiants doivent-ils accéder au savoir ?", 
+                context: "La mobilité est un enjeu clé du plan climat.", 
+                expertContext: "Plan de Déplacements Urbains (PDU) Montpellier 2030. Objectif : Réduire la part modale voiture < 30% et décarboner les flux pendulaires.",
+                didYouKnow: "Entre 2016 et 2023, l'usage de la voiture par le personnel est passé de 72% à 43%, tandis que le vélo a triplé (11% à 32%). L'arrivée de la Ligne 5 vise à réduire encore cette dépendance.", 
+                expertFact: "Empreinte Carbone : Le déplacement domicile-études représente ~30% des émissions GES d'une université (Bilan Carbone ADEME).",
+                options: [
+                    { text: "Ils n'ont plus besoin de se déplacer, tout est accessible depuis leur chambre.", impact: "s3", expertInfo: "Zéro mobilité physique. Mais impact carbone numérique (Data Centers) à évaluer." }, 
+                    { text: "Par une ligne de tramway et des pistes cyclables connectant le campus au reste de la ville.", impact: "s1", expertInfo: "Report modal classique (TC + Modes actifs). Modèle 'Transit Oriented Development'." }, 
+                    { text: "Ils vivent, étudient et consomment sur place. Le campus est une ville piétonne autonome.", impact: "s6", expertInfo: "Réduction des pendularités par la 'Mixité fonctionnelle' in situ." }, 
+                    { text: "Ils se déplacent constamment d'un tiers-lieu à l'autre dans la métropole.", impact: "s4", expertInfo: "Mobilité diffuse. Concept de 'Ville du quart d'heure' (C. Moreno) appliqué à l'étudiant." }
+                ] 
+            },
+            { 
+                theme: "Innovation", 
+                text: "Quelle est la vocation principale de votre université ?", 
+                context: "Définir l'identité de l'institution pour 2050.", 
+                expertContext: "Compétition mondiale (Classement Shanghai). Spécialisation intelligente des territoires (S3). L'Université comme moteur de l'économie de la connaissance.",
+                didYouKnow: "Montpellier mise sur 'MedVallée' (Santé/Environnement). L'université n'est plus isolée, elle devient un moteur économique direct et structurant pour le territoire métropolitain.", 
+                expertFact: "I-SITE (Initiative Science-Innovation-Territoire-Économie). Budget local : 550 M€. Objectif stratégique : Top 100 mondial.",
+                options: [
+                    { text: "Être un moteur économique et produire des licornes (start-ups).", impact: "s2", expertInfo: "Université Entrepreneuriale (Modèle MIT/Stanford). Valorisation immédiate." }, 
+                    { text: "Être un service public de proximité, fondu dans la population.", impact: "s4", expertInfo: "Université Citoyenne / 'Community College' model. Inclusion sociale prioritaire." }, 
+                    { text: "Être un pôle d'excellence technologique piloté par la data.", impact: "s5", expertInfo: "Technopole cognitive. Primauté de la data science sur les SHS." }, 
+                    { text: "Être un sanctuaire du savoir, préservé et stable.", impact: "s1", expertInfo: "Tour d'Ivoire académique (Modèle Humboldtien traditionnel). Savoir pour le savoir." }
+                ] 
+            },
+            { 
+                theme: "Urbanisme", 
+                text: "L'Atrium (Learning Center) doit évoluer. Que devient-il ?", 
+                context: "Bâtiment emblématique de l'ouverture sur la ville.", 
+                expertContext: "L'Atrium est un 'Flagship' architectural. Il incarne la stratégie immobilière et l'image de marque de l'établissement (Signal Urbain).",
+                didYouKnow: "L'Atrium a été construit sur un ancien parking. Il symbolise le passage du 'tout voiture' des années 60 à un espace piéton et végétalisé, redonnant 15 000 m² aux usagers.", 
+                expertFact: "Désimperméabilisation des sols : gain de 40% de surface perméable. Lutte contre l'îlot de chaleur urbain (ICU) et gestion des eaux pluviales.",
+                options: [
+                    { text: "Le centre névralgique d'une cité autonome, ouvert 24/24 avec tous les services.", impact: "s6", expertInfo: "L'Agora (cité grecque). Centralité absolue et intensité d'usage H24." }, 
+                    { text: "Un showroom technologique pour les entreprises partenaires.", impact: "s2", expertInfo: "Vitrine corporate. 'Showcase' pour attirer les investisseurs." }, 
+                    { text: "Un serveur géant gérant les avatars des étudiants.", impact: "s3", expertInfo: "Data Center urbain. Transformation en 'Black Box' infrastructurielle." }, 
+                    { text: "Un lieu de passage parmi d'autres dans la ville, ouvert à tous les citoyens.", impact: "s4", expertInfo: "Passage public. Porosité totale et effacement des seuils." }
+                ] 
+            }
         ];
 
         let currentQuestionIndex = 0;
@@ -826,13 +869,45 @@
             document.getElementById('enjeu-badge').innerText = q.theme;
             document.getElementById('question-text').innerText = q.text;
             document.getElementById('question-context').innerText = q.context;
+            
+            // Injection EXPERT CONTEXT
+            const expertBox = document.getElementById('question-expert-context');
+            if (q.expertContext) {
+                expertBox.innerHTML = `<span class="expert-badge">Cadre Théorique</span><p class="leading-relaxed">${q.expertContext}</p>`;
+            }
+            
+            // Injection EXPERT FACT dans le modal Did You Know (Préparation)
+            if (q.expertFact) {
+                expertFactAddition.innerHTML = `<span class="expert-badge">Donnée Technique</span><p class="text-sm font-mono leading-relaxed" style="font-family: 'Roboto', sans-serif;">${q.expertFact}</p>`; // Force font soft here too just in case
+            }
+
             document.getElementById('progress-bar').style.width = `${((currentQuestionIndex)/questions.length)*100}%`;
             const container = document.getElementById('answers-container'); container.innerHTML = '';
+            
             [...q.options].sort(() => Math.random() - 0.5).forEach(opt => {
                 const btn = document.createElement('button');
-                btn.className = "w-full text-left p-4 rounded-xl border-2 border-gray-200 hover:border-indigo-500 hover:bg-indigo-50 transition-all duration-200 flex items-center group card-hover";
+                btn.className = "w-full text-left p-4 rounded-xl border-2 border-gray-200 hover:border-indigo-500 hover:bg-indigo-50 transition-all duration-200 flex flex-col items-start group card-hover relative overflow-hidden";
                 btn.onclick = () => handleAnswer(opt.impact);
-                btn.innerHTML = `<div class="w-6 h-6 rounded-full border-2 border-gray-300 group-hover:border-indigo-500 mr-4 flex-shrink-0"></div><span class="text-gray-700 font-medium group-hover:text-indigo-900">${opt.text}</span>`;
+                
+                // Structure HTML enrichie pour le mode expert
+                let htmlContent = `
+                    <div class="flex items-center w-full relative z-10">
+                        <div class="w-6 h-6 rounded-full border-2 border-gray-300 group-hover:border-indigo-500 mr-4 flex-shrink-0 bg-white shadow-sm"></div>
+                        <span class="text-gray-700 font-medium group-hover:text-indigo-900 text-base">${opt.text}</span>
+                    </div>
+                `;
+                
+                // Ajout de la data expert cachée par défaut
+                if (opt.expertInfo) {
+                    htmlContent += `
+                        <div class="expert-content w-full ml-10 mt-3 border-l-2 border-blue-600 pl-3 bg-white bg-opacity-50"> <!-- Changed border color to match blue theme -->
+                            <span class="text-blue-600 font-bold text-[10px] uppercase tracking-wider block mb-1">Modèle Sous-jacent :</span> <!-- Changed text color to match blue theme -->
+                            <span class="text-gray-600 text-xs italic font-serif">"${opt.expertInfo}"</span>
+                        </div>
+                    `;
+                }
+
+                btn.innerHTML = htmlContent;
                 container.appendChild(btn);
             });
         }
@@ -842,6 +917,11 @@
             const fact = questions[currentQuestionIndex].didYouKnow;
             if(fact) {
                 factText.innerText = fact;
+                
+                // Gestion affichage expert dans modal
+                if(isExpertMode) expertFactAddition.style.display = 'block';
+                else expertFactAddition.style.display = 'none';
+                
                 factOverlay.classList.remove('hidden');
                 closeFactBtn.onclick = function() {
                     factOverlay.classList.add('hidden');
@@ -919,6 +999,9 @@
             document.getElementById('scenario-title').style.color = s.color;
             document.getElementById('scenario-subtitle').innerText = s.subtitle;
             document.getElementById('scenario-desc').innerText = s.description;
+            
+            updateResultAnalysis(); // Mise à jour du bloc expert
+
             const ul = document.getElementById('scenario-issues'); ul.innerHTML = '';
             s.issues.forEach(i => { const li = document.createElement('li'); li.innerText = i; ul.appendChild(li); });
             drawChart();
@@ -928,6 +1011,23 @@
             document.getElementById('reveal-btn').classList.remove('hidden');
             stopAudio();
             renderWordCloud();
+        }
+
+        function updateResultAnalysis() {
+            const s = scenarios[winnerScenarioId];
+            const analysisBox = document.getElementById('result-expert-analysis');
+            if(s && s.expert) {
+                analysisBox.innerHTML = `
+                    <div class="flex items-start gap-4">
+                        <div class="bg-indigo-900 text-white p-3 rounded-full shrink-0 mt-1"><i class="fas fa-microscope"></i></div>
+                        <div>
+                            <span class="expert-badge mb-2 bg-indigo-900 text-white">Analyse Sociologique & Urbaine</span>
+                            <p class="font-bold text-gray-800 text-sm mb-1 uppercase tracking-wide">Paradigme identifié :</p>
+                            <p class="text-sm leading-relaxed text-gray-700 font-serif border-l-2 border-indigo-200 pl-3">${s.expert}</p>
+                        </div>
+                    </div>
+                `;
+            }
         }
 
         // FIREBASE LOGIC
@@ -1301,6 +1401,68 @@
             // Centrer au départ
             moveSlider(50);
         });
+
+        // ==========================================
+        // GESTION DU GLOSSAIRE
+        // ==========================================
+        const glossaryModal = document.getElementById('glossary-modal');
+        const glossaryButtonsContainer = document.getElementById('glossary-buttons');
+        const glossaryDefContainer = document.getElementById('glossary-definition');
+        const defTitle = document.getElementById('def-title');
+        const defText = document.getElementById('def-text');
+
+        // Définition des termes (Mots sensibles extraits du texte)
+        const glossaryTerms = {
+            "ZAN": { full: "Zéro Artificialisation Nette", desc: "Objectif fixé par la loi Climat et Résilience visant à stopper l'étalement urbain et la bétonisation des sols naturels d'ici 2050. Cela oblige à construire la ville sur la ville (densification) plutôt que de s'étendre en périphérie." },
+            "Couture Urbaine": { full: "Couture Urbaine", desc: "Aménagement visant à reconnecter deux quartiers séparés par une coupure physique (route, voie ferrée, friche). L'arrivée du Tramway ligne 5 est un exemple de couture urbaine reliant le campus au reste de la ville." },
+            "Learning Center": { full: "Learning Center (Atrium)", desc: "Évolution de la bibliothèque universitaire traditionnelle. C'est un espace hybride qui propose non seulement des livres, mais aussi des espaces de travail collaboratif, des équipements numériques, de la détente et des services culturels." },
+            "Tiers-Lieu": { full: "Tiers-Lieu", desc: "Espace qui n'est ni la maison (1er lieu), ni le bureau (2ème lieu). C'est un espace de rencontre hybride : coworking, fablab, café associatif... favorisant la créativité et le lien social." },
+            "Incubateur": { full: "Incubateur de Start-ups", desc: "Structure d'accompagnement pour les projets de création d'entreprise innovante. Elle offre aux jeunes entrepreneurs (souvent étudiants) des conseils, un hébergement et un réseau." },
+            "Licorne": { full: "Licorne (Économie)", desc: "Terme désignant une start-up du secteur des nouvelles technologies valorisée à plus d'un milliard de dollars, non cotée en bourse. Symbole de la réussite économique technologique." },
+            "Métavers": { full: "Métavers", desc: "Univers virtuel fictif, immersif et persistant, accessible via des casques de réalité virtuelle ou augmentée. Certains imaginent y transférer une partie de l'enseignement supérieur." },
+            "Plan Guide": { full: "Plan Guide", desc: "Document d'urbanisme flexible qui définit les grandes orientations d'aménagement d'un quartier sur le long terme, sans figer chaque parcelle comme un plan de masse strict." },
+            "Tramway Ligne 5": { full: "Tramway Ligne 5", desc: "Nouvelle ligne de tramway de Montpellier reliant le Nord (Clapiers, Campus) à l'Ouest. Elle est cruciale pour désenclaver l'Université Paul Valéry historiquement isolée." }
+        };
+
+        function openGlossary() {
+            if (glossaryButtonsContainer.children.length === 0) {
+                Object.keys(glossaryTerms).forEach(key => {
+                    const btn = document.createElement('button');
+                    btn.className = "bg-white border border-indigo-200 text-indigo-700 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 px-4 py-2 rounded-full shadow-sm transition-all duration-200 text-sm font-semibold mb-2";
+                    btn.innerText = key;
+                    btn.onclick = () => showDefinition(key, btn);
+                    glossaryButtonsContainer.appendChild(btn);
+                });
+            }
+            glossaryModal.classList.remove('hidden');
+        }
+
+        function closeGlossary() {
+            glossaryModal.classList.add('hidden');
+            glossaryDefContainer.classList.add('hidden');
+            Array.from(glossaryButtonsContainer.children).forEach(b => {
+                b.classList.remove('bg-orange-500', 'text-white', 'border-orange-500');
+                b.classList.add('bg-white', 'text-indigo-700', 'border-indigo-200');
+            });
+        }
+
+        function showDefinition(key, btnElement) {
+            const term = glossaryTerms[key];
+            if(!term) return;
+            Array.from(glossaryButtonsContainer.children).forEach(b => {
+                b.classList.remove('bg-orange-500', 'text-white', 'border-orange-500');
+                b.classList.add('bg-white', 'text-indigo-700', 'border-indigo-200');
+            });
+            btnElement.classList.remove('bg-white', 'text-indigo-700', 'border-indigo-200');
+            btnElement.classList.add('bg-orange-500', 'text-white', 'border-orange-500');
+            defTitle.innerText = term.full;
+            defText.innerText = term.desc;
+            glossaryDefContainer.classList.remove('hidden');
+            glossaryDefContainer.classList.add('fade-in');
+        }
+
+        glossaryModal.addEventListener('click', (e) => { if(e.target === glossaryModal) closeGlossary(); });
+
     </script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
