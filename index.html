@@ -121,6 +121,34 @@
     </button>
 
     <!-- OVERLAYS ET MODALS -->
+    
+    <!-- 1. MODAL REALITY CHECK (NOUVEAU) -->
+    <div id="reality-modal" class="fixed inset-0 bg-black bg-opacity-80 hidden z-[110] flex items-center justify-center p-4 fade-in">
+        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full overflow-hidden relative border-t-8 border-red-500 transform transition-all scale-100">
+             <div class="p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center shrink-0">
+                        <i class="fas fa-balance-scale text-red-500 text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 title-font leading-tight">Le Choc de Réalité</h3>
+                </div>
+                
+                <div class="bg-red-50 border-l-4 border-red-400 p-4 mb-6">
+                    <p class="text-xs font-bold text-red-800 uppercase tracking-widest mb-1">Votre Vision vs Plan Stratégique</p>
+                    <div id="reality-content" class="text-gray-800 text-sm leading-relaxed space-y-4 font-medium"></div>
+                </div>
+                
+                <p class="text-xs text-gray-500 italic mb-6 text-center">
+                    Cet outil confronte l'imaginaire des usagers aux contraintes réelles des décideurs (budget, temps, inertie).
+                </p>
+
+                <button onclick="closeRealityCheck()" class="w-full bg-gray-800 text-white font-bold py-3 rounded-lg hover:bg-gray-900 transition shadow-lg transform hover:scale-[1.02]">
+                    <i class="fas fa-arrow-left mr-2"></i> Retour à ma vision
+                </button>
+             </div>
+        </div>
+    </div>
+
     <div id="fact-overlay" class="fixed inset-0 bg-black bg-opacity-60 hidden z-[70] flex items-center justify-center p-6 fade-in">
         <div class="bg-white rounded-xl p-8 max-w-lg w-full text-center shadow-2xl relative border-t-8 border-orange-500">
             <div class="mx-auto w-16 h-16 bg-orange-100 text-orange-500 rounded-full flex items-center justify-center mb-4 text-3xl">
@@ -494,9 +522,14 @@
                     <div class="bg-gray-50 rounded-xl p-4 flex flex-col justify-center">
                         <h4 class="font-bold text-gray-800 mb-2 text-center">Votre profil de Diagnostic</h4>
                         <canvas id="radarChart"></canvas>
+                        
+                        <!-- 2. BOUTON REALITY CHECK (NOUVEAU) -->
+                        <button onclick="showRealityCheck()" class="w-full bg-red-100 hover:bg-red-200 text-red-800 text-sm font-bold py-3 px-4 rounded transition duration-200 flex items-center justify-center gap-2 border border-red-200 mt-2">
+                            <i class="fas fa-balance-scale text-lg"></i> Et en réalité ?
+                        </button>
 
                         <!-- AJOUT : BOUTON REVOIR L'IMAGE + IMMERSION -->
-                        <div class="mt-6 border-t pt-4 space-y-3">
+                        <div class="mt-4 border-t pt-4 space-y-3">
                             <!-- Bouton Revoir Image -->
                              <button onclick="reopenScenarioImage()" class="w-full bg-orange-100 hover:bg-orange-200 text-orange-700 text-sm font-bold py-3 px-4 rounded transition duration-200 flex items-center justify-center gap-2 border border-orange-200">
                                 <i class="fas fa-eye text-lg"></i> Revoir l'illustration
@@ -538,6 +571,39 @@
                                  <!-- Le contenu sera généré par JS -->
                              </div>
                          </div>
+
+<div class="mt-6 border-t pt-6 fade-in">
+                            <div class="bg-gradient-to-br from-indigo-900 to-slate-800 rounded-xl p-5 text-white shadow-xl relative overflow-hidden border border-indigo-700">
+                                <i class="fas fa-clock absolute -right-6 -bottom-6 text-8xl text-white opacity-5 transform -rotate-12"></i>
+                                
+                                <div class="relative z-10">
+                                    <h4 class="font-bold text-center text-sm mb-1 title-font uppercase tracking-widest">
+                                        <i class="fas fa-box-open mr-2 text-orange-400"></i>Capsule Temporelle
+                                    </h4>
+                                    <p class="text-[11px] text-center text-indigo-200 mb-4 italic">
+                                        Laissez une trace aux étudiants de 2050. <br>Le message sera scellé dans la base de données.
+                                    </p>
+                                    
+                                    <div class="relative">
+                                        <textarea id="capsule-msg" maxlength="140" rows="2" 
+                                            placeholder="Ex: J'espère que le tram est toujours gratuit..." 
+                                            class="w-full bg-white text-gray-900 text-xs p-3 rounded-lg border border-indigo-500/30 focus:border-orange-400 focus:ring-1 focus:ring-orange-400 placeholder-gray-500 resize-none outline-none transition-all"></textarea>
+                                        <div class="text-[9px] text-right text-indigo-300 mt-1" id="char-count">0/140</div>
+                                    </div>
+                                    
+                                    <button onclick="sendCapsule()" id="btn-capsule" class="w-full mt-3 bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-lg text-xs transition-all shadow-lg flex justify-center items-center gap-2 transform active:scale-95">
+                                        <span>Sceller le message</span> <i class="fas fa-archive"></i>
+                                    </button>
+
+                                    <div id="capsule-feedback" class="hidden mt-3 text-center">
+                                        <p class="text-xs text-green-400 font-bold bg-green-900/30 py-2 rounded animate-pulse">
+                                            <i class="fas fa-check-circle mr-1"></i> Message archivé pour le futur.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
 
                         <div class="mt-6 flex flex-col gap-3 text-center">
                             <button onclick="restartGame()" class="text-gray-600 hover:text-gray-800 text-sm font-semibold underline">Recommencer</button>
@@ -974,6 +1040,65 @@
             skipScenarioBtn.classList.remove('hidden');
             skipScenarioBtn.innerHTML = `<span>Fermer</span> <i class="fas fa-times"></i>`;
         }
+        
+        // ==========================================
+        // 3. LOGIQUE COMPARATEUR RÊVE VS RÉALITÉ (NOUVEAU)
+        // ==========================================
+        
+        const realityAnalysis = {
+            s1: {
+                title: "Alignement Presque Parfait",
+                text: "Votre vision correspond largement au <strong>Plan Stratégique de Patrimoine (2024-2030)</strong> de l'université. La réalité est celle de la <strong>résilience</strong> : faire mieux avec les mêmes murs. L'enjeu réel est la rénovation thermique et la densification douce, faute de budget pour des révolutions architecturales."
+            },
+            s2: {
+                title: "Une Convergence Partielle",
+                text: "Votre vision économique rejoint la dynamique <strong>MedVallée</strong> portée par la Métropole. Cependant, l'Université reste un service public : la logique de rentabilité pure (S2) se heurte à la mission d'accueil inconditionnel et au manque de moyens propres pour maintenir de tels équipements sans aide de l'État."
+            },
+            s3: { // Texte spécifiquement demandé par l'utilisateur
+                title: "Le Choc du Réel : Numérique vs Pierre",
+                text: "Vous rêvez du <strong>Tout Numérique (S3)</strong>, MAIS le plan stratégique actuel (2024-2030) s'oriente plutôt vers la <strong>Continuité (S1)</strong> avec des nuances d'Innovation (S2).<br><br><strong>Pourquoi ?</strong><br>1. <strong>La fracture numérique :</strong> Le 100% distanciel a montré ses limites psychosociales (décrochage).<br>2. <strong>Le modèle économique :</strong> L'université est propriétaire d'un immense patrimoine immobilier qu'elle ne peut pas abandonner. La stratégie réelle est l'hybridation prudente, pas la dématérialisation totale."
+            },
+            s4: {
+                title: "L'Idéal de la Ville-Campus vs La Gestion",
+                text: "Votre vision d'une université fondue dans la ville (S4) est séduisante et soutenue par certains élus. <strong>Mais la réalité administrative résiste :</strong> éparpiller les locaux explose les coûts de gestion (sécurité, nettoyage, fluides). La tendance réelle (S1) est au regroupement sur des campus densifiés pour rationaliser les dépenses."
+            },
+            s5: {
+                title: "L'IA : Outil ou Maître ?",
+                text: "Vous misez sur l'IA (S5). Si l'université intègre ces outils (S2), elle reste une institution humaine traditionnelle (S1). <strong>Le frein principal ?</strong> L'inertie académique et le coût énergétique des infrastructures Data. L'université de 2030 sera 'assistée' par l'IA, mais pas 'pilotée' par elle."
+            },
+            s6: {
+                title: "L'Autarcie impossible",
+                text: "Votre modèle de 'Campus Total' (S6) nécessite des financements colossaux que l'État ne fournit plus. La réalité (S1/S2) force l'université à s'ouvrir sur la ville pour mutualiser les équipements (bibliothèques, sports) plutôt que de tout construire en interne."
+            }
+        };
+
+        const realityModal = document.getElementById('reality-modal');
+        const realityContent = document.getElementById('reality-content');
+
+        function showRealityCheck() {
+            // Récupérer le scénario gagnant
+            const winningId = winnerScenarioId || 's1'; 
+            
+            // Récupérer le texte correspondant
+            const analysis = realityAnalysis[winningId] || realityAnalysis['s1'];
+            
+            // Injecter le contenu
+            realityContent.innerHTML = analysis.text;
+            
+            // Afficher le modal
+            realityModal.classList.remove('hidden');
+        }
+
+        function closeRealityCheck() {
+            realityModal.classList.add('hidden');
+        }
+
+        // Fermer en cliquant à l'extérieur
+        realityModal.addEventListener('click', (e) => { 
+            if (e.target === realityModal) closeRealityCheck(); 
+        });
+
+
         // ==========================================
 
         function showResult() {
@@ -1316,6 +1441,47 @@
         function stopAudio() { if(synth.speaking) synth.cancel(); stopAudioUI(); }
         function stopAudioUI() { document.getElementById('play-audio-btn').classList.remove('hidden'); document.getElementById('stop-audio-btn').classList.add('hidden'); document.getElementById('speaking-indicator').classList.add('hidden'); }
 
+// === LOGIQUE CAPSULE TEMPORELLE ===
+async function sendCapsule() {
+    const input = document.getElementById('capsule-msg');
+    const btn = document.getElementById('btn-capsule');
+    const feedback = document.getElementById('capsule-feedback');
+    const text = input.value.trim();
+
+    if (!text) return;
+
+    btn.disabled = true;
+    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Archivage...`;
+    btn.classList.add('opacity-75');
+
+    if (window.addDoc && window.collection && window.db) {
+        try {
+            await window.addDoc(window.collection(window.db, "capsule_2050"), {
+                message: text,
+                date: new Date(),
+                scenario: winnerScenarioId || "Inconnu",
+                appVersion: "1.0"
+            });
+
+            btn.classList.add('hidden');
+            feedback.classList.remove('hidden');
+            input.value = "";
+
+        } catch (e) {
+            console.error("Erreur Capsule:", e);
+            btn.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Erreur connexion`;
+            btn.classList.replace('bg-orange-500', 'bg-red-500');
+        }
+    } else {
+        console.error("Firebase addDoc/collection non initialisé");
+        alert("Erreur: Base de données non connectée.");
+    }
+}
+
+document.getElementById('capsule-msg').addEventListener('input', function() {
+    document.getElementById('char-count').innerText = this.value.length + "/140";
+});
+
         function restartGame() {
             stopAudio(); currentQuestionIndex = 0; scores = { s1: 0, s2: 0, s3: 0, s4: 0, s5: 0, s6: 0 };
             document.getElementById('story-display').classList.add('hidden'); resultScreen.classList.add('hidden'); 
@@ -1465,12 +1631,23 @@
 
     </script>
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-        import { getFirestore, doc, updateDoc, getDoc, increment, setDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
-        const firebaseConfig = { apiKey: "AIzaSyAe7Hc2bT-Scvf032sLHh8TXG9aHnFB-D0", authDomain: "atelier-atrium-d951b.firebaseapp.com", projectId: "atelier-atrium-d951b", storageBucket: "atelier-atrium-d951b.firebasestorage.app", messagingSenderId: "716967590598", appId: "1:716967590598:web:5116e96917e2243fcbb5c7", measurementId: "G-JQ634TGS4M" };
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        window.db = db; window.doc = doc; window.updateDoc = updateDoc; window.increment = increment; window.getDoc = getDoc; window.setDoc = setDoc;
-    </script>
-</body>
-</html>
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+import { getFirestore, doc, updateDoc, getDoc, increment, setDoc, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+const firebaseConfig = { apiKey: "AIzaSyAe7Hc2bT-Scvf032sLHh8TXG9aHnFB-D0", authDomain: "atelier-atrium-d951b.firebaseapp.com", projectId: "atelier-atrium-d951b", storageBucket: "atelier-atrium-d951b.firebasestorage.app", messagingSenderId: "716967590598", appId: "1:716967590598:web:5116e96917e2243fcbb5c7", measurementId: "G-JQ634TGS4M" };
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.db = db;
+window.doc = doc;
+window.updateDoc = updateDoc;
+window.increment = increment;
+window.getDoc = getDoc;
+window.setDoc = setDoc;
+window.collection = collection;
+window.addDoc = addDoc;
+</script>
+
+
+
