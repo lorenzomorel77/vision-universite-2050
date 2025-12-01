@@ -110,6 +110,21 @@
             .timeline-point { left: 20px; }
             .timeline-card { width: 100%; padding-left: 50px !important; padding-right: 0 !important; text-align: left !important; left: 0 !important; margin-bottom: 2rem; }
         }
+/* --- STYLE URBAN PUZZLE --- */
+.urban-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; background-color: #e5e7eb; padding: 4px; border-radius: 8px; box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06); }
+.urban-cell { aspect-ratio: 1; border-radius: 6px; position: relative; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); border: 2px solid transparent; }
+.urban-cell:hover { transform: scale(1.05); z-index: 10; filter: brightness(1.05); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+.cell-nature { background-color: #dcfce7; border-color: #86efac; color: #166534; }
+.cell-concrete { background-color: #f3f4f6; border-color: #e5e7eb; color: #9ca3af; }
+.cell-occupied { animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); border-color: white !important; }
+.b-logement { background: linear-gradient(135deg, #fdba74 0%, #fb923c 100%); color: #7c2d12; }
+.b-labo { background: linear-gradient(135deg, #93c5fd 0%, #60a5fa 100%); color: #1e3a8a; }
+.b-tram { background: linear-gradient(135deg, #c4b5fd 0%, #a78bfa 100%); color: #4c1d95; }
+.b-parc { background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%); color: #064e3b; }
+@keyframes popIn { from { transform: scale(0) rotate(-10deg); opacity: 0; } to { transform: scale(1) rotate(0); opacity: 1; } }
+.shake-anim { animation: shake 0.3s ease-in-out; border-color: #ef4444 !important; background-color: #fee2e2 !important; }
+@keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+.selected-ring { ring-width: 4px; ring-color: #6366f1; transform: scale(1.05); }
     </style>
 </head>
 <body class="min-h-screen flex flex-col relative transition-colors duration-500">
@@ -571,6 +586,24 @@
                                  <!-- Le contenu sera généré par JS -->
                              </div>
                          </div>
+<div class="mt-6 border-t pt-4 fade-in">
+    <div onclick="openGamesHub()" class="bg-white p-4 rounded-xl shadow-md border-l-4 border-indigo-600 relative overflow-hidden group cursor-pointer transition-transform hover:scale-[1.01]">
+        <div class="absolute right-0 top-0 h-full w-32 bg-gradient-to-l from-indigo-50 to-transparent opacity-50"></div>
+        <div class="flex items-center gap-4 relative z-10">
+            <div class="w-12 h-12 rounded-full bg-indigo-900 text-white flex items-center justify-center text-xl shadow-lg group-hover:rotate-12 transition-transform">
+                <i class="fas fa-flask"></i>
+            </div>
+            <div>
+                <h4 class="font-bold text-gray-800 text-sm uppercase tracking-wide">Laboratoire des Possibles</h4>
+                <p class="text-xs text-gray-500">Simulations, Quiz & Gestion de crise.</p>
+            </div>
+            <div class="ml-auto flex items-center gap-2">
+                <span class="bg-orange-100 text-orange-700 text-[10px] font-bold px-2 py-1 rounded-full border border-orange-200">Nouveau</span>
+                <i class="fas fa-chevron-right text-gray-400 group-hover:text-indigo-600 transition-colors"></i>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="mt-6 border-t pt-6 fade-in">
                             <div class="bg-gradient-to-br from-indigo-900 to-slate-800 rounded-xl p-5 text-white shadow-xl relative overflow-hidden border border-indigo-700">
@@ -1648,6 +1681,973 @@ window.setDoc = setDoc;
 window.collection = collection;
 window.addDoc = addDoc;
 </script>
+<div id="games-hub-overlay" class="fixed inset-0 bg-slate-900/95 hidden z-[140] flex items-center justify-center p-4 font-sans fade-in backdrop-blur-sm">
+    <div class="bg-white w-full max-w-2xl rounded-2xl overflow-hidden shadow-2xl relative">
+        <div class="bg-indigo-900 p-6 text-white flex justify-between items-center">
+            <div>
+                <h2 class="text-xl font-bold uppercase tracking-widest"><i class="fas fa-flask mr-2 text-orange-400"></i>Laboratoire Prospectif</h2>
+                <p class="text-xs text-indigo-200">Testez la viabilité de vos décisions sur le long terme.</p>
+            </div>
+            <button onclick="document.getElementById('games-hub-overlay').classList.add('hidden'); document.getElementById('games-hub-overlay').classList.remove('flex');" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition"><i class="fas fa-times"></i></button>
+        </div>
 
+        <div class="p-6 bg-gray-50 grid grid-cols-1 md:grid-cols-2 gap-4">
+            
+            <div onclick="document.getElementById('games-hub-overlay').classList.add('hidden'); document.getElementById('games-hub-overlay').classList.remove('flex'); openReignsMenu();" class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm hover:shadow-md hover:border-indigo-500 cursor-pointer transition-all group relative overflow-hidden">
+                <div class="absolute top-3 right-3 text-green-500 bg-green-100 px-2 py-0.5 rounded text-[10px] font-bold">DISPONIBLE</div>
+                <div class="w-12 h-12 bg-indigo-100 text-indigo-700 rounded-lg flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">
+                    <i class="fas fa-balance-scale"></i>
+                </div>
+                <h3 class="font-bold text-gray-800 mb-1">Mandat 2035 : L'Arbitrage</h3>
+                <p class="text-xs text-gray-500 leading-relaxed">Gérez les externalités négatives de votre politique. Budget, Acceptabilité sociale et Écologie.</p>
+            </div>
 
+            <div onclick="document.getElementById('games-hub-overlay').classList.add('hidden'); document.getElementById('games-hub-overlay').classList.remove('flex'); document.getElementById('urban-puzzle-overlay').classList.remove('hidden'); document.getElementById('urban-puzzle-overlay').classList.add('flex'); initUrbanPuzzle();" class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm hover:shadow-md hover:border-green-500 cursor-pointer transition-all group relative overflow-hidden">
+                <div class="absolute top-3 right-3 text-white bg-green-500 px-2 py-0.5 rounded text-[10px] font-bold shadow-sm">NOUVEAU</div>
+                <div class="w-12 h-12 bg-green-100 text-green-700 rounded-lg flex items-center justify-center text-2xl mb-4 group-hover:scale-110 group-hover:rotate-3 transition-transform">
+                    <i class="fas fa-city"></i>
+                </div>
+                <h3 class="font-bold text-gray-800 mb-1">Urban Puzzle : Défi ZAN</h3>
+                <p class="text-xs text-gray-500 leading-relaxed">Architecte, placez les bâtiments nécessaires sans détruire la nature. Attention à la jauge écologique !</p>
+            </div>
+
+            <div onclick="document.getElementById('games-hub-overlay').classList.add('hidden'); document.getElementById('games-hub-overlay').classList.remove('flex'); openCodex();" class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm hover:shadow-md hover:border-indigo-500 cursor-pointer transition-all group relative overflow-hidden">
+                <div class="absolute top-3 right-3 text-indigo-600 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">Culture G</div>
+                <div class="flex items-center gap-4 relative z-10">
+                    <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-lg flex items-center justify-center text-2xl mb-4 group-hover:scale-110 group-hover:bg-indigo-600 group-hover:text-white transition-all shadow-sm">
+                        <i class="fas fa-university"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-gray-800 mb-1">Le Grand Quiz Universitaire</h3>
+                        <p class="text-xs text-gray-500 leading-relaxed">Misez vos points de crédibilité pour répondre à des questions complexes sur l'histoire et l'urbanisme.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div id="reigns-overlay" class="fixed inset-0 bg-black bg-opacity-95 hidden z-[150] flex items-center justify-center p-4 font-sans fade-in">
+    
+    <div id="game-glossary-modal" class="absolute z-[160] bg-white rounded-lg shadow-2xl border-l-4 border-orange-500 p-4 max-w-xs hidden top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-11/12">
+        <h4 id="gg-title" class="font-bold text-indigo-900 mb-2 text-sm uppercase">Définition</h4>
+        <p id="gg-desc" class="text-xs text-gray-700 leading-relaxed mb-3">...</p>
+        <button onclick="closeGameGlossary()" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 text-xs font-bold py-2 rounded">Fermer</button>
+    </div>
+
+    <div id="reigns-menu" class="bg-white w-full max-w-md rounded-2xl p-8 text-center shadow-2xl relative">
+        <button onclick="closeReignsOverlay()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><i class="fas fa-arrow-left"></i></button>
+        <h2 class="text-2xl font-black text-gray-800 mb-2 uppercase">Initialisation Simulation</h2>
+        <p class="text-sm text-gray-600 mb-8 px-4">"Gouverner, c'est choisir."<br>Sélectionnez la dominante de crise à gérer.</p>
+        
+        <div class="space-y-4">
+            <div onclick="startReignsGame('tech')" class="bg-indigo-50 hover:bg-indigo-100 p-4 rounded-xl border border-indigo-200 cursor-pointer transition-all flex items-center gap-4 text-left group">
+                <div class="text-2xl bg-white w-12 h-12 flex items-center justify-center rounded-full shadow-sm">⚡</div>
+                <div>
+                    <h3 class="font-bold text-indigo-900 text-sm">Défis Techniques & Numériques</h3>
+                    <p class="text-xs text-indigo-600">Sobriété, IA, Obsolescence & Coûts.</p>
+                </div>
+            </div>
+
+            <div onclick="startReignsGame('nature')" class="bg-green-50 hover:bg-green-100 p-4 rounded-xl border border-green-200 cursor-pointer transition-all flex items-center gap-4 text-left group">
+                <div class="text-2xl bg-white w-12 h-12 flex items-center justify-center rounded-full shadow-sm">🌱</div>
+                <div>
+                    <h3 class="font-bold text-green-900 text-sm">Défis Environnementaux</h3>
+                    <p class="text-xs text-green-600">ZAN, Biodiversité, Énergie & Usages.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   <div id="reigns-game" class="hidden w-full max-w-md relative">
+        
+        <div class="flex justify-end w-full mb-2">
+            <button onclick="closeReignsOverlay()" class="bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-red-500 transition shadow-md flex items-center gap-2">
+                <span>Quitter la simulation</span> <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <div class="flex justify-between mb-6 bg-slate-800 p-4 rounded-lg shadow-lg border border-slate-700">
+        
+        <button onclick="closeReignsOverlay()" class="absolute -top-10 right-0 text-white/60 hover:text-white hover:bg-white/10 px-3 py-1 rounded-full transition-all text-xs font-bold uppercase tracking-wider flex items-center gap-2">
+            <span>Abandonner</span> <i class="fas fa-times"></i>
+        </button>
+
+       
+            <div class="flex flex-col items-center w-1/3 px-2 border-r border-slate-600">
+                <span class="text-[10px] text-slate-400 uppercase font-bold mb-1">Budget</span>
+                <div class="w-full h-1.5 bg-slate-600 rounded-full overflow-hidden"><div id="r-bar-budget" class="h-full bg-blue-400 transition-all duration-300" style="width: 60%"></div></div>
+            </div>
+            <div class="flex flex-col items-center w-1/3 px-2 border-r border-slate-600">
+                <span class="text-[10px] text-slate-400 uppercase font-bold mb-1">Social</span>
+                <div class="w-full h-1.5 bg-slate-600 rounded-full overflow-hidden"><div id="r-bar-pop" class="h-full bg-purple-400 transition-all duration-300" style="width: 60%"></div></div>
+            </div>
+            <div class="flex flex-col items-center w-1/3 px-2">
+                <span class="text-[10px] text-slate-400 uppercase font-bold mb-1">Écologie</span>
+                <div class="w-full h-1.5 bg-slate-600 rounded-full overflow-hidden"><div id="r-bar-eco" class="h-full bg-green-400 transition-all duration-300" style="width: 60%"></div></div>
+            </div>
+        </div>
+
+        <div class="relative h-[420px] w-full perspective-1000">
+            <div id="r-active-card" class="absolute inset-0 bg-white rounded-xl shadow-2xl flex flex-col items-center p-8 text-center border-t-4 border-indigo-600 transition-transform duration-300 ease-out origin-bottom">
+                
+                <div class="absolute top-4 right-4 text-[10px] font-mono text-gray-400">DOSSIER #<span id="r-turn-count">01</span></div>
+                
+                <div id="r-card-icon" class="text-5xl mb-6 mt-4 p-4 bg-gray-50 rounded-full shadow-inner text-gray-700">⚠️</div>
+                
+                <h3 id="r-card-title" class="text-lg font-bold text-gray-900 mb-3 leading-tight uppercase tracking-wide">Titre Dossier</h3>
+                <div class="w-10 h-1 bg-indigo-600 mb-4 mx-auto"></div>
+                <p id="r-card-desc" class="text-gray-600 text-sm leading-relaxed font-medium">Description technique du problème...</p>
+                
+                <p class="mt-4 text-[10px] text-gray-400 italic">Cliquez sur les mots soulignés pour le glossaire.</p>
+                
+                <div id="r-choice-feedback" class="absolute bottom-24 left-0 w-full px-4 text-center font-bold text-lg opacity-0 transition-opacity transform z-10 drop-shadow-md"></div>
+            </div>
+        </div>
+
+        <div class="flex gap-4 mt-8">
+            <button onmouseover="previewReignsChoice('left')" onmouseout="resetReignsPreview()" onclick="makeReignsChoice('left')" id="r-btn-left" class="flex-1 bg-white text-gray-700 py-4 px-3 rounded-lg border border-gray-300 hover:bg-gray-50 font-semibold text-xs shadow-lg transition-all active:scale-95 leading-snug">
+                Option A
+            </button>
+            <button onmouseover="previewReignsChoice('right')" onmouseout="resetReignsPreview()" onclick="makeReignsChoice('right')" id="r-btn-right" class="flex-1 bg-white text-gray-700 py-4 px-3 rounded-lg border border-gray-300 hover:bg-gray-50 font-semibold text-xs shadow-lg transition-all active:scale-95 leading-snug">
+                Option B
+            </button>
+        </div>
+    </div>
+
+    <div id="reigns-end" class="hidden bg-white w-full max-w-md rounded-2xl p-8 text-center shadow-2xl border-t-8 border-gray-800 relative">
+        <div id="r-end-icon" class="text-5xl mb-4 text-gray-800">📊</div>
+        <h1 id="r-end-title" class="text-xl font-black text-gray-900 mb-2 uppercase">Rapport de Mandat</h1>
+        <p id="r-end-message" class="text-gray-600 text-sm mb-6 leading-relaxed bg-gray-50 p-4 rounded-lg border border-gray-100">...</p>
+        
+        <div class="flex justify-center gap-4 text-xs font-mono text-gray-500 mb-6">
+            <div>Budget: <span id="end-b" class="font-bold text-gray-800"></span>%</div>
+            <div>Social: <span id="end-p" class="font-bold text-gray-800"></span>%</div>
+            <div>Eco: <span id="end-e" class="font-bold text-gray-800"></span>%</div>
+        </div>
+
+        <button onclick="closeReignsOverlay()" class="w-full bg-gray-800 hover:bg-black text-white font-bold py-3 rounded-lg shadow-md transition-all">
+            Retour au Laboratoire
+        </button>
+    </div>
+</div>
+
+<style>
+    /* Styles spécifiques Mini-Jeu & Glossaire */
+    .perspective-1000 { perspective: 1000px; }
+    .slide-left { transform: translateX(-150%) rotate(-15deg) !important; opacity: 0; }
+    .slide-right { transform: translateX(150%) rotate(15deg) !important; opacity: 0; }
+    
+    /* Style des mots du glossaire dans les cartes */
+    .g-term {
+        border-bottom: 1px dashed #f97316; /* Orange pointillé */
+        color: #c2410c;
+        cursor: help;
+        font-weight: bold;
+        transition: background-color 0.2s;
+    }
+    .g-term:hover { background-color: #ffedd5; }
+</style>
+
+<script>
+    // --- DICTIONNAIRE GLOSSAIRE ---
+    const gameGlossary = {
+        "ZAN": "Zéro Artificialisation Nette. Objectif de loi interdisant de bétonner de nouveaux espaces naturels d'ici 2050.",
+        "Sobriété": "Réduction volontaire des consommations (énergie, données) pour respecter les limites planétaires.",
+        "Obsolescence": "Fait qu'un équipement devienne dépassé techniquement, obligeant à son remplacement.",
+        "RGPD": "Règlement Général sur la Protection des Données. Loi européenne protégeant la vie privée numérique.",
+        "Fracture Numérique": "Inégalité d'accès aux technologies (internet, ordinateurs) créant des exclusions sociales.",
+        "Bilan Carbone": "Mesure totale des émissions de gaz à effet de serre d'une activité.",
+        "Rénovation Thermique": "Travaux d'isolation pour réduire la consommation d'énergie des bâtiments.",
+        "Ilot de Chaleur": "Phénomène où la ville (béton, bitume) retient la chaleur, rendant l'air étouffant la nuit.",
+        "Désimperméabilisation": "Enlever le bitume pour remettre de la terre, permettant à l'eau de s'infiltrer.",
+        "Mobilité Douce": "Modes de transport non motorisés (marche, vélo) ou peu polluants."
+    };
+
+    // --- DONNÉES DE JEU (10 Cartes par scénario - Difficulté Réduite) ---
+    // Les impacts sont réduits (ex: -10 au lieu de -30) pour durer plus longtemps.
+    const rData = {
+        tech: [
+            { 
+                title: "Attaque Ransomware", 
+                desc: "Le serveur Recherche est crypté. Risque de perte de données sensibles et violation <span class='g-term' onclick='showGameGlossary(\"RGPD\")'>RGPD</span>.", 
+                icon: "🔐", 
+                left: {text: "Payer (Pragmatique)\n(Budget -15)", e: {b:-15, p:5, ec:0}, f: "Risque légal 📉"}, 
+                right: {text: "Restaurer (Intègre)\n(Social -15)", e: {b:-5, p:-15, ec:0}, f: "Panne longue 📉"} 
+            },
+            { 
+                title: "Coût Énergétique", 
+                desc: "Les supercalculateurs surchauffent. La facture explose. Faut-il imposer la <span class='g-term' onclick='showGameGlossary(\"Sobriété\")'>Sobriété</span> ?", 
+                icon: "📉", 
+                left: {text: "Brider le débit\n(Social -10)", e: {b:5, p:-10, ec:10}, f: "Grogne étudiante"}, 
+                right: {text: "Payer plus\n(Budget -10)", e: {b:-10, p:5, ec:-5}, f: "Déficit budgétaire"} 
+            },
+            { 
+                title: "Matériel Obsolète", 
+                desc: "2000 PC sont touchés par l'<span class='g-term' onclick='showGameGlossary(\"Obsolescence\")'>Obsolescence</span>. Ils rament.", 
+                icon: "💻", 
+                left: {text: "Tout changer\n(Budget -20)", e: {b:-20, p:10, ec:-15}, f: "Déchets Élec. 📉"}, 
+                right: {text: "Optimiser Linux\n(Social -5)", e: {b:-5, p:-5, ec:5}, f: "Solution geek"} 
+            },
+            { 
+                title: "Exclusion Wi-Fi", 
+                desc: "15% des étudiants n'ont pas d'ordi portable. C'est la <span class='g-term' onclick='showGameGlossary(\"Fracture Numérique\")'>Fracture Numérique</span>.", 
+                icon: "🚫", 
+                left: {text: "Prêt massif\n(Budget -10)", e: {b:-10, p:15, ec:-5}, f: "Solidarité 📈"}, 
+                right: {text: "Salles Infos H24\n(Eco -10)", e: {b:-5, p:5, ec:-10}, f: "Conso Énergie 📉"} 
+            },
+            { 
+                title: "E-Sport Campus", 
+                desc: "Une équipe étudiante veut créer une arène E-Sport. Bon pour l'image, mauvais pour le <span class='g-term' onclick='showGameGlossary(\"Bilan Carbone\")'>Bilan Carbone</span>.", 
+                icon: "🎮", 
+                left: {text: "Financer\n(Social +10)", e: {b:-10, p:10, ec:-10}, f: "Succès Populaire"}, 
+                right: {text: "Refuser\n(Social -10)", e: {b:0, p:-10, ec:5}, f: "Has-been"} 
+            },
+            { 
+                title: "Données Personnelles", 
+                desc: "Une start-up propose un outil d'IA gratuit en échange des données des étudiants.", 
+                icon: "👁️", 
+                left: {text: "Accepter\n(Budget +10)", e: {b:10, p:-10, ec:0}, f: "Vente de données"}, 
+                right: {text: "Bloquer\n(Social +5)", e: {b:0, p:5, ec:0}, f: "Protection vie privée"} 
+            },
+            {
+                title: "Maintenance Serveurs",
+                desc: "Faut-il délocaliser nos données dans le Cloud (USA) ou garder nos serveurs locaux (chers) ?",
+                icon: "☁️",
+                left: {text: "Cloud US\n(Budget +5)", e: {b:5, p:-5, ec:-5}, f: "Perte Souveraineté"},
+                right: {text: "Local\n(Budget -10)", e: {b:-10, p:5, ec:0}, f: "Indépendance"}
+            },
+            {
+                title: "Cours en VR",
+                desc: "Des profs veulent faire cours dans le Métavers. Les casques coûtent cher.",
+                icon: "🥽",
+                left: {text: "Investir\n(Budget -15)", e: {b:-15, p:5, ec:-10}, f: "Gadget High-Tech"},
+                right: {text: "Refuser\n(Eco +5)", e: {b:5, p:-5, ec:5}, f: "Sobriété"}
+            }
+        ],
+        nature: [
+            { 
+                title: "Parking ou Parc ?", 
+                desc: "Faut-il supprimer le parking profs pour <span class='g-term' onclick='showGameGlossary(\"Désimperméabilisation\")'>Désimperméabiliser</span> le sol ?", 
+                icon: "🅿️", 
+                left: {text: "Faire un Parc\n(Social -10)", e: {b:-10, p:-10, ec:20}, f: "Profs en colère"}, 
+                right: {text: "Garder Parking\n(Eco -10)", e: {b:0, p:5, ec:-10}, f: "Ilot de chaleur 📉"} 
+            },
+            { 
+                title: "Canicule", 
+                desc: "42°C dans les amphis. C'est un <span class='g-term' onclick='showGameGlossary(\"Ilot de Chaleur\")'>Ilot de Chaleur</span> insupportable.", 
+                icon: "☀️", 
+                left: {text: "Climatiser\n(Eco -20)", e: {b:-15, p:15, ec:-20}, f: "Confort immédiat"}, 
+                right: {text: "Végétaliser\n(Budget -10)", e: {b:-10, p:-5, ec:15}, f: "Solution lente"} 
+            },
+            { 
+                title: "Menu Végétarien", 
+                desc: "Le CROUS propose de passer au 100% végétarien pour réduire le <span class='g-term' onclick='showGameGlossary(\"Bilan Carbone\")'>Bilan Carbone</span>.", 
+                icon: "🥗", 
+                left: {text: "Imposer 100%\n(Social -15)", e: {b:5, p:-15, ec:20}, f: "Révolte Carnivore"}, 
+                right: {text: "Choix libre\n(Eco -5)", e: {b:0, p:5, ec:-5}, f: "Status Quo"} 
+            },
+            { 
+                title: "Extension Campus", 
+                desc: "Besoin de nouveaux labos. Faut-il construire sur la forêt classée (Non <span class='g-term' onclick='showGameGlossary(\"ZAN\")'>ZAN</span>) ?", 
+                icon: "🏗️", 
+                left: {text: "Construire\n(Eco -25)", e: {b:-10, p:5, ec:-25}, f: "Bétonisation"}, 
+                right: {text: "Rénover l'ancien\n(Budget -20)", e: {b:-20, p:-5, ec:10}, f: "Chantier complexe"} 
+            },
+            {
+                title: "Pistes Cyclables",
+                desc: "Les étudiants demandent plus de <span class='g-term' onclick='showGameGlossary(\"Mobilité Douce\")'>Mobilité Douce</span> sécurisée.",
+                icon: "🚲",
+                left: {text: "Travaux lourds\n(Budget -15)", e: {b:-15, p:15, ec:10}, f: "Sécurité top"},
+                right: {text: "Peinture sol\n(Budget -5)", e: {b:-5, p:0, ec:0}, f: "Low cost"}
+            },
+            {
+                title: "Déchets Sauvages",
+                desc: "Les pelouses sont jonchées de déchets après les soirées.",
+                icon: "🗑️",
+                left: {text: "Brigade Nettoyage\n(Budget -10)", e: {b:-10, p:5, ec:5}, f: "Propre mais cher"},
+                right: {text: "Responsabiliser\n(Social -5)", e: {b:0, p:-5, ec:-5}, f: "Inefficace"}
+            },
+            {
+                title: "Panneaux Solaires",
+                desc: "Installer des panneaux sur les toits historiques ? (Conflit Patrimoine vs <span class='g-term' onclick='showGameGlossary(\"Rénovation Thermique\")'>Rénovation</span>).",
+                icon: "⚡",
+                left: {text: "Installer\n(Eco +15)", e: {b:-15, p:0, ec:15}, f: "Moche mais utile"},
+                right: {text: "Respecter l'art\n(Eco -5)", e: {b:0, p:5, ec:-5}, f: "Esthétique pure"}
+            },
+            {
+                title: "Eau de Pluie",
+                desc: "Récupérer l'eau des toits pour les toilettes ? Investissement lourd.",
+                icon: "💧",
+                left: {text: "Investir\n(Budget -15)", e: {b:-15, p:5, ec:15}, f: "Autonomie eau"},
+                right: {text: "Trop cher\n(Budget +5)", e: {b:5, p:0, ec:-5}, f: "Gaspillage eau potable"}
+            }
+        ]
+    };
+
+    // --- LOGIQUE HUB ---
+    function openGamesHub() {
+        document.getElementById('games-hub-overlay').classList.remove('hidden');
+        document.getElementById('games-hub-overlay').classList.add('flex');
+    }
+    function closeGamesHub() {
+        document.getElementById('games-hub-overlay').classList.add('hidden');
+        document.getElementById('games-hub-overlay').classList.remove('flex');
+    }
+
+    // --- LOGIQUE REIGNS ---
+    // Départ à 60% pour être plus gentil
+    let rStats = {b:60,p:60,ec:60}; 
+    let rDeck = []; 
+    let rIdx = 0;
+
+    function openReignsMenu() { 
+        closeGamesHub(); 
+        document.getElementById('reigns-overlay').classList.remove('hidden'); 
+        document.getElementById('reigns-menu').classList.remove('hidden'); 
+        document.getElementById('reigns-game').classList.add('hidden'); 
+        document.getElementById('reigns-end').classList.add('hidden'); 
+    }
+
+    // CORRECTION DU BUG RETOUR HUB
+    function closeReignsOverlay() { 
+        document.getElementById('reigns-overlay').classList.add('hidden'); 
+        openGamesHub(); // Rouvre le hub proprement
+    }
+    
+    // LOGIQUE GLOSSAIRE
+    function showGameGlossary(term) {
+        // Empêche le clic de traverser si besoin (pas nécessaire ici mais bonne pratique)
+        const def = gameGlossary[term] || "Définition non trouvée.";
+        document.getElementById('gg-title').innerText = term;
+        document.getElementById('gg-desc').innerText = def;
+        document.getElementById('game-glossary-modal').classList.remove('hidden');
+    }
+
+    function closeGameGlossary() {
+        document.getElementById('game-glossary-modal').classList.add('hidden');
+    }
+
+    function startReignsGame(scenario) {
+        rStats = {b:60, p:60, ec:60}; // Reset stats plus haut
+        updateReignsUI(); 
+        rDeck = [...rData[scenario]].sort(() => Math.random() - 0.5); 
+        rIdx = 0;
+
+        document.getElementById('reigns-menu').classList.add('hidden'); 
+        document.getElementById('reigns-game').classList.remove('hidden'); 
+        document.getElementById('reigns-game').classList.add('fade-in'); 
+        loadReignsCard();
+    }
+    
+    function loadReignsCard() {
+        closeGameGlossary(); // Fermer glossaire si ouvert
+        if(checkReignsGameOver()) return;
+        if(rIdx >= rDeck.length) { endReignsGame(true); return; }
+
+        const c = rDeck[rIdx];
+        const cardEl = document.getElementById('r-active-card');
+        
+        cardEl.style.transform = 'none';
+        cardEl.style.borderColor = '#4f46e5'; 
+        document.getElementById('r-choice-feedback').style.opacity = '0';
+
+        // Formatage du numéro 01, 02...
+        document.getElementById('r-turn-count').innerText = (rIdx < 9 ? "0" : "") + (rIdx + 1);
+        document.getElementById('r-card-icon').innerText = c.icon; 
+        document.getElementById('r-card-title').innerText = c.title;
+        // Insertion HTML pour permettre les spans du glossaire
+        document.getElementById('r-card-desc').innerHTML = c.desc;
+        
+        document.getElementById('r-btn-left').innerText = c.left.text.replace('\n', ' - '); 
+        document.getElementById('r-btn-right').innerText = c.right.text.replace('\n', ' - ');
+    }
+    
+    function previewReignsChoice(dir) { 
+        const card = document.getElementById('r-active-card');
+        const feedback = document.getElementById('r-choice-feedback');
+        const cData = rDeck[rIdx];
+
+        if(dir === 'left') {
+            card.style.transform = 'rotate(-3deg) translateX(-10px)';
+            card.style.borderColor = '#60a5fa'; 
+            feedback.innerText = cData.left.f;
+            feedback.style.color = '#2563eb';
+        } else {
+            card.style.transform = 'rotate(3deg) translateX(10px)';
+            card.style.borderColor = '#a78bfa'; 
+            feedback.innerText = cData.right.f;
+            feedback.style.color = '#7c3aed';
+        }
+        feedback.style.opacity = '1';
+    }
+
+    function resetReignsPreview() { 
+        document.getElementById('r-active-card').style.transform = 'none'; 
+        document.getElementById('r-active-card').style.borderColor = '#4f46e5';
+        document.getElementById('r-choice-feedback').style.opacity = '0';
+    }
+    
+    function makeReignsChoice(dir) {
+        const c = rDeck[rIdx];
+        const choice = dir === 'left' ? c.left : c.right;
+        
+        rStats.b += choice.e.b; 
+        rStats.p += choice.e.p; 
+        rStats.ec += choice.e.ec;
+        
+        rStats.b = Math.min(100, Math.max(0, rStats.b));
+        rStats.p = Math.min(100, Math.max(0, rStats.p));
+        rStats.ec = Math.min(100, Math.max(0, rStats.ec));
+        
+        updateReignsUI();
+
+        const cardEl = document.getElementById('r-active-card');
+        cardEl.classList.add(dir === 'left' ? 'slide-left' : 'slide-right');
+
+        setTimeout(() => { 
+            cardEl.classList.remove('slide-left', 'slide-right'); 
+            rIdx++; 
+            loadReignsCard(); 
+        }, 300);
+    }
+    
+    function updateReignsUI() {
+        setRBar('r-bar-budget', rStats.b);
+        setRBar('r-bar-pop', rStats.p);
+        setRBar('r-bar-eco', rStats.ec);
+    }
+
+    function setRBar(id, val) {
+        const el = document.getElementById(id);
+        el.style.width = val + '%';
+        if(val < 20) el.className = "h-full bg-red-500 animate-pulse";
+        else if(val < 50) el.className = "h-full bg-orange-400 transition-all duration-300";
+        else el.className = "h-full bg-emerald-500 transition-all duration-300";
+    }
+    
+    function checkReignsGameOver() {
+        // Seuil à 0 strict
+        if(rStats.b <= 0) { endReignsGame(false, "Tutelle Budgétaire !<br>Le rectorat reprend le contrôle."); return true; }
+        if(rStats.p <= 0) { endReignsGame(false, "Blocage du Campus !<br>Grève générale illimitée."); return true; }
+        if(rStats.ec <= 0) { endReignsGame(false, "Crise Environnementale !<br>Fermeture pour insalubrité."); return true; }
+        return false;
+    }
+
+    function endReignsGame(win, msg) {
+        document.getElementById('reigns-game').classList.add('hidden');
+        document.getElementById('reigns-end').classList.remove('hidden');
+        document.getElementById('reigns-end').classList.add('fade-in');
+
+        const title = document.getElementById('r-end-title');
+        const message = document.getElementById('r-end-message');
+        const icon = document.getElementById('r-end-icon');
+
+        document.getElementById('end-b').innerText = rStats.b;
+        document.getElementById('end-p').innerText = rStats.p;
+        document.getElementById('end-e').innerText = rStats.ec;
+
+        if(win) {
+            icon.innerText = "✅";
+            title.innerText = "Mandat Validé";
+            title.className = "text-xl font-black text-green-700 mb-2 uppercase";
+            message.innerHTML = "Bravo ! Vous avez maintenu l'équilibre précaire de l'institution jusqu'au bout.";
+        } else {
+            icon.innerText = "❌";
+            title.innerText = "Mandat Interrompu";
+            title.className = "text-xl font-black text-red-700 mb-2 uppercase";
+            message.innerHTML = msg;
+        }
+    }
+</script>
+<div id="urban-puzzle-overlay" class="fixed inset-0 bg-slate-900/95 hidden z-[150] flex items-center justify-center p-2 fade-in font-sans select-none">
+    <div class="bg-white w-full max-w-5xl h-[95vh] md:h-[90vh] rounded-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row relative">
+        
+        <div class="md:hidden bg-indigo-900 text-white p-3 flex justify-between items-center shadow-md z-20">
+            <span class="font-bold text-sm uppercase tracking-wider"><i class="fas fa-city mr-2 text-orange-400"></i>Défi ZAN</span>
+            <button onclick="closeUrbanPuzzle()" class="text-white hover:text-red-400"><i class="fas fa-times text-xl"></i></button>
+        </div>
+
+        <div class="w-full md:w-1/3 bg-slate-50 p-4 md:p-6 flex flex-col border-r border-gray-200 overflow-y-auto z-10">
+            <div class="hidden md:flex justify-between items-start mb-6">
+                <div>
+                    <h2 class="text-2xl font-black text-indigo-900 leading-none">URBAN<br>PUZZLE</h2>
+                    <span class="text-[10px] font-bold text-green-600 tracking-widest uppercase bg-green-100 px-2 py-0.5 rounded">Objectif Zéro Artificialisation</span>
+                </div>
+                <button onclick="closeUrbanPuzzle()" class="bg-gray-200 hover:bg-red-100 hover:text-red-500 rounded-full w-8 h-8 flex items-center justify-center transition"><i class="fas fa-times"></i></button>
+            </div>
+
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200 mb-4 md:mb-6">
+                <div class="flex justify-between items-end mb-2">
+                    <span class="text-xs font-bold text-gray-500 uppercase flex items-center gap-1"><i class="fas fa-leaf text-green-500"></i> Impact Nature</span>
+                    <span id="zan-txt" class="text-sm font-bold text-green-600">0 / 3 Max</span>
+                </div>
+                <div class="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
+                    <div id="zan-bar" class="h-full bg-green-500 transition-all duration-500" style="width: 0%"></div>
+                </div>
+                <p id="zan-msg" class="text-[10px] text-red-500 mt-2 hidden font-bold animate-pulse text-center bg-red-50 py-1 rounded border border-red-100"><i class="fas fa-exclamation-triangle"></i> LIMITE LÉGALE DÉPASSÉE</p>
+            </div>
+
+            <div class="flex-grow">
+                <h3 class="text-xs font-bold text-gray-400 uppercase mb-3 flex items-center justify-between">
+                    <span>Bâtiments à placer</span>
+                    <span class="text-[10px] bg-gray-200 px-2 rounded text-gray-500">Cliquez pour choisir</span>
+                </h3>
+                <div id="palette-zone" class="grid grid-cols-2 gap-3">
+                    </div>
+            </div>
+
+            <div class="mt-4 md:mt-6 pt-4 border-t border-gray-200">
+                <button onclick="checkWin()" class="w-full py-4 rounded-xl bg-indigo-600 text-white font-bold text-sm hover:bg-indigo-700 shadow-lg shadow-indigo-200 transition transform active:scale-95 flex items-center justify-center gap-2">
+                    <span>VALIDER LE PLAN</span> <i class="fas fa-check"></i>
+                </button>
+                <button onclick="initUrbanPuzzle()" class="w-full mt-2 py-2 text-xs text-gray-400 font-semibold hover:text-gray-600">Réinitialiser la carte</button>
+            </div>
+        </div>
+
+        <div class="w-full md:w-2/3 bg-gray-100 p-4 md:p-8 flex flex-col items-center justify-center relative overflow-hidden">
+            <div id="end-msg" class="absolute inset-0 bg-white/95 z-50 hidden flex-col items-center justify-center text-center p-8 backdrop-blur-sm rounded-xl transition-all">
+                <div id="end-icon" class="text-7xl mb-4 drop-shadow-md">🏆</div>
+                <h3 id="end-title" class="text-3xl font-black text-gray-800 mb-2">TITRE</h3>
+                <p id="end-desc" class="text-gray-600 mb-8 max-w-md text-sm md:text-base">Description</p>
+                <div class="flex gap-3">
+                    <button onclick="initUrbanPuzzle()" class="bg-gray-200 text-gray-700 px-6 py-3 rounded-full font-bold hover:bg-gray-300 transition">Réessayer</button>
+                    <button onclick="closeUrbanPuzzle()" class="bg-indigo-600 text-white px-6 py-3 rounded-full font-bold shadow-lg hover:bg-indigo-700 transition">Quitter</button>
+                </div>
+            </div>
+            
+            <div class="bg-white p-3 rounded-xl shadow-xl border-4 border-white mb-4 relative group">
+                <div id="game-grid" class="urban-grid w-[320px] h-[320px] md:w-[480px] md:h-[480px]"></div>
+                <div id="grid-hint" class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0 transition-opacity bg-black/5 rounded-lg">
+                    <span class="bg-black/70 text-white px-3 py-1 rounded text-xs">Cliquez ici pour poser</span>
+                </div>
+            </div>
+            
+            <div class="bg-white px-4 py-2 rounded-full shadow-sm text-xs text-gray-500 border border-gray-100 flex items-center gap-2">
+                <i class="fas fa-info-circle text-indigo-500"></i>
+                <span>Astuce : Le <strong>Logement</strong> <span class="w-2 h-2 inline-block rounded-full bg-orange-400"></span> gagne des points près du <strong>Tram</strong> <span class="w-2 h-2 inline-block rounded-full bg-purple-400"></span>.</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+/* === LOGIQUE JEU URBAN PUZZLE === */
+const B_TYPES = {
+    logement: { id:'logement', label:'Résidence Étudiante', icon:'fa-home', color:'b-logement', count:5 },
+    labo: { id:'labo', label:'Laboratoire Recherche', icon:'fa-flask', color:'b-labo', count:3 },
+    tram: { id:'tram', label:'Arrêt de Tramway', icon:'fa-subway', color:'b-tram', count:2 },
+    parc: { id:'parc', label:'Parc Urbain (Bonus)', icon:'fa-tree', color:'b-parc', count:1 }
+};
+
+let grid=[], buildings=[], selType=null, zan=0;
+const ZAN_LIMIT = 3;
+
+function closeUrbanPuzzle() {
+    document.getElementById('urban-puzzle-overlay').classList.add('hidden');
+    openGamesHub(); // Cette fonction remet le "flex" pour centrer automatiquement
+}
+
+function initUrbanPuzzle() {
+    zan=0; buildings=[]; selType=null;
+    document.getElementById('end-msg').classList.add('hidden');
+    document.getElementById('end-msg').classList.remove('flex');
+    renderZan();
+    
+    // Génération Grille Procédurale (Coins = Nature)
+    const div = document.getElementById('game-grid'); 
+    div.innerHTML=''; grid=[];
+    
+    for(let x=0; x<8; x++){
+        grid[x]=[];
+        for(let y=0; y<8; y++){
+            // Algorithme : Plus on est proche des coins ou du centre, plus il y a de chance d'avoir de la nature/béton
+            let noise = Math.random();
+            // Coins haut-gauche et bas-droite = Nature probable
+            let isNat = (x<3 && y<3) || (x>5 && y>5) ? noise > 0.3 : noise > 0.85;
+            
+            grid[x][y] = isNat ? 'nature' : 'concrete';
+            
+            let cell = document.createElement('div');
+            cell.className = `urban-cell ${isNat?'cell-nature':'cell-concrete'}`;
+            cell.dataset.x = x; cell.dataset.y = y;
+            
+            // Icônes de fond
+            if(isNat) cell.innerHTML='<i class="fas fa-leaf opacity-20 text-[10px]"></i>';
+            else if(Math.random()>0.8) cell.innerHTML='<i class="fas fa-road opacity-10 text-[10px]"></i>';
+            
+            cell.onclick = () => clickCell(x,y,cell);
+            div.appendChild(cell);
+        }
+    }
+    renderPalette();
+}
+
+function renderPalette() {
+    const p = document.getElementById('palette-zone'); p.innerHTML='';
+    let counts = {};
+    
+    // Calculer ce qui reste à poser
+    Object.values(B_TYPES).forEach(t => counts[t.id] = t.count - buildings.filter(b=>b.type===t.id).length);
+    
+    let hasRemaining = false;
+    Object.values(B_TYPES).forEach(t => {
+        let remain = counts[t.id];
+        if(remain <= 0) return;
+        hasRemaining = true;
+        
+        let btn = document.createElement('div');
+        let isSelected = selType === t.id;
+        
+        btn.className = `p-3 rounded-lg border-2 cursor-pointer transition-all flex items-center justify-between group ${isSelected ? 'border-indigo-500 bg-indigo-50 ring-2 ring-indigo-200' : 'border-gray-200 hover:border-indigo-300 bg-white'}`;
+        
+        btn.innerHTML = `
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-md flex items-center justify-center text-white shadow-sm ${t.color}">
+                    <i class="fas ${t.icon}"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-xs font-bold text-gray-700">${t.label}</span>
+                    <span class="text-[10px] text-gray-400 group-hover:text-indigo-500">Sélectionner</span>
+                </div>
+            </div>
+            <span class="text-xs font-bold bg-gray-100 px-2 py-1 rounded text-gray-600">x${remain}</span>
+        `;
+        
+        btn.onclick = () => { 
+            selType = t.id; 
+            renderPalette(); // Re-render pour mettre à jour la sélection visuelle
+            // Petit feedback visuel sur la grille
+            document.getElementById('grid-hint').style.opacity = '1';
+            setTimeout(() => document.getElementById('grid-hint').style.opacity = '0', 2000);
+        };
+        p.appendChild(btn);
+    });
+
+    if(!hasRemaining) {
+        p.innerHTML = `<div class="col-span-2 text-center py-6 bg-green-50 rounded-lg border border-green-100 text-green-700 text-sm font-bold"><i class="fas fa-check-circle mr-2"></i>Tous les bâtiments sont placés !<br><span class="text-xs font-normal">Vérifiez la jauge ZAN et validez.</span></div>`;
+        selType = null;
+    }
+}
+
+function clickCell(x,y, el) {
+    // 1. Si on clique sur un bâtiment existant -> On le supprime
+    let existingIdx = buildings.findIndex(b=>b.x===x && b.y===y);
+    if(existingIdx !== -1) {
+        let existing = buildings[existingIdx];
+        
+        // Mise à jour ZAN si on retire un bâtiment d'une case nature
+        if(grid[x][y]==='nature' && existing.type!=='parc') zan--;
+        
+        buildings.splice(existingIdx, 1);
+        
+        // Reset visuel
+        el.className = `urban-cell ${grid[x][y]==='nature'?'cell-nature':'cell-concrete'}`;
+        el.innerHTML = grid[x][y]==='nature' ? '<i class="fas fa-leaf opacity-20 text-[10px]"></i>' : (Math.random()>0.8 ? '<i class="fas fa-road opacity-10 text-[10px]"></i>' : '');
+        
+        renderZan(); 
+        renderPalette();
+        return;
+    }
+
+    // 2. Si rien n'est sélectionné, on secoue
+    if(!selType) {
+        el.classList.add('shake-anim');
+        setTimeout(()=>el.classList.remove('shake-anim'), 300);
+        return;
+    }
+
+    // 3. Poser le bâtiment
+    let t = Object.values(B_TYPES).find(t=>t.id===selType);
+    let count = t.count - buildings.filter(b=>b.type===selType).length;
+    
+    if(count > 0) {
+        // Impact ZAN
+        let impactZan = (grid[x][y]==='nature' && selType!=='parc');
+        
+        buildings.push({x,y,type:selType});
+        if(impactZan) zan++;
+        
+        el.className = `urban-cell cell-occupied ${t.color}`;
+        el.innerHTML = `<i class="fas ${t.icon} text-white drop-shadow-md"></i>`;
+        
+        // Si on pose un logement près d'un tram, petit effet ? (Optionnel)
+        
+        renderZan();
+        
+        // Si c'était le dernier de ce type, on désélectionne
+        if(count - 1 <= 0) selType = null;
+        
+        renderPalette();
+    }
+}
+
+function renderZan() {
+    let pct = (zan/ZAN_LIMIT)*100;
+    let bar = document.getElementById('zan-bar');
+    let txt = document.getElementById('zan-txt');
+    let msg = document.getElementById('zan-msg');
+    
+    bar.style.width = Math.min(100, pct)+'%';
+    txt.innerText = `${zan} / ${ZAN_LIMIT} Max`;
+    
+    if(zan > ZAN_LIMIT) {
+        bar.className = 'h-full bg-red-500 transition-all';
+        txt.className = 'text-sm font-bold text-red-500';
+        msg.classList.remove('hidden');
+    } else {
+        bar.className = 'h-full bg-green-500 transition-all';
+        txt.className = 'text-sm font-bold text-green-600';
+        msg.classList.add('hidden');
+    }
+}
+
+function checkWin() {
+    let msg = document.getElementById('end-msg');
+    let title = document.getElementById('end-title');
+    let desc = document.getElementById('end-desc');
+    let icon = document.getElementById('end-icon');
+    
+    msg.classList.remove('hidden'); msg.classList.add('flex');
+    
+    // Compter total bâtiments
+    let totalNeeded = Object.values(B_TYPES).reduce((acc, t) => acc + t.count, 0);
+    
+    if(zan > ZAN_LIMIT) {
+        icon.innerText="🚧"; 
+        title.innerText="PROJET REJETÉ"; 
+        title.className="text-3xl font-black text-red-500 mb-2";
+        desc.innerHTML="<strong>Permis de construire refusé.</strong><br>Vous avez bétonné trop d'espaces naturels ("+zan+"/"+ZAN_LIMIT+").<br>Le Préfet exige le respect du ZAN.";
+    } else if(buildings.length < totalNeeded) {
+        icon.innerText="📋"; 
+        title.innerText="DOSSIER INCOMPLET"; 
+        title.className="text-3xl font-black text-orange-500 mb-2";
+        desc.innerHTML="Il manque des bâtiments !<br>L'université ne peut pas fonctionner à moitié.<br>Placez tous les éléments de la liste.";
+    } else {
+        // Calcul Synergie (Logement près de Tram)
+        let synergies = 0;
+        buildings.filter(b=>b.type==='logement').forEach(l => {
+            // Chercher un tram dans les voisins
+            let hasTram = buildings.some(t => t.type==='tram' && Math.abs(t.x-l.x) + Math.abs(t.y-l.y) === 1);
+            if(hasTram) synergies++;
+        });
+
+        icon.innerText="🎉"; 
+        title.innerText="PERMIS ACCORDÉ"; 
+        title.className="text-3xl font-black text-green-600 mb-2";
+        desc.innerHTML=`<strong>Excellent travail !</strong><br>Le ZAN est respecté et le campus est fonctionnel.<br><br><span class="text-sm bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full">Bonus Synergie : ${synergies} logements bien connectés</span>`;
+    }
+}
+</script>
+<div id="codex-overlay" class="fixed inset-0 bg-slate-900/95 z-[160] hidden flex-col font-sans fade-in items-center justify-center p-4">
+    <div class="w-full max-w-3xl bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+        
+        <div class="bg-indigo-900 p-4 md:p-6 flex justify-between items-center shrink-0">
+            <div>
+                <h2 class="text-lg md:text-xl font-bold text-white tracking-wide title-font flex items-center gap-2">
+                    <i class="fas fa-graduation-cap text-orange-400"></i> CHALLENGE UNIVERSITAIRE
+                </h2>
+                <p class="text-xs text-indigo-200 hidden md:block">Testez vos connaissances expertes</p>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <div class="bg-indigo-800/50 px-4 py-2 rounded-lg border border-indigo-700 flex flex-col items-end">
+                    <span class="text-[10px] text-indigo-300 uppercase font-bold">Crédibilité</span>
+                    <span id="codex-score" class="font-bold text-white text-lg">1000</span>
+                </div>
+                <button onclick="closeCodex()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="flex-grow overflow-y-auto bg-gray-50 p-6 relative">
+            
+            <div id="codex-screen-wager" class="flex flex-col items-center justify-center h-full text-center space-y-6 py-4">
+                <div class="w-20 h-20 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center text-4xl shadow-inner mb-2">
+                    <i class="fas fa-question"></i>
+                </div>
+                
+                <div>
+                    <h3 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1">Thématique Identifiée</h3>
+                    <h1 id="codex-cat-title" class="text-2xl md:text-3xl font-extrabold text-gray-800 title-font">HISTOIRE</h1>
+                </div>
+                
+                <p class="text-sm text-gray-600 max-w-md mx-auto leading-relaxed">
+                    Combien de points de crédibilité souhaitez-vous miser sur votre capacité à répondre correctement ?
+                </p>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-md mt-4">
+                    <button onclick="codexStartRound(100)" class="bg-white border-2 border-gray-200 hover:border-indigo-500 hover:bg-indigo-50 p-4 rounded-xl transition-all group shadow-sm text-left relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-16 h-16 bg-indigo-100 rounded-bl-full -mr-8 -mt-8 z-0"></div>
+                        <span class="block text-xs font-bold text-gray-400 uppercase mb-1 relative z-10 group-hover:text-indigo-600">Prudent</span>
+                        <span class="text-xl font-black text-gray-800 relative z-10">100 PTS</span>
+                    </button>
+                    
+                    <button onclick="codexStartRound(500)" class="bg-white border-2 border-orange-200 hover:border-orange-500 hover:bg-orange-50 p-4 rounded-xl transition-all group shadow-sm text-left relative overflow-hidden">
+                         <div class="absolute top-0 right-0 w-16 h-16 bg-orange-100 rounded-bl-full -mr-8 -mt-8 z-0"></div>
+                        <span class="block text-xs font-bold text-orange-400 uppercase mb-1 relative z-10 group-hover:text-orange-600">Audacieux</span>
+                        <span class="text-xl font-black text-gray-800 relative z-10">500 PTS</span>
+                    </button>
+                </div>
+            </div>
+
+            <div id="codex-screen-question" class="hidden flex flex-col h-full">
+                <div class="w-full bg-gray-200 rounded-full h-2 mb-6 overflow-hidden">
+                    <div id="codex-timer-bar" class="bg-indigo-600 h-2 rounded-full transition-all duration-[15000ms] ease-linear w-full"></div>
+                </div>
+
+                <div class="flex-grow flex items-center justify-center mb-6">
+                    <p id="codex-q-text" class="text-lg md:text-xl text-gray-800 font-medium leading-relaxed text-center"></p>
+                </div>
+
+                <div id="codex-options-grid" class="grid grid-cols-1 gap-3 mt-auto"></div>
+            </div>
+
+            <div id="codex-screen-feedback" class="hidden flex flex-col items-center justify-center h-full text-center py-4">
+                <div id="codex-fb-icon" class="w-24 h-24 rounded-full flex items-center justify-center text-5xl mb-6 shadow-lg transition-transform duration-500 scale-0"></div>
+                <h2 id="codex-fb-title" class="text-2xl font-bold mb-6 text-gray-800">RÉSULTAT</h2>
+                <div class="bg-white border border-gray-200 rounded-xl p-6 mb-8 text-left w-full max-w-lg shadow-sm relative">
+                    <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-100 px-3 py-1 rounded-full text-[10px] font-bold text-gray-500 uppercase tracking-widest border border-gray-200">Le Savoir Expert</div>
+                    <p id="codex-fb-expl" class="text-sm text-gray-600 leading-relaxed mt-2"></p>
+                </div>
+                <button onclick="codexNext()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:shadow-xl transition-all flex items-center gap-2 transform hover:-translate-y-1">
+                    <span>Question Suivante</span> <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    // --- MOTEUR DE JEU CODEX (QUIZ ÉTENDU) ---
+    const codexDB = [
+        // --- HISTOIRE (MONTPELLIER & FRANCE) ---
+        { cat: "HISTOIRE", q: "Quelle particularité avait la Faculté de Médecine de Montpellier au Moyen Âge ?", opts: ["Réservée aux nobles", "Autorisait les dissections humaines", "Enseignement uniquement religieux"], correct: 1, note: "Dès 1340, Montpellier est l'un des rares lieux en Europe autorisant une dissection annuelle, attirant les savants de toute l'Europe." },
+        { cat: "HISTOIRE", q: "En quelle année l'Université de Montpellier a-t-elle été officiellement unifiée par bulle papale ?", opts: ["1220", "1289", "1492"], correct: 1, note: "1289 marque la création officielle par le Pape Nicolas IV de l'Université globale (Studium Generale)." },
+        { cat: "HISTOIRE", q: "Quel célèbre écrivain et médecin a étudié à Montpellier au 16ème siècle ?", opts: ["François Rabelais", "Nostradamus", "Molière"], correct: 0, note: "Rabelais s'est inscrit en 1530. Sa robe rouge de docteur est devenue un symbole lors des cérémonies." },
+        { cat: "HISTOIRE", q: "Le Jardin des Plantes (1593) servait à l'origine à...", opts: ["Promener la reine", "Étudier les plantes médicinales", "Produire du vin"], correct: 1, note: "C'est le plus ancien jardin botanique de France, créé par Henri IV pour les étudiants en médecine et les apothicaires." },
+        { cat: "HISTOIRE", q: "En mai 1968, quelle était la revendication majeure des étudiants ?", opts: ["Moins de vacances", "La mixité dans les cités U", "Plus de cours de sport"], correct: 1, note: "L'interdiction pour les garçons d'accéder aux dortoirs des filles (et inversement) fut l'étincelle de la révolte étudiante." },
+        { cat: "HISTOIRE", q: "Qui a donné son nom à l'Université Montpellier 3 ?", opts: ["Paul Valéry", "Jean Jaurès", "Marianne"], correct: 0, note: "Paul Valéry, poète et philosophe sétois, a donné son nom à l'université des Lettres, Arts et Langues." },
+        
+        // --- URBANISME & ARCHITECTURE ---
+        { cat: "URBANISME", q: "Le campus Paul Valéry (1966) a été construit selon quel modèle ?", opts: ["Le Campus 'Enclave' (isolé)", "L'Université dispersée", "Le Gratte-ciel éducatif"], correct: 0, note: "Inspiré des campus américains, l'idée était d'isoler les étudiants dans un cadre de verdure, loin de l'agitation du centre-ville." },
+        { cat: "URBANISME", q: "Que signifie l'acronyme ZAN qui bloque l'extension des campus ?", opts: ["Zone À Nettoyer", "Zéro Artificialisation Nette", "Zone d'Architecture Nouvelle"], correct: 1, note: "Loi Climat & Résilience : elle vise à stopper l'étalement urbain et interdit de bétonner de nouveaux sols naturels d'ici 2050." },
+        { cat: "URBANISME", q: "Quel est l'objectif principal de la Ligne 5 de Tramway ?", opts: ["Augmenter les loyers", "Désenclaver le campus Nord", "Transporter les profs"], correct: 1, note: "Historiquement isolé, le campus devient connecté au reste de la métropole. On appelle cela une 'Couture Urbaine'." },
+        { cat: "URBANISME", q: "L'Atrium a été construit à la place de quoi ?", opts: ["Une forêt", "Un parking bitumé", "Un terrain vague"], correct: 1, note: "Symbole de la transition écologique : on remplace la voiture (stockage inerte) par le savoir et le lien social (lieu de vie)." },
+        { cat: "URBANISME", q: "Qu'est-ce un 'Tiers-Lieu' dans un campus ?", opts: ["Une salle de classe", "Un espace hybride travail/vie", "Le bureau du doyen"], correct: 1, note: "C'est un espace qui n'est ni la maison, ni l'amphi. On y fait du coworking, on y mange ou on y crée (FabLab)." },
+        { cat: "URBANISME", q: "Pourquoi végétaliser les toits de l'université ?", opts: ["Pour faire joli", "Lutter contre les îlots de chaleur", "Pour y faire du camping"], correct: 1, note: "La végétalisation rafraîchit les bâtiments et retient l'eau de pluie, réduisant le besoin de climatisation." },
+        
+        // --- SOCIOLOGIE & VIE ÉTUDIANTE ---
+        { cat: "SOCIOLOGIE", q: "Dans 'Les Héritiers' (1964), que dénonce Pierre Bourdieu ?", opts: ["Le manque de bourses", "La reproduction des inégalités sociales", "La qualité de la cantine"], correct: 1, note: "Il démontre que la réussite scolaire dépend moins du talent inné que du 'capital culturel' hérité de la famille." },
+        { cat: "SOCIOLOGIE", q: "Qu'est-ce que la 'Massification' universitaire ?", opts: ["L'augmentation du poids des cartables", "L'accès du plus grand nombre aux études", "La construction de bâtiments lourds"], correct: 1, note: "Passage d'une université d'élite (19e siècle) à une université accueillant la majorité d'une classe d'âge (années 80-90)." },
+        { cat: "SOCIOLOGIE", q: "Quelle est la part d'étudiants boursiers en France environ ?", opts: ["10%", "38%", "75%"], correct: 1, note: "Environ 38% à 40% des étudiants reçoivent une aide sur critères sociaux du CROUS." },
+        { cat: "SOCIOLOGIE", q: "Le syndrome de l'imposteur touche particulièrement...", opts: ["Les étudiants de première génération", "Les professeurs émérites", "Les étudiants étrangers"], correct: 0, note: "Les étudiants dont les parents n'ont pas fait d'études supérieures se sentent souvent illégitimes à l'université." },
+        { cat: "SOCIOLOGIE", q: "Quel est le premier poste de dépense d'un étudiant ?", opts: ["L'alimentation", "Le logement", "Les sorties"], correct: 1, note: "Le logement représente en moyenne 60% du budget étudiant, créant une forte précarité dans les grandes villes." },
+
+        // --- INTERNATIONAL & COMPARISONS ---
+        { cat: "MONDE", q: "Quelle université a le plus gros budget du monde (+50 Mds $) ?", opts: ["Oxford (UK)", "Harvard (USA)", "Sorbonne (France)"], correct: 1, note: "Le fonds de dotation d'Harvard (Endowment) est supérieur au PIB de nombreux pays (comme la Tunisie ou la Bolivie)." },
+        { cat: "MONDE", q: "Quel pays forme le plus d'ingénieurs au monde ?", opts: ["USA", "Allemagne", "Chine"], correct: 2, note: "La Chine diplôme plus d'ingénieurs par an que les USA, l'Europe et le Japon réunis (environ 600 000/an)." },
+        { cat: "MONDE", q: "La plus ancienne université du monde toujours active est...", opts: ["Oxford (UK)", "Al Quaraouiyine (Maroc)", "Bologne (Italie)"], correct: 1, note: "Fondée en 859 à Fès par une femme, Fatima al-Fihri, bien avant les universités européennes." },
+        { cat: "MONDE", q: "Qu'est-ce que le 'Processus de Bologne' (1999) ?", opts: ["Un concours de cuisine", "L'harmonisation L-M-D en Europe", "Un traité de paix"], correct: 1, note: "Il a standardisé les diplômes (Licence, Master, Doctorat) pour faciliter la mobilité des étudiants en Europe (Erasmus)." },
+        { cat: "MONDE", q: "Aux USA, à combien peut s'élever une année de frais de scolarité ?", opts: ["Gratuit", "5 000 $", "Plus de 60 000 $"], correct: 2, note: "Dans l'Ivy League, une année coûte souvent plus de 60 000 $, endettant les étudiants sur des décennies." },
+        { cat: "MONDE", q: "Quel classement international obsède les universités ?", opts: ["Le classement de Shanghai", "Le guide Michelin", "Le classement FIFA"], correct: 0, note: "L'Academic Ranking of World Universities (ARWU) juge surtout la recherche (Nobel, publications) et peu la pédagogie." },
+
+        // --- FUTUR & INNOVATION ---
+        { cat: "FUTUR", q: "Qu'est-ce qu'un MOOC ?", opts: ["Un cocktail étudiant", "Un cours en ligne ouvert à tous", "Un robot prof"], correct: 1, note: "Massive Open Online Course. Une révolution des années 2010 permettant de suivre les cours de Stanford ou du MIT gratuitement." },
+        { cat: "FUTUR", q: "Quelle est la crainte majeure liée à l'IA (ChatGPT) à la fac ?", opts: ["Qu'elle remplace les profs", "Le plagiat et la perte d'esprit critique", "Qu'elle coûte trop cher"], correct: 1, note: "L'enjeu n'est pas l'outil, mais la capacité de l'étudiant à raisonner par lui-même sans externaliser sa pensée." },
+        { cat: "FUTUR", q: "Dans le scénario 'Université Dissoute', où étudie-t-on ?", opts: ["Uniquement chez soi", "Partout dans la ville (cafés, musées)", "Dans le Métavers"], correct: 1, note: "C'est le concept de 'City as a Campus'. L'université n'a plus de murs, elle se fond dans le tissu urbain." },
+        { cat: "FUTUR", q: "Qu'est-ce que la 'Pédagogie Inversée' ?", opts: ["Le prof écoute, l'élève parle", "On apprend les leçons à la maison, on fait les devoirs en classe", "On fait cours debout"], correct: 1, note: "Cela permet de consacrer le temps de présence avec l'enseignant aux questions complexes et aux exercices pratiques." },
+        
+        // --- CULTURE GÉNÉRALE CAMPUS ---
+        { cat: "CULTURE U", q: "Que symbolise la robe jaune des universitaires ?", opts: ["Les Lettres & Philosophie", "La Médecine", "Les Sciences"], correct: 0, note: "Jaune/Or pour les Lettres, Rouge pour la Médecine/Droit, Amarante pour les Sciences." },
+        { cat: "CULTURE U", q: "Qu'appelle-t-on le 'Quart d'heure montpelliérain' ?", opts: ["Un retard toléré", "Une pause café", "Une tradition de danse"], correct: 0, note: "C'est la tradition universitaire tolérant 15 minutes de retard au début d'un cours magistral." },
+        { cat: "CULTURE U", q: "Quel est le surnom latin de l'Université ?", opts: ["Alma Mater", "Carpe Diem", "Veni Vidi Vici"], correct: 0, note: "'Mère nourricière'. Elle désigne l'université qui fournit la nourriture intellectuelle aux étudiants." },
+        { cat: "CULTURE U", q: "Qu'est-ce qu'un 'Doyen' ?", opts: ["L'étudiant le plus âgé", "Le directeur d'une Faculté", "Le concierge"], correct: 1, note: "C'est le professeur élu par ses pairs pour diriger une UFR (Unité de Formation et de Recherche)." }
+    ];
+
+    let codexState = { score: 1000, currentWager: 0, history: [], currentQ: null, timer: null };
+
+    function openCodex() {
+        document.getElementById('codex-overlay').classList.remove('hidden');
+        document.getElementById('codex-overlay').classList.add('flex');
+        codexPickRandom(); 
+        codexShowScreen('wager');
+    }
+
+    function closeCodex() {
+        document.getElementById('codex-overlay').classList.add('hidden');
+        document.getElementById('codex-overlay').classList.remove('flex');
+        openGamesHub();
+        if(codexState.timer) clearTimeout(codexState.timer);
+    }
+
+    function codexPickRandom() {
+        let available = codexDB.map((_, i) => i).filter(i => !codexState.history.includes(i));
+        if(available.length === 0) {
+            codexState.history = []; available = codexDB.map((_, i) => i);
+            codexState.score += 2000; 
+            alert("Incroyable ! Vous avez fait le tour de toutes les questions. Bonus de crédibilité : +2000 pts !");
+        }
+        const randIndex = available[Math.floor(Math.random() * available.length)];
+        codexState.currentQ = codexDB[randIndex];
+        codexState.history.push(randIndex);
+        document.getElementById('codex-cat-title').innerText = codexState.currentQ.cat;
+        document.getElementById('codex-score').innerText = codexState.score;
+    }
+
+    function codexShowScreen(screenName) {
+        ['wager', 'question', 'feedback'].forEach(s => document.getElementById(`codex-screen-${s}`).classList.add('hidden'));
+        document.getElementById(`codex-screen-${screenName}`).classList.remove('hidden');
+    }
+
+    function codexStartRound(wager) {
+        if(codexState.score < wager) { alert("Crédibilité insuffisante !"); return; }
+        codexState.currentWager = wager;
+        codexShowScreen('question');
+        codexRenderQuestion();
+    }
+
+    function codexRenderQuestion() {
+        document.getElementById('codex-q-text').innerHTML = codexState.currentQ.q;
+        const gridEl = document.getElementById('codex-options-grid'); gridEl.innerHTML = "";
+        codexState.currentQ.opts.forEach((opt, idx) => {
+            const btn = document.createElement('button');
+            btn.className = "w-full bg-white border border-gray-200 hover:border-indigo-500 hover:bg-indigo-50 p-4 rounded-xl text-left transition-all flex items-center gap-4 group shadow-sm";
+            btn.innerHTML = `<div class="w-8 h-8 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center font-bold text-sm group-hover:bg-indigo-600 group-hover:text-white transition-colors">${String.fromCharCode(65+idx)}</div><span class="text-gray-700 font-medium group-hover:text-indigo-900">${opt}</span>`;
+            btn.onclick = () => codexCheckAnswer(idx);
+            gridEl.appendChild(btn);
+        });
+        const bar = document.getElementById('codex-timer-bar');
+        bar.style.transition = 'none'; bar.style.width = '100%'; void bar.offsetWidth; 
+        bar.style.transition = 'width 15s linear'; bar.style.width = '0%';
+        if(codexState.timer) clearTimeout(codexState.timer);
+        codexState.timer = setTimeout(() => codexCheckAnswer(-1), 15000);
+    }
+
+    function codexCheckAnswer(idx) {
+        if(codexState.timer) clearTimeout(codexState.timer);
+        const isCorrect = idx === codexState.currentQ.correct;
+        const fbTitle = document.getElementById('codex-fb-title');
+        const fbIcon = document.getElementById('codex-fb-icon');
+        
+        if(isCorrect) {
+            codexState.score += codexState.currentWager;
+            fbTitle.innerText = "Bonne Réponse !"; fbTitle.className = "text-2xl font-bold mb-6 text-green-600";
+            fbIcon.innerHTML = '<i class="fas fa-check"></i>'; fbIcon.className = "w-24 h-24 rounded-full flex items-center justify-center text-5xl mb-6 shadow-lg bg-green-100 text-green-600 scale-100 transition-transform duration-500";
+        } else {
+            codexState.score -= codexState.currentWager; if(codexState.score < 0) codexState.score = 0;
+            fbTitle.innerText = idx === -1 ? "Temps Écoulé..." : "Mauvaise Réponse"; fbTitle.className = "text-2xl font-bold mb-6 text-red-500";
+            fbIcon.innerHTML = '<i class="fas fa-times"></i>'; fbIcon.className = "w-24 h-24 rounded-full flex items-center justify-center text-5xl mb-6 shadow-lg bg-red-100 text-red-500 scale-100 transition-transform duration-500";
+        }
+        document.getElementById('codex-fb-expl').innerHTML = `<div class="mb-3"><span class="text-xs font-bold text-gray-400 uppercase">Réponse correcte :</span><br><strong class="text-indigo-700">${codexState.currentQ.opts[codexState.currentQ.correct]}</strong></div><p>${codexState.currentQ.note}</p>`;
+        document.getElementById('codex-score').innerText = codexState.score;
+        codexShowScreen('feedback');
+    }
+
+    function codexNext() {
+        codexPickRandom(); codexShowScreen('wager');
+        document.getElementById('codex-fb-icon').className = "w-24 h-24 rounded-full flex items-center justify-center text-5xl mb-6 shadow-lg transition-transform duration-500 scale-0";
+    }
+</script>
 
