@@ -129,6 +129,7 @@
 </head>
 <body class="min-h-screen flex flex-col relative transition-colors duration-500">
 
+    <canvas id="atmosphere-canvas" class="fixed inset-0 z-0 pointer-events-none opacity-60"></canvas>    
     <!-- BOUTON GLOSSAIRE FIXE GAUCHE -->
     <button onclick="openGlossary()" class="fixed left-0 top-1/2 transform -translate-y-1/2 z-40 bg-white hover:bg-indigo-50 text-indigo-900 shadow-[0_4px_20px_rgba(0,0,0,0.15)] border-y border-r border-indigo-100 rounded-r-xl py-4 px-2 flex flex-col items-center gap-2 transition-all duration-300 hover:pl-4 hover:border-orange-200 group">
         <i class="fas fa-book text-2xl text-orange-500 group-hover:scale-110 transition-transform duration-300"></i>
@@ -374,6 +375,58 @@
                 <h1 class="text-sm md:text-2xl font-extrabold tracking-wider uppercase leading-tight text-indigo-900">L'UNIVERSITÉ DANS LA VILLE</h1>
                 <span class="text-[10px] md:text-xs font-semibold tracking-widest opacity-70 uppercase hidden sm:block text-indigo-800">Université & Ville de Demain</span>
             </div>
+<div id="admin-dashboard" class="fixed inset-0 bg-slate-900 z-[200] hidden flex flex-col font-sans fade-in">
+    <div class="bg-slate-800 p-4 border-b border-slate-700 flex justify-between items-center shadow-md">
+        <div class="flex items-center gap-3">
+            <div class="bg-red-500 text-white font-bold px-2 py-1 rounded text-xs uppercase tracking-widest">Zone Chercheur</div>
+            <h2 class="text-white font-bold text-lg"><i class="fas fa-database mr-2"></i>Données de Recherche</h2>
+        </div>
+        <button onclick="closeAdmin()" class="text-slate-400 hover:text-white transition"><i class="fas fa-times text-xl"></i></button>
+    </div>
+
+    <div class="flex-grow flex flex-col md:flex-row overflow-hidden">
+        
+        <div class="w-full md:w-1/3 bg-slate-900 p-6 border-r border-slate-700 overflow-y-auto">
+            <h3 class="text-slate-400 text-xs font-bold uppercase mb-4">Statistiques Globales</h3>
+            
+            <div class="bg-slate-800 rounded-lg p-4 mb-6 text-center">
+                <span id="adm-total" class="text-4xl font-black text-white block">0</span>
+                <span class="text-xs text-slate-400">Participants Totaux</span>
+            </div>
+
+            <div class="space-y-3" id="adm-stats-list">
+                </div>
+
+            <button onclick="exportStatsCSV()" class="mt-8 w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-lg transition flex items-center justify-center gap-2">
+                <i class="fas fa-file-csv"></i> Exporter Stats (.csv)
+            </button>
+        </div>
+
+        <div class="w-full md:w-2/3 bg-slate-50 p-6 overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-slate-800 text-lg font-bold">Capsules Temporelles (Verbatims)</h3>
+                <button onclick="exportCapsulesCSV()" class="bg-green-600 hover:bg-green-700 text-white text-sm font-bold py-2 px-4 rounded transition flex items-center gap-2">
+                    <i class="fas fa-file-excel"></i> Exporter Tout
+                </button>
+            </div>
+
+            <div class="bg-white rounded-xl shadow border border-gray-200 overflow-hidden">
+                <table class="w-full text-sm text-left">
+                    <thead class="bg-gray-100 text-gray-600 font-bold uppercase text-xs">
+                        <tr>
+                            <th class="p-3">Date</th>
+                            <th class="p-3">Scénario</th>
+                            <th class="p-3">Message</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adm-table-body" class="divide-y divide-gray-100">
+                        <tr><td colspan="3" class="p-4 text-center text-gray-400">Chargement des données...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
             
             <!-- BOUTON MODE EXPERT AMÉLIORÉ -->
             <div class="flex items-center justify-end gap-3 w-1/4 md:w-1/3">
@@ -737,6 +790,103 @@
                     </div>
                 </div>
             </div>
+<div class="mt-16 max-w-6xl mx-auto px-4 fade-in">
+                <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
+                    <div class="bg-indigo-900 p-6 flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-white text-xl">
+                                <i class="fas fa-book-reader"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-white title-font">Sources Officielles & Références</h3>
+                                <p class="text-indigo-200 text-sm">Accédez aux documents réels utilisés pour élaborer ce diagnostic prospectif.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-gray-100">
+                        
+                        <div class="p-6 hover:bg-slate-50 transition-colors group">
+                            <h4 class="font-bold text-gray-800 mb-4 flex items-center gap-2 text-sm uppercase tracking-wider border-b pb-2 border-orange-200">
+                                <i class="fas fa-map-marked-alt text-orange-500 group-hover:scale-110 transition-transform"></i> Territoire & Urbanisme
+                            </h4>
+                            <ul class="space-y-3 text-sm">
+                                <li>
+                                    <a href="https://www.montpellier3m.fr/plui" target="_blank" class="flex items-start gap-3 text-gray-600 hover:text-indigo-700 transition-colors group/link">
+                                        <i class="fas fa-external-link-alt mt-1 text-xs text-gray-400 group-hover/link:text-orange-500"></i>
+                                        <span><strong>PLUi Montpellier</strong><br><span class="text-xs text-gray-400">Plan Local d'Urbanisme intercommunal en vigueur.</span></span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://www.scot-montpellier.fr/" target="_blank" class="flex items-start gap-3 text-gray-600 hover:text-indigo-700 transition-colors group/link">
+                                        <i class="fas fa-external-link-alt mt-1 text-xs text-gray-400 group-hover/link:text-orange-500"></i>
+                                        <span><strong>SCoT Métropole</strong><br><span class="text-xs text-gray-400">Schéma de Cohérence Territoriale (Horizon 2040).</span></span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://tram5-montpellier3m.fr/" target="_blank" class="flex items-start gap-3 text-gray-600 hover:text-indigo-700 transition-colors group/link">
+                                        <i class="fas fa-subway mt-1 text-xs text-gray-400 group-hover/link:text-orange-500"></i>
+                                        <span><strong>Projet Ligne 5</strong><br><span class="text-xs text-gray-400">Tracé et aménagements de la "Ligne Campus".</span></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="p-6 hover:bg-slate-50 transition-colors group">
+                            <h4 class="font-bold text-gray-800 mb-4 flex items-center gap-2 text-sm uppercase tracking-wider border-b pb-2 border-indigo-200">
+                                <i class="fas fa-university text-indigo-500 group-hover:scale-110 transition-transform"></i> Cadre Universitaire
+                            </h4>
+                            <ul class="space-y-3 text-sm">
+                                <li>
+                                    <a href="https://www.operation-campus.fr/" target="_blank" class="flex items-start gap-3 text-gray-600 hover:text-indigo-700 transition-colors group/link">
+                                        <i class="fas fa-external-link-alt mt-1 text-xs text-gray-400 group-hover/link:text-orange-500"></i>
+                                        <span><strong>Opération Campus</strong><br><span class="text-xs text-gray-400">Le plan national de rénovation de l'immobilier universitaire.</span></span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://www.univ-montp3.fr/fr/patrimoine" target="_blank" class="flex items-start gap-3 text-gray-600 hover:text-indigo-700 transition-colors group/link">
+                                        <i class="fas fa-monument mt-1 text-xs text-gray-400 group-hover/link:text-orange-500"></i>
+                                        <span><strong>Patrimoine du XXe</strong><br><span class="text-xs text-gray-400">Histoire architecturale du campus Paul Valéry.</span></span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://www.enseignementsup-recherche.gouv.fr/fr/statistiques-et-analyses-50208" target="_blank" class="flex items-start gap-3 text-gray-600 hover:text-indigo-700 transition-colors group/link">
+                                        <i class="fas fa-chart-pie mt-1 text-xs text-gray-400 group-hover/link:text-orange-500"></i>
+                                        <span><strong>Données ESR</strong><br><span class="text-xs text-gray-400">Statistiques officielles du Ministère (SIES).</span></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="p-6 hover:bg-slate-50 transition-colors group">
+                            <h4 class="font-bold text-gray-800 mb-4 flex items-center gap-2 text-sm uppercase tracking-wider border-b pb-2 border-green-200">
+                                <i class="fas fa-leaf text-green-500 group-hover:scale-110 transition-transform"></i> Climat & Environnement
+                            </h4>
+                            <ul class="space-y-3 text-sm">
+                                <li>
+                                    <a href="https://www.ipcc.ch/languages-2/francais/" target="_blank" class="flex items-start gap-3 text-gray-600 hover:text-indigo-700 transition-colors group/link">
+                                        <i class="fas fa-globe-americas mt-1 text-xs text-gray-400 group-hover/link:text-orange-500"></i>
+                                        <span><strong>Rapports du GIEC</strong><br><span class="text-xs text-gray-400">Base scientifique sur le changement climatique.</span></span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ecologie.gouv.fr/artificialisation-des-sols" target="_blank" class="flex items-start gap-3 text-gray-600 hover:text-indigo-700 transition-colors group/link">
+                                        <i class="fas fa-ruler-combined mt-1 text-xs text-gray-400 group-hover/link:text-orange-500"></i>
+                                        <span><strong>Objectif ZAN</strong><br><span class="text-xs text-gray-400">Comprendre le "Zéro Artificialisation Nette" (Loi Climat).</span></span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://theshiftproject.org/plan-de-transformation-de-leconomie-francaise/enseignement-superieur-et-recherche/" target="_blank" class="flex items-start gap-3 text-gray-600 hover:text-indigo-700 transition-colors group/link">
+                                        <i class="fas fa-bolt mt-1 text-xs text-gray-400 group-hover/link:text-orange-500"></i>
+                                        <span><strong>Shift Project</strong><br><span class="text-xs text-gray-400">Décarboner l'Enseignement Supérieur.</span></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
             <div class="mt-12 text-center">
                 <button onclick="closeWorks()" class="text-indigo-600 hover:text-orange-500 font-semibold flex items-center justify-center gap-2 mx-auto transition-colors">
                     <i class="fas fa-arrow-left"></i> Retour aux résultats
@@ -832,6 +982,7 @@
             if(!currentPersona) return;
             personaScreen.classList.add('hidden'); 
             questionScreen.classList.remove('hidden'); 
+            setAtmosphere('focus')
             loadQuestion(); 
         }
 
@@ -1368,10 +1519,26 @@
 
 
         function showWorks() { 
-            resultScreen.classList.add('hidden'); worksScreen.classList.remove('hidden'); 
-            stopAudio(); window.scrollTo({ top: 0, behavior: 'smooth' });
+            // Masquer les résultats et afficher les travaux
+            resultScreen.classList.add('hidden'); 
+            worksScreen.classList.remove('hidden'); 
+            
+            // Arrêter l'audio si en cours
+            stopAudio(); 
+            
+            // --- CORRECTION DU SCROLL ---
+            // On force le scroll à 0,0 immédiatement pour tous les navigateurs
+            window.scrollTo(0, 0);
+            document.body.scrollTop = 0; // Pour Safari
+            document.documentElement.scrollTop = 0; // Pour Chrome, Firefox, IE
         }
-        function closeWorks() { worksScreen.classList.add('hidden'); resultScreen.classList.remove('hidden'); }
+
+        function closeWorks() {
+            worksScreen.classList.add('hidden');
+            resultScreen.classList.remove('hidden');
+            // Remonter en haut de la page résultat
+            window.scrollTo(0, 0);
+        }
         
         const modal = document.getElementById('scenario-modal');
         function openScenarioModal(key) {
@@ -1517,6 +1684,7 @@ document.getElementById('capsule-msg').addEventListener('input', function() {
 
         function restartGame() {
             stopAudio(); currentQuestionIndex = 0; scores = { s1: 0, s2: 0, s3: 0, s4: 0, s5: 0, s6: 0 };
+setAtmosphere('calm');
             document.getElementById('story-display').classList.add('hidden'); resultScreen.classList.add('hidden'); 
             introScreen.classList.remove('hidden'); 
             currentPersona = null;
@@ -1665,7 +1833,7 @@ document.getElementById('capsule-msg').addEventListener('input', function() {
     </script>
     <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-import { getFirestore, doc, updateDoc, getDoc, increment, setDoc, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+import { getFirestore, doc, updateDoc, getDoc, increment, setDoc, collection, addDoc, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
 const firebaseConfig = { apiKey: "AIzaSyAe7Hc2bT-Scvf032sLHh8TXG9aHnFB-D0", authDomain: "atelier-atrium-d951b.firebaseapp.com", projectId: "atelier-atrium-d951b", storageBucket: "atelier-atrium-d951b.firebasestorage.app", messagingSenderId: "716967590598", appId: "1:716967590598:web:5116e96917e2243fcbb5c7", measurementId: "G-JQ634TGS4M" };
 
@@ -1680,6 +1848,11 @@ window.getDoc = getDoc;
 window.setDoc = setDoc;
 window.collection = collection;
 window.addDoc = addDoc;
+// Nouveaux ajouts pour le dashboard
+window.getDocs = getDocs;
+window.query = query;
+window.orderBy = orderBy;
+window.limit = limit;
 </script>
 <div id="games-hub-overlay" class="fixed inset-0 bg-slate-900/95 hidden z-[140] flex items-center justify-center p-4 font-sans fade-in backdrop-blur-sm">
     <div class="bg-white w-full max-w-2xl rounded-2xl overflow-hidden shadow-2xl relative">
@@ -2650,4 +2823,223 @@ function checkWin() {
         document.getElementById('codex-fb-icon').className = "w-24 h-24 rounded-full flex items-center justify-center text-5xl mb-6 shadow-lg transition-transform duration-500 scale-0";
     }
 </script>
+<script>
+/* === LOGIQUE ADMIN SECRET === */
+let secretClicks = 0;
+document.addEventListener('DOMContentLoaded', () => {
+    const logoTrigger = document.querySelector('header .bg-orange-500'); 
+    if(logoTrigger) {
+        logoTrigger.style.cursor = "pointer"; 
+        logoTrigger.addEventListener('click', () => {
+            secretClicks++;
+            if(secretClicks >= 5) {
+                openAdmin();
+                secretClicks = 0;
+            }
+        });
+    }
+});
+
+async function openAdmin() {
+    document.getElementById('admin-dashboard').classList.remove('hidden');
+    document.getElementById('admin-dashboard').classList.add('flex');
+    await loadAdminStats();
+    await loadAdminCapsules();
+}
+
+function closeAdmin() {
+    document.getElementById('admin-dashboard').classList.add('hidden');
+    document.getElementById('admin-dashboard').classList.remove('flex');
+}
+
+async function loadAdminStats() {
+    if (!window.db || !window.doc || !window.getDoc) return;
+    try {
+        const docRef = window.doc(window.db, "resultats", "global_stats");
+        const docSnap = await window.getDoc(docRef);
+        if (docSnap.exists()) {
+            const data = docSnap.data();
+            const total = data.total || 1;
+            document.getElementById('adm-total').innerText = total;
+            const container = document.getElementById('adm-stats-list');
+            container.innerHTML = '';
+            ['s1', 's2', 's3', 's4', 's5', 's6'].forEach(key => {
+                const val = data[key] || 0;
+                const pct = Math.round((val / total) * 100);
+                const sInfo = scenarios[key]; 
+                container.innerHTML += `
+                    <div class="mb-2">
+                        <div class="flex justify-between text-xs text-slate-400 mb-1">
+                            <span>${key.toUpperCase()} - ${sInfo.title}</span>
+                            <span>${val} votes (${pct}%)</span>
+                        </div>
+                        <div class="w-full bg-slate-700 h-2 rounded-full overflow-hidden">
+                            <div class="h-full" style="width: ${pct}%; background-color: ${sInfo.color}"></div>
+                        </div>
+                    </div>`;
+            });
+        }
+    } catch (e) { console.error("Erreur Stats Admin:", e); }
+}
+
+let cachedCapsules = []; 
+async function loadAdminCapsules() {
+    if (!window.db || !window.collection || !window.getDocs) return;
+    try {
+        const q = window.query(window.collection(window.db, "capsule_2050"), window.orderBy("date", "desc"), window.limit(50));
+        const querySnapshot = await window.getDocs(q);
+        const tbody = document.getElementById('adm-table-body');
+        tbody.innerHTML = '';
+        cachedCapsules = [];
+        querySnapshot.forEach((doc) => {
+            const d = doc.data();
+            let dateStr = "N/A";
+            if(d.date && d.date.seconds) {
+                dateStr = new Date(d.date.seconds * 1000).toLocaleDateString("fr-FR", {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'});
+            }
+            cachedCapsules.push({date: dateStr, scenario: d.scenario, message: d.message});
+            tbody.innerHTML += `
+                <tr class="hover:bg-gray-50 border-b border-gray-50">
+                    <td class="p-3 text-gray-500 whitespace-nowrap font-mono text-xs">${dateStr}</td>
+                    <td class="p-3"><span class="bg-indigo-100 text-indigo-800 text-xs font-bold px-2 py-1 rounded">${d.scenario.toUpperCase()}</span></td>
+                    <td class="p-3 text-gray-800 italic">"${d.message}"</td>
+                </tr>`;
+        });
+    } catch (e) {
+        console.error("Erreur Capsules Admin:", e);
+        document.getElementById('adm-table-body').innerHTML = `<tr><td colspan="3" class="p-4 text-center text-red-500">Erreur chargement</td></tr>`;
+    }
+}
+
+function exportCapsulesCSV() {
+    if(!cachedCapsules.length) return alert("Aucune donnée.");
+    let csvContent = "data:text/csv;charset=utf-8,Date;Scenario;Message\r\n";
+    cachedCapsules.forEach(r => {
+        let cleanMsg = r.message.replace(/;/g, ",").replace(/(\r\n|\n|\r)/gm, " ");
+        csvContent += `${r.date};${r.scenario};${cleanMsg}\r\n`;
+    });
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "export_capsules.csv");
+    document.body.appendChild(link); link.click(); document.body.removeChild(link);
+}
+
+function exportStatsCSV() {
+    const total = document.getElementById('adm-total').innerText;
+    let csvContent = `data:text/csv;charset=utf-8,Metrique;Valeur\r\nTotal;${total}\r\n`;
+    document.querySelectorAll('#adm-stats-list > div').forEach(div => {
+         const text = div.querySelector('.flex').innerText.replace(/\n/g, ";");
+         csvContent += text + "\r\n";
+    });
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "export_stats.csv");
+    document.body.appendChild(link); link.click(); document.body.removeChild(link);
+}
+    /* === MOTEUR D'ATMOSPHÈRE VISUELLE === */
+    const canvas = document.getElementById('atmosphere-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    
+    // Configuration par défaut (Mode Calm)
+    let currentConfig = { color: '156, 163, 175', speed: 0.2, direction: 'random', count: 30 };
+
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas(); // Init immédiat
+
+    class Particle {
+        constructor() { this.reset(true); }
+
+        reset(initial = false) {
+            this.x = Math.random() * canvas.width;
+            this.y = initial ? Math.random() * canvas.height : canvas.height + 10;
+            this.size = Math.random() * 4 + 1; 
+            this.alpha = Math.random() * 0.4 + 0.1;
+
+            if (currentConfig.direction === 'up') {
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = -Math.random() * currentConfig.speed - 0.5;
+                this.y = initial ? Math.random() * canvas.height : canvas.height + 10;
+            } else if (currentConfig.direction === 'static') {
+                 this.x = Math.random() * canvas.width;
+                 this.y = Math.random() * canvas.height;
+                 this.vx = (Math.random() - 0.5) * 0.1;
+                 this.vy = (Math.random() - 0.5) * 0.1;
+            } else { // random
+                this.vx = (Math.random() - 0.5) * currentConfig.speed;
+                this.vy = (Math.random() - 0.5) * currentConfig.speed;
+            }
+        }
+
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+            
+            // Rebond ou Reset selon le mode
+            if (currentConfig.direction === 'static') {
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+            } else {
+                if (this.x < -20 || this.x > canvas.width + 20 || this.y < -20 || this.y > canvas.height + 20) {
+                    this.reset();
+                }
+            }
+        }
+
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(${currentConfig.color}, ${this.alpha})`;
+            ctx.fill();
+        }
+    }
+
+    function initParticles() {
+        particles = [];
+        for (let i = 0; i < currentConfig.count; i++) particles.push(new Particle());
+    }
+
+    function animateParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => { p.update(); p.draw(); });
+        requestAnimationFrame(animateParticles);
+    }
+
+    // Fonction globale pour changer l'ambiance
+    window.setAtmosphere = function(mode, hexColor = null) {
+        let rgb = '156, 163, 175'; // Gris par défaut
+        
+        if(hexColor) {
+            // Conversion Hex vers RGB
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hexColor);
+            if(result) rgb = `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`;
+        }
+
+        if (mode === 'calm') {
+            currentConfig = { color: '156, 163, 175', speed: 0.2, direction: 'random', count: 30 };
+        } else if (mode === 'focus') {
+            // Indigo qui monte (réflexion)
+            currentConfig = { color: '99, 102, 241', speed: 1.2, direction: 'up', count: 60 };
+        } else if (mode === 'result') {
+            // Couleur du résultat, flottement statique
+            currentConfig = { color: rgb, speed: 0.1, direction: 'static', count: 80 };
+        }
+        initParticles();
+    };
+
+    // Lancement
+    initParticles();
+    animateParticles();
+</script>
+</body>
+</html>
+
+
+
 
