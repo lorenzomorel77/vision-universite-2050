@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>Vision Université 2050 - Atelier Atrium</title>
+    <title>Vision Université 2100 - Atelier Atrium</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Roboto:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -125,7 +125,71 @@
 .shake-anim { animation: shake 0.3s ease-in-out; border-color: #ef4444 !important; background-color: #fee2e2 !important; }
 @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
 .selected-ring { ring-width: 4px; ring-color: #6366f1; transform: scale(1.05); }
-    </style>
+   /* --- STYLE AGENCE IMMO 2100 (Version Complète) --- */
+.font-agency { font-family: 'Roboto', system-ui, sans-serif; color: #1f2937; }
+.font-legal { font-family: 'Times New Roman', Times, serif; } /* Pour le bail */
+.agency-border { border: 1px solid #e5e7eb; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); background: white; }
+
+/* Boutons "Froids" */
+.agency-btn { background: white; border: 1px solid #dc2626; color: #dc2626; padding: 0.5rem 1rem; font-weight: 600; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em; transition: all 0.2s; border-radius: 2px; }
+.agency-btn:hover { background-color: #dc2626; color: white; }
+.agency-btn-primary { background-color: #dc2626; color: white; border: 1px solid #b91c1c; padding: 0.75rem 1.5rem; font-weight: 700; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.1em; border-radius: 2px; box-shadow: 0 2px 4px rgba(220, 38, 38, 0.2); }
+.agency-btn-primary:hover { background-color: #991b1b; transform: translateY(-1px); }
+
+/* Cartes */
+.agency-card { transition: all 0.2s; border: 1px solid #e5e7eb; background: white; position: relative; overflow: hidden; }
+.agency-card:hover { border-color: #dc2626; box-shadow: 0 10px 20px -5px rgba(220, 38, 38, 0.15); transform: translateY(-2px); }
+
+/* Tags */
+.agency-tag { display: inline-flex; align-items: center; background: #f3f4f6; color: #4b5563; padding: 2px 8px; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; border: 1px solid #e5e7eb; border-radius: 2px; }
+.agency-tag-red { background: #fef2f2; color: #dc2626; border-color: #fee2e2; }
+
+/* Document Bail (Lease) - Imitation Papier A4 Officiel */
+.lease-paper { 
+    background-color: #fff; 
+    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='50%25' y='50%25' font-size='14' fill='%23f3f4f6' font-family='Arial' transform='rotate(-45 50 50)' text-anchor='middle'%3ECOPIE OFFICIELLE%3C/text%3E%3C/svg%3E");
+    border: 1px solid #d1d5db; 
+    box-shadow: 0 0 15px rgba(0,0,0,0.1); 
+    padding: 3rem; 
+    position: relative;
+    color: #000;
+}
+.lease-watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); font-size: 6rem; font-weight: 900; color: rgba(220, 38, 38, 0.05); border: 4px solid rgba(220, 38, 38, 0.05); padding: 1rem; pointer-events: none; white-space: nowrap; z-index: 0; }
+.stamp-animation { animation: stampIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; opacity: 0; transform: scale(3) rotate(-15deg); }
+@keyframes stampIn { 100% { opacity: 0.9; transform: scale(1) rotate(-15deg); } }
+
+/* Loader Bureaucratique */
+.processing-overlay { background: rgba(255,255,255,0.9); backdrop-filter: blur(2px); z-index: 50; display: flex; flex-col; justify-content: center; align-items: center; }
+.scan-line { width: 100%; height: 2px; background: #dc2626; animation: scan 2s linear infinite; position: absolute; top: 0; }
+@keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
+ /* --- EXTENSIONS AGENCE 2100 (AJOUT) --- */
+.agency-ticker-wrap { position: fixed; bottom: 0; left: 0; width: 100%; overflow: hidden; height: 30px; background-color: #111; border-top: 1px solid #dc2626; z-index: 250; display: flex; align-items: center; pointer-events: none; }
+.agency-ticker { display: inline-block; white-space: nowrap; padding-left: 100%; animation: ticker 30s linear infinite; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #fff; text-transform: uppercase; }
+.agency-ticker span { margin-right: 40px; }
+.agency-ticker .highlight { color: #dc2626; font-weight: bold; }
+@keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-100%, 0, 0); } }
+
+.survival-filters { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 12px; scrollbar-width: none; -ms-overflow-style: none; }
+.survival-filters::-webkit-scrollbar { display: none; }
+.survival-btn { white-space: nowrap; padding: 6px 12px; border: 1px solid #e5e7eb; background: white; border-radius: 20px; font-size: 10px; font-weight: bold; text-transform: uppercase; color: #6b7280; transition: all 0.2s; cursor: pointer; display: flex; align-items: center; gap: 4px; }
+.survival-btn:hover, .survival-btn.active { border-color: #dc2626; color: #dc2626; background: #fef2f2; transform: translateY(-1px); }
+
+.agency-bot-trigger { position: absolute; bottom: 40px; right: 20px; width: 50px; height: 50px; background: #dc2626; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; box-shadow: 0 4px 10px rgba(220, 38, 38, 0.4); cursor: pointer; z-index: 210; transition: transform 0.3s; animation: pulse-red 3s infinite; }
+.agency-bot-trigger:hover { transform: scale(1.1); }
+.agency-chat-window { position: absolute; bottom: 100px; right: 20px; width: 300px; height: 350px; background: white; border: 1px solid #e5e7eb; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); z-index: 220; display: none; flex-direction: column; overflow: hidden; font-family: 'Roboto', sans-serif; }
+.chat-header { background: #1f2937; color: white; padding: 10px; font-size: 12px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
+.chat-body { flex-grow: 1; padding: 10px; overflow-y: auto; background: #f9fafb; display: flex; flex-direction: column; gap: 8px; font-size: 11px; }
+.chat-msg { padding: 8px; border-radius: 6px; max-width: 80%; line-height: 1.4; }
+.msg-bot { background: #e5e7eb; color: #374151; align-self: flex-start; border-bottom-left-radius: 0; }
+.msg-user { background: #dc2626; color: white; align-self: flex-end; border-bottom-right-radius: 0; }
+.chat-input-area { padding: 10px; border-top: 1px solid #e5e7eb; display: flex; gap: 5px; background: white; }
+.chat-input { flex-grow: 1; border: 1px solid #d1d5db; border-radius: 4px; padding: 6px; font-size: 11px; outline: none; }
+.chat-input:focus { border-color: #dc2626; }
+
+.agency-toast { position: absolute; top: 70px; right: 20px; background: rgba(31, 41, 55, 0.95); color: white; padding: 10px 15px; border-left: 4px solid #dc2626; border-radius: 4px; font-size: 10px; z-index: 300; transform: translateX(150%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 4px 6px rgba(0,0,0,0.1); max-width: 250px; backdrop-filter: blur(4px); pointer-events: none; }
+.agency-toast.show { transform: translateX(0); }
+@keyframes pulse-red { 0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(220, 38, 38, 0); } 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); } }
+</style>
 </head>
 <body class="min-h-screen flex flex-col relative transition-colors duration-500">
 
@@ -153,7 +217,28 @@
                     <p class="text-xs font-bold text-red-800 uppercase tracking-widest mb-1">Votre Vision vs Plan Stratégique</p>
                     <div id="reality-content" class="text-gray-800 text-sm leading-relaxed space-y-4 font-medium"></div>
                 </div>
-                
+                <div id="weather-modal" class="fixed top-4 right-4 z-[120] hidden fade-in max-w-sm w-full">
+    <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl border-l-4 border-blue-500 overflow-hidden relative">
+        <button onclick="document.getElementById('weather-modal').classList.add('hidden')" class="absolute top-2 right-2 text-gray-400 hover:text-gray-600">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="p-4 flex items-start gap-4">
+            <div class="bg-blue-100 text-blue-600 w-12 h-12 rounded-full flex items-center justify-center text-2xl shrink-0 animate-bounce">
+                <i class="fas fa-cloud-showers-heavy"></i>
+            </div>
+            <div>
+                <h4 class="font-bold text-gray-800 text-sm uppercase tracking-wide mb-1">Alerte Météo : Montpellier</h4>
+                <p class="text-xs text-gray-600 leading-relaxed">
+                    Il pleut actuellement sur le campus ! 🌧️<br>
+                    <span class="font-bold text-blue-600">Question :</span> Avez-vous pensé à la <strong class="underline cursor-help" title="Rendre les sols perméables pour éviter les inondations">désimperméabilisation</strong> des sols dans vos choix stratégiques ?
+                </p>
+            </div>
+        </div>
+        <div class="bg-blue-50 p-2 text-[10px] text-blue-800 text-center font-mono">
+            Données temps réel • <span id="real-temp">--</span>°C
+        </div>
+    </div>
+</div>
                 <p class="text-xs text-gray-500 italic mb-6 text-center">
                     Cet outil confronte l'imaginaire des usagers aux contraintes réelles des décideurs (budget, temps, inertie).
                 </p>
@@ -201,14 +286,14 @@
     <div id="atrium-modal" class="fixed inset-0 bg-black z-[95] hidden flex flex-col fade-in">
         <div class="absolute top-0 left-0 right-0 p-4 z-50 flex justify-between items-start bg-gradient-to-b from-black/80 to-transparent pointer-events-none">
             <div class="pointer-events-auto text-white drop-shadow-md">
-                <h2 class="text-xl md:text-2xl font-bold title-font"><i class="fas fa-exchange-alt mr-2 text-orange-500"></i>L'ATRIUM 2050</h2>
+                <h2 class="text-xl md:text-2xl font-bold title-font"><i class="fas fa-exchange-alt mr-2 text-orange-500"></i>L'ATRIUM 2100</h2>
                 <p class="text-xs md:text-sm opacity-90">Comparaison : 2023 vs Vision Future</p>
             </div>
             <button onclick="closeAtrium()" class="pointer-events-auto bg-white/20 hover:bg-white/40 backdrop-blur-sm text-white rounded-full w-10 h-10 flex items-center justify-center transition-colors shadow-lg"><i class="fas fa-times text-xl"></i></button>
         </div>
         <div class="flex-grow relative w-full h-full bg-gray-900">
             <div id="atrium-comparison-slider" class="comparison-slider">
-                <img id="atrium-after-img" src="" alt="Atrium 2050 (Après)" class="after-image">
+                <img id="atrium-after-img" src="" alt="Atrium 2100 (Après)" class="after-image">
                 <div class="before-image-container" style="width: 50%;">
                     <img id="atrium-before-img" src="Atrium 2023.png" onerror="this.onerror=null; this.src='Atrium 2023.jpg';" alt="Atrium 2023 (Avant)">
                 </div>
@@ -451,7 +536,7 @@
                 <p class="text-gray-600 mb-6 text-lg">
                     Bienvenue, futur(e) urbaniste. <br><br>
                     L'université est à la croisée des chemins. Entre contraintes budgétaires, révolution numérique et intégration urbaine, 
-                    <strong>quel visage aura l'université de Montpellier en 2050 ?</strong>
+                    <strong>quel visage aura l'université de Montpellier en 2100 ?</strong>
                 </p>
                 <div class="bg-indigo-50 p-4 rounded-lg mb-8 text-sm text-indigo-800 text-left">
                     <p class="font-bold mb-2">Instructions :</p>
@@ -667,7 +752,7 @@
                                         <i class="fas fa-box-open mr-2 text-orange-400"></i>Capsule Temporelle
                                     </h4>
                                     <p class="text-[11px] text-center text-indigo-200 mb-4 italic">
-                                        Laissez une trace aux étudiants de 2050. <br>Le message sera scellé dans la base de données.
+                                        Laissez une trace aux étudiants de 2100. <br>Le message sera scellé dans la base de données.
                                     </p>
                                     
                                     <div class="relative">
@@ -777,7 +862,7 @@
                         <img src="Atrium 2023.png" onerror="this.src='Atrium 2023.jpg'" class="absolute inset-0 w-full h-full object-cover opacity-30" alt="">
                     </div>
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">L'Atrium : Une Place Publique (2023 vs 2050)</h3>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">L'Atrium : Une Place Publique (2023 vs 2100)</h3>
                         <p class="text-sm text-gray-500 mb-4">
                             Découvrez la métamorphose de l'Atrium à travers un slider interactif Avant/Après. Cliquez pour voir l'évolution en détail.
                         </p>
@@ -903,7 +988,296 @@
             <button onclick="openCgu()" class="hover:text-white underline transition-colors">Mentions Légales & CGU</button>
         </div>
     </footer>
+<div id="agency-overlay" class="fixed inset-0 bg-gray-800/80 backdrop-blur-md hidden z-[180] flex-col items-center justify-center p-0 md:p-4 font-agency overflow-hidden fade-in">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js"></script>
 
+    <div id="agency-loader" class="absolute inset-0 bg-white/95 z-[200] hidden flex-col items-center justify-center text-center">
+        <div class="w-64 h-2 bg-gray-200 rounded-full overflow-hidden mb-4 relative">
+            <div id="loader-bar" class="h-full bg-red-600 w-0 transition-all duration-300"></div>
+        </div>
+        <h3 id="loader-text" class="text-sm font-bold text-gray-800 uppercase tracking-widest animate-pulse">Vérification Solvabilité...</h3>
+        <p class="text-xs text-gray-500 mt-2 font-mono">Connexion Base de Données Citoyenne...</p>
+    </div>
+
+    <div class="w-full max-w-6xl h-full md:h-[90vh] bg-gray-50 md:rounded-lg flex flex-col relative shadow-2xl border border-gray-300 overflow-hidden">
+        
+        <div class="bg-white text-gray-800 px-4 py-3 flex justify-between items-center shrink-0 border-b border-gray-200 shadow-sm z-10">
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-2 border-r border-gray-200 pr-4">
+                    <div class="w-8 h-8 bg-red-700 text-white flex items-center justify-center font-bold text-lg rounded shadow-inner">A</div>
+                    <div class="leading-none">
+                        <h2 class="text-sm font-bold tracking-tight uppercase text-gray-900">Agence Nationale</h2>
+                        <p class="text-[9px] text-red-600 uppercase font-bold tracking-wider">Division Crise & Habitat</p>
+                    </div>
+                </div>
+                <div class="hidden md:flex flex-col">
+                    <span class="text-[9px] text-gray-400 uppercase font-bold">Connexion Sécurisée</span>
+                    <span class="text-[10px] text-green-600 font-mono"><i class="fas fa-lock text-[8px] mr-1"></i>V.2100.4.1</span>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <div class="hidden md:flex items-center gap-2 bg-red-50 px-3 py-1 rounded border border-red-100">
+                    <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                    <span class="text-[10px] font-bold text-red-700 uppercase">Tension Marché : Critique (99%)</span>
+                </div>
+                <button onclick="closeAgency()" class="text-gray-400 hover:bg-gray-100 hover:text-red-600 w-8 h-8 flex items-center justify-center transition-colors rounded"><i class="fas fa-times text-lg"></i></button>
+            </div>
+        </div>
+
+        <div class="flex-grow overflow-y-auto bg-[#f3f4f6] relative p-4" id="agency-scroll-container">
+            
+           <div id="agency-screen-list" class="max-w-5xl mx-auto flex flex-col gap-6 fade-in pb-16">
+                <div class="bg-white rounded border border-gray-200 p-4 shadow-sm flex flex-col md:flex-row justify-between items-center gap-4">
+                    <div class="flex-grow w-full">
+                        <label class="text-[10px] font-bold uppercase text-gray-400 mb-1 block tracking-wider">Configuration du Profil Locataire</label>
+                        <div class="flex gap-2">
+                            <select class="bg-gray-50 border border-gray-300 text-gray-900 text-xs font-bold rounded focus:ring-red-500 focus:border-red-500 block w-full p-2.5 outline-none uppercase tracking-wide">
+                                <option>Garantie : Organe Vital (Rein/Foie)</option>
+                                <option>Garantie : Servitude Temporelle (Nuit)</option>
+                                <option>Garantie : Héritage Climatique</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 border-l border-gray-100 pl-4 w-full md:w-auto justify-end">
+                        <div class="text-right">
+                            <span class="block text-[10px] text-gray-400 uppercase font-bold">Votre Score Social</span>
+                            <span class="block text-xl font-black text-gray-800" id="social-score">642 <span class="text-xs text-red-500 font-normal">(-12)</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex justify-between items-end mb-2">
+                        <h3 class="font-bold text-gray-500 text-xs uppercase tracking-wider">Priorités de Survie</h3>
+                        <span class="text-[9px] text-red-500 font-bold animate-pulse"><i class="fas fa-satellite-dish mr-1"></i>Mise à jour Live</span>
+                    </div>
+                    
+                    <div class="survival-filters">
+                        <button onclick="filterAgency('all', this)" class="survival-btn active"><i class="fas fa-globe"></i> Tout</button>
+                        <button onclick="filterAgency('safe', this)" class="survival-btn"><i class="fas fa-shield-alt"></i> Zone Sécurisée</button>
+                        <button onclick="filterAgency('air', this)" class="survival-btn"><i class="fas fa-wind"></i> Air Filtré A+</button>
+                        <button onclick="filterAgency('cheap', this)" class="survival-btn"><i class="fas fa-tags"></i> Low Cost</button>
+                        <button onclick="filterAgency('bunker', this)" class="survival-btn"><i class="fas fa-dungeon"></i> Anti-Radiation</button>
+                    </div>
+
+                    <div id="agency-listings" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                        </div>
+                </div>
+            </div>
+
+            <div class="agency-bot-trigger" onclick="toggleAgencyChat()">
+                <i class="fas fa-robot text-2xl"></i>
+            </div>
+            <div id="agency-chat" class="agency-chat-window">
+                <div class="chat-header">
+                    <span><i class="fas fa-circle text-[8px] text-green-400 mr-2"></i>ALICE-4 (Agent IA)</span>
+                    <button onclick="toggleAgencyChat()" class="text-gray-400 hover:text-white"><i class="fas fa-times"></i></button>
+                </div>
+                <div id="chat-messages" class="chat-body">
+                    <div class="chat-msg msg-bot">Bonjour Citoyen. Je détecte un taux de stress élevé. Cherchez-vous un logement d'urgence avant le couvre-feu ?</div>
+                </div>
+                <div class="chat-input-area">
+                    <input type="text" id="chat-input" placeholder="Répondre..." class="chat-input" onkeypress="handleChatKey(event)">
+                    <button onclick="sendAgencyChat()" class="bg-red-600 text-white px-3 rounded text-xs font-bold hover:bg-red-700"><i class="fas fa-paper-plane"></i></button>
+                </div>
+            </div>
+
+            <div class="agency-ticker-wrap">
+                <div class="agency-ticker">
+                    <span class="highlight">ALERTE MÉTÉO :</span> PLUIES ACIDES PRÉVUES SUR LE SECTEUR NORD • 
+                    <span>MARCHÉ :</span> LE PRIX DU M² EN SOUS-SOL DÉPASSE CELUI DE L'OR • 
+                    <span class="highlight">URGENT :</span> L'UNIVERSITÉ PAUL VALÉRY RECRUTE DES COBAYES HUMAINS POUR SES TESTS CLIMATIQUES • 
+                    <span>LOGEMENT :</span> 4500 ÉTUDIANTS TOUJOURS SANS TOIT AU 15 OCTOBRE • 
+                    <span class="highlight">SANTÉ :</span> NOUVEAU VIRUS DÉTECTÉ DANS LES RÉSIDENCES "C CROUS" • 
+                    <span>RAPPEL :</span> DORMIR DANS LA RUE EST PASSIBLE DE TRAVAUX FORCÉS.
+                </div>
+            </div>
+
+            <div id="agency-toast" class="agency-toast">
+                <div class="font-bold uppercase mb-1 flex items-center gap-2 text-red-400"><i class="fas fa-bell"></i> Notification</div>
+                <div id="toast-msg">Message</div>
+            </div>
+
+            <div id="agency-screen-detail" class="hidden h-full flex flex-col bg-white rounded shadow-sm border border-gray-200 overflow-hidden fade-in">
+                 <div class="p-3 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
+                    <button onclick="agencyBack()" class="text-gray-500 hover:text-red-600 flex items-center gap-2 text-xs font-bold uppercase transition-colors"><i class="fas fa-arrow-left"></i> Revenir au marché</button>
+                    <span class="text-[10px] text-gray-400 font-mono">REF: <span id="detail-ref">---</span></span>
+                </div>
+                
+                <div class="flex-grow flex flex-col md:flex-row overflow-hidden">
+                    <div class="w-full md:w-7/12 flex flex-col bg-white overflow-y-auto custom-scrollbar">
+                        <div class="h-64 bg-gray-200 relative group overflow-hidden">
+                            <img id="ag-img" src="" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                            <div class="absolute bottom-4 left-4 text-white">
+                                <div class="flex gap-2 mb-2"><span id="ag-type" class="bg-red-600 text-white text-[9px] font-bold px-2 py-1 uppercase tracking-wider">Type</span></div>
+                                <h2 id="ag-title" class="text-2xl font-bold leading-none shadow-black drop-shadow-md">TITRE</h2>
+                            </div>
+                        </div>
+                        
+                        <div class="p-8">
+                            <div class="flex justify-between items-start mb-6 border-b border-gray-100 pb-6">
+                                <div>
+                                    <span class="text-xs text-gray-400 uppercase font-bold block mb-1">Surface Habitable</span>
+                                    <span id="ag-surface" class="text-lg font-bold text-gray-800">SURFACE</span>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-xs text-gray-400 uppercase font-bold block mb-1">Coût Mensuel</span>
+                                    <span id="ag-price" class="text-xl font-black text-red-700">PRIX</span>
+                                </div>
+                            </div>
+
+                            <h3 class="text-sm font-bold text-gray-900 uppercase mb-3">Rapport d'habitabilité</h3>
+                            <p id="ag-desc" class="text-sm text-gray-600 leading-relaxed mb-8 text-justify font-serif">Description...</p>
+
+                            <div class="bg-red-50 p-5 rounded border-l-4 border-red-600">
+                                <h4 class="flex items-center gap-2 text-red-800 uppercase font-bold text-xs mb-3">
+                                    <i class="fas fa-gavel"></i> Clauses Restrictives Obligatoires
+                                </h4>
+                                <ul id="ag-clauses" class="list-disc pl-4 text-xs text-gray-700 space-y-2 font-medium"></ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="w-full md:w-5/12 p-8 bg-gray-50 border-l border-gray-200 flex flex-col justify-center">
+                        <div class="bg-white p-6 rounded shadow-sm border border-gray-200 relative overflow-hidden">
+                            <div class="absolute -right-6 -top-6 text-9xl text-gray-50 opacity-50 pointer-events-none"><i class="fas fa-file-signature"></i></div>
+                            
+                            <h3 class="text-sm font-black uppercase mb-1 text-gray-800">Dossier de Candidature</h3>
+                            <p class="text-xs text-gray-500 mb-6">Soumission irrévocable.</p>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-[10px] font-bold text-gray-500 uppercase mb-1">Identifiant Citoyen Unique</label>
+                                    <input type="text" id="lease-name" placeholder="Ex: NOM Prénom / ID-7485" class="w-full bg-gray-50 border border-gray-300 rounded p-3 text-sm font-bold text-gray-900 outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all uppercase">
+                                </div>
+                                
+                                <div class="bg-gray-50 p-3 rounded border border-gray-200">
+                                    <label class="block text-[10px] font-bold text-gray-400 uppercase mb-2">Analyse Biométrique (Simulation)</label>
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <div class="h-1 flex-grow bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-green-500 w-[85%]"></div></div>
+                                        <span class="text-[9px] font-bold text-green-600">Pouls: OK</span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <div class="h-1 flex-grow bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-yellow-500 w-[45%]"></div></div>
+                                        <span class="text-[9px] font-bold text-yellow-600">Stress: ÉLEVÉ</span>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-start gap-3 py-2">
+                                    <input type="checkbox" id="check-soul" class="mt-1 w-4 h-4 text-red-600 border-gray-300 rounded focus:ring-red-500 cursor-pointer">
+                                    <label for="check-soul" class="text-xs text-gray-600 cursor-pointer select-none">Je certifie accepter la dégradation de mes conditions de vie et renonce à mes droits fondamentaux en échange d'un toit.</label>
+                                </div>
+
+                                <button onclick="startLeaseProcess()" class="w-full agency-btn-primary py-4 rounded shadow-lg hover:shadow-xl transition-all flex justify-center items-center gap-2 group mt-2">
+                                    <i class="fas fa-fingerprint text-lg group-hover:scale-110 transition-transform"></i> 
+                                    <span>Signer & Soumettre</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="agency-screen-lease" class="hidden flex flex-col items-center justify-start min-h-full py-8 fade-in">
+                
+                <div class="flex gap-4 mb-8 z-50 sticky top-4">
+                    <button onclick="agencyBack()" class="bg-gray-800 text-white px-4 py-2 rounded shadow text-xs font-bold hover:bg-black transition"><i class="fas fa-undo mr-2"></i>Nouveau Dossier</button>
+                    <button onclick="downloadLease()" class="bg-red-600 text-white px-6 py-2 rounded shadow-lg text-xs font-bold hover:bg-red-700 transition animate-bounce"><i class="fas fa-download mr-2"></i>Télécharger le Bail (Preuve)</button>
+                </div>
+
+                <div id="lease-capture-zone" class="w-full max-w-[210mm] min-h-[297mm] lease-paper text-black relative mx-auto transform md:scale-90 origin-top">
+                    
+                    <div class="lease-watermark">COPIE OFFICIELLE - ARCHIVE 2100</div>
+
+                    <div class="flex justify-between items-start border-b-2 border-black pb-4 mb-8">
+                        <div class="flex gap-4">
+                            <div class="w-16 h-16 border-2 border-black flex items-center justify-center">
+                                <i class="fas fa-university text-3xl"></i>
+                            </div>
+                            <div>
+                                <h1 class="text-xl font-black uppercase tracking-tighter leading-none mb-1">République Fédérale<br>Européenne</h1>
+                                <p class="text-xs font-serif italic">Ministère de la Survie & de l'Habitat</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="border border-black px-2 py-1 mb-1 inline-block">
+                                <p class="text-[10px] font-mono font-bold">FORMULAIRE CERFA N°99-BS</p>
+                            </div>
+                            <p class="text-[10px] font-mono">Date : <span id="lease-date">JJ/MM/2100</span></p>
+                            <p class="text-[10px] font-mono">ID : <span id="lease-id">X-999</span></p>
+                        </div>
+                    </div>
+
+                    <div class="text-center mb-8">
+                        <h2 class="text-2xl font-black uppercase underline decoration-2 underline-offset-4">CONTRAT D'OCCUPATION PRÉCAIRE</h2>
+                        <p class="text-xs uppercase mt-2 font-bold">(Loi d'Urgence Climatique du 14 Juillet 2038)</p>
+                    </div>
+
+                    <div class="font-legal text-sm leading-relaxed text-justify space-y-4 px-4">
+                        
+                        <p><strong>ENTRE LES SOUSSIGNÉS :</strong></p>
+                        <p class="pl-4">L'Agence Nationale de Gestion Immobilière Automatisée (ci-après "le Maître"), représentée par l'Algorithme ALICE-4.<br>
+                        <strong>D'UNE PART,</strong></p>
+
+                        <p><strong>ET :</strong></p>
+                        <p class="pl-4"><span id="lease-render-name" class="font-bold uppercase bg-gray-200 px-2 py-0.5">NOM DU CITOYEN</span>, matricule biométrique non-vérifié (ci-après "le Sujet").<br>
+                        <strong>D'AUTRE PART.</strong></p>
+
+                        <div class="my-6 border-t border-b border-black py-4 bg-gray-50">
+                            <table class="w-full text-sm">
+                                <tr>
+                                    <td class="font-bold py-1 w-1/3">OBJET DU CONTRAT :</td>
+                                    <td class="font-mono uppercase" id="lease-render-title">TITRE DU BIEN</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-bold py-1">SURFACE LÉGALE :</td>
+                                    <td id="lease-render-surface">SURFACE</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-bold py-1">CONTREPARTIE (LOYER) :</td>
+                                    <td class="font-bold text-red-700 uppercase" id="lease-render-price">PRIX</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <h3 class="font-bold text-sm uppercase mt-6 mb-2">ARTICLE 1 - ÉTAT DES LIEUX</h3>
+                        <p>Le Sujet reconnaît prendre les lieux dans leur état actuel de délabrement, d'insalubrité ou de stérilité technologique. Il renonce expressément à tout confort thermique (Température garantie : 12°C hiver / 35°C été) et acoustique.</p>
+
+                        <h3 class="font-bold text-sm uppercase mt-6 mb-2">ARTICLE 2 - CLAUSES RESTRICTIVES (OBLIGATOIRES)</h3>
+                        <p>Le maintien dans les lieux est conditionné au respect strict et absolu des règles suivantes, sous peine d'expulsion immédiate et de déchéance de citoyenneté :</p>
+                        <ul id="lease-render-clauses" class="list-disc pl-8 italic my-2 font-bold text-red-900 bg-red-50 p-2 border-l-2 border-red-900">
+                            </ul>
+
+                        <h3 class="font-bold text-sm uppercase mt-6 mb-2">ARTICLE 3 - DURÉE ET RÉSILIATION</h3>
+                        <p>Le présent contrat est conclu pour une durée indéterminée. Il est résiliable de plein droit par le Maître en cas de : baisse du score social du Sujet, besoin de réquisition par l'État, ou décès.</p>
+                    </div>
+
+                    <div class="mt-12 flex justify-between items-end px-8">
+                        <div class="text-center">
+                            <p class="text-[10px] font-bold uppercase mb-4">Pour l'Agence (Sceau IA)</p>
+                            <div class="w-24 h-24 border-2 border-gray-300 flex items-center justify-center">
+                                <i class="fas fa-qrcode text-4xl opacity-50"></i>
+                            </div>
+                        </div>
+                        <div class="text-center relative">
+                            <p class="text-[10px] font-bold uppercase mb-8">Le Sujet (Signature + Sang)</p>
+                            <div class="font-script text-2xl text-blue-900 transform -rotate-6">Acceptation Forcée</div>
+                            <div id="lease-stamp" class="stamp-animation absolute -top-4 -left-12 border-4 border-red-700 text-red-700 font-black text-4xl p-2 uppercase opacity-0 tracking-widest mix-blend-multiply rounded z-20">
+                                DOSSIER<br>VALIDÉ
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="absolute bottom-4 left-0 w-full text-center">
+                        <div class="h-px bg-black w-3/4 mx-auto mb-2"></div>
+                        <p class="text-[8px] uppercase font-bold text-gray-500">Document généré par le système "Agence 2100". Toute falsification est punie de 10 ans de travaux d'intérêt écologique.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
     <script>
         // NAVIGATION ET LOGIQUE PERSONNAGES
         const introScreen = document.getElementById('intro-screen');
@@ -1079,7 +1453,7 @@
             { 
                 theme: "Innovation", 
                 text: "Quelle est la vocation principale de votre université ?", 
-                context: "Définir l'identité de l'institution pour 2050.", 
+                context: "Définir l'identité de l'institution pour 2100.", 
                 expertContext: "Compétition mondiale (Classement Shanghai). Spécialisation intelligente des territoires (S3). L'Université comme moteur de l'économie de la connaissance.",
                 didYouKnow: "Montpellier mise sur 'MedVallée' (Santé/Environnement). L'université n'est plus isolée, elle devient un moteur économique direct et structurant pour le territoire métropolitain.", 
                 expertFact: "I-SITE (Initiative Science-Innovation-Territoire-Économie). Budget local : 550 M€. Objectif stratégique : Top 100 mondial.",
@@ -1656,7 +2030,7 @@ async function sendCapsule() {
 
     if (window.addDoc && window.collection && window.db) {
         try {
-            await window.addDoc(window.collection(window.db, "capsule_2050"), {
+            await window.addDoc(window.collection(window.db, "capsule_2100"), {
                 message: text,
                 date: new Date(),
                 scenario: winnerScenarioId || "Inconnu",
@@ -1855,8 +2229,9 @@ window.orderBy = orderBy;
 window.limit = limit;
 </script>
 <div id="games-hub-overlay" class="fixed inset-0 bg-slate-900/95 hidden z-[140] flex items-center justify-center p-4 font-sans fade-in backdrop-blur-sm">
-    <div class="bg-white w-full max-w-2xl rounded-2xl overflow-hidden shadow-2xl relative">
-        <div class="bg-indigo-900 p-6 text-white flex justify-between items-center">
+    <div class="bg-white w-full max-w-3xl rounded-2xl overflow-hidden shadow-2xl relative flex flex-col max-h-[90vh]">
+        
+        <div class="bg-indigo-900 p-6 text-white flex justify-between items-center shrink-0">
             <div>
                 <h2 class="text-xl font-bold uppercase tracking-widest"><i class="fas fa-flask mr-2 text-orange-400"></i>Laboratoire Prospectif</h2>
                 <p class="text-xs text-indigo-200">Testez la viabilité de vos décisions sur le long terme.</p>
@@ -1864,44 +2239,54 @@ window.limit = limit;
             <button onclick="document.getElementById('games-hub-overlay').classList.add('hidden'); document.getElementById('games-hub-overlay').classList.remove('flex');" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition"><i class="fas fa-times"></i></button>
         </div>
 
-        <div class="p-6 bg-gray-50 grid grid-cols-1 md:grid-cols-2 gap-4">
-            
-            <div onclick="document.getElementById('games-hub-overlay').classList.add('hidden'); document.getElementById('games-hub-overlay').classList.remove('flex'); openReignsMenu();" class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm hover:shadow-md hover:border-indigo-500 cursor-pointer transition-all group relative overflow-hidden">
-                <div class="absolute top-3 right-3 text-green-500 bg-green-100 px-2 py-0.5 rounded text-[10px] font-bold">DISPONIBLE</div>
-                <div class="w-12 h-12 bg-indigo-100 text-indigo-700 rounded-lg flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">
-                    <i class="fas fa-balance-scale"></i>
+        <div class="p-6 bg-gray-50 overflow-y-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                
+                <div onclick="document.getElementById('games-hub-overlay').classList.add('hidden'); document.getElementById('games-hub-overlay').classList.remove('flex'); openReignsMenu();" class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm hover:shadow-md hover:border-indigo-500 cursor-pointer transition-all group relative overflow-hidden">
+                    <div class="absolute top-3 right-3 text-green-500 bg-green-100 px-2 py-0.5 rounded text-[10px] font-bold">DISPONIBLE</div>
+                    <div class="w-12 h-12 bg-indigo-100 text-indigo-700 rounded-lg flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform"><i class="fas fa-balance-scale"></i></div>
+                    <h3 class="font-bold text-gray-800 mb-1">Mandat 2035 : L'Arbitrage</h3>
+                    <p class="text-xs text-gray-500 leading-relaxed">Gérez les externalités négatives de votre politique. Budget, Acceptabilité sociale et Écologie.</p>
                 </div>
-                <h3 class="font-bold text-gray-800 mb-1">Mandat 2035 : L'Arbitrage</h3>
-                <p class="text-xs text-gray-500 leading-relaxed">Gérez les externalités négatives de votre politique. Budget, Acceptabilité sociale et Écologie.</p>
-            </div>
 
-            <div onclick="document.getElementById('games-hub-overlay').classList.add('hidden'); document.getElementById('games-hub-overlay').classList.remove('flex'); document.getElementById('urban-puzzle-overlay').classList.remove('hidden'); document.getElementById('urban-puzzle-overlay').classList.add('flex'); initUrbanPuzzle();" class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm hover:shadow-md hover:border-green-500 cursor-pointer transition-all group relative overflow-hidden">
-                <div class="absolute top-3 right-3 text-white bg-green-500 px-2 py-0.5 rounded text-[10px] font-bold shadow-sm">NOUVEAU</div>
-                <div class="w-12 h-12 bg-green-100 text-green-700 rounded-lg flex items-center justify-center text-2xl mb-4 group-hover:scale-110 group-hover:rotate-3 transition-transform">
-                    <i class="fas fa-city"></i>
+                <div onclick="document.getElementById('games-hub-overlay').classList.add('hidden'); document.getElementById('games-hub-overlay').classList.remove('flex'); document.getElementById('urban-puzzle-overlay').classList.remove('hidden'); document.getElementById('urban-puzzle-overlay').classList.add('flex'); initUrbanPuzzle();" class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm hover:shadow-md hover:border-green-500 cursor-pointer transition-all group relative overflow-hidden">
+                    <div class="absolute top-3 right-3 text-white bg-green-500 px-2 py-0.5 rounded text-[10px] font-bold shadow-sm">NOUVEAU</div>
+                    <div class="w-12 h-12 bg-green-100 text-green-700 rounded-lg flex items-center justify-center text-2xl mb-4 group-hover:scale-110 group-hover:rotate-3 transition-transform"><i class="fas fa-city"></i></div>
+                    <h3 class="font-bold text-gray-800 mb-1">Urban Puzzle : Défi ZAN</h3>
+                    <p class="text-xs text-gray-500 leading-relaxed">Architecte, placez les bâtiments nécessaires sans détruire la nature. Attention à la jauge écologique !</p>
                 </div>
-                <h3 class="font-bold text-gray-800 mb-1">Urban Puzzle : Défi ZAN</h3>
-                <p class="text-xs text-gray-500 leading-relaxed">Architecte, placez les bâtiments nécessaires sans détruire la nature. Attention à la jauge écologique !</p>
-            </div>
 
-            <div onclick="document.getElementById('games-hub-overlay').classList.add('hidden'); document.getElementById('games-hub-overlay').classList.remove('flex'); openCodex();" class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm hover:shadow-md hover:border-indigo-500 cursor-pointer transition-all group relative overflow-hidden">
-                <div class="absolute top-3 right-3 text-indigo-600 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">Culture G</div>
-                <div class="flex items-center gap-4 relative z-10">
-                    <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-lg flex items-center justify-center text-2xl mb-4 group-hover:scale-110 group-hover:bg-indigo-600 group-hover:text-white transition-all shadow-sm">
-                        <i class="fas fa-university"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-gray-800 mb-1">Le Grand Quiz Universitaire</h3>
-                        <p class="text-xs text-gray-500 leading-relaxed">Misez vos points de crédibilité pour répondre à des questions complexes sur l'histoire et l'urbanisme.</p>
+                <div onclick="document.getElementById('games-hub-overlay').classList.add('hidden'); document.getElementById('games-hub-overlay').classList.remove('flex'); openCodex();" class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm hover:shadow-md hover:border-indigo-500 cursor-pointer transition-all group relative overflow-hidden">
+                    <div class="absolute top-3 right-3 text-indigo-600 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">Culture G</div>
+                    <div class="flex items-center gap-4 relative z-10">
+                        <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-lg flex items-center justify-center text-2xl mb-4 group-hover:scale-110 group-hover:bg-indigo-600 group-hover:text-white transition-all shadow-sm"><i class="fas fa-university"></i></div>
+                        <div>
+                            <h3 class="font-bold text-gray-800 mb-1">Le Grand Quiz Universitaire</h3>
+                            <p class="text-xs text-gray-500 leading-relaxed">Misez vos points de crédibilité pour répondre à des questions complexes sur l'histoire et l'urbanisme.</p>
+                        </div>
                     </div>
                 </div>
-            </div>
 
+                <div onclick="document.getElementById('games-hub-overlay').classList.add('hidden'); document.getElementById('games-hub-overlay').classList.remove('flex'); openAgency();" class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm hover:shadow-md hover:border-red-200 cursor-pointer transition-all group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-gray-100 text-gray-500 border-l border-b border-gray-200 px-3 py-1 text-[9px] font-bold uppercase tracking-widest">Prospective</div>
+                    <div class="flex items-center gap-5 relative z-10">
+                        <div class="w-14 h-14 bg-red-50 text-red-600 border border-red-100 rounded-lg flex flex-col items-center justify-center shadow-sm group-hover:bg-red-600 group-hover:text-white transition-all">
+                            <i class="fas fa-file-contract text-2xl mb-1"></i>
+                            <span class="text-[8px] font-bold uppercase tracking-wide">Agence</span>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-900 text-lg uppercase tracking-tight">Agence de l'Habitat 2100</h3>
+                            <p class="text-xs text-gray-500 leading-relaxed mt-1">Simulateur de marché locatif sous contrainte climatique.<br><span class="text-red-600 font-semibold text-[10px]"><i class="fas fa-circle text-[6px] animate-pulse mr-1"></i>Marché sous tension</span></p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
 </div>
 
-<div id="reigns-overlay" class="fixed inset-0 bg-black bg-opacity-95 hidden z-[150] flex items-center justify-center p-4 font-sans fade-in">
+<div id="reigns-overlay" class="fixed inset-0 bg-black bg-opacity-95 hidden z-[150] flex flex-col items-center justify-center p-4 font-sans fade-in">
     
     <div id="game-glossary-modal" class="absolute z-[160] bg-white rounded-lg shadow-2xl border-l-4 border-orange-500 p-4 max-w-xs hidden top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-11/12">
         <h4 id="gg-title" class="font-bold text-indigo-900 mb-2 text-sm uppercase">Définition</h4>
@@ -1933,21 +2318,15 @@ window.limit = limit;
         </div>
     </div>
 
-   <div id="reigns-game" class="hidden w-full max-w-md relative">
+    <div id="reigns-game" class="hidden w-full max-w-md relative flex-col items-center">
         
         <div class="flex justify-end w-full mb-2">
             <button onclick="closeReignsOverlay()" class="bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-red-500 transition shadow-md flex items-center gap-2">
-                <span>Quitter la simulation</span> <i class="fas fa-times"></i>
+                <span>Quitter</span> <i class="fas fa-times"></i>
             </button>
         </div>
 
-        <div class="flex justify-between mb-6 bg-slate-800 p-4 rounded-lg shadow-lg border border-slate-700">
-        
-        <button onclick="closeReignsOverlay()" class="absolute -top-10 right-0 text-white/60 hover:text-white hover:bg-white/10 px-3 py-1 rounded-full transition-all text-xs font-bold uppercase tracking-wider flex items-center gap-2">
-            <span>Abandonner</span> <i class="fas fa-times"></i>
-        </button>
-
-       
+        <div class="w-full flex justify-between mb-6 bg-slate-800 p-4 rounded-lg shadow-lg border border-slate-700 relative">
             <div class="flex flex-col items-center w-1/3 px-2 border-r border-slate-600">
                 <span class="text-[10px] text-slate-400 uppercase font-bold mb-1">Budget</span>
                 <div class="w-full h-1.5 bg-slate-600 rounded-full overflow-hidden"><div id="r-bar-budget" class="h-full bg-blue-400 transition-all duration-300" style="width: 60%"></div></div>
@@ -1964,28 +2343,19 @@ window.limit = limit;
 
         <div class="relative h-[420px] w-full perspective-1000">
             <div id="r-active-card" class="absolute inset-0 bg-white rounded-xl shadow-2xl flex flex-col items-center p-8 text-center border-t-4 border-indigo-600 transition-transform duration-300 ease-out origin-bottom">
-                
                 <div class="absolute top-4 right-4 text-[10px] font-mono text-gray-400">DOSSIER #<span id="r-turn-count">01</span></div>
-                
                 <div id="r-card-icon" class="text-5xl mb-6 mt-4 p-4 bg-gray-50 rounded-full shadow-inner text-gray-700">⚠️</div>
-                
                 <h3 id="r-card-title" class="text-lg font-bold text-gray-900 mb-3 leading-tight uppercase tracking-wide">Titre Dossier</h3>
                 <div class="w-10 h-1 bg-indigo-600 mb-4 mx-auto"></div>
                 <p id="r-card-desc" class="text-gray-600 text-sm leading-relaxed font-medium">Description technique du problème...</p>
-                
                 <p class="mt-4 text-[10px] text-gray-400 italic">Cliquez sur les mots soulignés pour le glossaire.</p>
-                
                 <div id="r-choice-feedback" class="absolute bottom-24 left-0 w-full px-4 text-center font-bold text-lg opacity-0 transition-opacity transform z-10 drop-shadow-md"></div>
             </div>
         </div>
 
-        <div class="flex gap-4 mt-8">
-            <button onmouseover="previewReignsChoice('left')" onmouseout="resetReignsPreview()" onclick="makeReignsChoice('left')" id="r-btn-left" class="flex-1 bg-white text-gray-700 py-4 px-3 rounded-lg border border-gray-300 hover:bg-gray-50 font-semibold text-xs shadow-lg transition-all active:scale-95 leading-snug">
-                Option A
-            </button>
-            <button onmouseover="previewReignsChoice('right')" onmouseout="resetReignsPreview()" onclick="makeReignsChoice('right')" id="r-btn-right" class="flex-1 bg-white text-gray-700 py-4 px-3 rounded-lg border border-gray-300 hover:bg-gray-50 font-semibold text-xs shadow-lg transition-all active:scale-95 leading-snug">
-                Option B
-            </button>
+        <div class="flex gap-4 mt-8 w-full">
+            <button onmouseover="previewReignsChoice('left')" onmouseout="resetReignsPreview()" onclick="makeReignsChoice('left')" id="r-btn-left" class="flex-1 bg-white text-gray-700 py-4 px-3 rounded-lg border border-gray-300 hover:bg-gray-50 font-semibold text-xs shadow-lg transition-all active:scale-95 leading-snug">Option A</button>
+            <button onmouseover="previewReignsChoice('right')" onmouseout="resetReignsPreview()" onclick="makeReignsChoice('right')" id="r-btn-right" class="flex-1 bg-white text-gray-700 py-4 px-3 rounded-lg border border-gray-300 hover:bg-gray-50 font-semibold text-xs shadow-lg transition-all active:scale-95 leading-snug">Option B</button>
         </div>
     </div>
 
@@ -1993,35 +2363,14 @@ window.limit = limit;
         <div id="r-end-icon" class="text-5xl mb-4 text-gray-800">📊</div>
         <h1 id="r-end-title" class="text-xl font-black text-gray-900 mb-2 uppercase">Rapport de Mandat</h1>
         <p id="r-end-message" class="text-gray-600 text-sm mb-6 leading-relaxed bg-gray-50 p-4 rounded-lg border border-gray-100">...</p>
-        
         <div class="flex justify-center gap-4 text-xs font-mono text-gray-500 mb-6">
             <div>Budget: <span id="end-b" class="font-bold text-gray-800"></span>%</div>
             <div>Social: <span id="end-p" class="font-bold text-gray-800"></span>%</div>
             <div>Eco: <span id="end-e" class="font-bold text-gray-800"></span>%</div>
         </div>
-
-        <button onclick="closeReignsOverlay()" class="w-full bg-gray-800 hover:bg-black text-white font-bold py-3 rounded-lg shadow-md transition-all">
-            Retour au Laboratoire
-        </button>
+        <button onclick="closeReignsOverlay()" class="w-full bg-gray-800 hover:bg-black text-white font-bold py-3 rounded-lg shadow-md transition-all">Retour au Laboratoire</button>
     </div>
 </div>
-
-<style>
-    /* Styles spécifiques Mini-Jeu & Glossaire */
-    .perspective-1000 { perspective: 1000px; }
-    .slide-left { transform: translateX(-150%) rotate(-15deg) !important; opacity: 0; }
-    .slide-right { transform: translateX(150%) rotate(15deg) !important; opacity: 0; }
-    
-    /* Style des mots du glossaire dans les cartes */
-    .g-term {
-        border-bottom: 1px dashed #f97316; /* Orange pointillé */
-        color: #c2410c;
-        cursor: help;
-        font-weight: bold;
-        transition: background-color 0.2s;
-    }
-    .g-term:hover { background-color: #ffedd5; }
-</style>
 
 <script>
     // --- DICTIONNAIRE GLOSSAIRE ---
@@ -2692,6 +3041,294 @@ function checkWin() {
         </div>
     </div>
 </div>
+<div id="agency-overlay" class="fixed inset-0 bg-gray-800/80 backdrop-blur-md hidden z-[180] flex-col items-center justify-center p-0 md:p-4 font-agency overflow-hidden fade-in">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js"></script>
+
+    <div id="agency-loader" class="absolute inset-0 bg-white/95 z-[200] hidden flex-col items-center justify-center text-center">
+        <div class="w-64 h-2 bg-gray-200 rounded-full overflow-hidden mb-4 relative">
+            <div id="loader-bar" class="h-full bg-red-600 w-0 transition-all duration-300"></div>
+        </div>
+        <h3 id="loader-text" class="text-sm font-bold text-gray-800 uppercase tracking-widest animate-pulse">Vérification Solvabilité...</h3>
+        <p class="text-xs text-gray-500 mt-2 font-mono">Connexion Base de Données Citoyenne...</p>
+    </div>
+
+    <div class="w-full max-w-6xl h-full md:h-[90vh] bg-gray-50 md:rounded-lg flex flex-col relative shadow-2xl border border-gray-300 overflow-hidden">
+        
+        <div class="bg-white text-gray-800 px-4 py-3 flex justify-between items-center shrink-0 border-b border-gray-200 shadow-sm z-10">
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-2 border-r border-gray-200 pr-4">
+                    <div class="w-8 h-8 bg-red-700 text-white flex items-center justify-center font-bold text-lg rounded shadow-inner">A</div>
+                    <div class="leading-none">
+                        <h2 class="text-sm font-bold tracking-tight uppercase text-gray-900">Agence Nationale</h2>
+                        <p class="text-[9px] text-red-600 uppercase font-bold tracking-wider">Division Crise & Habitat</p>
+                    </div>
+                </div>
+                <div class="hidden md:flex flex-col">
+                    <span class="text-[9px] text-gray-400 uppercase font-bold">Connexion Sécurisée</span>
+                    <span class="text-[10px] text-green-600 font-mono"><i class="fas fa-lock text-[8px] mr-1"></i>V.2100.4.1</span>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <div class="hidden md:flex items-center gap-2 bg-red-50 px-3 py-1 rounded border border-red-100">
+                    <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                    <span class="text-[10px] font-bold text-red-700 uppercase">Tension Marché : Critique (99%)</span>
+                </div>
+                <button onclick="closeAgency()" class="text-gray-400 hover:bg-gray-100 hover:text-red-600 w-8 h-8 flex items-center justify-center transition-colors rounded"><i class="fas fa-times text-lg"></i></button>
+            </div>
+        </div>
+
+        <div class="flex-grow overflow-y-auto bg-[#f3f4f6] relative p-4" id="agency-scroll-container">
+            
+            <div id="agency-screen-list" class="max-w-5xl mx-auto flex flex-col gap-6 fade-in">
+                <div class="bg-white rounded border border-gray-200 p-4 shadow-sm flex flex-col md:flex-row justify-between items-center gap-4">
+                    <div class="flex-grow w-full">
+                        <label class="text-[10px] font-bold uppercase text-gray-400 mb-1 block tracking-wider">Configuration du Profil Locataire</label>
+                        <div class="flex gap-2">
+                            <select class="bg-gray-50 border border-gray-300 text-gray-900 text-xs font-bold rounded focus:ring-red-500 focus:border-red-500 block w-full p-2.5 outline-none uppercase tracking-wide">
+                                <option>Garantie : Organe Vital (Rein/Foie)</option>
+                                <option>Garantie : Servitude Temporelle (Nuit)</option>
+                                <option>Garantie : Héritage Climatique</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 border-l border-gray-100 pl-4 w-full md:w-auto justify-end">
+                        <div class="text-right">
+                            <span class="block text-[10px] text-gray-400 uppercase font-bold">Votre Score Social</span>
+                            <span class="block text-xl font-black text-gray-800" id="social-score">642 <span class="text-xs text-red-500 font-normal">(-12)</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="font-bold text-gray-500 text-xs uppercase border-b border-gray-300 pb-2 mb-4 tracking-wider flex justify-between">
+                        <span>Dernières opportunités saisissables</span>
+                        <span>6 Résultats</span>
+                    </h3>
+                    <div id="agency-listings" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                        </div>
+                </div>
+            </div>
+
+            <div id="agency-screen-detail" class="hidden h-full flex flex-col bg-white rounded shadow-sm border border-gray-200 overflow-hidden fade-in">
+                 <div class="p-3 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
+                    <button onclick="agencyBack()" class="text-gray-500 hover:text-red-600 flex items-center gap-2 text-xs font-bold uppercase transition-colors"><i class="fas fa-arrow-left"></i> Revenir au marché</button>
+                    <span class="text-[10px] text-gray-400 font-mono">REF: <span id="detail-ref">---</span></span>
+                </div>
+                
+                <div class="flex-grow flex flex-col md:flex-row overflow-hidden">
+                    <div class="w-full md:w-7/12 flex flex-col bg-white overflow-y-auto custom-scrollbar">
+                        <div class="h-64 bg-gray-200 relative group overflow-hidden">
+                            <img id="ag-img" src="" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                            <div class="absolute bottom-4 left-4 text-white">
+                                <div class="flex gap-2 mb-2"><span id="ag-type" class="bg-red-600 text-white text-[9px] font-bold px-2 py-1 uppercase tracking-wider">Type</span></div>
+                                <h2 id="ag-title" class="text-2xl font-bold leading-none shadow-black drop-shadow-md">TITRE</h2>
+                            </div>
+                        </div>
+                        
+                        <div class="p-8">
+                            <div class="flex justify-between items-start mb-6 border-b border-gray-100 pb-6">
+                                <div>
+                                    <span class="text-xs text-gray-400 uppercase font-bold block mb-1">Surface Habitable</span>
+                                    <span id="ag-surface" class="text-lg font-bold text-gray-800">SURFACE</span>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-xs text-gray-400 uppercase font-bold block mb-1">Coût Mensuel</span>
+                                    <span id="ag-price" class="text-xl font-black text-red-700">PRIX</span>
+                                </div>
+                            </div>
+
+                            <h3 class="text-sm font-bold text-gray-900 uppercase mb-3">Rapport d'habitabilité</h3>
+                            <p id="ag-desc" class="text-sm text-gray-600 leading-relaxed mb-8 text-justify font-serif">Description...</p>
+
+                            <div class="bg-red-50 p-5 rounded border-l-4 border-red-600">
+                                <h4 class="flex items-center gap-2 text-red-800 uppercase font-bold text-xs mb-3">
+                                    <i class="fas fa-gavel"></i> Clauses Restrictives Obligatoires
+                                </h4>
+                                <ul id="ag-clauses" class="list-disc pl-4 text-xs text-gray-700 space-y-2 font-medium"></ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="w-full md:w-5/12 p-8 bg-gray-50 border-l border-gray-200 flex flex-col justify-center">
+                        <div class="bg-white p-6 rounded shadow-sm border border-gray-200 relative overflow-hidden">
+                            <div class="absolute -right-6 -top-6 text-9xl text-gray-50 opacity-50 pointer-events-none"><i class="fas fa-file-signature"></i></div>
+                            
+                            <h3 class="text-sm font-black uppercase mb-1 text-gray-800">Dossier de Candidature</h3>
+                            <p class="text-xs text-gray-500 mb-6">Soumission irrévocable.</p>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-[10px] font-bold text-gray-500 uppercase mb-1">Identifiant Citoyen Unique</label>
+                                    <input type="text" id="lease-name" placeholder="Ex: NOM Prénom / ID-7485" class="w-full bg-gray-50 border border-gray-300 rounded p-3 text-sm font-bold text-gray-900 outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all uppercase">
+                                </div>
+                                
+                                <div class="bg-gray-50 p-3 rounded border border-gray-200">
+                                    <label class="block text-[10px] font-bold text-gray-400 uppercase mb-2">Analyse Biométrique (Simulation)</label>
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <div class="h-1 flex-grow bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-green-500 w-[85%]"></div></div>
+                                        <span class="text-[9px] font-bold text-green-600">Pouls: OK</span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <div class="h-1 flex-grow bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-yellow-500 w-[45%]"></div></div>
+                                        <span class="text-[9px] font-bold text-yellow-600">Stress: ÉLEVÉ</span>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-start gap-3 py-2">
+                                    <input type="checkbox" id="check-soul" class="mt-1 w-4 h-4 text-red-600 border-gray-300 rounded focus:ring-red-500 cursor-pointer">
+                                    <label for="check-soul" class="text-xs text-gray-600 cursor-pointer select-none">Je certifie accepter la dégradation de mes conditions de vie et renonce à mes droits fondamentaux en échange d'un toit.</label>
+                                </div>
+
+                                <button onclick="startLeaseProcess()" class="w-full agency-btn-primary py-4 rounded shadow-lg hover:shadow-xl transition-all flex justify-center items-center gap-2 group mt-2">
+                                    <i class="fas fa-fingerprint text-lg group-hover:scale-110 transition-transform"></i> 
+                                    <span>Signer & Soumettre</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="agency-screen-lease" class="hidden flex flex-col items-center justify-start min-h-full py-8 fade-in">
+                
+                <div class="flex gap-4 mb-8 z-50 sticky top-4">
+                    <button onclick="agencyBack()" class="bg-gray-800 text-white px-4 py-2 rounded shadow text-xs font-bold hover:bg-black transition"><i class="fas fa-undo mr-2"></i>Nouveau Dossier</button>
+                    <button onclick="downloadLease()" class="bg-red-600 text-white px-6 py-2 rounded shadow-lg text-xs font-bold hover:bg-red-700 transition animate-bounce"><i class="fas fa-download mr-2"></i>Télécharger le Bail (Preuve)</button>
+                </div>
+
+                <div id="lease-capture-zone" class="w-full max-w-[210mm] min-h-[297mm] lease-paper text-black relative mx-auto transform md:scale-90 origin-top">
+                    
+                    <div class="lease-watermark">COPIE OFFICIELLE - ARCHIVE 2100</div>
+
+                    <div class="flex justify-between items-start border-b-2 border-black pb-4 mb-8">
+                        <div class="flex gap-4">
+                            <div class="w-16 h-16 border-2 border-black flex items-center justify-center">
+                                <i class="fas fa-university text-3xl"></i>
+                            </div>
+                            <div>
+                                <h1 class="text-xl font-black uppercase tracking-tighter leading-none mb-1">République Fédérale<br>Européenne</h1>
+                                <p class="text-xs font-serif italic">Ministère de la Survie & de l'Habitat</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="border border-black px-2 py-1 mb-1 inline-block">
+                                <p class="text-[10px] font-mono font-bold">FORMULAIRE CERFA N°99-BS</p>
+                            </div>
+                            <p class="text-[10px] font-mono">Date : <span id="lease-date">JJ/MM/2100</span></p>
+                            <p class="text-[10px] font-mono">ID : <span id="lease-id">X-999</span></p>
+                        </div>
+                    </div>
+
+                    <div class="text-center mb-8">
+                        <h2 class="text-2xl font-black uppercase underline decoration-2 underline-offset-4">CONTRAT D'OCCUPATION PRÉCAIRE</h2>
+                        <p class="text-xs uppercase mt-2 font-bold">(Loi d'Urgence Climatique du 14 Juillet 2038)</p>
+                    </div>
+
+                    <div class="font-legal text-sm leading-relaxed text-justify space-y-4 px-4">
+                        
+                        <p><strong>ENTRE LES SOUSSIGNÉS :</strong></p>
+                        <p class="pl-4">L'Agence Nationale de Gestion Immobilière Automatisée (ci-après "le Maître"), représentée par l'Algorithme ALICE-4.<br>
+                        <strong>D'UNE PART,</strong></p>
+
+                        <p><strong>ET :</strong></p>
+                        <p class="pl-4"><span id="lease-render-name" class="font-bold uppercase bg-gray-200 px-2 py-0.5">NOM DU CITOYEN</span>, matricule biométrique non-vérifié (ci-après "le Sujet").<br>
+                        <strong>D'AUTRE PART.</strong></p>
+
+                        <div class="my-6 border-t border-b border-black py-4 bg-gray-50">
+                            <table class="w-full text-sm">
+                                <tr>
+                                    <td class="font-bold py-1 w-1/3">OBJET DU CONTRAT :</td>
+                                    <td class="font-mono uppercase" id="lease-render-title">TITRE DU BIEN</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-bold py-1">SURFACE LÉGALE :</td>
+                                    <td id="lease-render-surface">SURFACE</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-bold py-1">CONTREPARTIE (LOYER) :</td>
+                                    <td class="font-bold text-red-700 uppercase" id="lease-render-price">PRIX</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <h3 class="font-bold text-sm uppercase mt-6 mb-2">ARTICLE 1 - ÉTAT DES LIEUX</h3>
+                        <p>Le Sujet reconnaît prendre les lieux dans leur état actuel de délabrement, d'insalubrité ou de stérilité technologique. Il renonce expressément à tout confort thermique (Température garantie : 12°C hiver / 35°C été) et acoustique.</p>
+
+                        <h3 class="font-bold text-sm uppercase mt-6 mb-2">ARTICLE 2 - CLAUSES RESTRICTIVES (OBLIGATOIRES)</h3>
+                        <p>Le maintien dans les lieux est conditionné au respect strict et absolu des règles suivantes, sous peine d'expulsion immédiate et de déchéance de citoyenneté :</p>
+                        <ul id="lease-render-clauses" class="list-disc pl-8 italic my-2 font-bold text-red-900 bg-red-50 p-2 border-l-2 border-red-900">
+                            </ul>
+
+                        <h3 class="font-bold text-sm uppercase mt-6 mb-2">ARTICLE 3 - DURÉE ET RÉSILIATION</h3>
+                        <p>Le présent contrat est conclu pour une durée indéterminée. Il est résiliable de plein droit par le Maître en cas de : baisse du score social du Sujet, besoin de réquisition par l'État, ou décès.</p>
+                    </div>
+
+                    <div class="mt-12 flex justify-between items-end px-8">
+                        <div class="text-center">
+                            <p class="text-[10px] font-bold uppercase mb-4">Pour l'Agence (Sceau IA)</p>
+                            <div class="w-24 h-24 border-2 border-gray-300 flex items-center justify-center">
+                                <i class="fas fa-qrcode text-4xl opacity-50"></i>
+                            </div>
+                        </div>
+                        <div class="text-center relative">
+                            <p class="text-[10px] font-bold uppercase mb-8">Le Sujet (Signature + Sang)</p>
+                            <div class="font-script text-2xl text-blue-900 transform -rotate-6">Acceptation Forcée</div>
+                            <div id="lease-stamp" class="stamp-animation absolute -top-4 -left-12 border-4 border-red-700 text-red-700 font-black text-4xl p-2 uppercase opacity-0 tracking-widest mix-blend-multiply rounded z-20">
+                                DOSSIER<br>VALIDÉ
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="absolute bottom-4 left-0 w-full text-center">
+                        <div class="h-px bg-black w-3/4 mx-auto mb-2"></div>
+                        <p class="text-[8px] uppercase font-bold text-gray-500">Document généré par le système "Agence 2100". Toute falsification est punie de 10 ans de travaux d'intérêt écologique.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+   /* --- STYLE AGENCE IMMO 2100 (Version Complète) --- */
+.font-agency { font-family: 'Roboto', system-ui, sans-serif; color: #1f2937; }
+.font-legal { font-family: 'Times New Roman', Times, serif; } /* Pour le bail */
+.agency-border { border: 1px solid #e5e7eb; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); background: white; }
+
+/* Boutons "Froids" */
+.agency-btn { background: white; border: 1px solid #dc2626; color: #dc2626; padding: 0.5rem 1rem; font-weight: 600; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em; transition: all 0.2s; border-radius: 2px; }
+.agency-btn:hover { background-color: #dc2626; color: white; }
+.agency-btn-primary { background-color: #dc2626; color: white; border: 1px solid #b91c1c; padding: 0.75rem 1.5rem; font-weight: 700; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.1em; border-radius: 2px; box-shadow: 0 2px 4px rgba(220, 38, 38, 0.2); }
+.agency-btn-primary:hover { background-color: #991b1b; transform: translateY(-1px); }
+
+/* Cartes */
+.agency-card { transition: all 0.2s; border: 1px solid #e5e7eb; background: white; position: relative; overflow: hidden; }
+.agency-card:hover { border-color: #dc2626; box-shadow: 0 10px 20px -5px rgba(220, 38, 38, 0.15); transform: translateY(-2px); }
+
+/* Tags */
+.agency-tag { display: inline-flex; align-items: center; background: #f3f4f6; color: #4b5563; padding: 2px 8px; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; border: 1px solid #e5e7eb; border-radius: 2px; }
+.agency-tag-red { background: #fef2f2; color: #dc2626; border-color: #fee2e2; }
+
+/* Document Bail (Lease) - Imitation Papier A4 Officiel */
+.lease-paper { 
+    background-color: #fff; 
+    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='50%25' y='50%25' font-size='14' fill='%23f3f4f6' font-family='Arial' transform='rotate(-45 50 50)' text-anchor='middle'%3ECOPIE OFFICIELLE%3C/text%3E%3C/svg%3E");
+    border: 1px solid #d1d5db; 
+    box-shadow: 0 0 15px rgba(0,0,0,0.1); 
+    padding: 3rem; 
+    position: relative;
+    color: #000;
+}
+.lease-watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); font-size: 6rem; font-weight: 900; color: rgba(220, 38, 38, 0.05); border: 4px solid rgba(220, 38, 38, 0.05); padding: 1rem; pointer-events: none; white-space: nowrap; z-index: 0; }
+.stamp-animation { animation: stampIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; opacity: 0; transform: scale(3) rotate(-15deg); }
+@keyframes stampIn { 100% { opacity: 0.9; transform: scale(1) rotate(-15deg); } }
+
+/* Loader Bureaucratique */
+.processing-overlay { background: rgba(255,255,255,0.9); backdrop-filter: blur(2px); z-index: 50; display: flex; flex-col; justify-content: center; align-items: center; }
+.scan-line { width: 100%; height: 2px; background: #dc2626; animation: scan 2s linear infinite; position: absolute; top: 0; }
+@keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
+</style>
 <script>
     // --- MOTEUR DE JEU CODEX (QUIZ ÉTENDU) ---
     const codexDB = [
@@ -2886,7 +3523,7 @@ let cachedCapsules = [];
 async function loadAdminCapsules() {
     if (!window.db || !window.collection || !window.getDocs) return;
     try {
-        const q = window.query(window.collection(window.db, "capsule_2050"), window.orderBy("date", "desc"), window.limit(50));
+        const q = window.query(window.collection(window.db, "capsule_2100"), window.orderBy("date", "desc"), window.limit(50));
         const querySnapshot = await window.getDocs(q);
         const tbody = document.getElementById('adm-table-body');
         tbody.innerHTML = '';
@@ -2938,12 +3575,53 @@ function exportStatsCSV() {
     link.setAttribute("download", "export_stats.csv");
     document.body.appendChild(link); link.click(); document.body.removeChild(link);
 }
-    /* === MOTEUR D'ATMOSPHÈRE VISUELLE === */
+// --- LOGIQUE MÉTÉO CONNECTÉE ---
+    async function initWeatherSystem() {
+        const lat = 43.6108; // Latitude Montpellier
+        const lon = 3.8767;  // Longitude Montpellier
+        
+        // Appel API Open-Meteo (Gratuit)
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`;
+
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+            const weather = data.current_weather;
+            const wmoCode = weather.weathercode; 
+
+            console.log(`Météo Montpellier : ${weather.temperature}°C, Code: ${wmoCode}`);
+
+            // Codes Pluie/Orage : 51, 53, 55, 61, 63, 65, 80, 81, 82, 95, 96, 99
+            const rainCodes = [51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82, 95, 96, 99];
+            
+            // Pour tester la pluie MAINTENANT même s'il fait beau, changez false en true ci-dessous :
+            const isRaining = rainCodes.includes(wmoCode); 
+            // const isRaining = true; // <--- Décommente cette ligne pour tester forcé
+
+            if (isRaining) {
+                const modal = document.getElementById('weather-modal');
+                const tempSpan = document.getElementById('real-temp');
+                if(tempSpan) tempSpan.innerText = weather.temperature;
+                
+                setTimeout(() => {
+                    if(modal) modal.classList.remove('hidden');
+                }, 2000);
+
+                // Active le mode pluie visuel
+                if(typeof setAtmosphere === "function") setAtmosphere('rain');
+            }
+        } catch (error) {
+            console.error("Erreur météo:", error);
+        }
+    }
+    // Lancer la vérification au chargement
+    document.addEventListener('DOMContentLoaded', initWeatherSystem);
+    /* === MOTEUR D'ATMOSPHÈRE VISUELLE (VERSION PLUIE) === */
     const canvas = document.getElementById('atmosphere-canvas');
     const ctx = canvas.getContext('2d');
     let particles = [];
     
-    // Configuration par défaut (Mode Calm)
+    // Configuration par défaut
     let currentConfig = { color: '156, 163, 175', speed: 0.2, direction: 'random', count: 30 };
 
     function resizeCanvas() {
@@ -2951,21 +3629,35 @@ function exportStatsCSV() {
         canvas.height = window.innerHeight;
     }
     window.addEventListener('resize', resizeCanvas);
-    resizeCanvas(); // Init immédiat
+    resizeCanvas();
 
     class Particle {
         constructor() { this.reset(true); }
 
         reset(initial = false) {
             this.x = Math.random() * canvas.width;
-            this.y = initial ? Math.random() * canvas.height : canvas.height + 10;
+            
+            // Position Y selon le mode
+            if (currentConfig.direction === 'down') {
+                this.y = initial ? Math.random() * canvas.height : -10;
+            } else if (currentConfig.direction === 'up') {
+                this.y = initial ? Math.random() * canvas.height : canvas.height + 10;
+            } else {
+                this.y = Math.random() * canvas.height;
+            }
+
             this.size = Math.random() * 4 + 1; 
             this.alpha = Math.random() * 0.4 + 0.1;
 
             if (currentConfig.direction === 'up') {
                 this.vx = (Math.random() - 0.5) * 0.5;
                 this.vy = -Math.random() * currentConfig.speed - 0.5;
-                this.y = initial ? Math.random() * canvas.height : canvas.height + 10;
+            } else if (currentConfig.direction === 'down') { 
+                // MODE PLUIE
+                this.vx = (Math.random() - 0.5) * 0.2; 
+                this.vy = (Math.random() * 5) + 10;   
+                this.size = Math.random() * 1.5 + 0.5; 
+                this.alpha = 0.6;
             } else if (currentConfig.direction === 'static') {
                  this.x = Math.random() * canvas.width;
                  this.y = Math.random() * canvas.height;
@@ -2981,8 +3673,9 @@ function exportStatsCSV() {
             this.x += this.vx;
             this.y += this.vy;
             
-            // Rebond ou Reset selon le mode
-            if (currentConfig.direction === 'static') {
+            if (currentConfig.direction === 'down') {
+                if (this.y > canvas.height) this.reset();
+            } else if (currentConfig.direction === 'static') {
                 if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
                 if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
             } else {
@@ -2994,9 +3687,19 @@ function exportStatsCSV() {
 
         draw() {
             ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(${currentConfig.color}, ${this.alpha})`;
-            ctx.fill();
+            if(currentConfig.direction === 'down') {
+                // Dessin Goutte de pluie (trait)
+                ctx.moveTo(this.x, this.y);
+                ctx.lineTo(this.x, this.y + 10);
+                ctx.strokeStyle = `rgba(${currentConfig.color}, ${this.alpha})`;
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            } else {
+                // Dessin Particule ronde
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${currentConfig.color}, ${this.alpha})`;
+                ctx.fill();
+            }
         }
     }
 
@@ -3011,12 +3714,9 @@ function exportStatsCSV() {
         requestAnimationFrame(animateParticles);
     }
 
-    // Fonction globale pour changer l'ambiance
     window.setAtmosphere = function(mode, hexColor = null) {
-        let rgb = '156, 163, 175'; // Gris par défaut
-        
+        let rgb = '156, 163, 175'; 
         if(hexColor) {
-            // Conversion Hex vers RGB
             const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hexColor);
             if(result) rgb = `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`;
         }
@@ -3024,11 +3724,12 @@ function exportStatsCSV() {
         if (mode === 'calm') {
             currentConfig = { color: '156, 163, 175', speed: 0.2, direction: 'random', count: 30 };
         } else if (mode === 'focus') {
-            // Indigo qui monte (réflexion)
             currentConfig = { color: '99, 102, 241', speed: 1.2, direction: 'up', count: 60 };
         } else if (mode === 'result') {
-            // Couleur du résultat, flottement statique
             currentConfig = { color: rgb, speed: 0.1, direction: 'static', count: 80 };
+        } else if (mode === 'rain') {
+            // NOUVEAU : Configuration Pluie
+            currentConfig = { color: '148, 163, 184', speed: 10, direction: 'down', count: 150 };
         }
         initParticles();
     };
@@ -3036,9 +3737,299 @@ function exportStatsCSV() {
     // Lancement
     initParticles();
     animateParticles();
+/* === LOGIQUE AGENCE IMMO 2100 (Version Enrichie) === */
+
+// Données enrichies avec tags pour les filtres
+const agencyData = [
+    { 
+        id: 's1', 
+        title: "Chambre 9m² - ZAD Homologuée", 
+        type: "SCN. 1 : FRUGALITÉ", 
+        surface: "9m² (Zone Dortoir)", 
+        price: "400 Crédits", 
+        ref: "FRUG-992",
+        tags: ['cheap'],
+        desc: "Opportunité rare dans la coopérative 'Les Joyeux Sobres'. Immeuble ancien sans ascenseur. Espace privatif de 9m² isolé en paille compressée. Cuisine partagée avec 12 camarades. Douche solaire (disponible si ensoleillement > 4h/jour). Idéal pour profil résilient.", 
+        clauses: ["Interdiction formelle de tout chauffage électrique (>14°C = Expulsion).", "Obligation de fournir 5L d'urine par jour pour le jardin permacole.", "Contrôle hebdomadaire du poids des déchets personnels (Max 500g)."], 
+        image: "https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=800" 
+    },
+    { 
+        id: 's2', 
+        title: "Pavillon Divisé (Lot 3C)", 
+        type: "SCN. 2 : COOPÉRATION", 
+        surface: "18m² (Ancien Garage)", 
+        price: "750 €uros", 
+        ref: "COOP-881",
+        tags: ['safe'],
+        desc: "Intégrez notre éco-hameau périurbain surveillé. Studio aménagé dans un garage réhabilité. Accès à la buanderie commune les jours pairs. Le loyer inclut l'adhésion forcée à l'AMAP locale. Attention : Dossier soumis au vote public du Conseil des Voisins.", 
+        clauses: ["Transparence totale des consommations énergétiques (publiées dans le hall).", "Présence obligatoire aux Assemblées Générales (chaque mardi soir).", "Score de Réputation Sociale exigé supérieur à 750 points."], 
+        image: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?q=80&w=800" 
+    },
+    { 
+        id: 's3', 
+        title: "Smart-Cube Tour Hyperion", 
+        type: "SCN. 3 : TECH-ÉLITISME", 
+        surface: "12m² Virtuels", 
+        price: "3500 Crypto-Credits", 
+        ref: "TECH-007",
+        tags: ['air', 'safe'],
+        desc: "Vivez l'efficience pure au 54ème étage. Murs-écrans OLED 8K simulant une forêt vierge. Eau recyclée en circuit fermé qualité premium. Le loyer inclut l'abonnement 'Nutrition par drone'. Atmosphère stérile garantie classe A+. Interdiction d'ouvrir les fenêtres.", 
+        clauses: ["Prélèvement automatique des constantes vitales par le lit connecté.", "Surtaxe oxygène en cas de respiration excessive (sport interdit).", "Loyer indexé dynamiquement sur votre productivité en télétravail."], 
+        image: "https://images.unsplash.com/photo-1515263487990-61b07816b324?q=80&w=800" 
+    },
+    { 
+        id: 's4', 
+        title: "Souplex Fortifié (Zone Green)", 
+        type: "SCN. 4 : BUNKER", 
+        surface: "45m² Blindés", 
+        price: "6000 Or", 
+        ref: "BUNK-666",
+        tags: ['bunker', 'safe', 'air'],
+        desc: "Protégez votre capital génétique. Appartement en sous-sol garantissant 21°C constants même par canicule extrême. Générateur autonome diesel. Accès sécurisé par sas biométrique et milice privée armée. Situé en zone non-inondable garantie 10 ans.", 
+        clauses: ["Couvre-feu strict à 21h00 (Fermeture des sas étanches).", "Interdiction formelle d'héberger des non-résidents ou réfugiés climatiques.", "Possession d'une arme de défense passive obligatoire."], 
+        image: "https://images.unsplash.com/photo-1496247749665-49cf5b1022e9?q=80&w=800" 
+    },
+    { 
+        id: 's5', 
+        title: "Sleep-Pod 2m² (Offre 0€)", 
+        type: "SCN. 5 : SERVITUDE", 
+        surface: "2m² (Capsule Sommeil)", 
+        price: "0 € (Data)", 
+        ref: "SLAVE-01",
+        tags: ['cheap', 'air'],
+        desc: "Pourquoi payer un loyer ? Pod ergonomique optimisé pour le sommeil polyphasique. Loyer 100% offert en échange de : diffusion publicitaire rétinienne (4h/nuit), minage de crypto par chaleur corporelle et cession de vos données oniriques à Disney-Pfizer.", 
+        clauses: ["Connexion neurale permanente exigée (Port USB-C crânien).", "Clause de résiliation : Don d'un rein valide à la corporation.", "Interdiction de rêver de marques concurrentes."], 
+        image: "https://images.unsplash.com/photo-1555664424-778a1e5e1b48?q=80&w=800" 
+    },
+    { 
+        id: 's6', 
+        title: "Plateau Brut (Occupation)", 
+        type: "SCN. 6 : EFFONDREMENT", 
+        surface: "Commercial", 
+        price: "Troc / Sang", 
+        ref: "RUIN-404",
+        tags: ['cheap'],
+        desc: "Opportunité pour clan soudé. Ancienne surface commerciale désaffectée (ex-Zara). Toiture partielle (fuites). Accès point d'eau non potable à 300m. Pas d'électricité réseau. Possibilité de faire du feu à l'intérieur. Idéal base arrière de survie.", 
+        clauses: ["Loi du premier occupant (Aucun titre de propriété fourni).", "La défense physique des lieux est à la charge exclusive de l'occupant.", "Aucune garantie sanitaire (Présence probable d'amiante et rats)."], 
+        image: "https://images.unsplash.com/photo-1516937941348-c09645f31e88?q=80&w=800" 
+    }
+];
+
+let currentAgencyItem = null;
+
+// Initialisation du score social
+document.addEventListener("DOMContentLoaded", () => {
+    const scoreEl = document.getElementById('social-score');
+    if(scoreEl) scoreEl.innerHTML = Math.floor(Math.random() * (800 - 400) + 400) + ' <span class="text-xs text-red-500 font-normal">(-' + Math.floor(Math.random() * 20) + ')</span>';
+});
+
+// --- LOGIQUE FILTRES ---
+function filterAgency(criteria, btn) {
+    document.querySelectorAll('.survival-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const grid = document.getElementById('agency-listings');
+    grid.innerHTML = ''; 
+    const filtered = criteria === 'all' ? agencyData : agencyData.filter(item => item.tags.includes(criteria));
+    if(filtered.length === 0) {
+        grid.innerHTML = `<div class="col-span-full text-center py-10 text-gray-400 italic font-mono">Aucun bien ne correspond à ce niveau de survie. Vous allez probablement mourir dehors.</div>`;
+        return;
+    }
+    filtered.forEach(item => createAgencyCard(item, grid));
+}
+
+function createAgencyCard(item, container) {
+    const card = document.createElement('div');
+    card.className = "bg-white agency-card rounded p-0 cursor-pointer flex flex-col group h-full fade-in";
+    card.onclick = () => openAgencyDetail(item);
+    let imgHtml = `<div class="h-32 bg-gray-200 relative overflow-hidden"><img src="${item.image}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0"><div class="absolute top-2 right-2 bg-white/90 text-gray-800 text-[9px] font-bold px-1.5 py-0.5 rounded border border-gray-300">REF: ${item.ref}</div></div>`;
+    card.innerHTML = `
+        ${imgHtml}
+        <div class="p-4 flex flex-col flex-grow">
+            <div class="mb-2"><span class="text-[9px] font-bold text-red-600 bg-red-50 border border-red-100 px-1.5 py-0.5 rounded uppercase tracking-wider">${item.type.split(':')[1]}</span></div>
+            <h4 class="font-bold text-gray-900 text-sm leading-tight mb-2 group-hover:text-red-600 transition-colors line-clamp-2 uppercase">${item.title}</h4>
+            <div class="mt-auto pt-3 border-t border-gray-100 flex justify-between items-center text-xs">
+                <span class="font-semibold text-gray-500"><i class="fas fa-ruler-combined mr-1"></i>${item.surface.split(' ')[0]}</span>
+                <span class="font-black text-red-700 bg-red-50 px-2 py-1 rounded">${item.price.split(' ')[0]}</span>
+            </div>
+        </div>
+    `;
+    container.appendChild(card);
+}
+
+// --- LOGIQUE GÉNÉRALE AGENCE ---
+function openAgency() {
+    document.getElementById('agency-overlay').classList.remove('hidden');
+    document.getElementById('agency-overlay').classList.add('flex');
+    renderAgencyListings();
+    agencyShowScreen('list');
+    setTimeout(triggerRandomToast, 5000); // Lancer les notifs
+}
+
+function closeAgency() {
+    document.getElementById('agency-overlay').classList.add('hidden');
+    document.getElementById('agency-overlay').classList.remove('flex');
+    openGamesHub();
+}
+
+function agencyShowScreen(s) {
+    ['list', 'detail', 'lease'].forEach(id => document.getElementById(`agency-screen-${id}`).classList.add('hidden'));
+    document.getElementById(`agency-screen-${s}`).classList.remove('hidden');
+    const container = document.getElementById('agency-scroll-container');
+    if(container) container.scrollTop = 0;
+}
+
+function renderAgencyListings() {
+    const grid = document.getElementById('agency-listings'); grid.innerHTML = '';
+    agencyData.forEach(item => createAgencyCard(item, grid));
+}
+
+function openAgencyDetail(item) {
+    currentAgencyItem = item;
+    document.getElementById('ag-title').innerText = item.title; 
+    document.getElementById('ag-type').innerText = item.type;
+    document.getElementById('ag-surface').innerText = item.surface; 
+    document.getElementById('ag-price').innerText = item.price;
+    document.getElementById('ag-desc').innerText = item.desc; 
+    document.getElementById('ag-img').src = item.image;
+    document.getElementById('detail-ref').innerText = item.ref;
+    
+    const ul = document.getElementById('ag-clauses'); ul.innerHTML = '';
+    item.clauses.forEach(c => { 
+        const li = document.createElement('li'); li.innerText = c; ul.appendChild(li); 
+    });
+    
+    document.getElementById('lease-name').value = ''; 
+    document.getElementById('check-soul').checked = false;
+    agencyShowScreen('detail');
+}
+
+function agencyBack() { agencyShowScreen('list'); }
+
+// --- LOGIQUE CHATBOT ---
+let chatOpen = false;
+function toggleAgencyChat() {
+    const win = document.getElementById('agency-chat');
+    chatOpen = !chatOpen;
+    win.style.display = chatOpen ? 'flex' : 'none';
+    if(chatOpen) {
+        document.getElementById('chat-input').focus();
+        if(document.getElementById('chat-messages').children.length === 1) {
+            setTimeout(() => addBotMsg("Votre solvabilité est en cours de recalcule... Veuillez patienter."), 1000);
+        }
+    }
+}
+
+function handleChatKey(e) { if(e.key === 'Enter') sendAgencyChat(); }
+
+function sendAgencyChat() {
+    const input = document.getElementById('chat-input');
+    const txt = input.value.trim();
+    if(!txt) return;
+
+    const div = document.createElement('div');
+    div.className = 'chat-msg msg-user'; div.innerText = txt;
+    document.getElementById('chat-messages').appendChild(div);
+    input.value = '';
+    scrollToBottomChat();
+
+    setTimeout(() => {
+        let response = "Je ne suis pas autorisé à répondre à cette requête émotionnelle.";
+        const t = txt.toLowerCase();
+        if(t.includes('prix') || t.includes('cher')) response = "La pauvreté n'est pas un vice, c'est une infraction statistique.";
+        else if(t.includes('dispo') || t.includes('visite')) response = "Visite physique impossible. Risque biologique détecté chez vous.";
+        else if(t.includes('bonjour') || t.includes('salut')) response = "Communication non-essentielle. Formulez une demande de logement.";
+        else if(t.includes('aide')) response = "L'assistance humaine a été supprimée en 2042 pour optimisation budgétaire.";
+        else if(t.includes('merci')) response = "Gratitude enregistrée. Votre score social augmente de 0.001 point.";
+        addBotMsg(response);
+    }, 1000 + Math.random()*1000);
+}
+
+function addBotMsg(txt) {
+    const div = document.createElement('div');
+    div.className = 'chat-msg msg-bot'; div.innerHTML = `<i class="fas fa-robot mr-1"></i> ${txt}`;
+    document.getElementById('chat-messages').appendChild(div);
+    scrollToBottomChat();
+}
+
+function scrollToBottomChat() { const c = document.getElementById('chat-messages'); c.scrollTop = c.scrollHeight; }
+
+// --- LOGIQUE NOTIFICATIONS (TOASTS) ---
+const agencyToasts = ["Un citoyen vient de louer le Pod #88.", "Attention : Votre pouls s'accélère.", "Nouveau bien disponible en Zone Rouge.", "Le gouvernement a gelé vos avoirs crypto.", "Rappel : Le sommeil est un privilège.", "Augmentation de loyer générale : +4%."];
+
+function triggerRandomToast() {
+    if(document.getElementById('agency-overlay').classList.contains('hidden')) return;
+    const toast = document.getElementById('agency-toast');
+    const msg = document.getElementById('toast-msg');
+    msg.innerText = agencyToasts[Math.floor(Math.random() * agencyToasts.length)];
+    toast.classList.add('show');
+    setTimeout(() => { toast.classList.remove('show'); }, 4000);
+    setTimeout(triggerRandomToast, 10000 + Math.random() * 20000);
+}
+
+// --- LOGIQUE BAIL ---
+function startLeaseProcess() {
+    const name = document.getElementById('lease-name').value.trim();
+    if(!name) { alert("ERREUR : Identifiant Citoyen manquant."); return; }
+    if(!document.getElementById('check-soul').checked) { alert("ERREUR : Vous devez accepter la dégradation de vos conditions de vie."); return; }
+    const loader = document.getElementById('agency-loader');
+    const bar = document.getElementById('loader-bar');
+    const txt = document.getElementById('loader-text');
+    loader.classList.remove('hidden'); loader.classList.add('flex');
+    setTimeout(() => { bar.style.width = "30%"; txt.innerText = "Interrogation Casier Judiciaire..."; }, 500);
+    setTimeout(() => { bar.style.width = "60%"; txt.innerText = "Analyse Biométrique..."; }, 1500);
+    setTimeout(() => { bar.style.width = "85%"; txt.innerText = "Validation Crédits Sociaux..."; }, 2500);
+    setTimeout(() => { bar.style.width = "100%"; txt.innerText = "Génération du Bail..."; txt.classList.replace('text-gray-800', 'text-green-600'); generateLeaseActual(name); }, 3500);
+}
+
+function generateLeaseActual(name) {
+    document.getElementById('lease-render-name').innerText = name.toUpperCase();
+    document.getElementById('lease-render-title').innerText = currentAgencyItem.title;
+    document.getElementById('lease-render-surface').innerText = currentAgencyItem.surface;
+    document.getElementById('lease-render-price').innerText = currentAgencyItem.price;
+    const today = new Date();
+    document.getElementById('lease-date').innerText = `${today.getDate()}/${today.getMonth()+1}/2100`;
+    document.getElementById('lease-id').innerText = currentAgencyItem.ref + "-" + Math.floor(Math.random()*10000);
+    const ul = document.getElementById('lease-render-clauses'); ul.innerHTML = '';
+    currentAgencyItem.clauses.forEach(c => { const li = document.createElement('li'); li.innerText = c; ul.appendChild(li); });
+    setTimeout(() => {
+        document.getElementById('agency-loader').classList.add('hidden');
+        document.getElementById('agency-loader').classList.remove('flex');
+        document.getElementById('loader-bar').style.width = "0%";
+        agencyShowScreen('lease');
+    }, 500);
+}
+
+function downloadLease() {
+    const node = document.getElementById('lease-capture-zone');
+    const originalTransform = node.style.transform;
+    node.style.transform = "none";
+    if(window.htmlToImage) {
+        window.htmlToImage.toPng(node, { quality: 0.95, backgroundColor: '#ffffff' })
+            .then(function (dataUrl) {
+                const link = document.createElement('a');
+                link.download = `BAIL-OFFICIEL-2100-${currentAgencyItem.ref}.png`;
+                link.href = dataUrl;
+                link.click();
+                node.style.transform = originalTransform;
+            })
+            .catch(function (error) { console.error('Erreur capture', error); alert("Erreur de génération. Capturez votre écran manuellement."); node.style.transform = originalTransform; });
+    } else { alert("Librairie de génération non chargée."); }
+}
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
