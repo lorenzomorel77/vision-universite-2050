@@ -189,6 +189,55 @@
 .agency-toast { position: absolute; top: 70px; right: 20px; background: rgba(31, 41, 55, 0.95); color: white; padding: 10px 15px; border-left: 4px solid #dc2626; border-radius: 4px; font-size: 10px; z-index: 300; transform: translateX(150%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 4px 6px rgba(0,0,0,0.1); max-width: 250px; backdrop-filter: blur(4px); pointer-events: none; }
 .agency-toast.show { transform: translateX(0); }
 @keyframes pulse-red { 0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(220, 38, 38, 0); } 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); } }
+/* --- STYLE LABORATOIRE FRINGE (TERMINAL HACKER) --- */
+/* Police et ambiance */
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+.fringe-font { font-family: 'Share Tech Mono', monospace; }
+
+/* Wrapper principal : Écran noir + Scanlines */
+.fringe-wrapper { 
+    position: fixed; inset: 0; z-index: 300; 
+    background-color: #050505; color: #33ff00; 
+    display: none; overflow: hidden;
+    font-family: 'Share Tech Mono', monospace;
+}
+
+/* Effet CRT (Lignes de balayage) */
+.fringe-scanlines {
+    position: absolute; inset: 0; pointer-events: none; z-index: 10;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    background-size: 100% 2px, 3px 100%;
+}
+
+/* Animation Glitch sur le texte */
+.glitch-text { position: relative; animation: glitch-skew 1s infinite linear alternate-reverse; }
+.glitch-text::before, .glitch-text::after {
+    content: attr(data-text); position: absolute; left: 0; top: 0; width: 100%; height: 100%;
+}
+.glitch-text::before { left: 2px; text-shadow: -2px 0 #ff00c1; clip: rect(44px, 450px, 56px, 0); animation: glitch-anim 5s infinite linear alternate-reverse; }
+.glitch-text::after { left: -2px; text-shadow: -2px 0 #00fff9; clip: rect(44px, 450px, 56px, 0); animation: glitch-anim2 5s infinite linear alternate-reverse; }
+
+@keyframes glitch-anim { 0% { clip: rect(10px, 9999px, 30px, 0); } 100% { clip: rect(80px, 9999px, 100px, 0); } }
+@keyframes glitch-anim2 { 0% { clip: rect(80px, 9999px, 100px, 0); } 100% { clip: rect(10px, 9999px, 30px, 0); } }
+
+/* Liste des dossiers */
+.fringe-file { 
+    border: 1px solid #33ff00; padding: 12px; margin-bottom: 8px; 
+    cursor: pointer; opacity: 0.6; transition: all 0.2s; position: relative; 
+}
+.fringe-file:hover, .fringe-file.active { 
+    opacity: 1; background: rgba(51, 255, 0, 0.1); 
+    box-shadow: 0 0 15px rgba(51, 255, 0, 0.3); transform: translateX(10px); 
+}
+.fringe-file.locked::after { content: "🔒"; position: absolute; right: 10px; }
+.fringe-file.unlocked::after { content: "🔓"; position: absolute; right: 10px; }
+.fringe-file.unlocked { border-color: #ff3333; color: #ff3333; box-shadow: 0 0 10px rgba(255, 51, 51, 0.2); }
+
+/* Barre de décryptage */
+.decrypt-box { border: 1px solid #33ff00; padding: 2px; margin-top: 20px; width: 100%; display: none; }
+.decrypt-fill { height: 20px; background: #33ff00; width: 0%; transition: width 0.1s linear; }
 </style>
 </head>
 <body class="min-h-screen flex flex-col relative transition-colors duration-500">
@@ -2280,7 +2329,26 @@ window.limit = limit;
                         </div>
                     </div>
                 </div>
-
+<div onclick="initFringeLab()" class="bg-gray-900 p-5 rounded-xl border border-gray-700 shadow-xl hover:shadow-2xl hover:border-green-500 cursor-pointer transition-all group relative overflow-hidden">
+    <div class="absolute inset-0 opacity-20" style="background-image: repeating-linear-gradient(0deg, transparent, transparent 2px, #00ff00 2px, #00ff00 4px);"></div>
+    <div class="absolute top-2 right-2 flex gap-1">
+        <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+        <span class="text-[9px] text-red-500 font-mono uppercase">Classifié</span>
+    </div>
+    
+    <div class="flex items-center gap-5 relative z-10">
+        <div class="w-14 h-14 bg-black text-green-500 border border-green-800 rounded-lg flex items-center justify-center text-2xl mb-1 group-hover:text-white group-hover:bg-green-700 transition-all shadow-[0_0_15px_rgba(0,255,0,0.2)]">
+            <i class="fas fa-terminal"></i>
+        </div>
+        <div>
+            <h3 class="font-bold text-gray-100 text-lg uppercase tracking-tight font-mono group-hover:text-green-400 transition-colors">Terminal Omega</h3>
+            <p class="text-xs text-gray-500 leading-relaxed mt-1 font-mono">
+                > Accès Scénarios S7-S10.<br>
+                > Décryptage requis...
+            </p>
+        </div>
+    </div>
+</div>
             </div>
         </div>
     </div>
@@ -4003,6 +4071,7 @@ function downloadLease() {
     const node = document.getElementById('lease-capture-zone');
     const originalTransform = node.style.transform;
     node.style.transform = "none";
+  // ... (Fin de la fonction downloadLease existante)
     if(window.htmlToImage) {
         window.htmlToImage.toPng(node, { quality: 0.95, backgroundColor: '#ffffff' })
             .then(function (dataUrl) {
@@ -4016,19 +4085,274 @@ function downloadLease() {
     } else { alert("Librairie de génération non chargée."); }
 }
 </script>
+
+<div id="fringe-wrapper" class="fringe-wrapper">
+    <div class="fringe-scanlines"></div>
+    
+    <div class="flex flex-col h-full p-4 md:p-8 relative z-20">
+        
+        <div class="flex justify-between items-end border-b-2 border-[#33ff00] pb-4 mb-6 shrink-0">
+            <div>
+                <h1 class="text-2xl md:text-4xl font-bold glitch-text" data-text="DÉPARTEMENT DES FUTURS RADICAUX">DÉPARTEMENT DES FUTURS RADICAUX</h1>
+                <p class="text-xs mt-1 opacity-70">SYS.ADMIN // ACCÈS ROOT // SÉCURITÉ NIVEAU 5</p>
+            </div>
+            <div class="text-right font-mono">
+                <div id="fringe-clock" class="text-xl font-bold">--:--:--</div>
+                <button onclick="closeFringeLab()" class="text-xs border border-[#33ff00] px-3 py-1 hover:bg-[#33ff00] hover:text-black transition-colors uppercase mt-2">
+                    [ ÉCHAP ] DÉCONNEXION
+                </button>
+            </div>
+        </div>
+
+        <div class="flex flex-col md:flex-row gap-6 h-full overflow-hidden">
+            
+            <div class="w-full md:w-1/3 border-r border-[#33ff00] pr-4 flex flex-col">
+                <p class="text-xs mb-4 bg-[#33ff00] text-black px-2 py-1 font-bold inline-block w-max">FICHIERS ENCRYPTÉS :</p>
+                <div id="fringe-file-list" class="overflow-y-auto flex-grow custom-scrollbar">
+                    </div>
+                
+                <div class="mt-4 h-32 bg-black border border-[#33ff00] p-2 text-[10px] font-mono opacity-80 overflow-hidden relative">
+                    <div class="absolute top-0 right-0 px-1 bg-[#33ff00] text-black text-[9px]">LOGS RÉSEAU</div>
+                    <div id="fringe-logs" class="flex flex-col justify-end h-full text-green-700">
+                        <p>> Initialisation du système...</p>
+                        <p>> Connexion sécurisée établie.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w-full md:w-2/3 relative bg-black bg-opacity-80 border border-[#33ff00] shadow-[0_0_30px_rgba(51,255,0,0.1)] flex flex-col">
+                
+                <div id="fringe-idle" class="absolute inset-0 flex flex-col items-center justify-center text-center z-10 pointer-events-none">
+                    <i class="fas fa-biohazard text-8xl mb-6 text-[#33ff00] opacity-50 animate-pulse"></i>
+                    <p class="text-sm font-bold tracking-widest animate-pulse">EN ATTENTE DE SÉLECTION</p>
+                </div>
+
+                <div id="fringe-content" class="hidden h-full flex-col p-6 overflow-y-auto">
+                    
+                    <div class="flex justify-between items-start mb-6 border-b border-[#33ff00] pb-4">
+                        <div>
+                            <span id="fr-id" class="bg-[#33ff00] text-black px-2 py-0.5 text-xs font-bold mb-2 inline-block">ID</span>
+                            <h2 id="fr-title" class="text-3xl font-bold uppercase tracking-tight text-white drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]">TITRE</h2>
+                        </div>
+                        <i id="fr-icon" class="fas fa-folder text-5xl opacity-80"></i>
+                    </div>
+
+                    <div id="decrypt-zone" class="my-auto">
+                        <p class="text-sm mb-2 font-bold blink-cursor">> DÉCRYPTAGE DU DOSSIER EN COURS...</p>
+                        <div class="decrypt-box"><div id="decrypt-bar" class="decrypt-fill"></div></div>
+                        <div id="decrypt-matrix" class="mt-2 h-24 overflow-hidden text-[10px] text-green-800 font-mono leading-tight"></div>
+                    </div>
+
+                    <div id="fr-data" class="hidden space-y-8 animate-fade-in">
+                        
+                        <div class="relative pl-6 border-l-2 border-[#33ff00]">
+                            <h3 class="text-xs font-bold text-[#33ff00] uppercase mb-1 flex items-center gap-2">
+                                <i class="fas fa-globe"></i> Contexte 2100
+                            </h3>
+                            <p id="fr-context" class="text-sm md:text-base leading-relaxed text-gray-300"></p>
+                        </div>
+
+                        <div class="relative pl-6 border-l-2 border-red-500">
+                            <h3 class="text-xs font-bold text-red-500 uppercase mb-1 flex items-center gap-2">
+                                <i class="fas fa-building"></i> Mutation Architecturale
+                            </h3>
+                            <p id="fr-archi" class="text-sm md:text-base leading-relaxed text-gray-300"></p>
+                        </div>
+
+                        <div class="bg-[#33ff00]/10 p-6 border border-[#33ff00] relative mt-4">
+                            <span class="absolute -top-3 left-4 bg-black px-2 text-[10px] text-[#33ff00] border border-[#33ff00]">TRANSCRIPTION AUDIO</span>
+                            <p id="fr-narrative" class="italic text-sm font-serif text-white tracking-wide"></p>
+                        </div>
+
+                        <div class="pt-6 flex justify-between items-center">
+                            <p class="text-[10px] uppercase text-red-500 font-bold animate-pulse">! FIN DU FICHIER !</p>
+                            <button onclick="resetFringeView()" class="border border-[#33ff00] px-4 py-2 hover:bg-[#33ff00] hover:text-black transition text-xs uppercase font-bold">Fermer le dossier</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+/* === LOGIQUE TERMINAL OMEGA (HACKER) === */
+
+const fringeDB = [
+    {
+        id: "S7",
+        title: "L'ARCHE DE NOÉ",
+        icon: "fa-seedling",
+        context: "2100. Effondrement climatique total. Montpellier est une zone aride (45°C à l'ombre). L'État central a disparu. L'Université s'est refermée sur elle-même sous un dôme géodésique pour devenir une Cité-Jardin hermétique produisant sa propre eau.",
+        archi: "L'Atrium est transformé en Banque de Semences et d'ADN. Les amphis sont devenus des serres hydroponiques verticales. On n'y délivre plus de diplômes, mais des 'Certificats de Survie' et d'utilité agricole.",
+        story: "À l'extérieur, le thermomètre affiche 52°C. À l'intérieur du Sas Atrium, il fait 24°C. Les étudiants, vêtus de combinaisons réfrigérantes recyclées, s'agenouillent pour polliniser à la main les derniers plants de tomates de l'Hérault."
+    },
+    {
+        id: "S8",
+        title: "L'UNIVERSITÉ NEURALE",
+        icon: "fa-brain",
+        context: "Singularité technologique atteinte. Apprendre est jugé trop lent pour l'économie. L'Université est devenue un centre de maintenance biologique pour les implants 'Neuralink'. Les professeurs sont des IA qui uploadent le savoir directement dans le cortex.",
+        archi: "Plus d'espaces verts, que des serveurs. L'Atrium est le 'Processeur Central', une salle blanche stérile remplie de caissons d'immersion où les corps des étudiants reposent pendant les mises à jour massives de données.",
+        story: "Léa s'allonge dans le Tube 404. Une sonde se connecte à sa nuque. En 12 secondes, elle 'vit' l'équivalent de 10 ans de recherches en urbanisme. Elle se réveille avec un mal de tête, diplômée, sans jamais avoir ouvert un livre."
+    },
+    {
+        id: "S9",
+        title: "ZONE BLANCHE (LE SANCTUAIRE)",
+        icon: "fa-feather-alt",
+        context: "Le monde est saturé par une réalité augmentée intrusive. L'authenticité est le luxe ultime. Paul-Valéry est devenue une zone exclusive interdite à toute technologie numérique. On y réapprend la lenteur, l'écriture manuscrite et le débat oral.",
+        archi: "Le campus est entouré d'une Cage de Faraday géante qui bloque tout signal (Wifi/5G). L'Atrium est une 'Cathédrale du Silence' éclairée à la bougie, stockant des livres papier rares. Le campus est un parc romantique sauvage.",
+        story: "Un étudiant est pris en flagrant délit avec une vieille tablette numérique de contrebande sous sa toge en lin. Il est escorté vers la sortie par la Garde Suisse. Ici, le crissement de la craie sur le tableau est le seul son autorisé."
+    },
+    {
+        id: "S10",
+        title: "L'ÉTAT-SOUVERAIN",
+        icon: "fa-chess-rook",
+        context: "Les États-Nations ont fait faillite. L'Université a racheté la ville. Elle prélève l'impôt, rend la justice et gère la police. On ne naît pas citoyen, on naît 'Abonné'. Il y a des abonnés 'Premium' (l'élite) et 'Standard'. L'exclusion signifie l'exil.",
+        archi: "Le campus est entouré de murailles patrouillées par des drones. L'Atrium est le Palais du Gouverneur où siège le Sénat Académique. Les quartiers alentours sont devenus des fiefs féodaux gérés par les facultés.",
+        story: "Contrôle au rond-point du Château d'O. Le citoyen tend sa carte étudiante dorée Platine. 'Accès autorisé, Professeur. Bienvenue en Zone A'. Derrière lui, une famille sans abonnement valide est refoulée vers les Terres Sauvages."
+    }
+];
+
+let fringeClockInterval;
+
+function initFringeLab() {
+    // 1. Fermer le hub normal
+    document.getElementById('games-hub-overlay').classList.add('hidden');
+    document.getElementById('games-hub-overlay').classList.remove('flex');
+    
+    // 2. Ouvrir le terminal
+    const wrapper = document.getElementById('fringe-wrapper');
+    wrapper.style.display = 'block';
+    
+    renderFringeList();
+    startFringeClock();
+    addLog("Session Administrateur ouverte.");
+}
+
+function closeFringeLab() {
+    document.getElementById('fringe-wrapper').style.display = 'none';
+    clearInterval(fringeClockInterval);
+    // Rouvrir le hub
+    document.getElementById('games-hub-overlay').classList.remove('hidden');
+    document.getElementById('games-hub-overlay').classList.add('flex');
+}
+
+function startFringeClock() {
+    const clock = document.getElementById('fringe-clock');
+    clearInterval(fringeClockInterval);
+    fringeClockInterval = setInterval(() => {
+        const d = new Date();
+        clock.innerText = d.toLocaleTimeString('fr-FR');
+    }, 1000);
+}
+
+function addLog(text) {
+    const logs = document.getElementById('fringe-logs');
+    const p = document.createElement('p');
+    p.innerText = `> ${text}`;
+    logs.appendChild(p);
+    logs.scrollTop = logs.scrollHeight;
+}
+
+function renderFringeList() {
+    const list = document.getElementById('fringe-file-list');
+    list.innerHTML = '';
+    
+    fringeDB.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.className = 'fringe-file locked';
+        div.innerHTML = `[FICHIER ${item.id}] <span class="opacity-50">${item.title}</span>`;
+        div.onclick = () => decryptFringeFile(index, div);
+        list.appendChild(div);
+    });
+}
+
+function decryptFringeFile(index, btnElement) {
+    const data = fringeDB[index];
+    const idle = document.getElementById('fringe-idle');
+    const content = document.getElementById('fringe-content');
+    const decryptZone = document.getElementById('decrypt-zone');
+    const realData = document.getElementById('fr-data');
+    
+    // UI Reset
+    document.querySelectorAll('.fringe-file').forEach(el => el.classList.remove('active'));
+    btnElement.classList.add('active');
+    
+    idle.classList.add('hidden');
+    content.classList.remove('hidden');
+    decryptZone.style.display = 'block';
+    realData.classList.add('hidden');
+    
+    // Set Header Info
+    document.getElementById('fr-id').innerText = data.id;
+    document.getElementById('fr-title').innerText = "ENCRYPTÉ...";
+    document.getElementById('fr-icon').className = `fas ${data.icon} text-5xl opacity-80`;
+
+    addLog(`Tentative accès fichier ${data.id}...`);
+
+    // Animation Décryptage
+    const bar = document.getElementById('decrypt-bar');
+    const matrix = document.getElementById('decrypt-matrix');
+    let progress = 0;
+    
+    const interval = setInterval(() => {
+        progress += 2; // Vitesse décryptage
+        bar.style.width = `${progress}%`;
+        
+        // Matrix Text Effect
+        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&";
+        let randomLine = "";
+        for(let i=0; i<30; i++) randomLine += chars.charAt(Math.floor(Math.random() * chars.length));
+        matrix.innerHTML += `<div>${randomLine}</div>`;
+        matrix.scrollTop = matrix.scrollHeight;
+
+        if (progress >= 100) {
+            clearInterval(interval);
+            finishDecryption(data, btnElement);
+        }
+    }, 50);
+}
+
+function finishDecryption(data, btnElement) {
+    document.getElementById('decrypt-zone').style.display = 'none';
+    document.getElementById('fr-data').classList.remove('hidden');
+    
+    // Remplir les données
+    document.getElementById('fr-title').innerText = data.title;
+    document.getElementById('fr-context').innerText = ""; // Reset pour effet machine à écrire
+    document.getElementById('fr-archi').innerText = data.archi;
+    document.getElementById('fr-narrative').innerText = `"${data.story}"`;
+    
+    // Effet machine à écrire pour le contexte
+    let i = 0;
+    const txt = data.context;
+    const speed = 20;
+    function typeWriter() {
+        if (i < txt.length) {
+            document.getElementById('fr-context').innerHTML += txt.charAt(i);
+            i++;
+            setTimeout(typeWriter, speed);
+        }
+    }
+    typeWriter();
+
+    // Unlock visual sur le bouton
+    btnElement.classList.remove('locked');
+    btnElement.classList.add('unlocked');
+    btnElement.innerHTML = `[OUVERT] <span class="text-white font-bold">${data.title}</span>`;
+    
+    addLog(`Fichier ${data.id} décrypté avec succès.`);
+}
+
+function resetFringeView() {
+    document.getElementById('fringe-idle').classList.remove('hidden');
+    document.getElementById('fringe-content').classList.add('hidden');
+    document.querySelectorAll('.fringe-file').forEach(el => el.classList.remove('active'));
+}
+</script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
 
 
 
