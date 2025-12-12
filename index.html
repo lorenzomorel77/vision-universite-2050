@@ -4089,29 +4089,29 @@ function downloadLease() {
 <div id="fringe-wrapper" class="fringe-wrapper">
     <div class="fringe-scanlines"></div>
     
-    <div class="flex flex-col h-full p-4 md:p-8 relative z-20">
+    <div class="flex flex-col h-full p-2 md:p-8 relative z-20">
         
-        <div class="flex justify-between items-end border-b-2 border-[#33ff00] pb-4 mb-6 shrink-0">
-            <div>
-                <h1 class="text-2xl md:text-4xl font-bold glitch-text" data-text="DÉPARTEMENT DES FUTURS RADICAUX">DÉPARTEMENT DES FUTURS RADICAUX</h1>
-                <p class="text-xs mt-1 opacity-70">SYS.ADMIN // ACCÈS ROOT // SÉCURITÉ NIVEAU 5</p>
+        <div class="flex justify-between items-end border-b-2 border-[#33ff00] pb-2 mb-4 shrink-0">
+            <div class="overflow-hidden">
+                <h1 class="text-xl md:text-4xl font-bold glitch-text whitespace-nowrap" data-text="DÉPARTEMENT X">DÉPARTEMENT X</h1>
+                <p class="text-[10px] md:text-xs mt-1 opacity-70">SYS.ADMIN // ACCÈS ROOT</p>
             </div>
-            <div class="text-right font-mono">
-                <div id="fringe-clock" class="text-xl font-bold">--:--:--</div>
-                <button onclick="closeFringeLab()" class="text-xs border border-[#33ff00] px-3 py-1 hover:bg-[#33ff00] hover:text-black transition-colors uppercase mt-2">
-                    [ ÉCHAP ] DÉCONNEXION
+            <div class="text-right font-mono shrink-0 ml-2">
+                <div id="fringe-clock" class="text-sm md:text-xl font-bold">--:--</div>
+                <button onclick="closeFringeLab()" class="text-[10px] md:text-xs border border-[#33ff00] px-2 py-1 hover:bg-[#33ff00] hover:text-black transition-colors uppercase mt-1">
+                    [ X ]
                 </button>
             </div>
         </div>
 
-        <div class="flex flex-col md:flex-row gap-6 h-full overflow-hidden">
+        <div class="flex flex-col md:flex-row gap-6 h-full overflow-hidden relative">
             
-            <div class="w-full md:w-1/3 border-r border-[#33ff00] pr-4 flex flex-col">
+            <div id="fringe-col-list" class="w-full md:w-1/3 border-r-0 md:border-r border-[#33ff00] pr-0 md:pr-4 flex flex-col h-full transition-all">
                 <p class="text-xs mb-4 bg-[#33ff00] text-black px-2 py-1 font-bold inline-block w-max">FICHIERS ENCRYPTÉS :</p>
-                <div id="fringe-file-list" class="overflow-y-auto flex-grow custom-scrollbar">
+                <div id="fringe-file-list" class="overflow-y-auto flex-grow custom-scrollbar pb-20 md:pb-0">
                     </div>
                 
-                <div class="mt-4 h-32 bg-black border border-[#33ff00] p-2 text-[10px] font-mono opacity-80 overflow-hidden relative">
+                <div class="mt-4 h-32 bg-black border border-[#33ff00] p-2 text-[10px] font-mono opacity-80 overflow-hidden relative shrink-0 hidden md:block">
                     <div class="absolute top-0 right-0 px-1 bg-[#33ff00] text-black text-[9px]">LOGS RÉSEAU</div>
                     <div id="fringe-logs" class="flex flex-col justify-end h-full text-green-700">
                         <p>> Initialisation du système...</p>
@@ -4120,53 +4120,57 @@ function downloadLease() {
                 </div>
             </div>
 
-            <div class="w-full md:w-2/3 relative bg-black bg-opacity-80 border border-[#33ff00] shadow-[0_0_30px_rgba(51,255,0,0.1)] flex flex-col">
+            <div id="fringe-col-content" class="w-full md:w-2/3 h-full absolute md:relative inset-0 bg-black md:bg-opacity-80 md:border border-[#33ff00] md:shadow-[0_0_30px_rgba(51,255,0,0.1)] flex flex-col z-30 translate-x-full md:translate-x-0 transition-transform duration-300">
                 
-                <div id="fringe-idle" class="absolute inset-0 flex flex-col items-center justify-center text-center z-10 pointer-events-none">
+                <button onclick="backToFringeList()" class="md:hidden mb-4 flex items-center gap-2 text-[#33ff00] border-b border-[#33ff00] pb-2 w-full active:bg-[#33ff00] active:text-black">
+                    <i class="fas fa-arrow-left"></i> <span class="font-bold text-xs uppercase">Retour à la liste</span>
+                </button>
+
+                <div id="fringe-idle" class="absolute inset-0 hidden md:flex flex-col items-center justify-center text-center z-10 pointer-events-none">
                     <i class="fas fa-biohazard text-8xl mb-6 text-[#33ff00] opacity-50 animate-pulse"></i>
                     <p class="text-sm font-bold tracking-widest animate-pulse">EN ATTENTE DE SÉLECTION</p>
                 </div>
 
-                <div id="fringe-content" class="hidden h-full flex-col p-6 overflow-y-auto">
+                <div id="fringe-content" class="hidden h-full flex-col p-2 md:p-6 overflow-y-auto pb-20">
                     
                     <div class="flex justify-between items-start mb-6 border-b border-[#33ff00] pb-4">
-                        <div>
+                        <div class="pr-4">
                             <span id="fr-id" class="bg-[#33ff00] text-black px-2 py-0.5 text-xs font-bold mb-2 inline-block">ID</span>
-                            <h2 id="fr-title" class="text-3xl font-bold uppercase tracking-tight text-white drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]">TITRE</h2>
+                            <h2 id="fr-title" class="text-2xl md:text-3xl font-bold uppercase tracking-tight text-white drop-shadow-[0_0_5px_rgba(255,255,255,0.5)] break-words">TITRE</h2>
                         </div>
-                        <i id="fr-icon" class="fas fa-folder text-5xl opacity-80"></i>
+                        <i id="fr-icon" class="fas fa-folder text-4xl md:text-5xl opacity-80 shrink-0"></i>
                     </div>
 
                     <div id="decrypt-zone" class="my-auto">
-                        <p class="text-sm mb-2 font-bold blink-cursor">> DÉCRYPTAGE DU DOSSIER EN COURS...</p>
+                        <p class="text-sm mb-2 font-bold blink-cursor">> DÉCRYPTAGE EN COURS...</p>
                         <div class="decrypt-box"><div id="decrypt-bar" class="decrypt-fill"></div></div>
                         <div id="decrypt-matrix" class="mt-2 h-24 overflow-hidden text-[10px] text-green-800 font-mono leading-tight"></div>
                     </div>
 
                     <div id="fr-data" class="hidden space-y-8 animate-fade-in">
                         
-                        <div class="relative pl-6 border-l-2 border-[#33ff00]">
+                        <div class="relative pl-4 md:pl-6 border-l-2 border-[#33ff00]">
                             <h3 class="text-xs font-bold text-[#33ff00] uppercase mb-1 flex items-center gap-2">
                                 <i class="fas fa-globe"></i> Contexte 2100
                             </h3>
-                            <p id="fr-context" class="text-sm md:text-base leading-relaxed text-gray-300"></p>
+                            <p id="fr-context" class="text-sm leading-relaxed text-gray-300"></p>
                         </div>
 
-                        <div class="relative pl-6 border-l-2 border-red-500">
+                        <div class="relative pl-4 md:pl-6 border-l-2 border-red-500">
                             <h3 class="text-xs font-bold text-red-500 uppercase mb-1 flex items-center gap-2">
                                 <i class="fas fa-building"></i> Mutation Architecturale
                             </h3>
-                            <p id="fr-archi" class="text-sm md:text-base leading-relaxed text-gray-300"></p>
+                            <p id="fr-archi" class="text-sm leading-relaxed text-gray-300"></p>
                         </div>
 
-                        <div class="bg-[#33ff00]/10 p-6 border border-[#33ff00] relative mt-4">
+                        <div class="bg-[#33ff00]/10 p-4 md:p-6 border border-[#33ff00] relative mt-4">
                             <span class="absolute -top-3 left-4 bg-black px-2 text-[10px] text-[#33ff00] border border-[#33ff00]">TRANSCRIPTION AUDIO</span>
                             <p id="fr-narrative" class="italic text-sm font-serif text-white tracking-wide"></p>
                         </div>
 
-                        <div class="pt-6 flex justify-between items-center">
+                        <div class="pt-6 pb-12 flex justify-between items-center">
                             <p class="text-[10px] uppercase text-red-500 font-bold animate-pulse">! FIN DU FICHIER !</p>
-                            <button onclick="resetFringeView()" class="border border-[#33ff00] px-4 py-2 hover:bg-[#33ff00] hover:text-black transition text-xs uppercase font-bold">Fermer le dossier</button>
+                            <button onclick="resetFringeView()" class="border border-[#33ff00] px-4 py-2 hover:bg-[#33ff00] hover:text-black transition text-xs uppercase font-bold">Fermer</button>
                         </div>
                     </div>
 
@@ -4217,14 +4221,12 @@ const fringeDB = [
 let fringeClockInterval;
 
 function initFringeLab() {
-    // 1. Fermer le hub normal
     document.getElementById('games-hub-overlay').classList.add('hidden');
     document.getElementById('games-hub-overlay').classList.remove('flex');
+    document.getElementById('fringe-wrapper').style.display = 'block';
     
-    // 2. Ouvrir le terminal
-    const wrapper = document.getElementById('fringe-wrapper');
-    wrapper.style.display = 'block';
-    
+    // Reset view state
+    backToFringeList();
     renderFringeList();
     startFringeClock();
     addLog("Session Administrateur ouverte.");
@@ -4233,7 +4235,6 @@ function initFringeLab() {
 function closeFringeLab() {
     document.getElementById('fringe-wrapper').style.display = 'none';
     clearInterval(fringeClockInterval);
-    // Rouvrir le hub
     document.getElementById('games-hub-overlay').classList.remove('hidden');
     document.getElementById('games-hub-overlay').classList.add('flex');
 }
@@ -4249,10 +4250,12 @@ function startFringeClock() {
 
 function addLog(text) {
     const logs = document.getElementById('fringe-logs');
-    const p = document.createElement('p');
-    p.innerText = `> ${text}`;
-    logs.appendChild(p);
-    logs.scrollTop = logs.scrollHeight;
+    if(logs) {
+        const p = document.createElement('p');
+        p.innerText = `> ${text}`;
+        logs.appendChild(p);
+        logs.scrollTop = logs.scrollHeight;
+    }
 }
 
 function renderFringeList() {
@@ -4262,7 +4265,7 @@ function renderFringeList() {
     fringeDB.forEach((item, index) => {
         const div = document.createElement('div');
         div.className = 'fringe-file locked';
-        div.innerHTML = `[FICHIER ${item.id}] <span class="opacity-50">${item.title}</span>`;
+        div.innerHTML = `[FICHIER ${item.id}] <span class="opacity-50 text-xs block md:inline">${item.title}</span>`;
         div.onclick = () => decryptFringeFile(index, div);
         list.appendChild(div);
     });
@@ -4279,6 +4282,12 @@ function decryptFringeFile(index, btnElement) {
     document.querySelectorAll('.fringe-file').forEach(el => el.classList.remove('active'));
     btnElement.classList.add('active');
     
+    // --- NAVIGATION MOBILE ---
+    // Sur mobile, on fait glisser la vue droite (contenu) par dessus la liste
+    const colContent = document.getElementById('fringe-col-content');
+    colContent.classList.remove('translate-x-full'); // Apparition sur mobile
+    
+    // Reset Views
     idle.classList.add('hidden');
     content.classList.remove('hidden');
     decryptZone.style.display = 'block';
@@ -4296,11 +4305,13 @@ function decryptFringeFile(index, btnElement) {
     const matrix = document.getElementById('decrypt-matrix');
     let progress = 0;
     
-    const interval = setInterval(() => {
-        progress += 2; // Vitesse décryptage
+    // On arrête tout timer précédent s'il y en a un (évite les bugs si on clique vite)
+    if(window.decryptInterval) clearInterval(window.decryptInterval);
+
+    window.decryptInterval = setInterval(() => {
+        progress += 4; // Plus rapide pour mobile
         bar.style.width = `${progress}%`;
         
-        // Matrix Text Effect
         const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&";
         let randomLine = "";
         for(let i=0; i<30; i++) randomLine += chars.charAt(Math.floor(Math.random() * chars.length));
@@ -4308,26 +4319,24 @@ function decryptFringeFile(index, btnElement) {
         matrix.scrollTop = matrix.scrollHeight;
 
         if (progress >= 100) {
-            clearInterval(interval);
+            clearInterval(window.decryptInterval);
             finishDecryption(data, btnElement);
         }
-    }, 50);
+    }, 30);
 }
 
 function finishDecryption(data, btnElement) {
     document.getElementById('decrypt-zone').style.display = 'none';
     document.getElementById('fr-data').classList.remove('hidden');
     
-    // Remplir les données
     document.getElementById('fr-title').innerText = data.title;
-    document.getElementById('fr-context').innerText = ""; // Reset pour effet machine à écrire
+    document.getElementById('fr-context').innerText = ""; 
     document.getElementById('fr-archi').innerText = data.archi;
     document.getElementById('fr-narrative').innerText = `"${data.story}"`;
     
-    // Effet machine à écrire pour le contexte
     let i = 0;
     const txt = data.context;
-    const speed = 20;
+    const speed = 10;
     function typeWriter() {
         if (i < txt.length) {
             document.getElementById('fr-context').innerHTML += txt.charAt(i);
@@ -4337,15 +4346,22 @@ function finishDecryption(data, btnElement) {
     }
     typeWriter();
 
-    // Unlock visual sur le bouton
     btnElement.classList.remove('locked');
     btnElement.classList.add('unlocked');
-    btnElement.innerHTML = `[OUVERT] <span class="text-white font-bold">${data.title}</span>`;
+    btnElement.innerHTML = `[OUVERT] <span class="text-white font-bold block md:inline">${data.title}</span>`;
     
     addLog(`Fichier ${data.id} décrypté avec succès.`);
 }
 
+function backToFringeList() {
+    // Fonction mobile pour revenir à la liste
+    const colContent = document.getElementById('fringe-col-content');
+    colContent.classList.add('translate-x-full'); // Cache le contenu
+}
+
 function resetFringeView() {
+    // Réinitialisation complète
+    backToFringeList();
     document.getElementById('fringe-idle').classList.remove('hidden');
     document.getElementById('fringe-content').classList.add('hidden');
     document.querySelectorAll('.fringe-file').forEach(el => el.classList.remove('active'));
