@@ -2824,46 +2824,58 @@ window.limit = limit;
 
 <script>
 /* === LOGIQUE JEU URBAN PUZZLE === */
+
+// 1. CONFIGURATION AVEC VOS IMAGES
+// Assurez-vous que Batiments.png, Labo.png, Tram.png et Parc.png sont dans le même dossier
 const B_TYPES = {
-    logement: { id:'logement', label:'Résidence Étudiante', icon:'fa-home', color:'b-logement', count:5 },
-    labo: { id:'labo', label:'Laboratoire Recherche', icon:'fa-flask', color:'b-labo', count:3 },
-    tram: { id:'tram', label:'Arrêt de Tramway', icon:'fa-subway', color:'b-tram', count:2 },
-    parc: { id:'parc', label:'Parc Urbain (Bonus)', icon:'fa-tree', color:'b-parc', count:1 }
+    logement: { id:'logement', label:'Résidence Étudiante', img:'Batiments.png', count:5 },
+    labo: { id:'labo', label:'Laboratoire Recherche', img:'Labo.png', count:3 },
+    tram: { id:'tram', label:'Arrêt de Tramway', img:'Tram.png', count:2 },
+    parc: { id:'parc', label:'Parc Urbain (Bonus)', img:'Parc.png', count:1 }
 };
 
 let grid=[], buildings=[], selType=null, zan=0;
 const ZAN_LIMIT = 3;
 
-function closeUrbanPuzzle() {
-    document.getElementById('urban-puzzle-overlay').classList.add('hidden');
-    openGamesHub(); // Cette fonction remet le "flex" pour centrer automatiquement
+// Fonctions de navigation
+function openUrbanPuzzle() {
+    closeGamesHub();
+    document.getElementById('urban-puzzle-overlay').classList.remove('hidden');
+    document.getElementById('urban-puzzle-overlay').classList.add('flex');
+    initUrbanPuzzle();
 }
 
+function closeUrbanPuzzle() {
+    document.getElementById('urban-puzzle-overlay').classList.add('hidden');
+    document.getElementById('urban-puzzle-overlay').classList.remove('flex');
+    openGamesHub();
+}
+
+// Initialisation
 function initUrbanPuzzle() {
     zan=0; buildings=[]; selType=null;
     document.getElementById('end-msg').classList.add('hidden');
     document.getElementById('end-msg').classList.remove('flex');
     renderZan();
     
-    // Génération Grille Procédurale (Coins = Nature)
+    // Génération Grille
     const div = document.getElementById('game-grid'); 
     div.innerHTML=''; grid=[];
     
     for(let x=0; x<8; x++){
         grid[x]=[];
         for(let y=0; y<8; y++){
-            // Algorithme : Plus on est proche des coins ou du centre, plus il y a de chance d'avoir de la nature/béton
-            let noise = Math.random();
-            // Coins haut-gauche et bas-droite = Nature probable
-            let isNat = (x<3 && y<3) || (x>5 && y>5) ? noise > 0.3 : noise > 0.85;
+            // Génération procédurale (Nature dans les coins)
+            let isNat = (x<3 && y<3) || (x>5 && y>5) ? Math.random() > 0.3 : Math.random() > 0.85;
             
             grid[x][y] = isNat ? 'nature' : 'concrete';
             
             let cell = document.createElement('div');
-            cell.className = `urban-cell ${isNat?'cell-nature':'cell-concrete'}`;
+            // On ajoute 'overflow-hidden' pour que l'image ne dépasse pas des coins arrondis
+            cell.className = `urban-cell overflow-hidden ${isNat?'cell-nature':'cell-concrete'}`;
             cell.dataset.x = x; cell.dataset.y = y;
             
-            // Icônes de fond
+            // Fond subtil
             if(isNat) cell.innerHTML='<i class="fas fa-leaf opacity-20 text-[10px]"></i>';
             else if(Math.random()>0.8) cell.innerHTML='<i class="fas fa-road opacity-10 text-[10px]"></i>';
             
@@ -2874,31 +2886,29 @@ function initUrbanPuzzle() {
     renderPalette();
 }
 
+// Affichage de la palette avec les IMAGES
 function renderPalette() {
     const p = document.getElementById('palette-zone'); p.innerHTML='';
-    let counts = {};
-    
-    // Calculer ce qui reste à poser
-    Object.values(B_TYPES).forEach(t => counts[t.id] = t.count - buildings.filter(b=>b.type===t.id).length);
-    
     let hasRemaining = false;
+    
     Object.values(B_TYPES).forEach(t => {
-        let remain = counts[t.id];
+        let remain = t.count - buildings.filter(b=>b.type===t.id).length;
         if(remain <= 0) return;
         hasRemaining = true;
         
         let btn = document.createElement('div');
         let isSelected = selType === t.id;
         
-        btn.className = `p-3 rounded-lg border-2 cursor-pointer transition-all flex items-center justify-between group ${isSelected ? 'border-indigo-500 bg-indigo-50 ring-2 ring-indigo-200' : 'border-gray-200 hover:border-indigo-300 bg-white'}`;
+        btn.className = `p-2 rounded-lg border-2 cursor-pointer transition-all flex items-center justify-between group ${isSelected ? 'border-indigo-500 bg-indigo-50 ring-2 ring-indigo-200' : 'border-gray-200 hover:border-indigo-300 bg-white'}`;
         
+        // ICI : On affiche l'image en miniature
         btn.innerHTML = `
             <div class="flex items-center gap-3">
-                <div class="w-8 h-8 rounded-md flex items-center justify-center text-white shadow-sm ${t.color}">
-                    <i class="fas ${t.icon}"></i>
+                <div class="w-12 h-12 rounded-md shadow-sm border border-gray-200 overflow-hidden relative bg-gray-100">
+                    <img src="${t.img}" class="w-full h-full object-cover" alt="${t.label}">
                 </div>
                 <div class="flex flex-col">
-                    <span class="text-xs font-bold text-gray-700">${t.label}</span>
+                    <span class="text-xs font-bold text-gray-700 leading-tight">${t.label}</span>
                     <span class="text-[10px] text-gray-400 group-hover:text-indigo-500">Sélectionner</span>
                 </div>
             </div>
@@ -2907,8 +2917,8 @@ function renderPalette() {
         
         btn.onclick = () => { 
             selType = t.id; 
-            renderPalette(); // Re-render pour mettre à jour la sélection visuelle
-            // Petit feedback visuel sur la grille
+            renderPalette(); 
+            // Feedback visuel
             document.getElementById('grid-hint').style.opacity = '1';
             setTimeout(() => document.getElementById('grid-hint').style.opacity = '0', 2000);
         };
@@ -2916,24 +2926,23 @@ function renderPalette() {
     });
 
     if(!hasRemaining) {
-        p.innerHTML = `<div class="col-span-2 text-center py-6 bg-green-50 rounded-lg border border-green-100 text-green-700 text-sm font-bold"><i class="fas fa-check-circle mr-2"></i>Tous les bâtiments sont placés !<br><span class="text-xs font-normal">Vérifiez la jauge ZAN et validez.</span></div>`;
+        p.innerHTML = `<div class="col-span-2 text-center py-6 bg-green-50 rounded-lg border border-green-100 text-green-700 text-sm font-bold"><i class="fas fa-check-circle mr-2"></i>Tout est placé !<br><span class="text-xs font-normal">Vérifiez la jauge et validez.</span></div>`;
         selType = null;
     }
 }
 
+// Gestion du clic (Pose de l'image)
 function clickCell(x,y, el) {
-    // 1. Si on clique sur un bâtiment existant -> On le supprime
+    // 1. Suppression si existant
     let existingIdx = buildings.findIndex(b=>b.x===x && b.y===y);
     if(existingIdx !== -1) {
         let existing = buildings[existingIdx];
-        
-        // Mise à jour ZAN si on retire un bâtiment d'une case nature
         if(grid[x][y]==='nature' && existing.type!=='parc') zan--;
         
         buildings.splice(existingIdx, 1);
         
         // Reset visuel
-        el.className = `urban-cell ${grid[x][y]==='nature'?'cell-nature':'cell-concrete'}`;
+        el.className = `urban-cell overflow-hidden ${grid[x][y]==='nature'?'cell-nature':'cell-concrete'}`;
         el.innerHTML = grid[x][y]==='nature' ? '<i class="fas fa-leaf opacity-20 text-[10px]"></i>' : (Math.random()>0.8 ? '<i class="fas fa-road opacity-10 text-[10px]"></i>' : '');
         
         renderZan(); 
@@ -2941,38 +2950,34 @@ function clickCell(x,y, el) {
         return;
     }
 
-    // 2. Si rien n'est sélectionné, on secoue
+    // 2. Erreur si rien sélectionné
     if(!selType) {
         el.classList.add('shake-anim');
         setTimeout(()=>el.classList.remove('shake-anim'), 300);
         return;
     }
 
-    // 3. Poser le bâtiment
+    // 3. Pose du bâtiment (IMAGE)
     let t = Object.values(B_TYPES).find(t=>t.id===selType);
     let count = t.count - buildings.filter(b=>b.type===selType).length;
     
     if(count > 0) {
-        // Impact ZAN
         let impactZan = (grid[x][y]==='nature' && selType!=='parc');
         
         buildings.push({x,y,type:selType});
         if(impactZan) zan++;
         
-        el.className = `urban-cell cell-occupied ${t.color}`;
-        el.innerHTML = `<i class="fas ${t.icon} text-white drop-shadow-md"></i>`;
-        
-        // Si on pose un logement près d'un tram, petit effet ? (Optionnel)
+        // ON UTILISE L'IMAGE ICI
+        el.className = `urban-cell cell-occupied p-0 shadow-md border-0 overflow-hidden`; // p-0 pour que l'image colle aux bords
+        el.innerHTML = `<img src="${t.img}" class="w-full h-full object-cover animate-popIn" alt="${t.label}">`;
         
         renderZan();
-        
-        // Si c'était le dernier de ce type, on désélectionne
         if(count - 1 <= 0) selType = null;
-        
         renderPalette();
     }
 }
 
+// Mise à jour jauge ZAN (inchangé)
 function renderZan() {
     let pct = (zan/ZAN_LIMIT)*100;
     let bar = document.getElementById('zan-bar');
@@ -2993,6 +2998,7 @@ function renderZan() {
     }
 }
 
+// Vérification Victoire (inchangé)
 function checkWin() {
     let msg = document.getElementById('end-msg');
     let title = document.getElementById('end-title');
@@ -3001,7 +3007,6 @@ function checkWin() {
     
     msg.classList.remove('hidden'); msg.classList.add('flex');
     
-    // Compter total bâtiments
     let totalNeeded = Object.values(B_TYPES).reduce((acc, t) => acc + t.count, 0);
     
     if(zan > ZAN_LIMIT) {
@@ -3015,10 +3020,9 @@ function checkWin() {
         title.className="text-3xl font-black text-orange-500 mb-2";
         desc.innerHTML="Il manque des bâtiments !<br>L'université ne peut pas fonctionner à moitié.<br>Placez tous les éléments de la liste.";
     } else {
-        // Calcul Synergie (Logement près de Tram)
+        // Calcul Synergie
         let synergies = 0;
         buildings.filter(b=>b.type==='logement').forEach(l => {
-            // Chercher un tram dans les voisins
             let hasTram = buildings.some(t => t.type==='tram' && Math.abs(t.x-l.x) + Math.abs(t.y-l.y) === 1);
             if(hasTram) synergies++;
         });
@@ -3026,7 +3030,7 @@ function checkWin() {
         icon.innerText="🎉"; 
         title.innerText="PERMIS ACCORDÉ"; 
         title.className="text-3xl font-black text-green-600 mb-2";
-        desc.innerHTML=`<strong>Excellent travail !</strong><br>Le ZAN est respecté et le campus est fonctionnel.<br><br><span class="text-sm bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full">Bonus Synergie : ${synergies} logements bien connectés</span>`;
+        desc.innerHTML=`<strong>Excellent travail !</strong><br>Le ZAN est respecté et le campus est fonctionnel.<br><br><span class="text-sm bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full">Bonus Synergie : ${synergies} logements connectés</span>`;
     }
 }
 </script>
@@ -4089,29 +4093,29 @@ function downloadLease() {
 <div id="fringe-wrapper" class="fringe-wrapper">
     <div class="fringe-scanlines"></div>
     
-    <div class="flex flex-col h-full p-2 md:p-8 relative z-20">
+    <div class="flex flex-col h-full p-4 md:p-8 relative z-20">
         
-        <div class="flex justify-between items-end border-b-2 border-[#33ff00] pb-2 mb-4 shrink-0">
-            <div class="overflow-hidden">
-                <h1 class="text-xl md:text-4xl font-bold glitch-text whitespace-nowrap" data-text="DÉPARTEMENT X">DÉPARTEMENT X</h1>
-                <p class="text-[10px] md:text-xs mt-1 opacity-70">SYS.ADMIN // ACCÈS ROOT</p>
+        <div class="flex justify-between items-end border-b-2 border-[#33ff00] pb-4 mb-6 shrink-0">
+            <div>
+                <h1 class="text-2xl md:text-4xl font-bold glitch-text" data-text="DÉPARTEMENT DES FUTURS RADICAUX">DÉPARTEMENT DES FUTURS RADICAUX</h1>
+                <p class="text-xs mt-1 opacity-70">SYS.ADMIN // ACCÈS ROOT // SÉCURITÉ NIVEAU 5</p>
             </div>
-            <div class="text-right font-mono shrink-0 ml-2">
-                <div id="fringe-clock" class="text-sm md:text-xl font-bold">--:--</div>
-                <button onclick="closeFringeLab()" class="text-[10px] md:text-xs border border-[#33ff00] px-2 py-1 hover:bg-[#33ff00] hover:text-black transition-colors uppercase mt-1">
-                    [ X ]
+            <div class="text-right font-mono">
+                <div id="fringe-clock" class="text-xl font-bold">--:--:--</div>
+                <button onclick="closeFringeLab()" class="text-xs border border-[#33ff00] px-3 py-1 hover:bg-[#33ff00] hover:text-black transition-colors uppercase mt-2">
+                    [ ÉCHAP ] DÉCONNEXION
                 </button>
             </div>
         </div>
 
-        <div class="flex flex-col md:flex-row gap-6 h-full overflow-hidden relative">
+        <div class="flex flex-col md:flex-row gap-6 h-full overflow-hidden">
             
-            <div id="fringe-col-list" class="w-full md:w-1/3 border-r-0 md:border-r border-[#33ff00] pr-0 md:pr-4 flex flex-col h-full transition-all">
+            <div class="w-full md:w-1/3 border-r border-[#33ff00] pr-4 flex flex-col">
                 <p class="text-xs mb-4 bg-[#33ff00] text-black px-2 py-1 font-bold inline-block w-max">FICHIERS ENCRYPTÉS :</p>
-                <div id="fringe-file-list" class="overflow-y-auto flex-grow custom-scrollbar pb-20 md:pb-0">
+                <div id="fringe-file-list" class="overflow-y-auto flex-grow custom-scrollbar">
                     </div>
                 
-                <div class="mt-4 h-32 bg-black border border-[#33ff00] p-2 text-[10px] font-mono opacity-80 overflow-hidden relative shrink-0 hidden md:block">
+                <div class="mt-4 h-32 bg-black border border-[#33ff00] p-2 text-[10px] font-mono opacity-80 overflow-hidden relative">
                     <div class="absolute top-0 right-0 px-1 bg-[#33ff00] text-black text-[9px]">LOGS RÉSEAU</div>
                     <div id="fringe-logs" class="flex flex-col justify-end h-full text-green-700">
                         <p>> Initialisation du système...</p>
@@ -4120,57 +4124,53 @@ function downloadLease() {
                 </div>
             </div>
 
-            <div id="fringe-col-content" class="w-full md:w-2/3 h-full absolute md:relative inset-0 bg-black md:bg-opacity-80 md:border border-[#33ff00] md:shadow-[0_0_30px_rgba(51,255,0,0.1)] flex flex-col z-30 translate-x-full md:translate-x-0 transition-transform duration-300">
+            <div class="w-full md:w-2/3 relative bg-black bg-opacity-80 border border-[#33ff00] shadow-[0_0_30px_rgba(51,255,0,0.1)] flex flex-col">
                 
-                <button onclick="backToFringeList()" class="md:hidden mb-4 flex items-center gap-2 text-[#33ff00] border-b border-[#33ff00] pb-2 w-full active:bg-[#33ff00] active:text-black">
-                    <i class="fas fa-arrow-left"></i> <span class="font-bold text-xs uppercase">Retour à la liste</span>
-                </button>
-
-                <div id="fringe-idle" class="absolute inset-0 hidden md:flex flex-col items-center justify-center text-center z-10 pointer-events-none">
+                <div id="fringe-idle" class="absolute inset-0 flex flex-col items-center justify-center text-center z-10 pointer-events-none">
                     <i class="fas fa-biohazard text-8xl mb-6 text-[#33ff00] opacity-50 animate-pulse"></i>
                     <p class="text-sm font-bold tracking-widest animate-pulse">EN ATTENTE DE SÉLECTION</p>
                 </div>
 
-                <div id="fringe-content" class="hidden h-full flex-col p-2 md:p-6 overflow-y-auto pb-20">
+                <div id="fringe-content" class="hidden h-full flex-col p-6 overflow-y-auto">
                     
                     <div class="flex justify-between items-start mb-6 border-b border-[#33ff00] pb-4">
-                        <div class="pr-4">
+                        <div>
                             <span id="fr-id" class="bg-[#33ff00] text-black px-2 py-0.5 text-xs font-bold mb-2 inline-block">ID</span>
-                            <h2 id="fr-title" class="text-2xl md:text-3xl font-bold uppercase tracking-tight text-white drop-shadow-[0_0_5px_rgba(255,255,255,0.5)] break-words">TITRE</h2>
+                            <h2 id="fr-title" class="text-3xl font-bold uppercase tracking-tight text-white drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]">TITRE</h2>
                         </div>
-                        <i id="fr-icon" class="fas fa-folder text-4xl md:text-5xl opacity-80 shrink-0"></i>
+                        <i id="fr-icon" class="fas fa-folder text-5xl opacity-80"></i>
                     </div>
 
                     <div id="decrypt-zone" class="my-auto">
-                        <p class="text-sm mb-2 font-bold blink-cursor">> DÉCRYPTAGE EN COURS...</p>
+                        <p class="text-sm mb-2 font-bold blink-cursor">> DÉCRYPTAGE DU DOSSIER EN COURS...</p>
                         <div class="decrypt-box"><div id="decrypt-bar" class="decrypt-fill"></div></div>
                         <div id="decrypt-matrix" class="mt-2 h-24 overflow-hidden text-[10px] text-green-800 font-mono leading-tight"></div>
                     </div>
 
                     <div id="fr-data" class="hidden space-y-8 animate-fade-in">
                         
-                        <div class="relative pl-4 md:pl-6 border-l-2 border-[#33ff00]">
+                        <div class="relative pl-6 border-l-2 border-[#33ff00]">
                             <h3 class="text-xs font-bold text-[#33ff00] uppercase mb-1 flex items-center gap-2">
                                 <i class="fas fa-globe"></i> Contexte 2100
                             </h3>
-                            <p id="fr-context" class="text-sm leading-relaxed text-gray-300"></p>
+                            <p id="fr-context" class="text-sm md:text-base leading-relaxed text-gray-300"></p>
                         </div>
 
-                        <div class="relative pl-4 md:pl-6 border-l-2 border-red-500">
+                        <div class="relative pl-6 border-l-2 border-red-500">
                             <h3 class="text-xs font-bold text-red-500 uppercase mb-1 flex items-center gap-2">
                                 <i class="fas fa-building"></i> Mutation Architecturale
                             </h3>
-                            <p id="fr-archi" class="text-sm leading-relaxed text-gray-300"></p>
+                            <p id="fr-archi" class="text-sm md:text-base leading-relaxed text-gray-300"></p>
                         </div>
 
-                        <div class="bg-[#33ff00]/10 p-4 md:p-6 border border-[#33ff00] relative mt-4">
+                        <div class="bg-[#33ff00]/10 p-6 border border-[#33ff00] relative mt-4">
                             <span class="absolute -top-3 left-4 bg-black px-2 text-[10px] text-[#33ff00] border border-[#33ff00]">TRANSCRIPTION AUDIO</span>
                             <p id="fr-narrative" class="italic text-sm font-serif text-white tracking-wide"></p>
                         </div>
 
-                        <div class="pt-6 pb-12 flex justify-between items-center">
+                        <div class="pt-6 flex justify-between items-center">
                             <p class="text-[10px] uppercase text-red-500 font-bold animate-pulse">! FIN DU FICHIER !</p>
-                            <button onclick="resetFringeView()" class="border border-[#33ff00] px-4 py-2 hover:bg-[#33ff00] hover:text-black transition text-xs uppercase font-bold">Fermer</button>
+                            <button onclick="resetFringeView()" class="border border-[#33ff00] px-4 py-2 hover:bg-[#33ff00] hover:text-black transition text-xs uppercase font-bold">Fermer le dossier</button>
                         </div>
                     </div>
 
@@ -4221,12 +4221,14 @@ const fringeDB = [
 let fringeClockInterval;
 
 function initFringeLab() {
+    // 1. Fermer le hub normal
     document.getElementById('games-hub-overlay').classList.add('hidden');
     document.getElementById('games-hub-overlay').classList.remove('flex');
-    document.getElementById('fringe-wrapper').style.display = 'block';
     
-    // Reset view state
-    backToFringeList();
+    // 2. Ouvrir le terminal
+    const wrapper = document.getElementById('fringe-wrapper');
+    wrapper.style.display = 'block';
+    
     renderFringeList();
     startFringeClock();
     addLog("Session Administrateur ouverte.");
@@ -4235,6 +4237,7 @@ function initFringeLab() {
 function closeFringeLab() {
     document.getElementById('fringe-wrapper').style.display = 'none';
     clearInterval(fringeClockInterval);
+    // Rouvrir le hub
     document.getElementById('games-hub-overlay').classList.remove('hidden');
     document.getElementById('games-hub-overlay').classList.add('flex');
 }
@@ -4250,12 +4253,10 @@ function startFringeClock() {
 
 function addLog(text) {
     const logs = document.getElementById('fringe-logs');
-    if(logs) {
-        const p = document.createElement('p');
-        p.innerText = `> ${text}`;
-        logs.appendChild(p);
-        logs.scrollTop = logs.scrollHeight;
-    }
+    const p = document.createElement('p');
+    p.innerText = `> ${text}`;
+    logs.appendChild(p);
+    logs.scrollTop = logs.scrollHeight;
 }
 
 function renderFringeList() {
@@ -4265,7 +4266,7 @@ function renderFringeList() {
     fringeDB.forEach((item, index) => {
         const div = document.createElement('div');
         div.className = 'fringe-file locked';
-        div.innerHTML = `[FICHIER ${item.id}] <span class="opacity-50 text-xs block md:inline">${item.title}</span>`;
+        div.innerHTML = `[FICHIER ${item.id}] <span class="opacity-50">${item.title}</span>`;
         div.onclick = () => decryptFringeFile(index, div);
         list.appendChild(div);
     });
@@ -4282,12 +4283,6 @@ function decryptFringeFile(index, btnElement) {
     document.querySelectorAll('.fringe-file').forEach(el => el.classList.remove('active'));
     btnElement.classList.add('active');
     
-    // --- NAVIGATION MOBILE ---
-    // Sur mobile, on fait glisser la vue droite (contenu) par dessus la liste
-    const colContent = document.getElementById('fringe-col-content');
-    colContent.classList.remove('translate-x-full'); // Apparition sur mobile
-    
-    // Reset Views
     idle.classList.add('hidden');
     content.classList.remove('hidden');
     decryptZone.style.display = 'block';
@@ -4305,13 +4300,11 @@ function decryptFringeFile(index, btnElement) {
     const matrix = document.getElementById('decrypt-matrix');
     let progress = 0;
     
-    // On arrête tout timer précédent s'il y en a un (évite les bugs si on clique vite)
-    if(window.decryptInterval) clearInterval(window.decryptInterval);
-
-    window.decryptInterval = setInterval(() => {
-        progress += 4; // Plus rapide pour mobile
+    const interval = setInterval(() => {
+        progress += 2; // Vitesse décryptage
         bar.style.width = `${progress}%`;
         
+        // Matrix Text Effect
         const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&";
         let randomLine = "";
         for(let i=0; i<30; i++) randomLine += chars.charAt(Math.floor(Math.random() * chars.length));
@@ -4319,24 +4312,26 @@ function decryptFringeFile(index, btnElement) {
         matrix.scrollTop = matrix.scrollHeight;
 
         if (progress >= 100) {
-            clearInterval(window.decryptInterval);
+            clearInterval(interval);
             finishDecryption(data, btnElement);
         }
-    }, 30);
+    }, 50);
 }
 
 function finishDecryption(data, btnElement) {
     document.getElementById('decrypt-zone').style.display = 'none';
     document.getElementById('fr-data').classList.remove('hidden');
     
+    // Remplir les données
     document.getElementById('fr-title').innerText = data.title;
-    document.getElementById('fr-context').innerText = ""; 
+    document.getElementById('fr-context').innerText = ""; // Reset pour effet machine à écrire
     document.getElementById('fr-archi').innerText = data.archi;
     document.getElementById('fr-narrative').innerText = `"${data.story}"`;
     
+    // Effet machine à écrire pour le contexte
     let i = 0;
     const txt = data.context;
-    const speed = 10;
+    const speed = 20;
     function typeWriter() {
         if (i < txt.length) {
             document.getElementById('fr-context').innerHTML += txt.charAt(i);
@@ -4346,22 +4341,15 @@ function finishDecryption(data, btnElement) {
     }
     typeWriter();
 
+    // Unlock visual sur le bouton
     btnElement.classList.remove('locked');
     btnElement.classList.add('unlocked');
-    btnElement.innerHTML = `[OUVERT] <span class="text-white font-bold block md:inline">${data.title}</span>`;
+    btnElement.innerHTML = `[OUVERT] <span class="text-white font-bold">${data.title}</span>`;
     
     addLog(`Fichier ${data.id} décrypté avec succès.`);
 }
 
-function backToFringeList() {
-    // Fonction mobile pour revenir à la liste
-    const colContent = document.getElementById('fringe-col-content');
-    colContent.classList.add('translate-x-full'); // Cache le contenu
-}
-
 function resetFringeView() {
-    // Réinitialisation complète
-    backToFringeList();
     document.getElementById('fringe-idle').classList.remove('hidden');
     document.getElementById('fringe-content').classList.add('hidden');
     document.querySelectorAll('.fringe-file').forEach(el => el.classList.remove('active'));
@@ -4369,6 +4357,9 @@ function resetFringeView() {
 </script>
 </body>
 </html>
+
+
+
 
 
 
