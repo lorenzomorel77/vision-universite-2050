@@ -514,8 +514,13 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
     <header class="bg-white text-indigo-900 shadow-md z-10 transition-colors duration-300">
     <div class="w-full px-3 py-3 flex justify-between items-center relative">
         <div class="flex items-center justify-start w-auto md:w-1/3 shrink-0">
-            <div class="w-8 h-8 md:w-10 md:h-10 bg-orange-500 rounded-full flex items-center justify-center font-bold text-white text-lg md:text-xl shadow-sm">U</div>
-        </div>
+            <div class="flex items-center justify-start w-auto md:w-1/3 shrink-0 gap-3">
+    <div class="w-8 h-8 md:w-10 md:h-10 bg-orange-500 rounded-full flex items-center justify-center font-bold text-white text-lg md:text-xl shadow-sm">U</div>
+    <button onclick="returnToHome()" class="hidden md:flex items-center gap-2 text-indigo-900 hover:text-orange-500 transition-colors text-sm font-semibold">
+        <i class="fas fa-home"></i>
+        <span>Accueil</span>
+    </button>
+</div>
         <div class="flex flex-col items-center justify-center text-center flex-1 md:w-1/3 md:absolute md:left-1/2 md:transform md:-translate-x-1/2 px-2">
             <h1 class="text-[10px] sm:text-xs md:text-2xl font-extrabold tracking-wider uppercase leading-tight text-indigo-900">L'UNIVERSITÉ DANS LA VILLE</h1>
             <span class="text-[8px] md:text-xs font-semibold tracking-widest opacity-70 uppercase hidden sm:block text-indigo-800">Université & Ville de Demain</span>
@@ -586,7 +591,118 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
     </header>
 
     <!-- MAIN -->
-    <main class="flex-grow container mx-auto px-4 py-8 flex flex-col items-center justify-center" id="game-container">
+    <main class="flex-grow relative" id="app-container">
+<!-- NOUVELLE PAGE D'ACCUEIL -->
+        <div id="landing-page" class="hero-section">
+            <div class="hero-pattern"></div>
+            
+            <div class="relative z-10 container mx-auto px-4 py-12 md:py-20 flex flex-col items-center justify-center min-h-screen">
+                
+                <!-- En-tête principale -->
+                <div class="text-center mb-16 fade-in">
+                    <div class="inline-flex items-center gap-3 bg-white/20 backdrop-blur-sm px-6 py-3 rounded-full mb-6 border border-white/30">
+                        <div class="w-3 h-3 rounded-full bg-orange-500 pulse-ring"></div>
+                        <span class="text-white font-bold text-sm uppercase tracking-wider">Exposition Interactive 2025</span>
+                    </div>
+                    
+                    <h1 class="text-4xl md:text-6xl lg:text-7xl font-black text-white mb-6 leading-tight tracking-tight drop-shadow-2xl">
+                        L'UNIVERSITÉ DANS LA VILLE
+                    </h1>
+                    <p class="text-xl md:text-2xl text-white/90 font-light max-w-3xl mx-auto leading-relaxed">
+                        Explorez les scénarios d'avenir du campus Paul-Valéry à l'horizon 2100
+                    </p>
+                </div>
+
+                <!-- Grille de choix -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-6xl">
+                    
+                    <!-- Carte 1 : Diagnostic Interactif -->
+                    <div onclick="startDiagnostic()" class="card-landing rounded-2xl p-8 cursor-pointer border-2 border-transparent hover:border-orange-500 group">
+                        <div class="w-16 h-16 bg-gradient-to-br from-orange-400 to-pink-500 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-lg">
+                            <i class="fas fa-gamepad text-white text-3xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-3 group-hover:text-orange-600 transition-colors">
+                            Diagnostic Interactif
+                        </h3>
+                        <p class="text-gray-600 leading-relaxed mb-4">
+                            Incarnez un acteur clé et forgez votre vision à travers 7 dilemmes stratégiques.
+                        </p>
+                        <div class="flex items-center text-orange-600 font-semibold text-sm group-hover:gap-3 gap-2 transition-all">
+                            <span>Jouer maintenant</span>
+                            <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        </div>
+                    </div>
+
+                    <!-- Carte 2 : Explorer les Scénarios -->
+                    <div onclick="exploreScenarios()" class="card-landing rounded-2xl p-8 cursor-pointer border-2 border-transparent hover:border-indigo-500 group">
+                        <div class="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-lg">
+                            <i class="fas fa-compass text-white text-3xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-3 group-hover:text-indigo-600 transition-colors">
+                            Explorer les Scénarios
+                        </h3>
+                        <p class="text-gray-600 leading-relaxed mb-4">
+                            Découvrez directement les 6 futurs possibles du campus sans passer par le diagnostic.
+                        </p>
+                        <div class="flex items-center text-indigo-600 font-semibold text-sm group-hover:gap-3 gap-2 transition-all">
+                            <span>Parcourir les visions</span>
+                            <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        </div>
+                    </div>
+
+                    <!-- Carte 3 : Nos Travaux -->
+                    <div onclick="directToWorks()" class="card-landing rounded-2xl p-8 cursor-pointer border-2 border-transparent hover:border-green-500 group">
+                        <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-teal-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-lg">
+                            <i class="fas fa-book-open text-white text-3xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-3 group-hover:text-green-600 transition-colors">
+                            Nos Travaux
+                        </h3>
+                        <p class="text-gray-600 leading-relaxed mb-4">
+                            Accédez directement à nos recherches, planches et analyses urbaines.
+                        </p>
+                        <div class="flex items-center text-green-600 font-semibold text-sm group-hover:gap-3 gap-2 transition-all">
+                            <span>Voir l'exposition</span>
+                            <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Footer crédits -->
+                <div class="mt-16 text-center text-white/70 text-sm">
+                    <p>Master PROJET • Université Paul-Valéry Montpellier 3</p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- NOUVELLE PAGE D'EXPLORATION DIRECTE -->
+        <div id="explore-scenarios-page" class="hidden min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+            
+            <div class="container mx-auto px-4 py-12">
+                
+                <!-- Header avec retour -->
+                <div class="flex justify-between items-center mb-12">
+                    <button onclick="backToLanding()" class="flex items-center gap-2 text-gray-600 hover:text-indigo-600 transition-colors">
+                        <i class="fas fa-arrow-left"></i>
+                        <span class="font-semibold">Retour à l'accueil</span>
+                    </button>
+                    <h1 class="text-3xl md:text-4xl font-black text-gray-800">Les 6 Scénarios Futurs</h1>
+                    <div class="w-32"></div>
+                </div>
+
+                <!-- Grille des scénarios -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12" id="scenario-cards-grid"></div>
+
+                <!-- Zone d'affichage du scénario sélectionné -->
+                <div id="selected-scenario-display" class="hidden"></div>
+
+            </div>
+        </div>
+
+        <!-- CONTAINER POUR LE JEU EXISTANT -->
+        <div id="game-container" class="hidden flex-grow container mx-auto px-4 py-8 flex flex-col items-center justify-center">
         
         <!-- INTRO SCREEN -->
         <div id="intro-screen" class="max-w-2xl w-full bg-white rounded-2xl shadow-xl overflow-hidden fade-in mx-4">
@@ -839,9 +955,9 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
 
                         <div class="mt-6 flex flex-col gap-3 text-center">
                             <button onclick="restartGame()" class="text-gray-600 hover:text-gray-800 text-sm font-semibold underline">Recommencer</button>
-                            <button onclick="showWorks()" class="bg-white border-2 border-indigo-600 text-indigo-600 hover:bg-indigo-600 hover:text-white font-bold py-3 px-6 rounded-full text-sm transition duration-300 shadow-md flex items-center justify-center gap-2">
-                                <i class="fas fa-project-diagram"></i> Découvrir nos travaux
-                            </button>
+                            <button onclick="directToWorksFromResult()" class="bg-white border-2 border-indigo-600 text-indigo-600 hover:bg-indigo-600 hover:text-white font-bold py-3 px-6 rounded-full text-sm transition duration-300 shadow-md flex items-center justify-center gap-2">
+    <i class="fas fa-project-diagram"></i> Découvrir nos travaux
+</button>
                         </div>
                     </div>
                 </div>
@@ -1037,8 +1153,11 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
                 <button onclick="closeWorks()" class="text-indigo-600 hover:text-orange-500 font-semibold flex items-center justify-center gap-2 mx-auto transition-colors">
                     <i class="fas fa-arrow-left"></i> Retour aux résultats
                 </button>
-            </div>
+           </div>
         </div>
+
+        </div>
+        <!-- Fin game-container -->
 
     </main>
 
@@ -1413,13 +1532,13 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
             btn.innerHTML = `Valider et Démarrer`;
         }
 
-        function startGame() { 
-            if(!currentPersona) return;
-            personaScreen.classList.add('hidden'); 
-            questionScreen.classList.remove('hidden'); 
-            setAtmosphere('focus')
-            loadQuestion(); 
-        }
+       function startGame() { 
+    if(!currentPersona) return;
+    personaScreen.classList.add('hidden'); 
+    questionScreen.classList.remove('hidden'); 
+    if(typeof setAtmosphere === 'function') setAtmosphere('focus');
+    loadQuestion(); 
+}
 
         // ... SCÉNARIOS, QUESTIONS, GRAPHIQUES ...
         const scenarioStories = {
@@ -1967,6 +2086,12 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
             document.body.scrollTop = 0; // Pour Safari
             document.documentElement.scrollTop = 0; // Pour Chrome, Firefox, IE
         }
+function directToWorksFromResult() {
+    resultScreen.classList.add('hidden');
+    worksScreen.classList.remove('hidden');
+    stopAudio();
+    window.scrollTo(0, 0);
+}
 
         function closeWorks() {
             worksScreen.classList.add('hidden');
@@ -2118,16 +2243,24 @@ document.getElementById('capsule-msg').addEventListener('input', function() {
 });
 
         function restartGame() {
-            stopAudio(); currentQuestionIndex = 0; scores = { s1: 0, s2: 0, s3: 0, s4: 0, s5: 0, s6: 0 };
-setAtmosphere('calm');
-            document.getElementById('story-display').classList.add('hidden'); resultScreen.classList.add('hidden'); 
-            introScreen.classList.remove('hidden'); 
-            currentPersona = null;
-            document.querySelectorAll('.persona-card').forEach(el => el.classList.remove('selected-persona', 'ring-2', 'ring-indigo-500'));
-            const btn = document.getElementById('start-btn');
-            btn.disabled = true; btn.classList.add('bg-gray-300', 'cursor-not-allowed'); btn.classList.remove('bg-orange-500', 'hover:bg-orange-600', 'cursor-pointer'); btn.innerText = "Choisir un personnage";
-            // Reset slider state (pas besoin car il est dans le modal maintenant)
-        }
+    stopAudio(); 
+    currentQuestionIndex = 0; 
+    scores = { s1: 0, s2: 0, s3: 0, s4: 0, s5: 0, s6: 0 };
+    isManualExploration = false; // NOUVEAU
+    setAtmosphere('calm');
+    document.getElementById('story-display').classList.add('hidden'); 
+    resultScreen.classList.add('hidden'); 
+    introScreen.classList.remove('hidden'); 
+    currentPersona = null;
+    
+    // Réafficher le sélecteur persona
+    document.querySelectorAll('.persona-card').forEach(el => el.classList.remove('selected-persona', 'ring-2', 'ring-indigo-500'));
+    const btn = document.getElementById('start-btn');
+    btn.disabled = true; 
+    btn.classList.add('bg-gray-300', 'cursor-not-allowed'); 
+    btn.classList.remove('bg-orange-500', 'hover:bg-orange-600', 'cursor-pointer'); 
+    btn.innerText = "Choisir un personnage";
+}
 
         // --- LOGIQUE MODAL ATRIUM (NOUVEAU) ---
         const atriumModal = document.getElementById('atrium-modal');
@@ -3408,6 +3541,153 @@ function checkWin() {
 .processing-overlay { background: rgba(255,255,255,0.9); backdrop-filter: blur(2px); z-index: 50; display: flex; flex-col; justify-content: center; align-items: center; }
 .scan-line { width: 100%; height: 2px; background: #dc2626; animation: scan 2s linear infinite; position: absolute; top: 0; }
 @keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
+/* === STYLES PAGE D'ACCUEIL AMÉLIORÉS === */
+.hero-section { 
+    background: linear-gradient(135deg, #1e3a8a 0%, #312e81 50%, #1e1b4b 100%);
+    min-height: 100vh; 
+    position: relative; 
+    overflow: hidden;
+}
+
+.hero-pattern {
+    position: absolute;
+    inset: 0;
+    opacity: 0.08;
+    background-image: 
+        radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.4) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(249, 115, 22, 0.3) 0%, transparent 50%),
+        url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='1' fill-rule='evenodd'/%3E%3C/svg%3E");
+    animation: heroPattern 30s linear infinite;
+}
+
+@keyframes heroPattern {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(50px, 50px); }
+}
+
+.card-landing {
+    backdrop-filter: blur(20px);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 
+        0 8px 32px 0 rgba(31, 38, 135, 0.37),
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.card-landing::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.5s;
+}
+
+.card-landing:hover::before {
+    left: 100%;
+}
+
+.card-landing:hover {
+    transform: translateY(-12px) scale(1.03);
+    box-shadow: 
+        0 20px 60px -10px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.2),
+        0 0 40px rgba(249, 115, 22, 0.3);
+    border-color: rgba(249, 115, 22, 0.5);
+}
+
+.card-landing h3 {
+    background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.card-landing p {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.card-landing .flex.items-center {
+    color: #fb923c;
+}
+
+.card-landing:hover .flex.items-center {
+    color: #fff;
+    text-shadow: 0 0 20px rgba(251, 146, 60, 0.8);
+}
+
+.card-landing .w-16.h-16 {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.card-landing:hover .w-16.h-16 {
+    box-shadow: 0 12px 24px rgba(249, 115, 22, 0.4);
+    transform: rotate(360deg);
+}
+
+.pulse-ring {
+    position: relative;
+    animation: pulseRing 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.pulse-ring::after {
+    content: '';
+    position: absolute;
+    inset: -10px;
+    border: 2px solid rgba(249, 115, 22, 0.5);
+    border-radius: 50%;
+    animation: pulseRingOuter 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulseRing {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.05); opacity: 0.8; }
+}
+
+@keyframes pulseRingOuter {
+    0% { transform: scale(0.8); opacity: 0; }
+    50% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(1.2); opacity: 0; }
+}
+
+/* Effet sur le titre principal */
+.landing-page h1 {
+    text-shadow: 
+        0 0 10px rgba(255, 255, 255, 0.5),
+        0 0 20px rgba(99, 102, 241, 0.5),
+        0 0 30px rgba(249, 115, 22, 0.3);
+    animation: titleGlow 3s ease-in-out infinite;
+}
+
+@keyframes titleGlow {
+    0%, 100% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(99, 102, 241, 0.5), 0 0 30px rgba(249, 115, 22, 0.3); }
+    50% { text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(99, 102, 241, 0.8), 0 0 40px rgba(249, 115, 22, 0.6); }
+}
+
+/* Badge "Exposition Interactive" amélioré */
+.landing-page .inline-flex.items-center {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+}
+
+/* Footer crédits */
+.landing-page .mt-16.text-center {
+    opacity: 0.7;
+    transition: opacity 0.3s;
+}
+
+.landing-page .mt-16.text-center:hover {
+    opacity: 1;
+}
+</style>
 </style>
 <script>
     // --- MOTEUR DE JEU CODEX (QUIZ ÉTENDU) ---
@@ -3558,8 +3838,15 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 async function openAdmin() {
+    // Masquer toutes les pages principales
+    document.getElementById('landing-page').classList.add('hidden');
+    document.getElementById('game-container').classList.add('hidden');
+    document.getElementById('explore-scenarios-page').classList.add('hidden');
+    
+    // Afficher le dashboard admin
     document.getElementById('admin-dashboard').classList.remove('hidden');
     document.getElementById('admin-dashboard').classList.add('flex');
+    
     await loadAdminStats();
     await loadAdminCapsules();
 }
@@ -3567,6 +3854,10 @@ async function openAdmin() {
 function closeAdmin() {
     document.getElementById('admin-dashboard').classList.add('hidden');
     document.getElementById('admin-dashboard').classList.remove('flex');
+    
+    // Retourner à la landing page
+    document.getElementById('landing-page').classList.remove('hidden');
+    window.scrollTo(0, 0);
 }
 
 async function loadAdminStats() {
@@ -4362,9 +4653,273 @@ function resetFringeView() {
     document.getElementById('fringe-content').classList.add('hidden');
     document.querySelectorAll('.fringe-file').forEach(el => el.classList.remove('active'));
 }
+/* === NAVIGATION LANDING PAGE === */
+
+// Au chargement, afficher la landing page
+window.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('landing-page').classList.remove('hidden');
+    document.getElementById('game-container').classList.add('hidden');
+    document.getElementById('explore-scenarios-page').classList.add('hidden');
+});
+
+function startDiagnostic() {
+    document.getElementById('landing-page').classList.add('hidden');
+    document.getElementById('game-container').classList.remove('hidden');
+    document.getElementById('game-container').classList.add('fade-in');
+    
+    // Reset le jeu
+    currentQuestionIndex = 0;
+    scores = { s1: 0, s2: 0, s3: 0, s4: 0, s5: 0, s6: 0 };
+    currentPersona = null;
+    
+    // Afficher l'intro
+    introScreen.classList.remove('hidden');
+    personaScreen.classList.add('hidden');
+    questionScreen.classList.add('hidden');
+    resultScreen.classList.add('hidden');
+    worksScreen.classList.add('hidden');
+}
+
+function exploreScenarios() {
+    document.getElementById('landing-page').classList.add('hidden');
+    document.getElementById('explore-scenarios-page').classList.remove('hidden');
+    renderExploreScenarios();
+}
+
+function directToWorks() {
+    document.getElementById('landing-page').classList.add('hidden');
+    document.getElementById('game-container').classList.remove('hidden');
+    
+    // Masquer tous les screens sauf works
+    introScreen.classList.add('hidden');
+    personaScreen.classList.add('hidden');
+    questionScreen.classList.add('hidden');
+    resultScreen.classList.add('hidden');
+    worksScreen.classList.remove('hidden');
+    
+    window.scrollTo(0, 0);
+}
+// Retour à l'accueil depuis n'importe où
+function returnToHome() {
+    // Masquer toutes les pages
+    document.getElementById('landing-page').classList.remove('hidden');
+    document.getElementById('game-container').classList.add('hidden');
+    document.getElementById('explore-scenarios-page').classList.add('hidden');
+    
+    // Reset des screens du jeu
+    introScreen.classList.add('hidden');
+    personaScreen.classList.add('hidden');
+    questionScreen.classList.add('hidden');
+    resultScreen.classList.add('hidden');
+    worksScreen.classList.add('hidden');
+    
+    // Scroll top
+    window.scrollTo(0, 0);
+    
+    // Stop audio si en cours
+    if(typeof stopAudio === 'function') stopAudio();
+}
+
+// Variable globale pour savoir si on vient du mode manuel
+let isManualExploration = false;
+
+// Modifier la fonction directToWorks existante
+function directToWorks() {
+    document.getElementById('landing-page').classList.add('hidden');
+    document.getElementById('game-container').classList.remove('hidden');
+    document.getElementById('explore-scenarios-page').classList.add('hidden');
+    
+    // Masquer tous les screens sauf works
+    introScreen.classList.add('hidden');
+    personaScreen.classList.add('hidden');
+    questionScreen.classList.add('hidden');
+    resultScreen.classList.add('hidden');
+    worksScreen.classList.remove('hidden');
+    
+    // Scroll to top
+    window.scrollTo(0, 0);
+    
+    // Stop audio si en cours
+    if(typeof stopAudio === 'function') stopAudio();
+}
+
+// Fonction de sélection manuelle de scénario
+function selectScenarioManual(scenarioKey) {
+    winnerScenarioId = scenarioKey;
+    isManualExploration = true;
+    
+    // Mettre à jour les couleurs des boutons
+    document.querySelectorAll('.scenario-selector-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if(btn.dataset.scenario === scenarioKey) {
+            btn.classList.add('active');
+        }
+    });
+    
+    // Simuler un score parfait pour ce scénario
+    scores = { s1: 0, s2: 0, s3: 0, s4: 0, s5: 0, s6: 0 };
+    scores[scenarioKey] = 7; // Score max
+    
+    // Afficher le scénario
+    const s = scenarios[scenarioKey];
+    document.getElementById('scenario-title').innerText = s.title;
+    document.getElementById('scenario-title').style.color = s.color;
+    document.getElementById('scenario-subtitle').innerText = s.subtitle;
+    document.getElementById('scenario-desc').innerText = s.description;
+    
+    // Masquer le feedback persona
+    document.getElementById('persona-feedback').style.display = 'none';
+    
+    updateResultAnalysis();
+    
+    const ul = document.getElementById('scenario-issues'); 
+    ul.innerHTML = '';
+    s.issues.forEach(i => { 
+        const li = document.createElement('li'); 
+        li.innerText = i; 
+        ul.appendChild(li); 
+    });
+    
+    drawChart();
+    
+    // Mettre à jour le récit
+    currentStoryText = scenarioStories[scenarioKey];
+    document.getElementById('story-text').innerText = currentStoryText;
+    document.getElementById('story-display').classList.add('hidden');
+    document.getElementById('reveal-btn').classList.remove('hidden');
+    stopAudio();
+    
+    renderWordCloud();
+}
+function backToLanding() {
+    document.getElementById('explore-scenarios-page').classList.add('hidden');
+    document.getElementById('game-container').classList.add('hidden');
+    document.getElementById('landing-page').classList.remove('hidden');
+    document.getElementById('selected-scenario-display').classList.add('hidden');
+    document.getElementById('selected-scenario-display').innerHTML = '';
+}
+
+function renderExploreScenarios() {
+    const grid = document.getElementById('scenario-cards-grid');
+    grid.innerHTML = '';
+    
+    Object.keys(scenarios).forEach(key => {
+        const s = scenarios[key];
+        const card = document.createElement('div');
+        card.className = 'bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-t-4';
+        card.style.borderColor = s.color;
+        card.onclick = () => showScenarioDetail(key);
+        
+        card.innerHTML = `
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-xs font-bold uppercase tracking-wider text-gray-500">${s.id}</span>
+                    <i class="fas fa-chevron-right text-gray-400"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-2 leading-tight">${s.title}</h3>
+                <p class="text-sm text-gray-600 italic mb-4">${s.subtitle}</p>
+                <div class="h-1 w-full bg-gray-100 rounded-full overflow-hidden">
+                    <div class="h-full rounded-full" style="width: ${Math.random() * 40 + 10}%; background-color: ${s.color}"></div>
+                </div>
+            </div>
+        `;
+        
+        grid.appendChild(card);
+    });
+}
+
+function showScenarioDetail(scenarioKey) {
+    const s = scenarios[scenarioKey];
+    const display = document.getElementById('selected-scenario-display');
+    const scenarioNum = scenarioKey.replace('s', '');
+    
+    display.innerHTML = `
+        <div class="bg-white rounded-2xl shadow-2xl overflow-hidden mb-8 fade-in border-t-8" style="border-color: ${s.color}">
+            
+            <div class="p-8 md:p-12" style="background: linear-gradient(135deg, ${s.color}20, ${s.color}10)">
+                <span class="inline-block bg-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-4" style="color: ${s.color}">${s.id}</span>
+                <h2 class="text-3xl md:text-4xl font-black text-gray-800 mb-2">${s.title}</h2>
+                <p class="text-xl text-gray-600 italic">${s.subtitle}</p>
+            </div>
+
+            <div class="p-8 md:p-12 grid grid-cols-1 lg:grid-cols-2 gap-12">
+                
+                <div class="space-y-8">
+                    <div>
+                        <h4 class="text-sm font-bold text-gray-500 uppercase mb-3 flex items-center gap-2">
+                            <i class="fas fa-align-left" style="color: ${s.color}"></i>
+                            Description
+                        </h4>
+                        <p class="text-gray-700 leading-relaxed">${s.description}</p>
+                    </div>
+
+                    <div>
+                        <h4 class="text-sm font-bold text-gray-500 uppercase mb-3 flex items-center gap-2">
+                            <i class="fas fa-list-ul" style="color: ${s.color}"></i>
+                            Enjeux Clés
+                        </h4>
+                        <ul class="space-y-2">
+                            ${s.issues.map(issue => `<li class="flex items-start gap-2 text-gray-700"><i class="fas fa-check-circle text-green-500 mt-1"></i><span>${issue}</span></li>`).join('')}
+                        </ul>
+                    </div>
+
+                    ${s.expert ? `
+                    <div class="bg-indigo-50 border-l-4 border-indigo-600 p-4 rounded-r">
+                        <h4 class="text-sm font-bold text-indigo-900 uppercase mb-2 flex items-center gap-2">
+                            <i class="fas fa-graduation-cap"></i>
+                            Analyse Experte
+                        </h4>
+                        <p class="text-sm text-indigo-800 leading-relaxed">${s.expert}</p>
+                    </div>
+                    ` : ''}
+                </div>
+
+                <div class="space-y-6">
+                    <div class="relative rounded-xl overflow-hidden shadow-xl border-4 border-white">
+                        <img src="Scénario ${scenarioNum}.png" onerror="this.src='Scénario ${scenarioNum}.jpg'" 
+                             alt="Illustration ${s.title}" 
+                             class="w-full h-auto object-cover">
+                    </div>
+
+                    ${scenarioStories[scenarioKey] ? `
+                    <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                        <h4 class="text-sm font-bold text-gray-700 uppercase mb-3 flex items-center gap-2">
+                            <i class="fas fa-book-reader"></i>
+                            Récit Immersif
+                        </h4>
+                        <p class="text-sm text-gray-700 leading-relaxed italic font-serif">"${scenarioStories[scenarioKey]}"</p>
+                    </div>
+                    ` : ''}
+
+                    <button onclick="compareWithAtrium('${scenarioKey.toUpperCase()}')" 
+                            class="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-3">
+                        <i class="fas fa-exchange-alt text-xl"></i>
+                        <span>Comparer l'Atrium : Avant/Après</span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    `;
+    
+    display.classList.remove('hidden');
+    display.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function compareWithAtrium(scenarioId) {
+    openAtrium();
+    setTimeout(() => setAtriumScenario(scenarioId), 500);
+}
+</script>
 </script>
 </body>
 </html>
+
+
+
+
+
+
 
 
 
