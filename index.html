@@ -1014,22 +1014,21 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
                 </p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 px-4">
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border border-gray-100 group">
-                    <div class="h-48 bg-[#3D0E0E] flex items-center justify-center relative overflow-hidden">
-                        <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
-                        <i class="fas fa-bullhorn text-6xl text-[#D4824A] group-hover:scale-110 transition-transform duration-500"></i>
+                <!-- CARTE EXPOSITION VIRTUELLE -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border border-gray-100 group cursor-pointer" onclick="openExpoVirtuelle()">
+                    <div class="h-48 bg-gradient-to-br from-[#3D0E0E] to-[#8B2E2E] flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 opacity-10" style="background-image: repeating-linear-gradient(45deg, #fff 0, #fff 1px, transparent 0, transparent 50%); background-size: 12px 12px;"></div>
+                        <div class="text-center z-10">
+                            <i class="fas fa-images text-5xl text-white mb-2 group-hover:scale-110 transition-transform duration-500 block"></i>
+                            <span class="text-[#E8B48A] font-bold text-sm uppercase tracking-widest">15 planches</span>
+                        </div>
                     </div>
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">Communication & Scénographie</h3>
-                        <p class="text-sm text-gray-500 mb-4">Présentation générale de la démarche, Histoire et Plan de Masse.</p>
-                        <div class="space-y-3">
-                            <button onclick="openCommsGallery()" class="w-full bg-gray-100 hover:bg-[#F5F0E8] text-[#6B2020] font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors">
-                                <i class="fas fa-images"></i> Voir les planches (PDF)
-                            </button>
-                            <button onclick="openTimeline()" class="w-full bg-[#C4622D] hover:bg-[#9E4A20] text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors">
-                                <i class="fas fa-history"></i> Voir la Frise Chronologique
-                            </button>
-                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Exposition Virtuelle</h3>
+                        <p class="text-sm text-gray-500 mb-4">Parcourez toutes les planches de l'exposition dans l'ordre — diagnostic, scénarios, analyses urbaines.</p>
+                        <button class="w-full bg-[#8B2E2E] hover:bg-[#6B2020] text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors shadow-md">
+                            <i class="fas fa-play"></i> Lancer la visite
+                        </button>
                     </div>
                 </div>
                 <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border border-gray-100 group border-t-4 border-[#8B2E2E]">
@@ -4953,5 +4952,247 @@ function compareWithAtrium(scenarioId) {
 }
 </script>
 </script>
+
+<!-- ═══════════════════════════════════════════════════════════
+     EXPOSITION VIRTUELLE — VISIONNEUSE DIAPORAMA
+     Les PDFs sont référencés par chemin relatif.
+     Structure GitHub attendue : /planches/DIAG_COMMUN-1.pdf etc.
+     ═══════════════════════════════════════════════════════════ -->
+<div id="expo-virtuelle-overlay" class="hidden fixed inset-0 z-[500] bg-black flex flex-col" style="touch-action:none;">
+
+    <!-- Barre haute -->
+    <div class="flex items-center justify-between px-4 md:px-8 py-3 bg-[#1A0A0A] border-b border-[#3D0E0E] flex-shrink-0">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 bg-[#8B2E2E] rounded-full flex items-center justify-center">
+                <i class="fas fa-images text-white text-xs"></i>
+            </div>
+            <div>
+                <div class="text-white font-bold text-sm title-font tracking-wider">EXPOSITION VIRTUELLE</div>
+                <div id="expo-planche-label" class="text-[#C8827A] text-xs font-mono">Planche 1 / 15</div>
+            </div>
+        </div>
+        <!-- Titre de la planche courante -->
+        <div id="expo-planche-titre" class="hidden md:block text-[#EDE0CC] text-sm font-semibold text-center flex-1 mx-4 truncate"></div>
+        <!-- Boutons droite -->
+        <div class="flex items-center gap-2 md:gap-3">
+            <a id="expo-dl-btn" href="#" download class="hidden md:flex items-center gap-2 bg-[#3D0E0E] hover:bg-[#6B2020] text-[#EDE0CC] text-xs font-bold px-3 py-2 rounded-lg transition-colors">
+                <i class="fas fa-download"></i> <span class="hidden md:inline">Télécharger</span>
+            </a>
+            <button onclick="closeExpoVirtuelle()" class="bg-[#8B2E2E] hover:bg-[#6B2020] text-white w-8 h-8 rounded-full flex items-center justify-center transition-colors text-sm">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Visionneuse PDF -->
+    <div class="flex-1 relative flex items-center justify-center bg-[#0D0505] overflow-hidden">
+
+        <!-- Flèche gauche -->
+        <button onclick="expoNav(-1)" id="expo-prev" class="absolute left-2 md:left-6 z-20 w-10 h-10 md:w-14 md:h-14 bg-black/60 hover:bg-[#8B2E2E] border border-white/20 text-white rounded-full flex items-center justify-center transition-all text-lg md:text-xl shadow-lg backdrop-blur-sm">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+
+        <!-- Iframe PDF -->
+        <iframe id="expo-iframe"
+            class="w-full h-full border-0"
+            style="background:#0D0505;"
+            src=""
+            title="Planche exposition">
+        </iframe>
+
+        <!-- Fallback si PDF non trouvé -->
+        <div id="expo-fallback" class="hidden absolute inset-0 flex flex-col items-center justify-center text-center p-8">
+            <i class="fas fa-file-pdf text-6xl text-[#8B2E2E] mb-4"></i>
+            <h3 id="expo-fallback-titre" class="text-white text-xl font-bold mb-2"></h3>
+            <p class="text-[#C8827A] text-sm mb-6 max-w-md">Le fichier PDF n'est pas encore disponible.<br>Placez les PDFs dans le dossier <code class="bg-black/40 px-2 py-1 rounded font-mono text-xs">/planches/</code> de votre GitHub.</p>
+            <a id="expo-fallback-dl" href="#" class="bg-[#8B2E2E] hover:bg-[#6B2020] text-white font-bold py-3 px-8 rounded-full transition-colors flex items-center gap-2">
+                <i class="fas fa-folder-open"></i> Voir le chemin du fichier
+            </a>
+        </div>
+
+        <!-- Flèche droite -->
+        <button onclick="expoNav(1)" id="expo-next" class="absolute right-2 md:right-6 z-20 w-10 h-10 md:w-14 md:h-14 bg-black/60 hover:bg-[#8B2E2E] border border-white/20 text-white rounded-full flex items-center justify-center transition-all text-lg md:text-xl shadow-lg backdrop-blur-sm">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+
+    <!-- Barre basse : miniatures + progression -->
+    <div class="bg-[#1A0A0A] border-t border-[#3D0E0E] flex-shrink-0">
+        <!-- Barre de progression -->
+        <div class="h-1 bg-[#3D0E0E]">
+            <div id="expo-progress" class="h-full bg-[#8B2E2E] transition-all duration-300" style="width:6.67%"></div>
+        </div>
+        <!-- Miniatures scrollables -->
+        <div class="flex items-center gap-1 px-4 py-2 overflow-x-auto" style="scrollbar-width:thin; scrollbar-color:#3D0E0E #0D0505;" id="expo-thumbs">
+            <!-- Générées par JS -->
+        </div>
+    </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+// DONNÉES DES PLANCHES — Modifiez les chemins
+// si vous changez la structure de dossiers.
+// ═══════════════════════════════════════════
+const EXPO_PLANCHES = [
+    // ── SCÉNARIOS ──────────────────────────
+    { titre: "S1 — Le Futur en Douceur",                    cat: "Scénario",    fichier: "planches/SCENARIO-1.pdf" },
+    { titre: "S2 — Des Universités Seulement Privées",      cat: "Scénario",    fichier: "planches/SCENARIO-2.pdf" },
+    { titre: "S3 — IA : L'Université Zéro M²",              cat: "Scénario",    fichier: "planches/SCENARIO-3.pdf" },
+    { titre: "S4 — L'Université Sans Frontières",           cat: "Scénario",    fichier: "planches/SCENARIO-4.pdf" },
+    { titre: "S5 — Le Campus à l'Américaine",               cat: "Scénario",    fichier: "planches/SCENARIO-5.pdf" },
+    // ── DIAGNOSTIC ─────────────────────────
+    { titre: "50 Fois Plus d'Étudiants en 100 Ans",        cat: "Diagnostic",  fichier: "planches/DIAG_COMMUN-1.pdf" },
+    { titre: "L'Image des Universités en France",           cat: "Diagnostic",  fichier: "planches/DIAG_COMMUN-2.pdf" },
+    { titre: "Beaucoup d'Étudiants, Peu de Moyens ?",       cat: "Diagnostic",  fichier: "planches/DIAG_COMMUN-3.pdf" },
+    { titre: "Montpellier Ville-Universitaire",             cat: "Diagnostic",  fichier: "planches/DIAG_COMMUN-4_page-0001.pdf" },
+    { titre: "Typologies des Villes Universitaires",        cat: "Diagnostic",  fichier: "planches/DIAG_COMMUN-5.pdf" },
+    { titre: "L'Architecture au Service de l'Ambition",     cat: "Diagnostic",  fichier: "planches/DIAG_COMMUN-6.pdf" },
+    { titre: "Le Projet par le Paysage",                    cat: "Diagnostic",  fichier: "planches/DIAG_COMMUN-7.pdf" },
+    { titre: "Connecter le Campus au Centre-Ville",         cat: "Diagnostic",  fichier: "planches/DIAG_COMMUN-8.pdf" },
+    { titre: "Vivre un Quartier d'Enseignement Supérieur",  cat: "Diagnostic",  fichier: "planches/DIAG_COMMUN-9.pdf" },
+    { titre: "Du Campus à la Start-Up",                     cat: "Diagnostic",  fichier: "planches/DIAG_COMMUN-10.pdf" },
+    { titre: "IA-Montpellier",                              cat: "Diagnostic",  fichier: "planches/DIAG_COMMUN-11.pdf" },
+    { titre: "Atrium : De la Bibliothèque au Learning Center", cat: "Diagnostic", fichier: "planches/DIAG_COMMUN-12.pdf" },
+];
+
+let expoCurrent = 0;
+
+function openExpoVirtuelle() {
+    expoCurrent = 0;
+    document.getElementById('expo-virtuelle-overlay').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    buildExpoThumbs();
+    expoGoTo(0);
+}
+
+function closeExpoVirtuelle() {
+    document.getElementById('expo-virtuelle-overlay').classList.add('hidden');
+    document.body.style.overflow = '';
+    document.getElementById('expo-iframe').src = '';
+}
+
+function buildExpoThumbs() {
+    const container = document.getElementById('expo-thumbs');
+    container.innerHTML = '';
+    const cats = { Diagnostic: '#8B2E2E', Scénario: '#C4622D' };
+    EXPO_PLANCHES.forEach((p, i) => {
+        const btn = document.createElement('button');
+        btn.id = `expo-thumb-${i}`;
+        btn.onclick = () => expoGoTo(i);
+        btn.className = `flex-shrink-0 flex flex-col items-center gap-1 px-2 py-1 rounded-lg transition-all ${i === expoCurrent ? 'bg-[#8B2E2E]' : 'hover:bg-[#3D0E0E]'}`;
+        btn.innerHTML = `
+            <div class="w-8 h-10 rounded flex items-center justify-center text-xs font-bold text-white" style="background:${cats[p.cat] || '#5C1A1A'}">
+                ${i + 1}
+            </div>
+            <span class="text-[9px] text-[#C8827A] max-w-[48px] truncate leading-tight">${p.titre.split('—').pop().trim().split(' ').slice(0,2).join(' ')}</span>
+        `;
+        container.appendChild(btn);
+    });
+}
+
+function expoGoTo(idx) {
+    expoCurrent = Math.max(0, Math.min(idx, EXPO_PLANCHES.length - 1));
+    const p = EXPO_PLANCHES[expoCurrent];
+    const total = EXPO_PLANCHES.length;
+
+    // Mise à jour UI
+    document.getElementById('expo-planche-label').textContent = `Planche ${expoCurrent + 1} / ${total}`;
+    document.getElementById('expo-planche-titre').textContent = `${p.cat} — ${p.titre}`;
+    document.getElementById('expo-progress').style.width = `${((expoCurrent + 1) / total) * 100}%`;
+
+    // Bouton download
+    const dlBtn = document.getElementById('expo-dl-btn');
+    dlBtn.href = p.fichier;
+    dlBtn.download = p.fichier.split('/').pop();
+
+    // Iframe
+    const iframe = document.getElementById('expo-iframe');
+    const fallback = document.getElementById('expo-fallback');
+    iframe.classList.add('hidden');
+    fallback.classList.add('hidden');
+
+    // On tente de charger le PDF
+    iframe.onload = function() {
+        // Si OK, afficher
+        iframe.classList.remove('hidden');
+        fallback.classList.add('hidden');
+    };
+    iframe.onerror = function() {
+        showExpoFallback(p);
+    };
+    iframe.src = p.fichier;
+
+    // Fallback après délai si l'iframe ne charge pas (fichier manquant)
+    setTimeout(() => {
+        try {
+            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+            if (!iframeDoc || iframeDoc.body.innerHTML === '') showExpoFallback(p);
+            else iframe.classList.remove('hidden');
+        } catch(e) {
+            // Cross-origin = le PDF charge bien, on l'affiche
+            iframe.classList.remove('hidden');
+        }
+    }, 1500);
+
+    // Boutons nav
+    document.getElementById('expo-prev').style.opacity = expoCurrent === 0 ? '0.3' : '1';
+    document.getElementById('expo-next').style.opacity = expoCurrent === total - 1 ? '0.3' : '1';
+
+    // Miniatures
+    document.querySelectorAll('[id^="expo-thumb-"]').forEach((b, i) => {
+        b.className = b.className.replace(/bg-\[#8B2E2E\]|hover:bg-\[#3D0E0E\]/g, '').trim();
+        b.className += i === expoCurrent ? ' bg-[#8B2E2E]' : ' hover:bg-[#3D0E0E]';
+    });
+
+    // Scroll miniature active en vue
+    const activeThumb = document.getElementById(`expo-thumb-${expoCurrent}`);
+    if (activeThumb) activeThumb.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+}
+
+function showExpoFallback(p) {
+    document.getElementById('expo-iframe').classList.add('hidden');
+    document.getElementById('expo-fallback').classList.remove('hidden');
+    document.getElementById('expo-fallback-titre').textContent = p.titre;
+    document.getElementById('expo-fallback-dl').href = p.fichier;
+    document.getElementById('expo-fallback-dl').textContent = p.fichier;
+}
+
+function expoNav(dir) {
+    expoGoTo(expoCurrent + dir);
+}
+
+// Navigation clavier
+document.addEventListener('keydown', function(e) {
+    if (document.getElementById('expo-virtuelle-overlay').classList.contains('hidden')) return;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') expoNav(1);
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') expoNav(-1);
+    if (e.key === 'Escape') closeExpoVirtuelle();
+});
+
+// Swipe tactile
+(function() {
+    let startX = 0;
+    const overlay = document.getElementById('expo-virtuelle-overlay');
+    overlay.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
+    overlay.addEventListener('touchend', e => {
+        const dx = e.changedTouches[0].clientX - startX;
+        if (Math.abs(dx) > 50) expoNav(dx < 0 ? 1 : -1);
+    }, { passive: true });
+})();
+</script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
