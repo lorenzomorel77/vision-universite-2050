@@ -4992,13 +4992,14 @@ function compareWithAtrium(scenarioId) {
             <i class="fas fa-chevron-left"></i>
         </button>
 
-        <!-- Iframe PDF -->
-        <iframe id="expo-iframe"
+        <!-- Visionneuse PDF (object au lieu d'iframe pour contourner X-Frame-Options de Vercel) -->
+        <object id="expo-iframe"
             class="w-full h-full border-0"
             style="background:#0D0505;"
-            src=""
-            title="Planche exposition">
-        </iframe>
+            type="application/pdf"
+            data=""
+            aria-label="Planche exposition">
+        </object>
 
         <!-- Fallback si PDF non trouvé -->
         <div id="expo-fallback" class="hidden absolute inset-0 flex flex-col items-center justify-center text-center p-8">
@@ -5069,7 +5070,7 @@ function openExpoVirtuelle() {
 function closeExpoVirtuelle() {
     document.getElementById('expo-virtuelle-overlay').classList.add('hidden');
     document.body.style.overflow = '';
-    document.getElementById('expo-iframe').src = '';
+    document.getElementById('expo-iframe').data = '';
 }
 
 function buildExpoThumbs() {
@@ -5106,34 +5107,23 @@ function expoGoTo(idx) {
     dlBtn.href = p.fichier;
     dlBtn.download = p.fichier.split('/').pop();
 
-    // Iframe
+    // Visionneuse PDF (object tag — contourne X-Frame-Options)
     const iframe = document.getElementById('expo-iframe');
     const fallback = document.getElementById('expo-fallback');
     iframe.classList.add('hidden');
     fallback.classList.add('hidden');
 
-    // On tente de charger le PDF
-    iframe.onload = function() {
-        // Si OK, afficher
-        iframe.classList.remove('hidden');
-        fallback.classList.add('hidden');
-    };
-    iframe.onerror = function() {
-        showExpoFallback(p);
-    };
-    iframe.src = p.fichier;
+    // Chargement via attribut data (balise object)
+    iframe.data = p.fichier;
+    iframe.classList.remove('hidden');
 
-    // Fallback après délai si l'iframe ne charge pas (fichier manquant)
+    // Fallback après délai si le PDF n'est pas trouvé
     setTimeout(() => {
-        try {
-            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-            if (!iframeDoc || iframeDoc.body.innerHTML === '') showExpoFallback(p);
-            else iframe.classList.remove('hidden');
-        } catch(e) {
-            // Cross-origin = le PDF charge bien, on l'affiche
-            iframe.classList.remove('hidden');
+        // Si l'objet est vide ou en erreur, afficher le fallback
+        if (iframe.offsetHeight === 0 || !iframe.data) {
+            showExpoFallback(p);
         }
-    }, 1500);
+    }, 3000);
 
     // Boutons nav
     document.getElementById('expo-prev').style.opacity = expoCurrent === 0 ? '0.3' : '1';
