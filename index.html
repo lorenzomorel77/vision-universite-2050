@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>Vision Université 2100 - Atelier Atrium</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Roboto:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -4992,14 +4994,10 @@ function compareWithAtrium(scenarioId) {
             <i class="fas fa-chevron-left"></i>
         </button>
 
-        <!-- Visionneuse PDF (object au lieu d'iframe pour contourner X-Frame-Options de Vercel) -->
-        <object id="expo-iframe"
-            class="w-full h-full border-0"
-            style="background:#0D0505;"
-            type="application/pdf"
-            data=""
-            aria-label="Planche exposition">
-        </object>
+        <!-- Visionneuse PDF rendue via PDF.js (contourne X-Frame-Options & Content-Disposition) -->
+        <div id="expo-iframe" class="w-full h-full flex items-center justify-center overflow-auto" style="background:#0D0505;">
+            <canvas id="expo-pdf-canvas" style="max-width:100%; max-height:100%; display:block; margin:auto;"></canvas>
+        </div>
 
         <!-- Fallback si PDF non trouvé -->
         <div id="expo-fallback" class="hidden absolute inset-0 flex flex-col items-center justify-center text-center p-8">
@@ -5043,18 +5041,18 @@ const EXPO_PLANCHES = [
     { titre: "S4 — L'Université Sans Frontières",           cat: "Scénario",    fichier: "planches/SCENARIO-4.pdf" },
     { titre: "S5 — Le Campus à l'Américaine",               cat: "Scénario",    fichier: "planches/SCENARIO-5.pdf" },
     // ── DIAGNOSTIC ─────────────────────────
-    { titre: "50 Fois Plus d'Étudiants en 100 Ans",        cat: "Diagnostic",  fichier: "planches/DIAG_COMMUN-1.pdf" },
-    { titre: "L'Image des Universités en France",           cat: "Diagnostic",  fichier: "planches/DIAG_COMMUN-2.pdf" },
-    { titre: "Beaucoup d'Étudiants, Peu de Moyens ?",       cat: "Diagnostic",  fichier: "planches/DIAG_COMMUN-3.pdf" },
-    { titre: "Montpellier Ville-Universitaire",             cat: "Diagnostic",  fichier: "planches/DIAG_COMMUN-4_page-0001.pdf" },
-    { titre: "Typologies des Villes Universitaires",        cat: "Diagnostic",  fichier: "planches/DIAG_COMMUN-5.pdf" },
-    { titre: "L'Architecture au Service de l'Ambition",     cat: "Diagnostic",  fichier: "planches/DIAG_COMMUN-6.pdf" },
-    { titre: "Le Projet par le Paysage",                    cat: "Diagnostic",  fichier: "planches/DIAG_COMMUN-7.pdf" },
-    { titre: "Connecter le Campus au Centre-Ville",         cat: "Diagnostic",  fichier: "planches/DIAG_COMMUN-8.pdf" },
-    { titre: "Vivre un Quartier d'Enseignement Supérieur",  cat: "Diagnostic",  fichier: "planches/DIAG_COMMUN-9.pdf" },
-    { titre: "Du Campus à la Start-Up",                     cat: "Diagnostic",  fichier: "planches/DIAG_COMMUN-10.pdf" },
-    { titre: "IA-Montpellier",                              cat: "Diagnostic",  fichier: "planches/DIAG_COMMUN-11.pdf" },
-    { titre: "Atrium : De la Bibliothèque au Learning Center", cat: "Diagnostic", fichier: "planches/DIAG_COMMUN-12.pdf" },
+    { titre: "50 Fois Plus d'Étudiants en 100 Ans",        cat: "Diagnostic",  fichier: "planches/DIAG COMMUN-1.pdf" },
+    { titre: "L'Image des Universités en France",           cat: "Diagnostic",  fichier: "planches/DIAG COMMUN-2.pdf" },
+    { titre: "Beaucoup d'Étudiants, Peu de Moyens ?",       cat: "Diagnostic",  fichier: "planches/DIAG COMMUN-3.pdf" },
+    { titre: "Montpellier Ville-Universitaire",             cat: "Diagnostic",  fichier: "planches/DIAG COMMUN-4_page-0001.pdf" },
+    { titre: "Typologies des Villes Universitaires",        cat: "Diagnostic",  fichier: "planches/DIAG COMMUN-5.pdf" },
+    { titre: "L'Architecture au Service de l'Ambition",     cat: "Diagnostic",  fichier: "planches/DIAG COMMUN-6.pdf" },
+    { titre: "Le Projet par le Paysage",                    cat: "Diagnostic",  fichier: "planches/DIAG COMMUN-7.pdf" },
+    { titre: "Connecter le Campus au Centre-Ville",         cat: "Diagnostic",  fichier: "planches/DIAG COMMUN-8.pdf" },
+    { titre: "Vivre un Quartier d'Enseignement Supérieur",  cat: "Diagnostic",  fichier: "planches/DIAG COMMUN-9.pdf" },
+    { titre: "Du Campus à la Start-Up",                     cat: "Diagnostic",  fichier: "planches/DIAG COMMUN-10.pdf" },
+    { titre: "IA-Montpellier",                              cat: "Diagnostic",  fichier: "planches/DIAG COMMUN-11.pdf" },
+    { titre: "Atrium : De la Bibliothèque au Learning Center", cat: "Diagnostic", fichier: "planches/DIAG COMMUN-12.pdf" },
 ];
 
 let expoCurrent = 0;
@@ -5070,7 +5068,8 @@ function openExpoVirtuelle() {
 function closeExpoVirtuelle() {
     document.getElementById('expo-virtuelle-overlay').classList.add('hidden');
     document.body.style.overflow = '';
-    document.getElementById('expo-iframe').data = '';
+    const c = document.getElementById('expo-pdf-canvas');
+    if (c) c.getContext('2d').clearRect(0, 0, c.width, c.height);
 }
 
 function buildExpoThumbs() {
@@ -5107,23 +5106,35 @@ function expoGoTo(idx) {
     dlBtn.href = p.fichier;
     dlBtn.download = p.fichier.split('/').pop();
 
-    // Visionneuse PDF (object tag — contourne X-Frame-Options)
-    const iframe = document.getElementById('expo-iframe');
+    // Visionneuse PDF via PDF.js — contourne X-Frame-Options et Content-Disposition
+    const viewer = document.getElementById('expo-iframe');
     const fallback = document.getElementById('expo-fallback');
-    iframe.classList.add('hidden');
+    viewer.classList.remove('hidden');
     fallback.classList.add('hidden');
 
-    // Chargement via attribut data (balise object)
-    iframe.data = p.fichier;
-    iframe.classList.remove('hidden');
+    const canvas = document.getElementById('expo-pdf-canvas');
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Fallback après délai si le PDF n'est pas trouvé
-    setTimeout(() => {
-        // Si l'objet est vide ou en erreur, afficher le fallback
-        if (iframe.offsetHeight === 0 || !iframe.data) {
-            showExpoFallback(p);
-        }
-    }, 3000);
+    // Afficher un spinner pendant le chargement
+    canvas.style.opacity = '0.3';
+
+    pdfjsLib.getDocument(p.fichier).promise.then(function(pdf) {
+        return pdf.getPage(1);
+    }).then(function(page) {
+        const container = viewer;
+        const scale = Math.min(
+            (container.clientWidth  * 0.95) / page.getViewport({scale:1}).width,
+            (container.clientHeight * 0.95) / page.getViewport({scale:1}).height
+        );
+        const viewport = page.getViewport({ scale });
+        canvas.width  = viewport.width;
+        canvas.height = viewport.height;
+        canvas.style.opacity = '1';
+        return page.render({ canvasContext: ctx, viewport }).promise;
+    }).catch(function() {
+        showExpoFallback(p);
+    });
 
     // Boutons nav
     document.getElementById('expo-prev').style.opacity = expoCurrent === 0 ? '0.3' : '1';
