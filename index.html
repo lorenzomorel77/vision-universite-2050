@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Roboto:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { font-family: 'Roboto', sans-serif; background-color: #f3f4f6; transition: background-color 0.3s ease; }
+        body { font-family: 'Roboto', sans-serif; background-color: #F5F0E8; transition: background-color 0.3s ease; }
 /* Fix mobile horizontal scroll */
 html, body { max-width: 100%; overflow-x: hidden; }
 * { box-sizing: border-box; }
@@ -21,24 +21,24 @@ html, body { max-width: 100%; overflow-x: hidden; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
         /* Styles spécifiques Frise Chrono & Audio */
-        .timeline-line { position: absolute; left: 50%; top: 0; bottom: 0; width: 4px; background: #E0E7FF; transform: translateX(-50%); }
-        .timeline-point { position: absolute; left: 50%; width: 20px; height: 20px; background: #4F46E5; border: 4px solid white; border-radius: 50%; transform: translateX(-50%); z-index: 10; box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.2); }
+        .timeline-line { position: absolute; left: 50%; top: 0; bottom: 0; width: 4px; background: #EDE0CC; transform: translateX(-50%); }
+        .timeline-point { position: absolute; left: 50%; width: 20px; height: 20px; background: #8B2E2E; border: 4px solid white; border-radius: 50%; transform: translateX(-50%); z-index: 10; box-shadow: 0 0 0 4px rgba(139, 46, 46, 0.2); }
         .timeline-card { width: 45%; position: relative; }
         .timeline-card.left { left: 0; text-align: right; padding-right: 40px; }
         .timeline-card.right { left: 55%; text-align: left; padding-left: 40px; }
         .speaking-animation { display: flex; gap: 4px; justify-content: center; align-items: flex-end; height: 20px; }
-        .bar { width: 4px; background-color: #4F46E5; animation: speak 1s infinite ease-in-out; }
+        .bar { width: 4px; background-color: #8B2E2E; animation: speak 1s infinite ease-in-out; }
         .bar:nth-child(1) { animation-delay: 0.0s; height: 10px; }
         .bar:nth-child(2) { animation-delay: 0.1s; height: 15px; }
         .bar:nth-child(3) { animation-delay: 0.2s; height: 20px; }
         .bar:nth-child(4) { animation-delay: 0.3s; height: 12px; }
         @keyframes speak { 0%, 100% { height: 5px; } 50% { height: 20px; } }
-        .selected-persona { border-color: #4F46E5; background-color: #EEF2FF; transform: scale(1.02); }
+        .selected-persona { border-color: #8B2E2E; background-color: #F5F0E8; transform: scale(1.02); }
         
         /* Atlas Map Styles */
-        .map-hotspot { position: absolute; width: 24px; height: 24px; background-color: #F97316; border: 3px solid rgba(255, 255, 255, 0.8); border-radius: 50%; cursor: pointer; box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.7); animation: pulse-orange 2s infinite; transition: transform 0.3s ease; z-index: 20; }
-        .map-hotspot:hover { transform: scale(1.5); background-color: #4F46E5; z-index: 30; }
-        @keyframes pulse-orange { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(249, 115, 22, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(249, 115, 22, 0); } }
+        .map-hotspot { position: absolute; width: 24px; height: 24px; background-color: #C4622D; border: 3px solid rgba(255, 255, 255, 0.8); border-radius: 50%; cursor: pointer; box-shadow: 0 0 0 0 rgba(196, 98, 45, 0.7); animation: pulse-orange 2s infinite; transition: transform 0.3s ease; z-index: 20; }
+        .map-hotspot:hover { transform: scale(1.5); background-color: #8B2E2E; z-index: 30; }
+        @keyframes pulse-orange { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(196, 98, 45, 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(196, 98, 45, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(196, 98, 45, 0); } }
 
         /* Comparison Slider */
         .comparison-slider { position: relative; width: 100%; height: 100%; overflow: hidden; cursor: ew-resize; background-color: #111827; user-select: none; touch-action: none; }
@@ -46,8 +46,8 @@ html, body { max-width: 100%; overflow-x: hidden; }
         .comparison-slider .after-image { z-index: 1; }
         .comparison-slider .before-image-container { position: absolute; top: 0; left: 0; width: 50%; height: 100%; overflow: hidden; z-index: 2; border-right: 3px solid white; box-shadow: 5px 0 15px -5px rgba(0,0,0,0.4); background-color: #111827; }
         .comparison-slider .before-image-container img { width: 100vw; height: 100%; max-width: none; }
-        .comparison-handle { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 44px; height: 44px; background-color: white; border-radius: 50%; z-index: 3; display: flex; align-items: center; justify-content: center; color: #4F46E5; font-size: 1.2rem; pointer-events: none; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3); }
-        .btn-scenario.active { background-color: #F97316; color: white; border-color: #F97316; box-shadow: 0 0 10px rgba(249, 115, 22, 0.5); }
+        .comparison-handle { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 44px; height: 44px; background-color: white; border-radius: 50%; z-index: 3; display: flex; align-items: center; justify-content: center; color: #8B2E2E; font-size: 1.2rem; pointer-events: none; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3); }
+        .btn-scenario.active { background-color: #C4622D; color: white; border-color: #C4622D; box-shadow: 0 0 10px rgba(196, 98, 45, 0.5); }
 
         /* --- STYLES MODE EXPERT AMÉLIORÉS --- */
        /* Toggle Switch Styling */
@@ -57,7 +57,7 @@ html, body { max-width: 100%; overflow-x: hidden; }
 .expert-toggle-thumb { width: 1rem; height: 1rem; background-color: white; border-radius: 50%; position: absolute; top: 0.125rem; left: 0.125rem; transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1); box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
 
 /* État Actif */
-body.is-expert-mode .expert-toggle-track { background-color: #2563EB; }
+body.is-expert-mode .expert-toggle-track { background-color: #8B2E2E; }
 body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
 
 @media (min-width: 768px) {
@@ -74,7 +74,7 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
             font-weight: 400;
             color: #374151; 
             background-color: #F8FAFC; 
-            border-left: 4px solid #2563EB; /* Bleu accordé au badge */
+            border-left: 4px solid #8B2E2E; /* Bleu accordé au badge */
             padding: 0.75rem 1rem; 
             margin-top: 0.5rem; 
             border-radius: 0 0.5rem 0.5rem 0;
@@ -85,7 +85,7 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
         /* Badge Expert - BLEU ET BLANC */
         .expert-badge {
             display: inline-block;
-            background-color: #2563EB; /* Bleu */
+            background-color: #8B2E2E; /* Bleu */
             color: #FFFFFF; /* Blanc */
             font-size: 0.6rem;
             font-weight: 700;
@@ -125,15 +125,15 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
 .urban-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; background-color: #e5e7eb; padding: 4px; border-radius: 8px; box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06); }
 .urban-cell { aspect-ratio: 1; border-radius: 6px; position: relative; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); border: 2px solid transparent; }
 .urban-cell:hover { transform: scale(1.05); z-index: 10; filter: brightness(1.05); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
-.cell-nature { background-color: #dcfce7; border-color: #86efac; color: #166534; }
-.cell-concrete { background-color: #f3f4f6; border-color: #e5e7eb; color: #9ca3af; }
+.cell-nature { background-color: #F3F4F6; border-color: #D1D5DB; color: #4B5563; }
+.cell-concrete { background-color: #F5F0E8; border-color: #e5e7eb; color: #9ca3af; }
 .cell-occupied { animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); border-color: white !important; }
-.b-logement { background: linear-gradient(135deg, #fdba74 0%, #fb923c 100%); color: #7c2d12; }
-.b-labo { background: linear-gradient(135deg, #93c5fd 0%, #60a5fa 100%); color: #1e3a8a; }
-.b-tram { background: linear-gradient(135deg, #c4b5fd 0%, #a78bfa 100%); color: #4c1d95; }
-.b-parc { background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%); color: #064e3b; }
+.b-logement { background: linear-gradient(135deg, #E8B48A 0%, #D4824A 100%); color: #5C1A1A; }
+.b-labo { background: linear-gradient(135deg, #D4B896 0%, #C4905A 100%); color: #5C1A1A; }
+.b-tram { background: linear-gradient(135deg, #c4b5fd 0%, #BFA882 100%); color: #5C1A1A; }
+.b-parc { background: linear-gradient(135deg, #D1D5DB 0%, #9CA3AF 100%); color: #374151; }
 @keyframes popIn { from { transform: scale(0) rotate(-10deg); opacity: 0; } to { transform: scale(1) rotate(0); opacity: 1; } }
-.shake-anim { animation: shake 0.3s ease-in-out; border-color: #ef4444 !important; background-color: #fee2e2 !important; }
+.shake-anim { animation: shake 0.3s ease-in-out; border-color: #ef4444 !important; background-color: #F0E0D0 !important; }
 @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
 .selected-ring { ring-width: 4px; ring-color: #6366f1; transform: scale(1.05); }
    /* --- STYLE AGENCE IMMO 2100 (Version Complète) --- */
@@ -142,18 +142,18 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
 .agency-border { border: 1px solid #e5e7eb; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); background: white; }
 
 /* Boutons "Froids" */
-.agency-btn { background: white; border: 1px solid #dc2626; color: #dc2626; padding: 0.5rem 1rem; font-weight: 600; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em; transition: all 0.2s; border-radius: 2px; }
-.agency-btn:hover { background-color: #dc2626; color: white; }
-.agency-btn-primary { background-color: #dc2626; color: white; border: 1px solid #b91c1c; padding: 0.75rem 1.5rem; font-weight: 700; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.1em; border-radius: 2px; box-shadow: 0 2px 4px rgba(220, 38, 38, 0.2); }
-.agency-btn-primary:hover { background-color: #991b1b; transform: translateY(-1px); }
+.agency-btn { background: white; border: 1px solid #8B2E2E; color: #8B2E2E; padding: 0.5rem 1rem; font-weight: 600; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em; transition: all 0.2s; border-radius: 2px; }
+.agency-btn:hover { background-color: #8B2E2E; color: white; }
+.agency-btn-primary { background-color: #8B2E2E; color: white; border: 1px solid #6B1F1F; padding: 0.75rem 1.5rem; font-weight: 700; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.1em; border-radius: 2px; box-shadow: 0 2px 4px rgba(139, 46, 46, 0.2); }
+.agency-btn-primary:hover { background-color: #5C1A1A; transform: translateY(-1px); }
 
 /* Cartes */
 .agency-card { transition: all 0.2s; border: 1px solid #e5e7eb; background: white; position: relative; overflow: hidden; }
-.agency-card:hover { border-color: #dc2626; box-shadow: 0 10px 20px -5px rgba(220, 38, 38, 0.15); transform: translateY(-2px); }
+.agency-card:hover { border-color: #8B2E2E; box-shadow: 0 10px 20px -5px rgba(139, 46, 46, 0.15); transform: translateY(-2px); }
 
 /* Tags */
 .agency-tag { display: inline-flex; align-items: center; background: #f3f4f6; color: #4b5563; padding: 2px 8px; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; border: 1px solid #e5e7eb; border-radius: 2px; }
-.agency-tag-red { background: #fef2f2; color: #dc2626; border-color: #fee2e2; }
+.agency-tag-red { background: #F9F3EC; color: #8B2E2E; border-color: #F0E0D0; }
 
 /* Document Bail (Lease) - Imitation Papier A4 Officiel */
 .lease-paper { 
@@ -165,41 +165,41 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
     position: relative;
     color: #000;
 }
-.lease-watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); font-size: 6rem; font-weight: 900; color: rgba(220, 38, 38, 0.05); border: 4px solid rgba(220, 38, 38, 0.05); padding: 1rem; pointer-events: none; white-space: nowrap; z-index: 0; }
+.lease-watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); font-size: 6rem; font-weight: 900; color: rgba(139, 46, 46, 0.05); border: 4px solid rgba(139, 46, 46, 0.05); padding: 1rem; pointer-events: none; white-space: nowrap; z-index: 0; }
 .stamp-animation { animation: stampIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; opacity: 0; transform: scale(3) rotate(-15deg); }
 @keyframes stampIn { 100% { opacity: 0.9; transform: scale(1) rotate(-15deg); } }
 
 /* Loader Bureaucratique */
 .processing-overlay { background: rgba(255,255,255,0.9); backdrop-filter: blur(2px); z-index: 50; display: flex; flex-col; justify-content: center; align-items: center; }
-.scan-line { width: 100%; height: 2px; background: #dc2626; animation: scan 2s linear infinite; position: absolute; top: 0; }
+.scan-line { width: 100%; height: 2px; background: #8B2E2E; animation: scan 2s linear infinite; position: absolute; top: 0; }
 @keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
  /* --- EXTENSIONS AGENCE 2100 (AJOUT) --- */
-.agency-ticker-wrap { position: fixed; bottom: 0; left: 0; width: 100%; overflow: hidden; height: 30px; background-color: #111; border-top: 1px solid #dc2626; z-index: 250; display: flex; align-items: center; pointer-events: none; }
+.agency-ticker-wrap { position: fixed; bottom: 0; left: 0; width: 100%; overflow: hidden; height: 30px; background-color: #111; border-top: 1px solid #8B2E2E; z-index: 250; display: flex; align-items: center; pointer-events: none; }
 .agency-ticker { display: inline-block; white-space: nowrap; padding-left: 100%; animation: ticker 30s linear infinite; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #fff; text-transform: uppercase; }
 .agency-ticker span { margin-right: 40px; }
-.agency-ticker .highlight { color: #dc2626; font-weight: bold; }
+.agency-ticker .highlight { color: #8B2E2E; font-weight: bold; }
 @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-100%, 0, 0); } }
 
 .survival-filters { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 12px; scrollbar-width: none; -ms-overflow-style: none; }
 .survival-filters::-webkit-scrollbar { display: none; }
 .survival-btn { white-space: nowrap; padding: 6px 12px; border: 1px solid #e5e7eb; background: white; border-radius: 20px; font-size: 10px; font-weight: bold; text-transform: uppercase; color: #6b7280; transition: all 0.2s; cursor: pointer; display: flex; align-items: center; gap: 4px; }
-.survival-btn:hover, .survival-btn.active { border-color: #dc2626; color: #dc2626; background: #fef2f2; transform: translateY(-1px); }
+.survival-btn:hover, .survival-btn.active { border-color: #8B2E2E; color: #8B2E2E; background: #F9F3EC; transform: translateY(-1px); }
 
-.agency-bot-trigger { position: absolute; bottom: 40px; right: 20px; width: 50px; height: 50px; background: #dc2626; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; box-shadow: 0 4px 10px rgba(220, 38, 38, 0.4); cursor: pointer; z-index: 210; transition: transform 0.3s; animation: pulse-red 3s infinite; }
+.agency-bot-trigger { position: absolute; bottom: 40px; right: 20px; width: 50px; height: 50px; background: #8B2E2E; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; box-shadow: 0 4px 10px rgba(220, 38, 38, 0.4); cursor: pointer; z-index: 210; transition: transform 0.3s; animation: pulse-red 3s infinite; }
 .agency-bot-trigger:hover { transform: scale(1.1); }
 .agency-chat-window { position: absolute; bottom: 100px; right: 20px; width: 300px; height: 350px; background: white; border: 1px solid #e5e7eb; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); z-index: 220; display: none; flex-direction: column; overflow: hidden; font-family: 'Roboto', sans-serif; }
 .chat-header { background: #1f2937; color: white; padding: 10px; font-size: 12px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
 .chat-body { flex-grow: 1; padding: 10px; overflow-y: auto; background: #f9fafb; display: flex; flex-direction: column; gap: 8px; font-size: 11px; }
 .chat-msg { padding: 8px; border-radius: 6px; max-width: 80%; line-height: 1.4; }
 .msg-bot { background: #e5e7eb; color: #374151; align-self: flex-start; border-bottom-left-radius: 0; }
-.msg-user { background: #dc2626; color: white; align-self: flex-end; border-bottom-right-radius: 0; }
+.msg-user { background: #8B2E2E; color: white; align-self: flex-end; border-bottom-right-radius: 0; }
 .chat-input-area { padding: 10px; border-top: 1px solid #e5e7eb; display: flex; gap: 5px; background: white; }
 .chat-input { flex-grow: 1; border: 1px solid #d1d5db; border-radius: 4px; padding: 6px; font-size: 11px; outline: none; }
-.chat-input:focus { border-color: #dc2626; }
+.chat-input:focus { border-color: #8B2E2E; }
 
-.agency-toast { position: absolute; top: 70px; right: 20px; background: rgba(31, 41, 55, 0.95); color: white; padding: 10px 15px; border-left: 4px solid #dc2626; border-radius: 4px; font-size: 10px; z-index: 300; transform: translateX(150%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 4px 6px rgba(0,0,0,0.1); max-width: 250px; backdrop-filter: blur(4px); pointer-events: none; }
+.agency-toast { position: absolute; top: 70px; right: 20px; background: rgba(31, 41, 55, 0.95); color: white; padding: 10px 15px; border-left: 4px solid #8B2E2E; border-radius: 4px; font-size: 10px; z-index: 300; transform: translateX(150%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 4px 6px rgba(0,0,0,0.1); max-width: 250px; backdrop-filter: blur(4px); pointer-events: none; }
 .agency-toast.show { transform: translateX(0); }
-@keyframes pulse-red { 0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(220, 38, 38, 0); } 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); } }
+@keyframes pulse-red { 0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(139, 46, 46, 0); } 100% { box-shadow: 0 0 0 0 rgba(139, 46, 46, 0); } }
 /* --- STYLE LABORATOIRE FRINGE (TERMINAL HACKER) --- */
 /* Police et ambiance */
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
@@ -209,7 +209,7 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
 /* Wrapper principal : Écran noir + Scanlines */
 .fringe-wrapper { 
     position: fixed; inset: 0; z-index: 300; 
-    background-color: #050505; color: #33ff00; 
+    background-color: #050505; color: #C4622D; 
     display: none; overflow: hidden;
     font-family: 'Share Tech Mono', monospace;
 }
@@ -235,7 +235,7 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
 
 /* Liste des dossiers */
 .fringe-file { 
-    border: 1px solid #33ff00; padding: 12px; margin-bottom: 8px; 
+    border: 1px solid #C4622D; padding: 12px; margin-bottom: 8px; 
     cursor: pointer; opacity: 0.6; transition: all 0.2s; position: relative; 
 }
 .fringe-file:hover, .fringe-file.active { 
@@ -244,20 +244,59 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
 }
 .fringe-file.locked::after { content: "🔒"; position: absolute; right: 10px; }
 .fringe-file.unlocked::after { content: "🔓"; position: absolute; right: 10px; }
-.fringe-file.unlocked { border-color: #ff3333; color: #ff3333; box-shadow: 0 0 10px rgba(255, 51, 51, 0.2); }
+.fringe-file.unlocked { border-color: #B03030; color: #B03030; box-shadow: 0 0 10px rgba(255, 51, 51, 0.2); }
 
 /* Barre de décryptage */
-.decrypt-box { border: 1px solid #33ff00; padding: 2px; margin-top: 20px; width: 100%; display: none; }
-.decrypt-fill { height: 20px; background: #33ff00; width: 0%; transition: width 0.1s linear; }
+.decrypt-box { border: 1px solid #C4622D; padding: 2px; margin-top: 20px; width: 100%; display: none; }
+.decrypt-fill { height: 20px; background: #C4622D; width: 0%; transition: width 0.1s linear; }
+
+    /* ===== PALETTE MEDVALLEE - PLANCHE INNOVATION ===== */
+    :root {
+        --primary: #8B2E2E;
+        --primary-dark: #5C1A1A;
+        --primary-light: #EDE0CC;
+        --accent: #C4622D;
+        --accent-light: #E8B48A;
+        --bg-warm: #F5F0E8;
+        --text-dark: #2C2C2C;
+        --border-warm: #D4C5A9;
+    }
+    /* Override Tailwind indigo → bordeaux */
+    .bg-[#8B2E2E], .bg-[#9B3535], .bg-[#6B2020] { background-color: #8B2E2E !important; }
+    .bg-[#F5F0E8], .bg-[#FAF7F2] { background-color: #F5F0E8 !important; }
+    .bg-[#EDE0CC] { background-color: #EDE0CC !important; }
+    .text-[#8B2E2E], .text-[#9B3535], .text-[#6B2020] { color: #8B2E2E !important; }
+    .text-[#F5F0E8], .text-[#EDE0CC] { color: #F5F0E8 !important; }
+    .border-[#8B2E2E], .border-[#8B2E2E] { border-color: #8B2E2E !important; }
+    .ring-[#8B2E2E], .focus\:ring-[#8B2E2E] { --tw-ring-color: rgba(139,46,46,0.5) !important; }
+    .from-[#9B3535], .from-[#8B2E2E] { --tw-gradient-from: #8B2E2E !important; }
+    .to-[#6B2020], .to-[#8B2E2E] { --tw-gradient-to: #5C1A1A !important; }
+    /* Override Tailwind orange → ocre */
+    .bg-[#C4622D], .bg-[#D4824A] { background-color: #C4622D !important; }
+    .bg-[#F5EBE0], .bg-[#FAF3EC] { background-color: #F5EBE0 !important; }
+    .text-[#C4622D], .text-[#9E4A20] { color: #C4622D !important; }
+    .border-[#C4622D] { border-color: #C4622D !important; }
+    .from-[#D4824A], .from-[#C4622D] { --tw-gradient-from: #C4622D !important; }
+    .to-[#9E4A20] { --tw-gradient-to: #9E4A20 !important; }
+    /* Override Tailwind blue → bordeaux clair */
+    .bg-[#8B2E2E], .bg-[#9B3535] { background-color: #8B2E2E !important; }
+    .bg-[#F5F0E8], .bg-[#FAF7F2] { background-color: #F0E8DC !important; }
+    .text-[#8B2E2E], .text-[#9B3535], .text-[#6B2020] { color: #8B2E2E !important; }
+    /* Override Tailwind violet/purple */
+    .bg-[#9B3535], .bg-[#9B3535], .bg-[#8B2E2E] { background-color: #8B2E2E !important; }
+    .text-[#8B2E2E], .text-[#8B2E2E] { color: #8B2E2E !important; }
+    /* Fond global */
+    body { background-color: #F5F0E8 !important; }
+    /* ===== FIN PALETTE ===== */
 </style>
 </head>
 <body class="min-h-screen flex flex-col relative transition-colors duration-500">
 
     <canvas id="atmosphere-canvas" class="fixed inset-0 z-0 pointer-events-none opacity-60"></canvas>    
     <!-- BOUTON GLOSSAIRE FIXE GAUCHE -->
-   <button onclick="openGlossary()" class="fixed left-0 top-1/2 transform -translate-y-1/2 z-40 bg-white hover:bg-indigo-50 text-indigo-900 shadow-[0_4px_20px_rgba(0,0,0,0.15)] border-y border-r border-indigo-100 rounded-r-xl py-3 px-1.5 md:py-4 md:px-2 flex flex-col items-center gap-1 md:gap-2 transition-all duration-300 hover:pl-2 md:hover:pl-4 hover:border-orange-200 group">
-    <i class="fas fa-book text-lg md:text-2xl text-orange-500 group-hover:scale-110 transition-transform duration-300"></i>
-    <span class="text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-indigo-800 hidden md:block" style="writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg);">Glossaire</span>
+   <button onclick="openGlossary()" class="fixed left-0 top-1/2 transform -translate-y-1/2 z-40 bg-white hover:bg-[#FAF7F2] text-[#3D0E0E] shadow-[0_4px_20px_rgba(0,0,0,0.15)] border-y border-r border-[#F5F0E8] rounded-r-xl py-3 px-1.5 md:py-4 md:px-2 flex flex-col items-center gap-1 md:gap-2 transition-all duration-300 hover:pl-2 md:hover:pl-4 hover:border-[#F0D0B0] group">
+    <i class="fas fa-book text-lg md:text-2xl text-[#C4622D] group-hover:scale-110 transition-transform duration-300"></i>
+    <span class="text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-[#5C1A1A] hidden md:block" style="writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg);">Glossaire</span>
 </button>
 
     <!-- OVERLAYS ET MODALS -->
@@ -278,23 +317,23 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
                 <div id="reality-content" class="text-gray-800 text-xs md:text-sm leading-relaxed space-y-3 md:space-y-4 font-medium"></div>
             </div>
                <div id="weather-modal" class="fixed top-4 right-4 left-4 md:left-auto z-[120] hidden fade-in max-w-sm w-auto md:w-full mx-auto md:mx-0">
-    <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl border-l-4 border-blue-500 overflow-hidden relative">
+    <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl border-l-4 border-[#8B2E2E] overflow-hidden relative">
         <button onclick="document.getElementById('weather-modal').classList.add('hidden')" class="absolute top-2 right-2 text-gray-400 hover:text-gray-600 z-10">
             <i class="fas fa-times"></i>
         </button>
         <div class="p-3 md:p-4 flex items-start gap-3 md:gap-4">
-            <div class="bg-blue-100 text-blue-600 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center text-xl md:text-2xl shrink-0 animate-bounce">
+            <div class="bg-[#F5F0E8] text-[#8B2E2E] w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center text-xl md:text-2xl shrink-0 animate-bounce">
                 <i class="fas fa-cloud-showers-heavy"></i>
             </div>
             <div class="flex-1 min-w-0">
                 <h4 class="font-bold text-gray-800 text-xs md:text-sm uppercase tracking-wide mb-1">Alerte Météo : Montpellier</h4>
                 <p class="text-[10px] md:text-xs text-gray-600 leading-relaxed">
                     Il pleut actuellement sur le campus ! 🌧️<br>
-                    <span class="font-bold text-blue-600">Question :</span> Avez-vous pensé à la <strong class="underline cursor-help" title="Rendre les sols perméables pour éviter les inondations">désimperméabilisation</strong> des sols dans vos choix stratégiques ?
+                    <span class="font-bold text-[#8B2E2E]">Question :</span> Avez-vous pensé à la <strong class="underline cursor-help" title="Rendre les sols perméables pour éviter les inondations">désimperméabilisation</strong> des sols dans vos choix stratégiques ?
                 </p>
             </div>
         </div>
-        <div class="bg-blue-50 p-2 text-[9px] md:text-[10px] text-blue-800 text-center font-mono">
+        <div class="bg-[#FAF7F2] p-2 text-[9px] md:text-[10px] text-[#5C1A1A] text-center font-mono">
             Données temps réel • <span id="real-temp">--</span>°C
         </div>
     </div>
@@ -311,8 +350,8 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
     </div>
 
     <div id="fact-overlay" class="fixed inset-0 bg-black bg-opacity-60 hidden z-[70] flex items-center justify-center p-4 md:p-6 fade-in">
-    <div class="bg-white rounded-xl p-5 md:p-8 max-w-lg w-full text-center shadow-2xl relative border-t-8 border-orange-500 max-h-[90vh] overflow-y-auto">
-        <div class="mx-auto w-12 h-12 md:w-16 md:h-16 bg-orange-100 text-orange-500 rounded-full flex items-center justify-center mb-3 md:mb-4 text-2xl md:text-3xl">
+    <div class="bg-white rounded-xl p-5 md:p-8 max-w-lg w-full text-center shadow-2xl relative border-t-8 border-[#C4622D] max-h-[90vh] overflow-y-auto">
+        <div class="mx-auto w-12 h-12 md:w-16 md:h-16 bg-[#F5EBE0] text-[#C4622D] rounded-full flex items-center justify-center mb-3 md:mb-4 text-2xl md:text-3xl">
             <i class="fas fa-info"></i>
         </div>
         <h3 class="text-xl md:text-2xl font-bold text-gray-800 mb-3 md:mb-4 title-font">Le Saviez-vous ?</h3>
@@ -323,7 +362,7 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
             <!-- Injecté par JS -->
         </div>
 
-        <button id="close-fact-btn" class="w-full bg-orange-500 text-white px-4 md:px-6 py-2.5 md:py-3 rounded-lg font-bold hover:bg-orange-600 transition transform hover:scale-[1.02] shadow-md flex items-center justify-center gap-2 text-sm md:text-base">
+        <button id="close-fact-btn" class="w-full bg-[#C4622D] text-white px-4 md:px-6 py-2.5 md:py-3 rounded-lg font-bold hover:bg-[#9E4A20] transition transform hover:scale-[1.02] shadow-md flex items-center justify-center gap-2 text-sm md:text-base">
             Suivant <i class="fas fa-arrow-right"></i>
         </button>
         </div>
@@ -337,7 +376,7 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
         <div class="w-full h-full flex items-center justify-center p-4 bg-black">
             <img id="scenario-reveal-img" src="" onerror="this.onerror=null; this.src=this.src.replace('.png', '.jpg');" alt="Illustration Scénario" class="max-w-full max-h-screen object-contain shadow-2xl">
         </div>
-        <button id="skip-scenario-btn" onclick="closeScenarioImage()" class="absolute bottom-10 bg-white text-indigo-900 hover:bg-orange-500 hover:text-white font-bold py-3 px-8 rounded-full shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all transform hover:scale-105 hidden flex items-center gap-3 z-50 text-lg border-2 border-indigo-900">
+        <button id="skip-scenario-btn" onclick="closeScenarioImage()" class="absolute bottom-10 bg-white text-[#3D0E0E] hover:bg-[#C4622D] hover:text-white font-bold py-3 px-8 rounded-full shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all transform hover:scale-105 hidden flex items-center gap-3 z-50 text-lg border-2 border-[#3D0E0E]">
             <span>Découvrir le résultat</span> <i class="fas fa-arrow-right"></i>
         </button>
     </div>
@@ -346,7 +385,7 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
     <div id="atrium-modal" class="fixed inset-0 bg-black z-[95] hidden flex flex-col fade-in">
     <div class="absolute top-0 left-0 right-0 p-3 md:p-4 z-50 flex justify-between items-start bg-gradient-to-b from-black/80 to-transparent pointer-events-none">
         <div class="pointer-events-auto text-white drop-shadow-md">
-            <h2 class="text-base md:text-2xl font-bold title-font"><i class="fas fa-exchange-alt mr-1 md:mr-2 text-orange-500"></i>L'ATRIUM 2100</h2>
+            <h2 class="text-base md:text-2xl font-bold title-font"><i class="fas fa-exchange-alt mr-1 md:mr-2 text-[#C4622D]"></i>L'ATRIUM 2100</h2>
             <p class="text-[10px] md:text-sm opacity-90">Comparaison : 2023 vs Vision Future</p>
         </div>
             <button onclick="closeAtrium()" class="pointer-events-auto bg-white/20 hover:bg-white/40 backdrop-blur-sm text-white rounded-full w-10 h-10 flex items-center justify-center transition-colors shadow-lg"><i class="fas fa-times text-xl"></i></button>
@@ -375,13 +414,13 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
         </div>
     </div>
 
-    <div id="atlas-modal" class="fixed inset-0 bg-indigo-900 bg-opacity-95 hidden z-[80] flex flex-col items-center justify-center p-3 md:p-4 fade-in">
-    <div class="absolute top-3 right-3 md:top-4 md:right-4 z-50"><button onclick="closeAtlas()" class="text-white hover:text-orange-400 transition-colors text-2xl md:text-3xl"><i class="fas fa-times"></i></button></div>
+    <div id="atlas-modal" class="fixed inset-0 bg-[#3D0E0E] bg-opacity-95 hidden z-[80] flex flex-col items-center justify-center p-3 md:p-4 fade-in">
+    <div class="absolute top-3 right-3 md:top-4 md:right-4 z-50"><button onclick="closeAtlas()" class="text-white hover:text-[#D4824A] transition-colors text-2xl md:text-3xl"><i class="fas fa-times"></i></button></div>
     <div class="text-center mb-4 md:mb-6 text-white z-10">
-        <h2 class="text-xl md:text-3xl font-extrabold title-font tracking-wider"><i class="fas fa-globe-americas mr-2 text-orange-500"></i>ATLAS UNIVERSITAIRE</h2>
-        <p class="text-indigo-200 text-xs md:text-sm">Explorez les dynamiques mondiales de l'enseignement supérieur</p>
+        <h2 class="text-xl md:text-3xl font-extrabold title-font tracking-wider"><i class="fas fa-globe-americas mr-2 text-[#C4622D]"></i>ATLAS UNIVERSITAIRE</h2>
+        <p class="text-[#EDE0CC] text-xs md:text-sm">Explorez les dynamiques mondiales de l'enseignement supérieur</p>
     </div>
-        <div class="relative w-full max-w-5xl aspect-video bg-indigo-800 rounded-xl overflow-hidden shadow-2xl border border-indigo-600 group">
+        <div class="relative w-full max-w-5xl aspect-video bg-[#5C1A1A] rounded-xl overflow-hidden shadow-2xl border border-[#8B2E2E] group">
             <img src="1024px-BlankMap-World.svg.png" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/World_map_blank_without_borders.svg/1024px-World_map_blank_without_borders.svg.png'" alt="Carte du Monde" class="absolute inset-0 w-full h-full object-fill opacity-90 group-hover:opacity-100 transition-opacity duration-500">
             <div onclick="showAtlasFact('usa')" class="map-hotspot" style="top: 33%; left: 24%;" title="États-Unis"></div>
             <div onclick="showAtlasFact('europe')" class="map-hotspot" style="top: 27%; left: 49.5%;" title="Europe"></div>
@@ -390,13 +429,13 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
             <div onclick="showAtlasFact('india')" class="map-hotspot" style="top: 40%; left: 69%;" title="Inde"></div>
             <div onclick="showAtlasFact('philippines')" class="map-hotspot" style="top: 48%; left: 83%;" title="Philippines"></div>
         </div>
-        <p class="text-indigo-400 text-xs mt-4 italic">Cliquez sur les points oranges pour découvrir les données clés.</p>
+        <p class="text-[#B04040] text-xs mt-4 italic">Cliquez sur les points oranges pour découvrir les données clés.</p>
     </div>
 
     <div id="atlas-info-box" class="fixed inset-0 bg-white z-[85] hidden flex flex-col animate-fade-in">
-        <div class="bg-indigo-900 text-white p-6 flex justify-between items-center shadow-md flex-shrink-0">
+        <div class="bg-[#3D0E0E] text-white p-6 flex justify-between items-center shadow-md flex-shrink-0">
             <h4 id="atlas-country" class="text-2xl font-bold uppercase tracking-wide title-font">PAYS</h4>
-            <button onclick="hideAtlasFact()" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-6 rounded-full transition-colors flex items-center gap-2"><span>Fermer</span> <i class="fas fa-times"></i></button>
+            <button onclick="hideAtlasFact()" class="bg-[#C4622D] hover:bg-[#9E4A20] text-white font-bold py-2 px-6 rounded-full transition-colors flex items-center gap-2"><span>Fermer</span> <i class="fas fa-times"></i></button>
         </div>
         <div class="flex-grow overflow-y-auto p-8 md:p-12 bg-gray-50"><div id="atlas-content" class="max-w-4xl mx-auto text-gray-800 text-lg leading-relaxed space-y-6"></div></div>
     </div>
@@ -421,8 +460,8 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
                 <span id="page-indicator" class="text-xs md:text-sm bg-gray-700 px-2 md:px-3 py-1 rounded-full whitespace-nowrap">Page 1 / 4</span>
             </div>
             <div class="flex items-center gap-2 md:gap-3 w-full md:w-auto justify-center">
-                <button onclick="prevPdf()" id="btn-prev" class="bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white px-3 md:px-4 py-1.5 md:py-2 rounded transition-colors shadow-sm flex items-center gap-1 md:gap-2 text-sm"><i class="fas fa-chevron-left"></i> <span class="hidden md:inline">Précédent</span></button>
-                <button onclick="nextPdf()" id="btn-next" class="bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white px-3 md:px-4 py-1.5 md:py-2 rounded transition-colors shadow-sm flex items-center gap-1 md:gap-2 text-sm"><span class="hidden md:inline">Suivant</span> <i class="fas fa-chevron-right"></i></button>
+                <button onclick="prevPdf()" id="btn-prev" class="bg-[#8B2E2E] hover:bg-[#FAF7F2]0 disabled:opacity-50 text-white px-3 md:px-4 py-1.5 md:py-2 rounded transition-colors shadow-sm flex items-center gap-1 md:gap-2 text-sm"><i class="fas fa-chevron-left"></i> <span class="hidden md:inline">Précédent</span></button>
+                <button onclick="nextPdf()" id="btn-next" class="bg-[#8B2E2E] hover:bg-[#FAF7F2]0 disabled:opacity-50 text-white px-3 md:px-4 py-1.5 md:py-2 rounded transition-colors shadow-sm flex items-center gap-1 md:gap-2 text-sm"><span class="hidden md:inline">Suivant</span> <i class="fas fa-chevron-right"></i></button>
                     <button onclick="closePdfModal()" class="text-white hover:text-red-400 transition-colors text-2xl px-2 ml-auto md:ml-0"><i class="fas fa-times"></i></button>
                 </div>
             </div>
@@ -432,8 +471,8 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
 
     <div id="timeline-modal" class="fixed inset-0 bg-black bg-opacity-80 hidden z-[65] flex items-center justify-center p-2 md:p-6 fade-in">
     <div class="bg-white rounded-xl shadow-2xl w-full max-w-4xl h-full flex flex-col overflow-hidden relative">
-        <div class="bg-indigo-900 text-white p-4 md:p-6 flex justify-between items-center shadow-md z-10">
-            <div><h3 class="text-lg md:text-2xl font-bold title-font"><i class="fas fa-history mr-2 text-orange-400"></i> Histoire du Campus</h3><p class="text-[10px] md:text-xs text-indigo-200 mt-1">De la médecine médiévale à la ville de demain</p></div>
+        <div class="bg-[#3D0E0E] text-white p-4 md:p-6 flex justify-between items-center shadow-md z-10">
+            <div><h3 class="text-lg md:text-2xl font-bold title-font"><i class="fas fa-history mr-2 text-[#D4824A]"></i> Histoire du Campus</h3><p class="text-[10px] md:text-xs text-[#EDE0CC] mt-1">De la médecine médiévale à la ville de demain</p></div>
                 <button onclick="closeTimeline()" class="text-white hover:text-red-400 transition-colors text-2xl"><i class="fas fa-times"></i></button>
             </div>
             <div class="flex-grow overflow-y-auto p-6 bg-gray-50 relative" id="timeline-container">
@@ -446,8 +485,8 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
     
     <div id="stats-modal" class="fixed inset-0 bg-black bg-opacity-80 hidden z-[75] flex items-center justify-center p-2 md:p-6 fade-in">
     <div class="bg-white rounded-xl shadow-2xl w-full max-w-4xl h-full md:h-auto md:max-h-[90vh] flex flex-col overflow-hidden relative">
-        <div class="bg-indigo-900 text-white p-3 md:p-6 flex justify-between items-center shadow-md z-10 shrink-0">
-            <div><h3 class="text-lg md:text-2xl font-bold title-font"><i class="fas fa-chart-pie mr-2 text-orange-400"></i> Observatoire des Données</h3><p class="text-[10px] md:text-xs text-indigo-200 mt-1">L'impact universitaire en chiffres</p></div>
+        <div class="bg-[#3D0E0E] text-white p-3 md:p-6 flex justify-between items-center shadow-md z-10 shrink-0">
+            <div><h3 class="text-lg md:text-2xl font-bold title-font"><i class="fas fa-chart-pie mr-2 text-[#D4824A]"></i> Observatoire des Données</h3><p class="text-[10px] md:text-xs text-[#EDE0CC] mt-1">L'impact universitaire en chiffres</p></div>
                 <button onclick="closeStats()" class="text-white hover:text-red-400 transition-colors text-2xl"><i class="fas fa-times"></i></button>
             </div>
             <div class="flex-grow flex flex-col bg-gray-50 overflow-y-auto">
@@ -461,17 +500,17 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
                 <div class="bg-white border-t border-gray-200 p-4 shrink-0">
                     <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 ml-2">Choisir une visualisation :</p>
                     <div class="flex gap-4 overflow-x-auto pb-2 snap-x px-2" style="-webkit-overflow-scrolling: touch;">
-                        <button onclick="renderStat(0)" class="snap-start shrink-0 w-40 p-3 rounded-lg border-2 border-transparent hover:border-indigo-500 bg-gray-50 hover:bg-indigo-50 transition-all text-left group focus:ring-2 focus:ring-indigo-500 focus:outline-none">
-                            <div class="flex items-center gap-2 mb-1"><i class="fas fa-users text-orange-500 bg-orange-100 p-2 rounded-full"></i><span class="text-xs font-bold text-gray-700 group-hover:text-indigo-700">Poids Démographique</span></div>
-                            <div class="h-1 w-full bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-orange-500 w-1/4"></div></div>
+                        <button onclick="renderStat(0)" class="snap-start shrink-0 w-40 p-3 rounded-lg border-2 border-transparent hover:border-[#9B3535] bg-gray-50 hover:bg-[#FAF7F2] transition-all text-left group focus:ring-2 focus:ring-[#8B2E2E] focus:outline-none">
+                            <div class="flex items-center gap-2 mb-1"><i class="fas fa-users text-[#C4622D] bg-[#F5EBE0] p-2 rounded-full"></i><span class="text-xs font-bold text-gray-700 group-hover:text-[#6B2020]">Poids Démographique</span></div>
+                            <div class="h-1 w-full bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-[#C4622D] w-1/4"></div></div>
                         </button>
-                        <button onclick="renderStat(1)" class="snap-start shrink-0 w-40 p-3 rounded-lg border-2 border-transparent hover:border-indigo-500 bg-gray-50 hover:bg-indigo-50 transition-all text-left group focus:ring-2 focus:ring-indigo-500 focus:outline-none">
-                            <div class="flex items-center gap-2 mb-1"><i class="fas fa-map-marked-alt text-blue-500 bg-blue-100 p-2 rounded-full"></i><span class="text-xs font-bold text-gray-700 group-hover:text-indigo-700">Fragmentation Territoriale</span></div>
-                             <div class="h-1 w-full bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-blue-500 w-2/3"></div></div>
+                        <button onclick="renderStat(1)" class="snap-start shrink-0 w-40 p-3 rounded-lg border-2 border-transparent hover:border-[#9B3535] bg-gray-50 hover:bg-[#FAF7F2] transition-all text-left group focus:ring-2 focus:ring-[#8B2E2E] focus:outline-none">
+                            <div class="flex items-center gap-2 mb-1"><i class="fas fa-map-marked-alt text-[#9B3535] bg-[#F5F0E8] p-2 rounded-full"></i><span class="text-xs font-bold text-gray-700 group-hover:text-[#6B2020]">Fragmentation Territoriale</span></div>
+                             <div class="h-1 w-full bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-[#9B3535] w-2/3"></div></div>
                         </button>
-                        <button onclick="renderStat(2)" class="snap-start shrink-0 w-40 p-3 rounded-lg border-2 border-transparent hover:border-indigo-500 bg-gray-50 hover:bg-indigo-50 transition-all text-left group focus:ring-2 focus:ring-indigo-500 focus:outline-none">
-                            <div class="flex items-center gap-2 mb-1"><i class="fas fa-balance-scale text-purple-500 bg-purple-100 p-2 rounded-full"></i><span class="text-xs font-bold text-gray-700 group-hover:text-indigo-700">Inégalités de Moyens</span></div>
-                             <div class="h-1 w-full bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-purple-500 w-1/2"></div></div>
+                        <button onclick="renderStat(2)" class="snap-start shrink-0 w-40 p-3 rounded-lg border-2 border-transparent hover:border-[#9B3535] bg-gray-50 hover:bg-[#FAF7F2] transition-all text-left group focus:ring-2 focus:ring-[#8B2E2E] focus:outline-none">
+                            <div class="flex items-center gap-2 mb-1"><i class="fas fa-balance-scale text-[#9B3535] bg-[#F5F0E8] p-2 rounded-full"></i><span class="text-xs font-bold text-gray-700 group-hover:text-[#6B2020]">Inégalités de Moyens</span></div>
+                             <div class="h-1 w-full bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-[#9B3535] w-1/2"></div></div>
                         </button>
                     </div>
                 </div>
@@ -486,7 +525,7 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
                 <button onclick="closeCgu()" class="text-white hover:text-red-400 transition-colors text-xl"><i class="fas fa-times"></i></button>
             </div>
             <div class="flex-grow overflow-y-auto p-8 text-gray-700 text-sm leading-relaxed" style="-webkit-overflow-scrolling: touch;">
-                <h4 class="text-xl font-bold text-indigo-900 mb-4">1. Objet des CGU</h4>
+                <h4 class="text-xl font-bold text-[#3D0E0E] mb-4">1. Objet des CGU</h4>
                 <p class="mb-4">Les présentes Conditions Générales d'Utilisation (ci-après « CGU ») ont pour objet de définir les modalités d'accès et d'utilisation du site...</p>
                 <p class="italic text-gray-400">(Contenu complet conservé)</p>
             </div>
@@ -494,16 +533,16 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
     </div>
 
     <div id="glossary-modal" class="fixed inset-0 bg-black bg-opacity-80 hidden z-[95] flex items-center justify-center p-3 md:p-4 fade-in">
-    <div class="bg-white rounded-xl shadow-2xl w-full max-w-xl max-h-[85vh] md:max-h-[70vh] flex flex-col overflow-hidden relative border-t-4 border-indigo-500">
-        <div class="bg-indigo-900 text-white p-3 md:p-4 flex justify-between items-center shadow-md shrink-0">
+    <div class="bg-white rounded-xl shadow-2xl w-full max-w-xl max-h-[85vh] md:max-h-[70vh] flex flex-col overflow-hidden relative border-t-4 border-[#9B3535]">
+        <div class="bg-[#3D0E0E] text-white p-3 md:p-4 flex justify-between items-center shadow-md shrink-0">
             <h3 class="text-base md:text-lg font-bold"><i class="fas fa-book mr-2"></i> Glossaire Urbain</h3>
             <button onclick="closeGlossary()" class="text-white hover:text-red-400 transition-colors text-lg md:text-xl"><i class="fas fa-times"></i></button>
         </div>
         <div class="p-4 md:p-6 bg-gray-50 flex-grow overflow-y-auto">
                 <p class="text-sm text-gray-500 mb-6 italic text-center">Cliquez sur un terme pour afficher sa définition.</p>
                 <div class="flex flex-wrap gap-2 justify-center mb-6" id="glossary-buttons"></div>
-                <div id="glossary-definition" class="p-4 bg-white border border-indigo-100 rounded-lg shadow-sm hidden transition-all">
-                    <h4 id="def-title" class="font-bold text-indigo-900 text-lg mb-2"></h4>
+                <div id="glossary-definition" class="p-4 bg-white border border-[#F5F0E8] rounded-lg shadow-sm hidden transition-all">
+                    <h4 id="def-title" class="font-bold text-[#3D0E0E] text-lg mb-2"></h4>
                     <p id="def-text" class="text-sm text-gray-700 leading-relaxed"></p>
                 </div>
             </div>
@@ -511,22 +550,22 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
     </div>
 
     <!-- HEADER AVEC BOUTON MODE EXPERT -->
-    <header class="bg-white text-indigo-900 shadow-md z-10 transition-colors duration-300">
+    <header class="bg-white text-[#3D0E0E] shadow-md z-10 transition-colors duration-300">
     <div class="w-full px-3 py-3 flex justify-between items-center relative">
         <div class="flex items-center justify-start w-auto md:w-1/3 shrink-0">
             <div class="flex items-center justify-start w-auto md:w-1/3 shrink-0 gap-3">
-    <div class="w-8 h-8 md:w-10 md:h-10 bg-orange-500 rounded-full flex items-center justify-center font-bold text-white text-lg md:text-xl shadow-sm">U</div>
-    <button onclick="returnToHome()" class="hidden md:flex items-center gap-2 text-indigo-900 hover:text-orange-500 transition-colors text-sm font-semibold">
+    <div class="w-8 h-8 md:w-10 md:h-10 bg-[#C4622D] rounded-full flex items-center justify-center font-bold text-white text-lg md:text-xl shadow-sm">U</div>
+    <button onclick="returnToHome()" class="hidden md:flex items-center gap-2 text-[#3D0E0E] hover:text-[#C4622D] transition-colors text-sm font-semibold">
         <i class="fas fa-home"></i>
         <span>Accueil</span>
     </button>
 </div>
         <div class="flex flex-col items-center justify-center text-center flex-1 md:w-1/3 md:absolute md:left-1/2 md:transform md:-translate-x-1/2 px-2">
-            <h1 class="text-[10px] sm:text-xs md:text-2xl font-extrabold tracking-wider uppercase leading-tight text-indigo-900">L'UNIVERSITÉ DANS LA VILLE</h1>
-            <span class="text-[8px] md:text-xs font-semibold tracking-widest opacity-70 uppercase hidden sm:block text-indigo-800">Université & Ville de Demain</span>
+            <h1 class="text-[10px] sm:text-xs md:text-2xl font-extrabold tracking-wider uppercase leading-tight text-[#3D0E0E]">L'UNIVERSITÉ DANS LA VILLE</h1>
+            <span class="text-[8px] md:text-xs font-semibold tracking-widest opacity-70 uppercase hidden sm:block text-[#5C1A1A]">Université & Ville de Demain</span>
         </div>
 <div id="admin-dashboard" class="fixed inset-0 bg-slate-900 z-[200] hidden flex flex-col font-sans fade-in">
-    <div class="bg-slate-800 p-4 border-b border-slate-700 flex justify-between items-center shadow-md">
+    <div class="bg-[#2C2C2C] p-4 border-b border-slate-700 flex justify-between items-center shadow-md">
         <div class="flex items-center gap-3">
             <div class="bg-red-500 text-white font-bold px-2 py-1 rounded text-xs uppercase tracking-widest">Zone Chercheur</div>
             <h2 class="text-white font-bold text-lg"><i class="fas fa-database mr-2"></i>Données de Recherche</h2>
@@ -539,7 +578,7 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
         <div class="w-full md:w-1/3 bg-slate-900 p-6 border-r border-slate-700 overflow-y-auto">
             <h3 class="text-slate-400 text-xs font-bold uppercase mb-4">Statistiques Globales</h3>
             
-            <div class="bg-slate-800 rounded-lg p-4 mb-6 text-center">
+            <div class="bg-[#2C2C2C] rounded-lg p-4 mb-6 text-center">
                 <span id="adm-total" class="text-4xl font-black text-white block">0</span>
                 <span class="text-xs text-slate-400">Participants Totaux</span>
             </div>
@@ -547,7 +586,7 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
             <div class="space-y-3" id="adm-stats-list">
                 </div>
 
-            <button onclick="exportStatsCSV()" class="mt-8 w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-lg transition flex items-center justify-center gap-2">
+            <button onclick="exportStatsCSV()" class="mt-8 w-full bg-[#8B2E2E] hover:bg-[#FAF7F2]0 text-white font-bold py-3 rounded-lg transition flex items-center justify-center gap-2">
                 <i class="fas fa-file-csv"></i> Exporter Stats (.csv)
             </button>
         </div>
@@ -555,7 +594,7 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
         <div class="w-full md:w-2/3 bg-slate-50 p-6 overflow-y-auto">
             <div class="flex justify-between items-center mb-6">
                 <h3 class="text-slate-800 text-lg font-bold">Capsules Temporelles (Verbatims)</h3>
-                <button onclick="exportCapsulesCSV()" class="bg-green-600 hover:bg-green-700 text-white text-sm font-bold py-2 px-4 rounded transition flex items-center gap-2">
+                <button onclick="exportCapsulesCSV()" class="bg-gray-500 hover:bg-gray-600 text-white text-sm font-bold py-2 px-4 rounded transition flex items-center gap-2">
                     <i class="fas fa-file-excel"></i> Exporter Tout
                 </button>
             </div>
@@ -601,7 +640,7 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
                 <!-- En-tête principale -->
                 <div class="text-center mb-16 fade-in">
                     <div class="inline-flex items-center gap-3 bg-white/20 backdrop-blur-sm px-6 py-3 rounded-full mb-6 border border-white/30">
-                        <div class="w-3 h-3 rounded-full bg-orange-500 pulse-ring"></div>
+                        <div class="w-3 h-3 rounded-full bg-[#C4622D] pulse-ring"></div>
                         <span class="text-white font-bold text-sm uppercase tracking-wider">Exposition Interactive 2025</span>
                     </div>
                     
@@ -617,51 +656,51 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-6xl">
                     
                     <!-- Carte 1 : Diagnostic Interactif -->
-                    <div onclick="startDiagnostic()" class="card-landing rounded-2xl p-8 cursor-pointer border-2 border-transparent hover:border-orange-500 group">
-                        <div class="w-16 h-16 bg-gradient-to-br from-orange-400 to-pink-500 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-lg">
+                    <div onclick="startDiagnostic()" class="card-landing rounded-2xl p-8 cursor-pointer border-2 border-transparent hover:border-[#C4622D] group">
+                        <div class="w-16 h-16 bg-gradient-to-br from-[#D4824A] to-[#C4622D] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-lg">
                             <i class="fas fa-gamepad text-white text-3xl"></i>
                         </div>
-                        <h3 class="text-2xl font-bold text-gray-800 mb-3 group-hover:text-orange-600 transition-colors">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-3 group-hover:text-[#9E4A20] transition-colors">
                             Diagnostic Interactif
                         </h3>
                         <p class="text-gray-600 leading-relaxed mb-4">
                             Incarnez un acteur clé et forgez votre vision à travers 7 dilemmes stratégiques.
                         </p>
-                        <div class="flex items-center text-orange-600 font-semibold text-sm group-hover:gap-3 gap-2 transition-all">
+                        <div class="flex items-center text-[#9E4A20] font-semibold text-sm group-hover:gap-3 gap-2 transition-all">
                             <span>Jouer maintenant</span>
                             <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
                         </div>
                     </div>
 
                     <!-- Carte 2 : Explorer les Scénarios -->
-                    <div onclick="exploreScenarios()" class="card-landing rounded-2xl p-8 cursor-pointer border-2 border-transparent hover:border-indigo-500 group">
-                        <div class="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-lg">
+                    <div onclick="exploreScenarios()" class="card-landing rounded-2xl p-8 cursor-pointer border-2 border-transparent hover:border-[#9B3535] group">
+                        <div class="w-16 h-16 bg-gradient-to-br from-[#9B3535] to-[#6B2020] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-lg">
                             <i class="fas fa-compass text-white text-3xl"></i>
                         </div>
-                        <h3 class="text-2xl font-bold text-gray-800 mb-3 group-hover:text-indigo-600 transition-colors">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-3 group-hover:text-[#8B2E2E] transition-colors">
                             Explorer les Scénarios
                         </h3>
                         <p class="text-gray-600 leading-relaxed mb-4">
                             Découvrez directement les 6 futurs possibles du campus sans passer par le diagnostic.
                         </p>
-                        <div class="flex items-center text-indigo-600 font-semibold text-sm group-hover:gap-3 gap-2 transition-all">
+                        <div class="flex items-center text-[#8B2E2E] font-semibold text-sm group-hover:gap-3 gap-2 transition-all">
                             <span>Parcourir les visions</span>
                             <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
                         </div>
                     </div>
 
                     <!-- Carte 3 : Nos Travaux -->
-                    <div onclick="directToWorks()" class="card-landing rounded-2xl p-8 cursor-pointer border-2 border-transparent hover:border-green-500 group">
-                        <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-teal-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-lg">
+                    <div onclick="directToWorks()" class="card-landing rounded-2xl p-8 cursor-pointer border-2 border-transparent hover:border-gray-400 group">
+                        <div class="w-16 h-16 bg-gradient-to-br from-gray-400 to-gray-500 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-lg">
                             <i class="fas fa-book-open text-white text-3xl"></i>
                         </div>
-                        <h3 class="text-2xl font-bold text-gray-800 mb-3 group-hover:text-green-600 transition-colors">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-3 group-hover:text-gray-500 transition-colors">
                             Nos Travaux
                         </h3>
                         <p class="text-gray-600 leading-relaxed mb-4">
                             Accédez directement à nos recherches, planches et analyses urbaines.
                         </p>
-                        <div class="flex items-center text-green-600 font-semibold text-sm group-hover:gap-3 gap-2 transition-all">
+                        <div class="flex items-center text-gray-500 font-semibold text-sm group-hover:gap-3 gap-2 transition-all">
                             <span>Voir l'exposition</span>
                             <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
                         </div>
@@ -678,13 +717,13 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
         </div>
 
         <!-- NOUVELLE PAGE D'EXPLORATION DIRECTE -->
-        <div id="explore-scenarios-page" class="hidden min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+        <div id="explore-scenarios-page" class="hidden min-h-screen bg-gradient-to-br from-[#F5F0E8] to-[#EDE0CC]">
             
             <div class="container mx-auto px-4 py-12">
                 
                 <!-- Header avec retour -->
                 <div class="flex justify-between items-center mb-12">
-                    <button onclick="backToLanding()" class="flex items-center gap-2 text-gray-600 hover:text-indigo-600 transition-colors">
+                    <button onclick="backToLanding()" class="flex items-center gap-2 text-gray-600 hover:text-[#8B2E2E] transition-colors">
                         <i class="fas fa-arrow-left"></i>
                         <span class="font-semibold">Retour à l'accueil</span>
                     </button>
@@ -706,7 +745,7 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
         
         <!-- INTRO SCREEN -->
         <div id="intro-screen" class="max-w-2xl w-full bg-white rounded-2xl shadow-xl overflow-hidden fade-in mx-4">
-    <div class="bg-indigo-600 h-2 w-full"></div>
+    <div class="bg-[#8B2E2E] h-2 w-full"></div>
     <div class="p-6 md:p-8 text-center">
         <h2 class="text-2xl md:text-3xl font-extrabold text-gray-800 mb-3 md:mb-4">Quelle est votre vision de l'Université ?</h2>
         <p class="text-gray-600 mb-4 md:mb-6 text-base md:text-lg leading-relaxed">
@@ -714,7 +753,7 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
                     L'université est à la croisée des chemins. Entre contraintes budgétaires, révolution numérique et intégration urbaine, 
                     <strong>quel visage aura l'université de Montpellier en 2100 ?</strong>
                 </p>
-              <div class="bg-indigo-50 p-3 md:p-4 rounded-lg mb-6 md:mb-8 text-xs md:text-sm text-indigo-800 text-left">
+              <div class="bg-[#FAF7F2] p-3 md:p-4 rounded-lg mb-6 md:mb-8 text-xs md:text-sm text-[#5C1A1A] text-left">
             <p class="font-bold mb-2">Instructions :</p>
             <ul class="list-disc pl-4 md:pl-5 space-y-1">
                         <li>Vous allez incarner un acteur clé (Maire, Expert ou Étudiant).</li>
@@ -722,7 +761,7 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
                         <li>Vos choix détermineront l'un des <strong>6 Scénarios Futurs</strong>.</li>
                     </ul>
                 </div>
-                <button onclick="goToPersonaSelection()" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 md:px-8 rounded-full text-base md:text-lg transition duration-300 shadow-md transform hover:scale-105 w-full md:w-auto">
+                <button onclick="goToPersonaSelection()" class="bg-[#C4622D] hover:bg-[#9E4A20] text-white font-bold py-3 px-6 md:px-8 rounded-full text-base md:text-lg transition duration-300 shadow-md transform hover:scale-105 w-full md:w-auto">
             Commencer l'expérience
         </button>
                 </button>
@@ -731,7 +770,7 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
 
         <!-- PERSONA SELECTION SCREEN -->
        <div id="persona-screen" class="hidden max-w-4xl w-full bg-white rounded-2xl shadow-xl overflow-hidden fade-in mx-4">
-    <div class="bg-indigo-900 h-2 w-full"></div>
+    <div class="bg-[#3D0E0E] h-2 w-full"></div>
     <div class="p-6 md:p-8 text-center">
         <h2 class="text-xl md:text-2xl font-extrabold text-gray-800 mb-2">Choisissez votre rôle</h2>
         <p class="text-gray-600 mb-6 md:mb-8 text-sm">Qui êtes-vous pour mener ce diagnostic ?</p>
@@ -739,10 +778,10 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
                     
                     <div onclick="selectPersona('politique')" id="persona-politique" class="persona-card border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:shadow-lg transition-all group">
                         <div class="flex items-center gap-3 mb-2">
-                            <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-lg"><i class="fas fa-user-tie"></i></div>
+                            <div class="w-10 h-10 rounded-full bg-[#F5F0E8] text-[#8B2E2E] flex items-center justify-center text-lg"><i class="fas fa-user-tie"></i></div>
                             <div>
                                 <h4 class="font-bold text-sm text-gray-800">Michaël D.</h4>
-                                <span class="text-xs text-blue-600 font-semibold uppercase">Maire</span>
+                                <span class="text-xs text-[#8B2E2E] font-semibold uppercase">Maire</span>
                             </div>
                         </div>
                         <p class="text-xs text-gray-500 italic">"L'université doit être une couture urbaine, ouverte sur la ville."</p>
@@ -751,10 +790,10 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
 
                     <div onclick="selectPersona('expert')" id="persona-expert" class="persona-card border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:shadow-lg transition-all group">
                         <div class="flex items-center gap-3 mb-2">
-                            <div class="w-10 h-10 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center text-lg"><i class="fas fa-drafting-compass"></i></div>
+                            <div class="w-10 h-10 rounded-full bg-[#F5F0E8] text-[#8B2E2E] flex items-center justify-center text-lg"><i class="fas fa-drafting-compass"></i></div>
                             <div>
                                 <h4 class="font-bold text-sm text-gray-800">Antoine G-D.</h4>
-                                <span class="text-xs text-purple-600 font-semibold uppercase">Architecte</span>
+                                <span class="text-xs text-[#8B2E2E] font-semibold uppercase">Architecte</span>
                             </div>
                         </div>
                         <p class="text-xs text-gray-500 italic">"Respecter le patrimoine du XXe tout en densifiant intelligemment."</p>
@@ -775,10 +814,10 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
 
                     <div onclick="selectPersona('etudiant')" id="persona-etudiant" class="persona-card border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:shadow-lg transition-all group">
                         <div class="flex items-center gap-3 mb-2">
-                            <div class="w-10 h-10 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-lg"><i class="fas fa-laptop-code"></i></div>
+                            <div class="w-10 h-10 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center text-lg"><i class="fas fa-laptop-code"></i></div>
                             <div>
                                 <h4 class="font-bold text-sm text-gray-800">Mehdi</h4>
-                                <span class="text-xs text-green-600 font-semibold uppercase">Master Urba</span>
+                                <span class="text-xs text-gray-500 font-semibold uppercase">Master Urba</span>
                             </div>
                         </div>
                         <p class="text-xs text-gray-500 italic">"Le coût du logement et la mobilité sont mes priorités."</p>
@@ -798,22 +837,22 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
     <div class="flex justify-between items-center mb-3 md:mb-4">
         <span class="text-xs md:text-sm font-semibold text-gray-500 uppercase">Enjeu <span id="current-question-num">1</span>/7</span>
         <div class="w-1/3 bg-gray-200 rounded-full h-2 md:h-2.5">
-            <div id="progress-bar" class="bg-indigo-600 h-2 md:h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+            <div id="progress-bar" class="bg-[#8B2E2E] h-2 md:h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
         </div>
     </div>
 
     <div class="bg-white rounded-2xl shadow-xl p-5 md:p-8 mb-4 md:mb-6">
         <div class="flex items-center mb-4 md:mb-6 flex-wrap gap-2">
-            <span id="enjeu-badge" class="bg-indigo-100 text-indigo-800 text-[10px] md:text-xs font-semibold px-2 md:px-2.5 py-0.5 rounded uppercase">Économique</span>
+            <span id="enjeu-badge" class="bg-[#F5F0E8] text-[#5C1A1A] text-[10px] md:text-xs font-semibold px-2 md:px-2.5 py-0.5 rounded uppercase">Économique</span>
             <h2 id="question-text" class="text-lg md:text-2xl font-bold text-gray-800 leading-tight">Question</h2>
         </div>
                 
                 <!-- ZONE EXPERT CONTEXT -->
-                <div id="question-expert-context" class="expert-content mb-4 md:mb-6 shadow-sm border-l-4 border-indigo-600 bg-gray-50">
+                <div id="question-expert-context" class="expert-content mb-4 md:mb-6 shadow-sm border-l-4 border-[#8B2E2E] bg-gray-50">
              <!-- Contexte expert injecté ici -->
         </div>
         
-        <p id="question-context" class="text-gray-600 mb-6 md:mb-8 italic text-xs md:text-sm border-l-4 border-orange-400 pl-3 md:pl-4 normal-context">Contexte...</p>
+        <p id="question-context" class="text-gray-600 mb-6 md:mb-8 italic text-xs md:text-sm border-l-4 border-[#D4824A] pl-3 md:pl-4 normal-context">Contexte...</p>
         <div id="answers-container" class="grid gap-3 md:gap-4 md:grid-cols-1"></div>
             </div>
         </div>
@@ -821,26 +860,26 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
         <!-- RESULT -->
         <div id="result-screen" class="hidden max-w-4xl w-full fade-in">
             <div class="bg-white rounded-2xl shadow-2xl overflow-hidden">
-                <div id="result-header" class="bg-indigo-900 p-8 text-white text-center relative">
+                <div id="result-header" class="bg-[#3D0E0E] p-8 text-white text-center relative">
                     <p class="uppercase tracking-widest text-xs opacity-70 mb-2">Votre vision dominante est</p>
-                    <h2 id="scenario-title" class="text-4xl font-extrabold mb-2 title-font text-orange-400">TITRE</h2>
+                    <h2 id="scenario-title" class="text-4xl font-extrabold mb-2 title-font text-[#D4824A]">TITRE</h2>
                     <h3 id="scenario-subtitle" class="text-xl font-light italic">Sous-titre</h3>
                     <div class="absolute top-4 right-4 text-6xl opacity-20"><i class="fas fa-city"></i></div>
                     
-                    <p id="resultat-texte" class="mt-4 text-sm font-bold text-orange-300 bg-indigo-800 bg-opacity-50 inline-block px-4 py-2 rounded-lg">Chargement des données communautaires...</p>
+                    <p id="resultat-texte" class="mt-4 text-sm font-bold text-[#E8B48A] bg-[#5C1A1A] bg-opacity-50 inline-block px-4 py-2 rounded-lg">Chargement des données communautaires...</p>
                 </div>
 
                 <!-- ANALYSE EXPERT RESULTAT -->
-                <div id="result-expert-analysis" class="expert-content m-6 relative z-10 shadow-md bg-slate-100 border-l-4 border-indigo-900 p-4">
+                <div id="result-expert-analysis" class="expert-content m-6 relative z-10 shadow-md bg-slate-100 border-l-4 border-[#3D0E0E] p-4">
                     <!-- Injecté par JS -->
                 </div>
 
                 <div class="p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div>
                         <!-- SECTION PERSONNAGE FEEDBACK -->
-                        <div id="persona-feedback" class="bg-indigo-50 border-l-4 border-indigo-500 p-4 mb-6 rounded-r">
-                            <h4 id="persona-feedback-title" class="font-bold text-indigo-900 text-sm mb-1">Le mot de l'expert</h4>
-                            <p id="persona-feedback-text" class="text-sm text-indigo-800 italic">Analysis...</p>
+                        <div id="persona-feedback" class="bg-[#FAF7F2] border-l-4 border-[#9B3535] p-4 mb-6 rounded-r">
+                            <h4 id="persona-feedback-title" class="font-bold text-[#3D0E0E] text-sm mb-1">Le mot de l'expert</h4>
+                            <p id="persona-feedback-text" class="text-sm text-[#5C1A1A] italic">Analysis...</p>
                         </div>
 
                         <h4 class="font-bold text-gray-800 mb-4 border-b pb-2">Description du Scénario</h4>
@@ -861,12 +900,12 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
                         <!-- AJOUT : BOUTON REVOIR L'IMAGE + IMMERSION -->
                         <div class="mt-4 border-t pt-4 space-y-3">
                             <!-- Bouton Revoir Image -->
-                             <button onclick="reopenScenarioImage()" class="w-full bg-orange-100 hover:bg-orange-200 text-orange-700 text-sm font-bold py-3 px-4 rounded transition duration-200 flex items-center justify-center gap-2 border border-orange-200">
+                             <button onclick="reopenScenarioImage()" class="w-full bg-[#F5EBE0] hover:bg-[#F0D0B0] text-[#7A3A18] text-sm font-bold py-3 px-4 rounded transition duration-200 flex items-center justify-center gap-2 border border-[#F0D0B0]">
                                 <i class="fas fa-eye text-lg"></i> Revoir l'illustration
                             </button>
 
-                            <h4 class="font-bold text-indigo-900 mb-2 text-center text-sm pt-2">Immersion Future</h4>
-                            <button onclick="revealStory()" id="reveal-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold py-3 px-4 rounded transition duration-200 flex items-center justify-center gap-2">
+                            <h4 class="font-bold text-[#3D0E0E] mb-2 text-center text-sm pt-2">Immersion Future</h4>
+                            <button onclick="revealStory()" id="reveal-btn" class="w-full bg-[#8B2E2E] hover:bg-[#6B2020] text-white text-sm font-bold py-3 px-4 rounded transition duration-200 flex items-center justify-center gap-2">
                                 <i class="fas fa-book-open text-lg"></i> Découvrir le Récit
                             </button>
                             <div id="story-display" class="hidden mt-4 text-sm text-gray-700 bg-white p-4 rounded border border-gray-200 shadow-inner">
@@ -874,9 +913,9 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
                                 <div class="border-t pt-3 flex flex-col items-center justify-center">
                                     <div id="speaking-indicator" class="hidden mb-2">
                                         <div class="speaking-animation"><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
-                                        <p class="text-center text-xs text-indigo-600 mt-1 font-bold">Narration en cours...</p>
+                                        <p class="text-center text-xs text-[#8B2E2E] mt-1 font-bold">Narration en cours...</p>
                                     </div>
-                                    <button onclick="playAudio()" id="play-audio-btn" class="text-indigo-600 hover:text-indigo-800 font-bold py-2 px-4 rounded flex items-center gap-2 transition-colors">
+                                    <button onclick="playAudio()" id="play-audio-btn" class="text-[#8B2E2E] hover:text-[#5C1A1A] font-bold py-2 px-4 rounded flex items-center gap-2 transition-colors">
                                         <i class="fas fa-volume-up text-lg"></i> Lire
                                     </button>
                                     <button onclick="stopAudio()" id="stop-audio-btn" class="hidden text-red-500 hover:text-red-700 font-bold py-2 px-4 rounded flex items-center gap-2 transition-colors">
@@ -888,12 +927,12 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
 
                          <!-- NUAGE DE MOTS - MUR DES DOLÉANCES -->
                          <div class="mt-6 border-t pt-4 bg-white rounded-lg p-3 shadow-sm border border-gray-100">
-                             <h4 class="font-bold text-indigo-900 mb-3 text-center text-sm"><i class="fas fa-comment-dots text-orange-500 mr-2"></i>Le Mur des Idées</h4>
+                             <h4 class="font-bold text-[#3D0E0E] mb-3 text-center text-sm"><i class="fas fa-comment-dots text-[#C4622D] mr-2"></i>Le Mur des Idées</h4>
                              <p class="text-xs text-gray-500 text-center mb-3">Un mot pour l'université de demain ?</p>
                              
                              <div class="flex gap-2 mb-4">
-                                 <input type="text" id="user-word" placeholder="Ex: Verte, Inclusive..." class="flex-grow border border-gray-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500">
-                                 <button onclick="addWord()" class="bg-indigo-600 text-white rounded-lg px-3 py-2 text-xs font-bold hover:bg-indigo-700 transition">Publier</button>
+                                 <input type="text" id="user-word" placeholder="Ex: Verte, Inclusive..." class="flex-grow border border-gray-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-[#C4622D] focus:ring-1 focus:ring-orange-500">
+                                 <button onclick="addWord()" class="bg-[#8B2E2E] text-white rounded-lg px-3 py-2 text-xs font-bold hover:bg-[#6B2020] transition">Publier</button>
                              </div>
  
                              <!-- Nuage de mots interactif -->
@@ -902,10 +941,10 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
                              </div>
                          </div>
 <div class="mt-6 border-t pt-4 fade-in">
-    <div onclick="openGamesHub()" class="bg-white p-4 rounded-xl shadow-md border-l-4 border-indigo-600 relative overflow-hidden group cursor-pointer transition-transform hover:scale-[1.01]">
-        <div class="absolute right-0 top-0 h-full w-32 bg-gradient-to-l from-indigo-50 to-transparent opacity-50"></div>
+    <div onclick="openGamesHub()" class="bg-white p-4 rounded-xl shadow-md border-l-4 border-[#8B2E2E] relative overflow-hidden group cursor-pointer transition-transform hover:scale-[1.01]">
+        <div class="absolute right-0 top-0 h-full w-32 bg-gradient-to-l from-[#8B2E2E]-50 to-transparent opacity-50"></div>
         <div class="flex items-center gap-4 relative z-10">
-            <div class="w-12 h-12 rounded-full bg-indigo-900 text-white flex items-center justify-center text-xl shadow-lg group-hover:rotate-12 transition-transform">
+            <div class="w-12 h-12 rounded-full bg-[#3D0E0E] text-white flex items-center justify-center text-xl shadow-lg group-hover:rotate-12 transition-transform">
                 <i class="fas fa-flask"></i>
             </div>
             <div>
@@ -913,38 +952,38 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
                 <p class="text-xs text-gray-500">Simulations, Quiz & Gestion de crise.</p>
             </div>
             <div class="ml-auto flex items-center gap-2">
-                <span class="bg-orange-100 text-orange-700 text-[10px] font-bold px-2 py-1 rounded-full border border-orange-200">Nouveau</span>
-                <i class="fas fa-chevron-right text-gray-400 group-hover:text-indigo-600 transition-colors"></i>
+                <span class="bg-[#F5EBE0] text-[#7A3A18] text-[10px] font-bold px-2 py-1 rounded-full border border-[#F0D0B0]">Nouveau</span>
+                <i class="fas fa-chevron-right text-gray-400 group-hover:text-[#8B2E2E] transition-colors"></i>
             </div>
         </div>
     </div>
 </div>
 
 <div class="mt-6 border-t pt-6 fade-in">
-                            <div class="bg-gradient-to-br from-indigo-900 to-slate-800 rounded-xl p-5 text-white shadow-xl relative overflow-hidden border border-indigo-700">
+                            <div class="bg-gradient-to-br from-[#3D0E0E] to-[#2C2C2C] rounded-xl p-5 text-white shadow-xl relative overflow-hidden border border-[#6B2020]">
                                 <i class="fas fa-clock absolute -right-6 -bottom-6 text-8xl text-white opacity-5 transform -rotate-12"></i>
                                 
                                 <div class="relative z-10">
                                     <h4 class="font-bold text-center text-sm mb-1 title-font uppercase tracking-widest">
-                                        <i class="fas fa-box-open mr-2 text-orange-400"></i>Capsule Temporelle
+                                        <i class="fas fa-box-open mr-2 text-[#D4824A]"></i>Capsule Temporelle
                                     </h4>
-                                    <p class="text-[11px] text-center text-indigo-200 mb-4 italic">
+                                    <p class="text-[11px] text-center text-[#EDE0CC] mb-4 italic">
                                         Laissez une trace aux étudiants de 2100. <br>Le message sera scellé dans la base de données.
                                     </p>
                                     
                                     <div class="relative">
                                         <textarea id="capsule-msg" maxlength="140" rows="2" 
                                             placeholder="Ex: J'espère que le tram est toujours gratuit..." 
-                                            class="w-full bg-white text-gray-900 text-xs p-3 rounded-lg border border-indigo-500/30 focus:border-orange-400 focus:ring-1 focus:ring-orange-400 placeholder-gray-500 resize-none outline-none transition-all"></textarea>
-                                        <div class="text-[9px] text-right text-indigo-300 mt-1" id="char-count">0/140</div>
+                                            class="w-full bg-white text-gray-900 text-xs p-3 rounded-lg border border-[#9B3535]/30 focus:border-[#D4824A] focus:ring-1 focus:ring-orange-400 placeholder-gray-500 resize-none outline-none transition-all"></textarea>
+                                        <div class="text-[9px] text-right text-[#C8827A] mt-1" id="char-count">0/140</div>
                                     </div>
                                     
-                                    <button onclick="sendCapsule()" id="btn-capsule" class="w-full mt-3 bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-lg text-xs transition-all shadow-lg flex justify-center items-center gap-2 transform active:scale-95">
+                                    <button onclick="sendCapsule()" id="btn-capsule" class="w-full mt-3 bg-[#C4622D] hover:bg-[#9E4A20] text-white font-bold py-2 px-4 rounded-lg text-xs transition-all shadow-lg flex justify-center items-center gap-2 transform active:scale-95">
                                         <span>Sceller le message</span> <i class="fas fa-archive"></i>
                                     </button>
 
                                     <div id="capsule-feedback" class="hidden mt-3 text-center">
-                                        <p class="text-xs text-green-400 font-bold bg-green-900/30 py-2 rounded animate-pulse">
+                                        <p class="text-xs text-gray-400 font-bold bg-gray-800/30 py-2 rounded animate-pulse">
                                             <i class="fas fa-check-circle mr-1"></i> Message archivé pour le futur.
                                         </p>
                                     </div>
@@ -955,7 +994,7 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
 
                         <div class="mt-6 flex flex-col gap-3 text-center">
                             <button onclick="restartGame()" class="text-gray-600 hover:text-gray-800 text-sm font-semibold underline">Recommencer</button>
-                            <button onclick="directToWorksFromResult()" class="bg-white border-2 border-indigo-600 text-indigo-600 hover:bg-indigo-600 hover:text-white font-bold py-3 px-6 rounded-full text-sm transition duration-300 shadow-md flex items-center justify-center gap-2">
+                            <button onclick="directToWorksFromResult()" class="bg-white border-2 border-[#8B2E2E] text-[#8B2E2E] hover:bg-[#8B2E2E] hover:text-white font-bold py-3 px-6 rounded-full text-sm transition duration-300 shadow-md flex items-center justify-center gap-2">
     <i class="fas fa-project-diagram"></i> Découvrir nos travaux
 </button>
                         </div>
@@ -968,59 +1007,59 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
         <div id="works-screen" class="hidden max-w-6xl w-full fade-in">
             <!-- (Contenu identique) -->
             <div class="text-center mb-10">
-                <h2 class="text-4xl font-extrabold text-indigo-900 mb-2 title-font">L'EXPOSITION VIRTUELLE</h2>
-                <div class="h-1 w-24 bg-orange-500 mx-auto mb-4"></div>
+                <h2 class="text-4xl font-extrabold text-[#3D0E0E] mb-2 title-font">L'EXPOSITION VIRTUELLE</h2>
+                <div class="h-1 w-24 bg-[#C4622D] mx-auto mb-4"></div>
                 <p class="text-gray-600 max-w-2xl mx-auto">
                     Planches de recherche et projets urbains réalisés par le Master Projet.
                 </p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 px-4">
                 <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border border-gray-100 group">
-                    <div class="h-48 bg-indigo-900 flex items-center justify-center relative overflow-hidden">
+                    <div class="h-48 bg-[#3D0E0E] flex items-center justify-center relative overflow-hidden">
                         <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
-                        <i class="fas fa-bullhorn text-6xl text-orange-400 group-hover:scale-110 transition-transform duration-500"></i>
+                        <i class="fas fa-bullhorn text-6xl text-[#D4824A] group-hover:scale-110 transition-transform duration-500"></i>
                     </div>
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-gray-800 mb-2">Communication & Scénographie</h3>
                         <p class="text-sm text-gray-500 mb-4">Présentation générale de la démarche, Histoire et Plan de Masse.</p>
                         <div class="space-y-3">
-                            <button onclick="openCommsGallery()" class="w-full bg-gray-100 hover:bg-indigo-100 text-indigo-700 font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors">
+                            <button onclick="openCommsGallery()" class="w-full bg-gray-100 hover:bg-[#F5F0E8] text-[#6B2020] font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors">
                                 <i class="fas fa-images"></i> Voir les planches (PDF)
                             </button>
-                            <button onclick="openTimeline()" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors">
+                            <button onclick="openTimeline()" class="w-full bg-[#C4622D] hover:bg-[#9E4A20] text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors">
                                 <i class="fas fa-history"></i> Voir la Frise Chronologique
                             </button>
                         </div>
                     </div>
                 </div>
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border border-gray-100 group border-t-4 border-indigo-600">
-                    <div class="h-48 bg-indigo-800 flex items-center justify-center relative overflow-hidden">
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border border-gray-100 group border-t-4 border-[#8B2E2E]">
+                    <div class="h-48 bg-[#5C1A1A] flex items-center justify-center relative overflow-hidden">
                          <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/world-map.png')]"></div>
-                         <i class="fas fa-globe-americas text-6xl text-indigo-300 group-hover:text-white group-hover:scale-110 transition-all duration-500"></i>
+                         <i class="fas fa-globe-americas text-6xl text-[#C8827A] group-hover:text-white group-hover:scale-110 transition-all duration-500"></i>
                     </div>
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-gray-800 mb-2">Contexte International</h3>
                         <p class="text-sm text-gray-500 mb-4">Visualisez les faits marquants de l'enseignement supérieur à travers le monde : frais, mobilités, classements.</p>
-                        <button onclick="openAtlas()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors shadow-md">
+                        <button onclick="openAtlas()" class="w-full bg-[#8B2E2E] hover:bg-[#6B2020] text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors shadow-md">
                             <i class="fas fa-map-marked-alt"></i> Ouvrir l'Atlas
                         </button>
                     </div>
                 </div>
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border border-gray-100 group border-t-4 border-purple-600">
-                    <div class="h-48 bg-purple-800 flex items-center justify-center relative overflow-hidden">
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border border-gray-100 group border-t-4 border-[#8B2E2E]">
+                    <div class="h-48 bg-[#5C1A1A] flex items-center justify-center relative overflow-hidden">
                          <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/graphy.png')]"></div>
-                         <i class="fas fa-chart-pie text-6xl text-purple-300 group-hover:text-white group-hover:scale-110 transition-all duration-500"></i>
+                         <i class="fas fa-chart-pie text-6xl text-[#C8827A] group-hover:text-white group-hover:scale-110 transition-all duration-500"></i>
                     </div>
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-gray-800 mb-2">Observatoire Statistique</h3>
                         <p class="text-sm text-gray-500 mb-4">Explorez les chiffres clés : poids démographique des étudiants, fragmentation des campus et inégalités de moyens.</p>
-                        <button onclick="openStats()" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors shadow-md">
+                        <button onclick="openStats()" class="w-full bg-[#8B2E2E] hover:bg-[#6B2020] text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors shadow-md">
                             <i class="fas fa-chart-line"></i> Voir les Stats
                         </button>
                     </div>
                 </div>
                 <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border border-gray-100 group">
-                    <div class="h-48 bg-green-600 flex items-center justify-center relative overflow-hidden">
+                    <div class="h-48 bg-gray-500 flex items-center justify-center relative overflow-hidden">
                         <i class="fas fa-road text-6xl text-white group-hover:scale-110 transition-transform duration-500"></i>
                     </div>
                     <div class="p-6">
@@ -1032,7 +1071,7 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
 
                 <!-- CARTE MODIFIÉE : ATRIUM AVEC BOUTON PLEIN ÉCRAN (Cliquable entièrement) -->
                 <div onclick="openAtrium()" class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border border-gray-100 group cursor-pointer">
-                    <div class="h-48 bg-blue-600 flex items-center justify-center relative overflow-hidden">
+                    <div class="h-48 bg-[#8B2E2E] flex items-center justify-center relative overflow-hidden">
                         <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
                         <i class="fas fa-archway text-6xl text-white group-hover:scale-110 transition-transform duration-500 z-10"></i>
                         <!-- Image de fond floue pour le style (Utilise la nouvelle image) -->
@@ -1044,7 +1083,7 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
                             Découvrez la métamorphose de l'Atrium à travers un slider interactif Avant/Après. Cliquez pour voir l'évolution en détail.
                         </p>
                         
-                        <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors shadow-md">
+                        <button class="w-full bg-[#8B2E2E] hover:bg-[#6B2020] text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors shadow-md">
                             <i class="fas fa-expand"></i> Ouvrir le Comparateur
                         </button>
 
@@ -1054,14 +1093,14 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
             </div>
 <div class="mt-16 max-w-6xl mx-auto px-4 fade-in">
                 <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
-                    <div class="bg-indigo-900 p-6 flex items-center justify-between">
+                    <div class="bg-[#3D0E0E] p-6 flex items-center justify-between">
                         <div class="flex items-center gap-4">
                             <div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-white text-xl">
                                 <i class="fas fa-book-reader"></i>
                             </div>
                             <div>
                                 <h3 class="text-xl font-bold text-white title-font">Sources Officielles & Références</h3>
-                                <p class="text-indigo-200 text-sm">Accédez aux documents réels utilisés pour élaborer ce diagnostic prospectif.</p>
+                                <p class="text-[#EDE0CC] text-sm">Accédez aux documents réels utilisés pour élaborer ce diagnostic prospectif.</p>
                             </div>
                         </div>
                     </div>
@@ -1069,25 +1108,25 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
                     <div class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-gray-100">
                         
                         <div class="p-6 hover:bg-slate-50 transition-colors group">
-                            <h4 class="font-bold text-gray-800 mb-4 flex items-center gap-2 text-sm uppercase tracking-wider border-b pb-2 border-orange-200">
-                                <i class="fas fa-map-marked-alt text-orange-500 group-hover:scale-110 transition-transform"></i> Territoire & Urbanisme
+                            <h4 class="font-bold text-gray-800 mb-4 flex items-center gap-2 text-sm uppercase tracking-wider border-b pb-2 border-[#F0D0B0]">
+                                <i class="fas fa-map-marked-alt text-[#C4622D] group-hover:scale-110 transition-transform"></i> Territoire & Urbanisme
                             </h4>
                             <ul class="space-y-3 text-sm">
                                 <li>
-                                    <a href="https://www.montpellier3m.fr/plui" target="_blank" class="flex items-start gap-3 text-gray-600 hover:text-indigo-700 transition-colors group/link">
-                                        <i class="fas fa-external-link-alt mt-1 text-xs text-gray-400 group-hover/link:text-orange-500"></i>
+                                    <a href="https://www.montpellier3m.fr/plui" target="_blank" class="flex items-start gap-3 text-gray-600 hover:text-[#6B2020] transition-colors group/link">
+                                        <i class="fas fa-external-link-alt mt-1 text-xs text-gray-400 group-hover/link:text-[#C4622D]"></i>
                                         <span><strong>PLUi Montpellier</strong><br><span class="text-xs text-gray-400">Plan Local d'Urbanisme intercommunal en vigueur.</span></span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="https://www.scot-montpellier.fr/" target="_blank" class="flex items-start gap-3 text-gray-600 hover:text-indigo-700 transition-colors group/link">
-                                        <i class="fas fa-external-link-alt mt-1 text-xs text-gray-400 group-hover/link:text-orange-500"></i>
+                                    <a href="https://www.scot-montpellier.fr/" target="_blank" class="flex items-start gap-3 text-gray-600 hover:text-[#6B2020] transition-colors group/link">
+                                        <i class="fas fa-external-link-alt mt-1 text-xs text-gray-400 group-hover/link:text-[#C4622D]"></i>
                                         <span><strong>SCoT Métropole</strong><br><span class="text-xs text-gray-400">Schéma de Cohérence Territoriale (Horizon 2040).</span></span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="https://tram5-montpellier3m.fr/" target="_blank" class="flex items-start gap-3 text-gray-600 hover:text-indigo-700 transition-colors group/link">
-                                        <i class="fas fa-subway mt-1 text-xs text-gray-400 group-hover/link:text-orange-500"></i>
+                                    <a href="https://tram5-montpellier3m.fr/" target="_blank" class="flex items-start gap-3 text-gray-600 hover:text-[#6B2020] transition-colors group/link">
+                                        <i class="fas fa-subway mt-1 text-xs text-gray-400 group-hover/link:text-[#C4622D]"></i>
                                         <span><strong>Projet Ligne 5</strong><br><span class="text-xs text-gray-400">Tracé et aménagements de la "Ligne Campus".</span></span>
                                     </a>
                                 </li>
@@ -1095,25 +1134,25 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
                         </div>
 
                         <div class="p-6 hover:bg-slate-50 transition-colors group">
-                            <h4 class="font-bold text-gray-800 mb-4 flex items-center gap-2 text-sm uppercase tracking-wider border-b pb-2 border-indigo-200">
-                                <i class="fas fa-university text-indigo-500 group-hover:scale-110 transition-transform"></i> Cadre Universitaire
+                            <h4 class="font-bold text-gray-800 mb-4 flex items-center gap-2 text-sm uppercase tracking-wider border-b pb-2 border-[#EDE0CC]">
+                                <i class="fas fa-university text-[#9B3535] group-hover:scale-110 transition-transform"></i> Cadre Universitaire
                             </h4>
                             <ul class="space-y-3 text-sm">
                                 <li>
-                                    <a href="https://www.operation-campus.fr/" target="_blank" class="flex items-start gap-3 text-gray-600 hover:text-indigo-700 transition-colors group/link">
-                                        <i class="fas fa-external-link-alt mt-1 text-xs text-gray-400 group-hover/link:text-orange-500"></i>
+                                    <a href="https://www.operation-campus.fr/" target="_blank" class="flex items-start gap-3 text-gray-600 hover:text-[#6B2020] transition-colors group/link">
+                                        <i class="fas fa-external-link-alt mt-1 text-xs text-gray-400 group-hover/link:text-[#C4622D]"></i>
                                         <span><strong>Opération Campus</strong><br><span class="text-xs text-gray-400">Le plan national de rénovation de l'immobilier universitaire.</span></span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="https://www.univ-montp3.fr/fr/patrimoine" target="_blank" class="flex items-start gap-3 text-gray-600 hover:text-indigo-700 transition-colors group/link">
-                                        <i class="fas fa-monument mt-1 text-xs text-gray-400 group-hover/link:text-orange-500"></i>
+                                    <a href="https://www.univ-montp3.fr/fr/patrimoine" target="_blank" class="flex items-start gap-3 text-gray-600 hover:text-[#6B2020] transition-colors group/link">
+                                        <i class="fas fa-monument mt-1 text-xs text-gray-400 group-hover/link:text-[#C4622D]"></i>
                                         <span><strong>Patrimoine du XXe</strong><br><span class="text-xs text-gray-400">Histoire architecturale du campus Paul Valéry.</span></span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="https://www.enseignementsup-recherche.gouv.fr/fr/statistiques-et-analyses-50208" target="_blank" class="flex items-start gap-3 text-gray-600 hover:text-indigo-700 transition-colors group/link">
-                                        <i class="fas fa-chart-pie mt-1 text-xs text-gray-400 group-hover/link:text-orange-500"></i>
+                                    <a href="https://www.enseignementsup-recherche.gouv.fr/fr/statistiques-et-analyses-50208" target="_blank" class="flex items-start gap-3 text-gray-600 hover:text-[#6B2020] transition-colors group/link">
+                                        <i class="fas fa-chart-pie mt-1 text-xs text-gray-400 group-hover/link:text-[#C4622D]"></i>
                                         <span><strong>Données ESR</strong><br><span class="text-xs text-gray-400">Statistiques officielles du Ministère (SIES).</span></span>
                                     </a>
                                 </li>
@@ -1121,25 +1160,25 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
                         </div>
 
                         <div class="p-6 hover:bg-slate-50 transition-colors group">
-                            <h4 class="font-bold text-gray-800 mb-4 flex items-center gap-2 text-sm uppercase tracking-wider border-b pb-2 border-green-200">
-                                <i class="fas fa-leaf text-green-500 group-hover:scale-110 transition-transform"></i> Climat & Environnement
+                            <h4 class="font-bold text-gray-800 mb-4 flex items-center gap-2 text-sm uppercase tracking-wider border-b pb-2 border-gray-200">
+                                <i class="fas fa-leaf text-gray-400 group-hover:scale-110 transition-transform"></i> Climat & Environnement
                             </h4>
                             <ul class="space-y-3 text-sm">
                                 <li>
-                                    <a href="https://www.ipcc.ch/languages-2/francais/" target="_blank" class="flex items-start gap-3 text-gray-600 hover:text-indigo-700 transition-colors group/link">
-                                        <i class="fas fa-globe-americas mt-1 text-xs text-gray-400 group-hover/link:text-orange-500"></i>
+                                    <a href="https://www.ipcc.ch/languages-2/francais/" target="_blank" class="flex items-start gap-3 text-gray-600 hover:text-[#6B2020] transition-colors group/link">
+                                        <i class="fas fa-globe-americas mt-1 text-xs text-gray-400 group-hover/link:text-[#C4622D]"></i>
                                         <span><strong>Rapports du GIEC</strong><br><span class="text-xs text-gray-400">Base scientifique sur le changement climatique.</span></span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ecologie.gouv.fr/artificialisation-des-sols" target="_blank" class="flex items-start gap-3 text-gray-600 hover:text-indigo-700 transition-colors group/link">
-                                        <i class="fas fa-ruler-combined mt-1 text-xs text-gray-400 group-hover/link:text-orange-500"></i>
+                                    <a href="https://www.ecologie.gouv.fr/artificialisation-des-sols" target="_blank" class="flex items-start gap-3 text-gray-600 hover:text-[#6B2020] transition-colors group/link">
+                                        <i class="fas fa-ruler-combined mt-1 text-xs text-gray-400 group-hover/link:text-[#C4622D]"></i>
                                         <span><strong>Objectif ZAN</strong><br><span class="text-xs text-gray-400">Comprendre le "Zéro Artificialisation Nette" (Loi Climat).</span></span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="https://theshiftproject.org/plan-de-transformation-de-leconomie-francaise/enseignement-superieur-et-recherche/" target="_blank" class="flex items-start gap-3 text-gray-600 hover:text-indigo-700 transition-colors group/link">
-                                        <i class="fas fa-bolt mt-1 text-xs text-gray-400 group-hover/link:text-orange-500"></i>
+                                    <a href="https://theshiftproject.org/plan-de-transformation-de-leconomie-francaise/enseignement-superieur-et-recherche/" target="_blank" class="flex items-start gap-3 text-gray-600 hover:text-[#6B2020] transition-colors group/link">
+                                        <i class="fas fa-bolt mt-1 text-xs text-gray-400 group-hover/link:text-[#C4622D]"></i>
                                         <span><strong>Shift Project</strong><br><span class="text-xs text-gray-400">Décarboner l'Enseignement Supérieur.</span></span>
                                     </a>
                                 </li>
@@ -1150,7 +1189,7 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
                 </div>
             </div>
             <div class="mt-12 text-center">
-                <button onclick="closeWorks()" class="text-indigo-600 hover:text-orange-500 font-semibold flex items-center justify-center gap-2 mx-auto transition-colors">
+                <button onclick="closeWorks()" class="text-[#8B2E2E] hover:text-[#C4622D] font-semibold flex items-center justify-center gap-2 mx-auto transition-colors">
                     <i class="fas fa-arrow-left"></i> Retour aux résultats
                 </button>
            </div>
@@ -1192,7 +1231,7 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
                 </div>
                 <div class="hidden md:flex flex-col">
                     <span class="text-[9px] text-gray-400 uppercase font-bold">Connexion Sécurisée</span>
-                    <span class="text-[10px] text-green-600 font-mono"><i class="fas fa-lock text-[8px] mr-1"></i>V.2100.4.1</span>
+                    <span class="text-[10px] text-gray-500 font-mono"><i class="fas fa-lock text-[8px] mr-1"></i>V.2100.4.1</span>
                 </div>
             </div>
             <div class="flex items-center gap-3">
@@ -1250,7 +1289,7 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
             </div>
             <div id="agency-chat" class="agency-chat-window">
                 <div class="chat-header">
-                    <span><i class="fas fa-circle text-[8px] text-green-400 mr-2"></i>ALICE-4 (Agent IA)</span>
+                    <span><i class="fas fa-circle text-[8px] text-gray-400 mr-2"></i>ALICE-4 (Agent IA)</span>
                     <button onclick="toggleAgencyChat()" class="text-gray-400 hover:text-white"><i class="fas fa-times"></i></button>
                 </div>
                 <div id="chat-messages" class="chat-body">
@@ -1335,8 +1374,8 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
                                 <div class="bg-gray-50 p-3 rounded border border-gray-200">
                                     <label class="block text-[10px] font-bold text-gray-400 uppercase mb-2">Analyse Biométrique (Simulation)</label>
                                     <div class="flex items-center gap-2 mb-1">
-                                        <div class="h-1 flex-grow bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-green-500 w-[85%]"></div></div>
-                                        <span class="text-[9px] font-bold text-green-600">Pouls: OK</span>
+                                        <div class="h-1 flex-grow bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-gray-400 w-[85%]"></div></div>
+                                        <span class="text-[9px] font-bold text-gray-500">Pouls: OK</span>
                                     </div>
                                     <div class="flex items-center gap-2">
                                         <div class="h-1 flex-grow bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-yellow-500 w-[45%]"></div></div>
@@ -1442,7 +1481,7 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
                         </div>
                         <div class="text-center relative">
                             <p class="text-[10px] font-bold uppercase mb-8">Le Sujet (Signature + Sang)</p>
-                            <div class="font-script text-2xl text-blue-900 transform -rotate-6">Acceptation Forcée</div>
+                            <div class="font-script text-2xl text-[#3D0E0E] transform -rotate-6">Acceptation Forcée</div>
                             <div id="lease-stamp" class="stamp-animation absolute -top-4 -left-12 border-4 border-red-700 text-red-700 font-black text-4xl p-2 uppercase opacity-0 tracking-widest mix-blend-multiply rounded z-20">
                                 DOSSIER<br>VALIDÉ
                             </div>
@@ -1483,12 +1522,12 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
                 body.classList.add('is-expert-mode');
                 label.innerText = "Mode Expert ACTIF";
                 label.classList.remove('text-gray-500');
-                label.classList.add('text-orange-600');
+                label.classList.add('text-[#9E4A20]');
             } else {
                 body.classList.remove('is-expert-mode');
                 label.innerText = "Mode Expert";
                 label.classList.add('text-gray-500');
-                label.classList.remove('text-orange-600');
+                label.classList.remove('text-[#9E4A20]');
             }
             
             // Mise à jour live sans rechargement
@@ -1523,12 +1562,12 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
 
         function selectPersona(id) {
             currentPersona = id;
-            document.querySelectorAll('.persona-card').forEach(el => el.classList.remove('selected-persona', 'ring-2', 'ring-indigo-500'));
-            document.getElementById('persona-' + id).classList.add('selected-persona', 'ring-2', 'ring-indigo-500');
+            document.querySelectorAll('.persona-card').forEach(el => el.classList.remove('selected-persona', 'ring-2', 'ring-[#8B2E2E]'));
+            document.getElementById('persona-' + id).classList.add('selected-persona', 'ring-2', 'ring-[#8B2E2E]');
             const btn = document.getElementById('start-btn');
             btn.disabled = false;
             btn.classList.remove('bg-gray-300', 'cursor-not-allowed');
-            btn.classList.add('bg-orange-500', 'hover:bg-orange-600', 'cursor-pointer');
+            btn.classList.add('bg-[#C4622D]', 'hover:bg-[#9E4A20]', 'cursor-pointer');
             btn.innerHTML = `Valider et Démarrer`;
         }
 
@@ -1690,22 +1729,22 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
             
             [...q.options].sort(() => Math.random() - 0.5).forEach(opt => {
                 const btn = document.createElement('button');
-                btn.className = "w-full text-left p-4 rounded-xl border-2 border-gray-200 hover:border-indigo-500 hover:bg-indigo-50 transition-all duration-200 flex flex-col items-start group card-hover relative overflow-hidden";
+                btn.className = "w-full text-left p-4 rounded-xl border-2 border-gray-200 hover:border-[#9B3535] hover:bg-[#FAF7F2] transition-all duration-200 flex flex-col items-start group card-hover relative overflow-hidden";
                 btn.onclick = () => handleAnswer(opt.impact);
                 
                 // Structure HTML enrichie pour le mode expert
                 let htmlContent = `
                     <div class="flex items-center w-full relative z-10">
-                        <div class="w-6 h-6 rounded-full border-2 border-gray-300 group-hover:border-indigo-500 mr-4 flex-shrink-0 bg-white shadow-sm"></div>
-                        <span class="text-gray-700 font-medium group-hover:text-indigo-900 text-base">${opt.text}</span>
+                        <div class="w-6 h-6 rounded-full border-2 border-gray-300 group-hover:border-[#9B3535] mr-4 flex-shrink-0 bg-white shadow-sm"></div>
+                        <span class="text-gray-700 font-medium group-hover:text-[#3D0E0E] text-base">${opt.text}</span>
                     </div>
                 `;
                 
                 // Ajout de la data expert cachée par défaut
                 if (opt.expertInfo) {
                     htmlContent += `
-                        <div class="expert-content w-full ml-10 mt-3 border-l-2 border-blue-600 pl-3 bg-white bg-opacity-50"> <!-- Changed border color to match blue theme -->
-                            <span class="text-blue-600 font-bold text-[10px] uppercase tracking-wider block mb-1">Modèle Sous-jacent :</span> <!-- Changed text color to match blue theme -->
+                        <div class="expert-content w-full ml-10 mt-3 border-l-2 border-[#8B2E2E] pl-3 bg-white bg-opacity-50"> <!-- Changed border color to match blue theme -->
+                            <span class="text-[#8B2E2E] font-bold text-[10px] uppercase tracking-wider block mb-1">Modèle Sous-jacent :</span> <!-- Changed text color to match blue theme -->
                             <span class="text-gray-600 text-xs italic font-serif">"${opt.expertInfo}"</span>
                         </div>
                     `;
@@ -1882,11 +1921,11 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
             if(s && s.expert) {
                 analysisBox.innerHTML = `
                     <div class="flex items-start gap-4">
-                        <div class="bg-indigo-900 text-white p-3 rounded-full shrink-0 mt-1"><i class="fas fa-microscope"></i></div>
+                        <div class="bg-[#3D0E0E] text-white p-3 rounded-full shrink-0 mt-1"><i class="fas fa-microscope"></i></div>
                         <div>
-                            <span class="expert-badge mb-2 bg-indigo-900 text-white">Analyse Sociologique & Urbaine</span>
+                            <span class="expert-badge mb-2 bg-[#3D0E0E] text-white">Analyse Sociologique & Urbaine</span>
                             <p class="font-bold text-gray-800 text-sm mb-1 uppercase tracking-wide">Paradigme identifié :</p>
-                            <p class="text-sm leading-relaxed text-gray-700 font-serif border-l-2 border-indigo-200 pl-3">${s.expert}</p>
+                            <p class="text-sm leading-relaxed text-gray-700 font-serif border-l-2 border-[#EDE0CC] pl-3">${s.expert}</p>
                         </div>
                     </div>
                 `;
@@ -1962,7 +2001,7 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
             const container = document.getElementById('word-cloud');
             container.innerHTML = '';
             const words = getWords();
-            const colors = ['bg-indigo-100 text-indigo-800', 'bg-orange-100 text-orange-800', 'bg-blue-100 text-blue-800', 'bg-green-100 text-green-800', 'bg-gray-100 text-gray-700'];
+            const colors = ['bg-[#F5F0E8] text-[#5C1A1A]', 'bg-[#F5EBE0] text-[#7A3A18]', 'bg-[#F5F0E8] text-[#5C1A1A]', 'bg-gray-100 text-gray-700', 'bg-gray-100 text-gray-700'];
             Object.entries(words).forEach(([text, count]) => {
                 const span = document.createElement('span');
                 let sizeClass = count > 8 ? 'text-xl font-bold' : count > 5 ? 'text-lg font-semibold' : count > 3 ? 'text-base font-medium' : count > 1 ? 'text-sm' : 'text-xs';
@@ -1980,10 +2019,10 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
             usa: { 
                 country: "États-Unis", 
                 content: `
-                    <p class="font-bold text-orange-600 mb-1">Puissance & Classements</p>
+                    <p class="font-bold text-[#9E4A20] mb-1">Puissance & Classements</p>
                     <p>Avec <strong>38 universités dans le top 100</strong> (Shanghai 2024), les USA dominent. Harvard est #1 depuis 22 ans.</p>
                     <div class="h-px bg-gray-200 my-4"></div>
-                    <p class="font-bold text-indigo-600 mb-1">Modèle Campus Géant</p>
+                    <p class="font-bold text-[#8B2E2E] mb-1">Modèle Campus Géant</p>
                     <p>Le <strong>Berry College</strong> s'étend sur 110 km², soit la taille de Paris !</p>
                     <p>Coût moyen : 11 950$ à 31 880$/an (vs ~200€ en France).</p>
                     <div class="h-px bg-gray-200 my-4"></div>
@@ -1993,21 +2032,21 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
             europe: { 
                 country: "Europe & France", 
                 content: `
-                    <p class="font-bold text-green-600 mb-1">Accès Massif</p>
+                    <p class="font-bold text-gray-500 mb-1">Accès Massif</p>
                     <p>Taux d'inscription de <strong>79%</strong> (vs 43% moyenne mondiale).</p>
                     <p>L'Europe compte 19.2% des institutions mondiales pour seulement 10% de la population.</p>
                     <div class="h-px bg-gray-200 my-4"></div>
-                    <p class="font-bold text-indigo-600 mb-1">Focus France</p>
+                    <p class="font-bold text-[#8B2E2E] mb-1">Focus France</p>
                     <p>L'<strong>Université Paris-Saclay</strong> est 13ème mondiale (Shanghai 2025). La France accueille 364 756 étudiants internationaux (5% mondial).</p>
                 ` 
             },
             uk: { 
                 country: "Royaume-Uni", 
                 content: `
-                    <p class="font-bold text-indigo-600 mb-1">Excellence Européenne</p>
+                    <p class="font-bold text-[#8B2E2E] mb-1">Excellence Européenne</p>
                     <p><strong>Oxford</strong> (#1) et Cambridge (#3) dominent le classement européen QS 2024.</p>
                     <div class="h-px bg-gray-200 my-4"></div>
-                    <p class="font-bold text-orange-600 mb-1">Attractivité</p>
+                    <p class="font-bold text-[#9E4A20] mb-1">Attractivité</p>
                     <p>Accueille <strong>633 910 étudiants internationaux</strong> (14% des étudiants mobiles OCDE).</p>
                     <p>Un modèle hybride puissant alliant tradition et export du savoir.</p>
                 ` 
@@ -2018,17 +2057,17 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
                     <p class="font-bold text-red-600 mb-1">Explosion Scientifique</p>
                     <p>#1 Mondial en production scientifique avec <strong>898 949 articles</strong> publiés en 2022 (+96% depuis 2010).</p>
                     <div class="h-px bg-gray-200 my-4"></div>
-                    <p class="font-bold text-indigo-600 mb-1">Montée en puissance</p>
+                    <p class="font-bold text-[#8B2E2E] mb-1">Montée en puissance</p>
                     <p>225 universités dans le top 1000 mondial. La Chine est le 2ème pays avec le plus d'universités classées.</p>
                 ` 
             },
             india: { 
                 country: "Inde", 
                 content: `
-                    <p class="font-bold text-orange-600 mb-1">Record du Monde</p>
+                    <p class="font-bold text-[#9E4A20] mb-1">Record du Monde</p>
                     <p>Compte <strong>8 410 universités</strong>, le plus grand nombre au monde !</p>
                     <div class="h-px bg-gray-200 my-4"></div>
-                    <p class="font-bold text-indigo-600 mb-1">Gigantisme</p>
+                    <p class="font-bold text-[#8B2E2E] mb-1">Gigantisme</p>
                     <p>L'Université <strong>G.B. Pant</strong> est 116 fois plus grande que le Vatican.</p>
                     <p>Un défi colossal : +268% d'étudiants entre 2000 et 2020.</p>
                 ` 
@@ -2036,11 +2075,11 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
             philippines: {
                 country: "Philippines / Asie SE",
                 content: `
-                    <p class="font-bold text-blue-600 mb-1">Densité Extrême</p>
+                    <p class="font-bold text-[#8B2E2E] mb-1">Densité Extrême</p>
                     <p>L'université <strong>UP Diliman</strong> accueille 47 627 étudiants sur seulement 5 km².</p>
                     <p>C'est 22x plus compact que le Berry College américain.</p>
                     <div class="h-px bg-gray-200 my-4"></div>
-                    <p class="font-bold text-indigo-600 mb-1">Dynamique Régionale</p>
+                    <p class="font-bold text-[#8B2E2E] mb-1">Dynamique Régionale</p>
                     <p>L'Asie de l'Est et du Sud-Est représente 58% des étudiants internationaux mobiles de l'OCDE.</p>
                 `
             }
@@ -2128,7 +2167,7 @@ function directToWorksFromResult() {
             const objectTag = document.createElement('object');
             objectTag.data = pdfObj.file; objectTag.type = "application/pdf";
             objectTag.className = "w-full h-full"; objectTag.style.minHeight = "100%";
-            objectTag.innerHTML = `<div class="flex flex-col items-center justify-center h-full text-gray-500 p-4 text-center"><p class="mb-4"><i class="fas fa-file-pdf text-4xl text-red-500 mb-2"></i><br>L'affichage intégré n'est pas supporté par votre mobile.</p><a href="${pdfObj.file}" target="_blank" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-full shadow-lg transition flex items-center gap-2"><i class="fas fa-external-link-alt"></i> Ouvrir le PDF (Zoomable)</a></div>`;
+            objectTag.innerHTML = `<div class="flex flex-col items-center justify-center h-full text-gray-500 p-4 text-center"><p class="mb-4"><i class="fas fa-file-pdf text-4xl text-red-500 mb-2"></i><br>L'affichage intégré n'est pas supporté par votre mobile.</p><a href="${pdfObj.file}" target="_blank" class="bg-[#8B2E2E] hover:bg-[#6B2020] text-white font-bold py-3 px-6 rounded-full shadow-lg transition flex items-center gap-2"><i class="fas fa-external-link-alt"></i> Ouvrir le PDF (Zoomable)</a></div>`;
             container.appendChild(objectTag);
             document.getElementById('btn-prev').disabled = (currentPdfIndex === 0);
             document.getElementById('btn-next').disabled = (currentPdfIndex === currentPdfList.length - 1);
@@ -2158,7 +2197,7 @@ function directToWorksFromResult() {
             container.innerHTML = '';
             timelineData.forEach((item, index) => {
                 const isLeft = item.side === 'left'; const delay = index * 100;
-                const cardHtml = `<div class="relative w-full h-32 md:h-24 mb-8 fade-in" style="animation-delay: ${delay}ms"><div class="timeline-point" style="top: 15px;"></div><div class="absolute top-0 timeline-card ${item.side}"><div class="bg-white p-4 rounded-lg shadow-md border-l-4 ${isLeft ? 'border-orange-500' : 'border-indigo-500'} hover:shadow-lg transition-shadow"><span class="text-2xl font-bold text-gray-200 absolute top-2 ${isLeft ? 'right-4' : 'left-4'} select-none z-0">${item.year}</span><div class="relative z-10"><h4 class="font-bold text-indigo-900 text-lg">${item.title}</h4><p class="text-sm text-gray-600 leading-snug">${item.desc}</p></div></div></div></div>`;
+                const cardHtml = `<div class="relative w-full h-32 md:h-24 mb-8 fade-in" style="animation-delay: ${delay}ms"><div class="timeline-point" style="top: 15px;"></div><div class="absolute top-0 timeline-card ${item.side}"><div class="bg-white p-4 rounded-lg shadow-md border-l-4 ${isLeft ? 'border-[#C4622D]' : 'border-[#9B3535]'} hover:shadow-lg transition-shadow"><span class="text-2xl font-bold text-gray-200 absolute top-2 ${isLeft ? 'right-4' : 'left-4'} select-none z-0">${item.year}</span><div class="relative z-10"><h4 class="font-bold text-[#3D0E0E] text-lg">${item.title}</h4><p class="text-sm text-gray-600 leading-snug">${item.desc}</p></div></div></div></div>`;
                 container.innerHTML += cardHtml;
             });
             timelineModal.classList.remove('hidden');
@@ -2174,9 +2213,9 @@ function directToWorksFromResult() {
         const statsModal = document.getElementById('stats-modal');
         let statsChart = null;
         const statsData = [
-            { type: 'pie', title: "Montpellier, Ville Étudiante", desc: "1 habitant sur 4 est étudiant (26,1%). Une proportion qui façonne l'urbain.", data: { labels: ['Étudiants', 'Reste de la population'], datasets: [{ data: [26.1, 73.9], backgroundColor: ['#F97316', '#E5E7EB'], borderWidth: 0 }] } },
-            { type: 'doughnut', title: "Une Université Fragmentée", desc: "Répartition des étudiants par campus : une constellation éclatée plutôt qu'un centre unique.", data: { labels: ['Route de Mende', 'Triolet', 'Richter', 'Saint-Priest', 'Santé', 'Autres'], datasets: [{ data: [29.2, 20.8, 16.7, 13.9, 11.1, 8.3], backgroundColor: ['#4F46E5', '#3B82F6', '#6366F1', '#818CF8', '#A5B4FC', '#C7D2FE'], borderWidth: 2, borderColor: '#ffffff' }] } },
-            { type: 'radar', title: "Moyens & Personnels", desc: "Comparaison des ressources (Budget/Étudiant vs Personnels) entre grandes universités.", data: { labels: ['Aix-Marseille', 'Lyon 1', 'U. Montpellier', 'Lille', 'Paris-Saclay', 'Paul-Valéry', 'Toulouse'], datasets: [{ label: 'Budget / Étudiant (€)', data: [10850, 10600, 9825, 7500, 8300, 7000, 5500], fill: true, backgroundColor: 'rgba(249, 115, 22, 0.2)', borderColor: 'rgb(249, 115, 22)', pointBackgroundColor: 'rgb(249, 115, 22)', pointBorderColor: '#fff', pointHoverBackgroundColor: '#fff', pointHoverBorderColor: 'rgb(249, 115, 22)' }, { label: 'Personnels', data: [8000, 4900, 4800, 8000, 11000, 1500, 3100], fill: true, backgroundColor: 'rgba(79, 70, 229, 0.2)', borderColor: 'rgb(79, 70, 229)', pointBackgroundColor: 'rgb(79, 70, 229)', pointBorderColor: '#fff', pointHoverBackgroundColor: '#fff', pointHoverBorderColor: 'rgb(79, 70, 229)' }] }, options: { elements: { line: { borderWidth: 3 } }, scales: { r: { angleLines: { display: true }, suggestedMin: 0 } } } }
+            { type: 'pie', title: "Montpellier, Ville Étudiante", desc: "1 habitant sur 4 est étudiant (26,1%). Une proportion qui façonne l'urbain.", data: { labels: ['Étudiants', 'Reste de la population'], datasets: [{ data: [26.1, 73.9], backgroundColor: ['#C4622D', '#E5E7EB'], borderWidth: 0 }] } },
+            { type: 'doughnut', title: "Une Université Fragmentée", desc: "Répartition des étudiants par campus : une constellation éclatée plutôt qu'un centre unique.", data: { labels: ['Route de Mende', 'Triolet', 'Richter', 'Saint-Priest', 'Santé', 'Autres'], datasets: [{ data: [29.2, 20.8, 16.7, 13.9, 11.1, 8.3], backgroundColor: ['#8B2E2E', '#3B82F6', '#6366F1', '#818CF8', '#A5B4FC', '#C7D2FE'], borderWidth: 2, borderColor: '#ffffff' }] } },
+            { type: 'radar', title: "Moyens & Personnels", desc: "Comparaison des ressources (Budget/Étudiant vs Personnels) entre grandes universités.", data: { labels: ['Aix-Marseille', 'Lyon 1', 'U. Montpellier', 'Lille', 'Paris-Saclay', 'Paul-Valéry', 'Toulouse'], datasets: [{ label: 'Budget / Étudiant (€)', data: [10850, 10600, 9825, 7500, 8300, 7000, 5500], fill: true, backgroundColor: 'rgba(249, 115, 22, 0.2)', borderColor: 'rgb(196, 98, 45)', pointBackgroundColor: 'rgb(196, 98, 45)', pointBorderColor: '#fff', pointHoverBackgroundColor: '#fff', pointHoverBorderColor: 'rgb(196, 98, 45)' }, { label: 'Personnels', data: [8000, 4900, 4800, 8000, 11000, 1500, 3100], fill: true, backgroundColor: 'rgba(139, 46, 46, 0.2)', borderColor: 'rgb(139, 46, 46)', pointBackgroundColor: 'rgb(139, 46, 46)', pointBorderColor: '#fff', pointHoverBackgroundColor: '#fff', pointHoverBorderColor: 'rgb(139, 46, 46)' }] }, options: { elements: { line: { borderWidth: 3 } }, scales: { r: { angleLines: { display: true }, suggestedMin: 0 } } } }
         ];
 
         function openStats() { statsModal.classList.remove('hidden'); setTimeout(() => renderStat(0), 100); }
@@ -2230,7 +2269,7 @@ async function sendCapsule() {
         } catch (e) {
             console.error("Erreur Capsule:", e);
             btn.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Erreur connexion`;
-            btn.classList.replace('bg-orange-500', 'bg-red-500');
+            btn.classList.replace('bg-[#C4622D]', 'bg-red-500');
         }
     } else {
         console.error("Firebase addDoc/collection non initialisé");
@@ -2254,11 +2293,11 @@ document.getElementById('capsule-msg').addEventListener('input', function() {
     currentPersona = null;
     
     // Réafficher le sélecteur persona
-    document.querySelectorAll('.persona-card').forEach(el => el.classList.remove('selected-persona', 'ring-2', 'ring-indigo-500'));
+    document.querySelectorAll('.persona-card').forEach(el => el.classList.remove('selected-persona', 'ring-2', 'ring-[#8B2E2E]'));
     const btn = document.getElementById('start-btn');
     btn.disabled = true; 
     btn.classList.add('bg-gray-300', 'cursor-not-allowed'); 
-    btn.classList.remove('bg-orange-500', 'hover:bg-orange-600', 'cursor-pointer'); 
+    btn.classList.remove('bg-[#C4622D]', 'hover:bg-[#9E4A20]', 'cursor-pointer'); 
     btn.innerText = "Choisir un personnage";
 }
 
@@ -2363,7 +2402,7 @@ document.getElementById('capsule-msg').addEventListener('input', function() {
             if (glossaryButtonsContainer.children.length === 0) {
                 Object.keys(glossaryTerms).forEach(key => {
                     const btn = document.createElement('button');
-                    btn.className = "bg-white border border-indigo-200 text-indigo-700 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 px-4 py-2 rounded-full shadow-sm transition-all duration-200 text-sm font-semibold mb-2";
+                    btn.className = "bg-white border border-[#EDE0CC] text-[#6B2020] hover:bg-[#8B2E2E] hover:text-white hover:border-[#8B2E2E] px-4 py-2 rounded-full shadow-sm transition-all duration-200 text-sm font-semibold mb-2";
                     btn.innerText = key;
                     btn.onclick = () => showDefinition(key, btn);
                     glossaryButtonsContainer.appendChild(btn);
@@ -2376,8 +2415,8 @@ document.getElementById('capsule-msg').addEventListener('input', function() {
             glossaryModal.classList.add('hidden');
             glossaryDefContainer.classList.add('hidden');
             Array.from(glossaryButtonsContainer.children).forEach(b => {
-                b.classList.remove('bg-orange-500', 'text-white', 'border-orange-500');
-                b.classList.add('bg-white', 'text-indigo-700', 'border-indigo-200');
+                b.classList.remove('bg-[#C4622D]', 'text-white', 'border-[#C4622D]');
+                b.classList.add('bg-white', 'text-[#6B2020]', 'border-[#EDE0CC]');
             });
         }
 
@@ -2385,11 +2424,11 @@ document.getElementById('capsule-msg').addEventListener('input', function() {
             const term = glossaryTerms[key];
             if(!term) return;
             Array.from(glossaryButtonsContainer.children).forEach(b => {
-                b.classList.remove('bg-orange-500', 'text-white', 'border-orange-500');
-                b.classList.add('bg-white', 'text-indigo-700', 'border-indigo-200');
+                b.classList.remove('bg-[#C4622D]', 'text-white', 'border-[#C4622D]');
+                b.classList.add('bg-white', 'text-[#6B2020]', 'border-[#EDE0CC]');
             });
-            btnElement.classList.remove('bg-white', 'text-indigo-700', 'border-indigo-200');
-            btnElement.classList.add('bg-orange-500', 'text-white', 'border-orange-500');
+            btnElement.classList.remove('bg-white', 'text-[#6B2020]', 'border-[#EDE0CC]');
+            btnElement.classList.add('bg-[#C4622D]', 'text-white', 'border-[#C4622D]');
             defTitle.innerText = term.full;
             defText.innerText = term.desc;
             glossaryDefContainer.classList.remove('hidden');
@@ -2425,10 +2464,10 @@ window.limit = limit;
 <div id="games-hub-overlay" class="fixed inset-0 bg-slate-900/95 hidden z-[140] flex items-center justify-center p-3 md:p-4 font-sans fade-in backdrop-blur-sm">
     <div class="bg-white w-full max-w-3xl rounded-2xl overflow-hidden shadow-2xl relative flex flex-col max-h-[90vh]">
         
-        <div class="bg-indigo-900 p-4 md:p-6 text-white flex justify-between items-center shrink-0">
+        <div class="bg-[#3D0E0E] p-4 md:p-6 text-white flex justify-between items-center shrink-0">
             <div>
-                <h2 class="text-lg md:text-xl font-bold uppercase tracking-widest"><i class="fas fa-flask mr-2 text-orange-400"></i>Laboratoire Prospectif</h2>
-                <p class="text-[10px] md:text-xs text-indigo-200">Testez la viabilité de vos décisions sur le long terme.</p>
+                <h2 class="text-lg md:text-xl font-bold uppercase tracking-widest"><i class="fas fa-flask mr-2 text-[#D4824A]"></i>Laboratoire Prospectif</h2>
+                <p class="text-[10px] md:text-xs text-[#EDE0CC]">Testez la viabilité de vos décisions sur le long terme.</p>
             </div>
             <button onclick="document.getElementById('games-hub-overlay').classList.add('hidden'); document.getElementById('games-hub-overlay').classList.remove('flex');" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition"><i class="fas fa-times"></i></button>
         </div>
@@ -2436,24 +2475,24 @@ window.limit = limit;
         <div class="p-6 bg-gray-50 overflow-y-auto">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 
-                <div onclick="document.getElementById('games-hub-overlay').classList.add('hidden'); document.getElementById('games-hub-overlay').classList.remove('flex'); openReignsMenu();" class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm hover:shadow-md hover:border-indigo-500 cursor-pointer transition-all group relative overflow-hidden">
-                    <div class="absolute top-3 right-3 text-green-500 bg-green-100 px-2 py-0.5 rounded text-[10px] font-bold">DISPONIBLE</div>
-                    <div class="w-12 h-12 bg-indigo-100 text-indigo-700 rounded-lg flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform"><i class="fas fa-balance-scale"></i></div>
+                <div onclick="document.getElementById('games-hub-overlay').classList.add('hidden'); document.getElementById('games-hub-overlay').classList.remove('flex'); openReignsMenu();" class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm hover:shadow-md hover:border-[#9B3535] cursor-pointer transition-all group relative overflow-hidden">
+                    <div class="absolute top-3 right-3 text-gray-400 bg-gray-100 px-2 py-0.5 rounded text-[10px] font-bold">DISPONIBLE</div>
+                    <div class="w-12 h-12 bg-[#F5F0E8] text-[#6B2020] rounded-lg flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform"><i class="fas fa-balance-scale"></i></div>
                     <h3 class="font-bold text-gray-800 mb-1">Mandat 2035 : L'Arbitrage</h3>
                     <p class="text-xs text-gray-500 leading-relaxed">Gérez les externalités négatives de votre politique. Budget, Acceptabilité sociale et Écologie.</p>
                 </div>
 
-                <div onclick="document.getElementById('games-hub-overlay').classList.add('hidden'); document.getElementById('games-hub-overlay').classList.remove('flex'); document.getElementById('urban-puzzle-overlay').classList.remove('hidden'); document.getElementById('urban-puzzle-overlay').classList.add('flex'); initUrbanPuzzle();" class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm hover:shadow-md hover:border-green-500 cursor-pointer transition-all group relative overflow-hidden">
-                    <div class="absolute top-3 right-3 text-white bg-green-500 px-2 py-0.5 rounded text-[10px] font-bold shadow-sm">NOUVEAU</div>
-                    <div class="w-12 h-12 bg-green-100 text-green-700 rounded-lg flex items-center justify-center text-2xl mb-4 group-hover:scale-110 group-hover:rotate-3 transition-transform"><i class="fas fa-city"></i></div>
+                <div onclick="document.getElementById('games-hub-overlay').classList.add('hidden'); document.getElementById('games-hub-overlay').classList.remove('flex'); document.getElementById('urban-puzzle-overlay').classList.remove('hidden'); document.getElementById('urban-puzzle-overlay').classList.add('flex'); initUrbanPuzzle();" class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm hover:shadow-md hover:border-gray-400 cursor-pointer transition-all group relative overflow-hidden">
+                    <div class="absolute top-3 right-3 text-white bg-gray-400 px-2 py-0.5 rounded text-[10px] font-bold shadow-sm">NOUVEAU</div>
+                    <div class="w-12 h-12 bg-gray-100 text-gray-600 rounded-lg flex items-center justify-center text-2xl mb-4 group-hover:scale-110 group-hover:rotate-3 transition-transform"><i class="fas fa-city"></i></div>
                     <h3 class="font-bold text-gray-800 mb-1">Urban Puzzle : Défi ZAN</h3>
                     <p class="text-xs text-gray-500 leading-relaxed">Architecte, placez les bâtiments nécessaires sans détruire la nature. Attention à la jauge écologique !</p>
                 </div>
 
-                <div onclick="document.getElementById('games-hub-overlay').classList.add('hidden'); document.getElementById('games-hub-overlay').classList.remove('flex'); openCodex();" class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm hover:shadow-md hover:border-indigo-500 cursor-pointer transition-all group relative overflow-hidden">
-                    <div class="absolute top-3 right-3 text-indigo-600 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">Culture G</div>
+                <div onclick="document.getElementById('games-hub-overlay').classList.add('hidden'); document.getElementById('games-hub-overlay').classList.remove('flex'); openCodex();" class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm hover:shadow-md hover:border-[#9B3535] cursor-pointer transition-all group relative overflow-hidden">
+                    <div class="absolute top-3 right-3 text-[#8B2E2E] bg-[#FAF7F2] border border-[#F5F0E8] px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">Culture G</div>
                     <div class="flex items-center gap-4 relative z-10">
-                        <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-lg flex items-center justify-center text-2xl mb-4 group-hover:scale-110 group-hover:bg-indigo-600 group-hover:text-white transition-all shadow-sm"><i class="fas fa-university"></i></div>
+                        <div class="w-12 h-12 bg-[#FAF7F2] text-[#8B2E2E] rounded-lg flex items-center justify-center text-2xl mb-4 group-hover:scale-110 group-hover:bg-[#8B2E2E] group-hover:text-white transition-all shadow-sm"><i class="fas fa-university"></i></div>
                         <div>
                             <h3 class="font-bold text-gray-800 mb-1">Le Grand Quiz Universitaire</h3>
                             <p class="text-xs text-gray-500 leading-relaxed">Misez vos points de crédibilité pour répondre à des questions complexes sur l'histoire et l'urbanisme.</p>
@@ -2474,19 +2513,19 @@ window.limit = limit;
                         </div>
                     </div>
                 </div>
-<div onclick="initFringeLab()" class="bg-gray-900 p-5 rounded-xl border border-gray-700 shadow-xl hover:shadow-2xl hover:border-green-500 cursor-pointer transition-all group relative overflow-hidden">
-    <div class="absolute inset-0 opacity-20" style="background-image: repeating-linear-gradient(0deg, transparent, transparent 2px, #00ff00 2px, #00ff00 4px);"></div>
+<div onclick="initFringeLab()" class="bg-gray-900 p-5 rounded-xl border border-gray-700 shadow-xl hover:shadow-2xl hover:border-gray-400 cursor-pointer transition-all group relative overflow-hidden">
+    <div class="absolute inset-0 opacity-20" style="background-image: repeating-linear-gradient(0deg, transparent, transparent 2px, #C4622D 2px, #C4622D 4px);"></div>
     <div class="absolute top-2 right-2 flex gap-1">
         <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
         <span class="text-[9px] text-red-500 font-mono uppercase">Classifié</span>
     </div>
     
     <div class="flex items-center gap-5 relative z-10">
-        <div class="w-14 h-14 bg-black text-green-500 border border-green-800 rounded-lg flex items-center justify-center text-2xl mb-1 group-hover:text-white group-hover:bg-green-700 transition-all shadow-[0_0_15px_rgba(0,255,0,0.2)]">
+        <div class="w-14 h-14 bg-black text-gray-400 border border-green-800 rounded-lg flex items-center justify-center text-2xl mb-1 group-hover:text-white group-hover:bg-gray-600 transition-all shadow-[0_0_15px_rgba(156,163,175,0.2)]">
             <i class="fas fa-terminal"></i>
         </div>
         <div>
-            <h3 class="font-bold text-gray-100 text-lg uppercase tracking-tight font-mono group-hover:text-green-400 transition-colors">Terminal Omega</h3>
+            <h3 class="font-bold text-gray-100 text-lg uppercase tracking-tight font-mono group-hover:text-gray-400 transition-colors">Terminal Omega</h3>
             <p class="text-xs text-gray-500 leading-relaxed mt-1 font-mono">
                 > Accès Scénarios S7-S10.<br>
                 > Décryptage requis...
@@ -2501,8 +2540,8 @@ window.limit = limit;
 
 <div id="reigns-overlay" class="fixed inset-0 bg-black bg-opacity-95 hidden z-[150] flex flex-col items-center justify-center p-3 md:p-4 font-sans fade-in">
     
-    <div id="game-glossary-modal" class="absolute z-[160] bg-white rounded-lg shadow-2xl border-l-4 border-orange-500 p-3 md:p-4 max-w-xs hidden top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-11/12">
-        <h4 id="gg-title" class="font-bold text-indigo-900 mb-2 text-xs md:text-sm uppercase">Définition</h4>
+    <div id="game-glossary-modal" class="absolute z-[160] bg-white rounded-lg shadow-2xl border-l-4 border-[#C4622D] p-3 md:p-4 max-w-xs hidden top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-11/12">
+        <h4 id="gg-title" class="font-bold text-[#3D0E0E] mb-2 text-xs md:text-sm uppercase">Définition</h4>
         <p id="gg-desc" class="text-[10px] md:text-xs text-gray-700 leading-relaxed mb-3">...</p>
         <button onclick="closeGameGlossary()" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 text-xs font-bold py-2 rounded">Fermer</button>
     </div>
@@ -2513,19 +2552,19 @@ window.limit = limit;
         <p class="text-sm text-gray-600 mb-8 px-4">"Gouverner, c'est choisir."<br>Sélectionnez la dominante de crise à gérer.</p>
         
         <div class="space-y-4">
-            <div onclick="startReignsGame('tech')" class="bg-indigo-50 hover:bg-indigo-100 p-4 rounded-xl border border-indigo-200 cursor-pointer transition-all flex items-center gap-4 text-left group">
+            <div onclick="startReignsGame('tech')" class="bg-[#FAF7F2] hover:bg-[#F5F0E8] p-4 rounded-xl border border-[#EDE0CC] cursor-pointer transition-all flex items-center gap-4 text-left group">
                 <div class="text-2xl bg-white w-12 h-12 flex items-center justify-center rounded-full shadow-sm">⚡</div>
                 <div>
-                    <h3 class="font-bold text-indigo-900 text-sm">Défis Techniques & Numériques</h3>
-                    <p class="text-xs text-indigo-600">Sobriété, IA, Obsolescence & Coûts.</p>
+                    <h3 class="font-bold text-[#3D0E0E] text-sm">Défis Techniques & Numériques</h3>
+                    <p class="text-xs text-[#8B2E2E]">Sobriété, IA, Obsolescence & Coûts.</p>
                 </div>
             </div>
 
-            <div onclick="startReignsGame('nature')" class="bg-green-50 hover:bg-green-100 p-4 rounded-xl border border-green-200 cursor-pointer transition-all flex items-center gap-4 text-left group">
+            <div onclick="startReignsGame('nature')" class="bg-gray-50 hover:bg-gray-100 p-4 rounded-xl border border-gray-200 cursor-pointer transition-all flex items-center gap-4 text-left group">
                 <div class="text-2xl bg-white w-12 h-12 flex items-center justify-center rounded-full shadow-sm">🌱</div>
                 <div>
-                    <h3 class="font-bold text-green-900 text-sm">Défis Environnementaux</h3>
-                    <p class="text-xs text-green-600">ZAN, Biodiversité, Énergie & Usages.</p>
+                    <h3 class="font-bold text-gray-800 text-sm">Défis Environnementaux</h3>
+                    <p class="text-xs text-gray-500">ZAN, Biodiversité, Énergie & Usages.</p>
                 </div>
             </div>
         </div>
@@ -2539,27 +2578,27 @@ window.limit = limit;
             </button>
         </div>
 
-        <div class="w-full flex justify-between mb-6 bg-slate-800 p-4 rounded-lg shadow-lg border border-slate-700 relative">
+        <div class="w-full flex justify-between mb-6 bg-[#2C2C2C] p-4 rounded-lg shadow-lg border border-slate-700 relative">
             <div class="flex flex-col items-center w-1/3 px-2 border-r border-slate-600">
                 <span class="text-[10px] text-slate-400 uppercase font-bold mb-1">Budget</span>
-                <div class="w-full h-1.5 bg-slate-600 rounded-full overflow-hidden"><div id="r-bar-budget" class="h-full bg-blue-400 transition-all duration-300" style="width: 60%"></div></div>
+                <div class="w-full h-1.5 bg-[#4A4A4A] rounded-full overflow-hidden"><div id="r-bar-budget" class="h-full bg-[#B04040] transition-all duration-300" style="width: 60%"></div></div>
             </div>
             <div class="flex flex-col items-center w-1/3 px-2 border-r border-slate-600">
                 <span class="text-[10px] text-slate-400 uppercase font-bold mb-1">Social</span>
-                <div class="w-full h-1.5 bg-slate-600 rounded-full overflow-hidden"><div id="r-bar-pop" class="h-full bg-purple-400 transition-all duration-300" style="width: 60%"></div></div>
+                <div class="w-full h-1.5 bg-[#4A4A4A] rounded-full overflow-hidden"><div id="r-bar-pop" class="h-full bg-[#B04040] transition-all duration-300" style="width: 60%"></div></div>
             </div>
             <div class="flex flex-col items-center w-1/3 px-2">
                 <span class="text-[10px] text-slate-400 uppercase font-bold mb-1">Écologie</span>
-                <div class="w-full h-1.5 bg-slate-600 rounded-full overflow-hidden"><div id="r-bar-eco" class="h-full bg-green-400 transition-all duration-300" style="width: 60%"></div></div>
+                <div class="w-full h-1.5 bg-[#4A4A4A] rounded-full overflow-hidden"><div id="r-bar-eco" class="h-full bg-gray-300 transition-all duration-300" style="width: 60%"></div></div>
             </div>
         </div>
 
         <div class="relative h-[420px] w-full perspective-1000">
-            <div id="r-active-card" class="absolute inset-0 bg-white rounded-xl shadow-2xl flex flex-col items-center p-8 text-center border-t-4 border-indigo-600 transition-transform duration-300 ease-out origin-bottom">
+            <div id="r-active-card" class="absolute inset-0 bg-white rounded-xl shadow-2xl flex flex-col items-center p-8 text-center border-t-4 border-[#8B2E2E] transition-transform duration-300 ease-out origin-bottom">
                 <div class="absolute top-4 right-4 text-[10px] font-mono text-gray-400">DOSSIER #<span id="r-turn-count">01</span></div>
                 <div id="r-card-icon" class="text-5xl mb-6 mt-4 p-4 bg-gray-50 rounded-full shadow-inner text-gray-700">⚠️</div>
                 <h3 id="r-card-title" class="text-lg font-bold text-gray-900 mb-3 leading-tight uppercase tracking-wide">Titre Dossier</h3>
-                <div class="w-10 h-1 bg-indigo-600 mb-4 mx-auto"></div>
+                <div class="w-10 h-1 bg-[#8B2E2E] mb-4 mx-auto"></div>
                 <p id="r-card-desc" class="text-gray-600 text-sm leading-relaxed font-medium">Description technique du problème...</p>
                 <p class="mt-4 text-[10px] text-gray-400 italic">Cliquez sur les mots soulignés pour le glossaire.</p>
                 <div id="r-choice-feedback" class="absolute bottom-24 left-0 w-full px-4 text-center font-bold text-lg opacity-0 transition-opacity transform z-10 drop-shadow-md"></div>
@@ -2785,7 +2824,7 @@ window.limit = limit;
         const cardEl = document.getElementById('r-active-card');
         
         cardEl.style.transform = 'none';
-        cardEl.style.borderColor = '#4f46e5'; 
+        cardEl.style.borderColor = '#8b2e2e'; 
         document.getElementById('r-choice-feedback').style.opacity = '0';
 
         // Formatage du numéro 01, 02...
@@ -2806,21 +2845,21 @@ window.limit = limit;
 
         if(dir === 'left') {
             card.style.transform = 'rotate(-3deg) translateX(-10px)';
-            card.style.borderColor = '#60a5fa'; 
+            card.style.borderColor = '#C4905A'; 
             feedback.innerText = cData.left.f;
-            feedback.style.color = '#2563eb';
+            feedback.style.color = '#8b2e2e';
         } else {
             card.style.transform = 'rotate(3deg) translateX(10px)';
-            card.style.borderColor = '#a78bfa'; 
+            card.style.borderColor = '#BFA882'; 
             feedback.innerText = cData.right.f;
-            feedback.style.color = '#7c3aed';
+            feedback.style.color = '#8B2E2E';
         }
         feedback.style.opacity = '1';
     }
 
     function resetReignsPreview() { 
         document.getElementById('r-active-card').style.transform = 'none'; 
-        document.getElementById('r-active-card').style.borderColor = '#4f46e5';
+        document.getElementById('r-active-card').style.borderColor = '#8b2e2e';
         document.getElementById('r-choice-feedback').style.opacity = '0';
     }
     
@@ -2858,7 +2897,7 @@ window.limit = limit;
         const el = document.getElementById(id);
         el.style.width = val + '%';
         if(val < 20) el.className = "h-full bg-red-500 animate-pulse";
-        else if(val < 50) el.className = "h-full bg-orange-400 transition-all duration-300";
+        else if(val < 50) el.className = "h-full bg-[#D4824A] transition-all duration-300";
         else el.className = "h-full bg-emerald-500 transition-all duration-300";
     }
     
@@ -2886,7 +2925,7 @@ window.limit = limit;
         if(win) {
             icon.innerText = "✅";
             title.innerText = "Mandat Validé";
-            title.className = "text-xl font-black text-green-700 mb-2 uppercase";
+            title.className = "text-xl font-black text-gray-600 mb-2 uppercase";
             message.innerHTML = "Bravo ! Vous avez maintenu l'équilibre précaire de l'institution jusqu'au bout.";
         } else {
             icon.innerText = "❌";
@@ -2899,27 +2938,27 @@ window.limit = limit;
 <div id="urban-puzzle-overlay" class="fixed inset-0 bg-slate-900/95 hidden z-[150] flex items-center justify-center p-2 md:p-4 fade-in font-sans select-none">
     <div class="bg-white w-full max-w-5xl h-[95vh] md:h-[90vh] rounded-xl md:rounded-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row relative">
         
-        <div class="md:hidden bg-indigo-900 text-white p-2.5 md:p-3 flex justify-between items-center shadow-md z-20">
-            <span class="font-bold text-xs md:text-sm uppercase tracking-wider"><i class="fas fa-city mr-1 md:mr-2 text-orange-400"></i>Défi ZAN</span>
+        <div class="md:hidden bg-[#3D0E0E] text-white p-2.5 md:p-3 flex justify-between items-center shadow-md z-20">
+            <span class="font-bold text-xs md:text-sm uppercase tracking-wider"><i class="fas fa-city mr-1 md:mr-2 text-[#D4824A]"></i>Défi ZAN</span>
             <button onclick="closeUrbanPuzzle()" class="text-white hover:text-red-400"><i class="fas fa-times text-xl"></i></button>
         </div>
 
         <div class="w-full md:w-1/3 bg-slate-50 p-4 md:p-6 flex flex-col border-r border-gray-200 overflow-y-auto z-10">
             <div class="hidden md:flex justify-between items-start mb-6">
                 <div>
-                    <h2 class="text-2xl font-black text-indigo-900 leading-none">URBAN<br>PUZZLE</h2>
-                    <span class="text-[10px] font-bold text-green-600 tracking-widest uppercase bg-green-100 px-2 py-0.5 rounded">Objectif Zéro Artificialisation</span>
+                    <h2 class="text-2xl font-black text-[#3D0E0E] leading-none">URBAN<br>PUZZLE</h2>
+                    <span class="text-[10px] font-bold text-gray-500 tracking-widest uppercase bg-gray-100 px-2 py-0.5 rounded">Objectif Zéro Artificialisation</span>
                 </div>
                 <button onclick="closeUrbanPuzzle()" class="bg-gray-200 hover:bg-red-100 hover:text-red-500 rounded-full w-8 h-8 flex items-center justify-center transition"><i class="fas fa-times"></i></button>
             </div>
 
             <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200 mb-4 md:mb-6">
                 <div class="flex justify-between items-end mb-2">
-                    <span class="text-xs font-bold text-gray-500 uppercase flex items-center gap-1"><i class="fas fa-leaf text-green-500"></i> Impact Nature</span>
-                    <span id="zan-txt" class="text-sm font-bold text-green-600">0 / 3 Max</span>
+                    <span class="text-xs font-bold text-gray-500 uppercase flex items-center gap-1"><i class="fas fa-leaf text-gray-400"></i> Impact Nature</span>
+                    <span id="zan-txt" class="text-sm font-bold text-gray-500">0 / 3 Max</span>
                 </div>
                 <div class="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
-                    <div id="zan-bar" class="h-full bg-green-500 transition-all duration-500" style="width: 0%"></div>
+                    <div id="zan-bar" class="h-full bg-gray-400 transition-all duration-500" style="width: 0%"></div>
                 </div>
                 <p id="zan-msg" class="text-[10px] text-red-500 mt-2 hidden font-bold animate-pulse text-center bg-red-50 py-1 rounded border border-red-100"><i class="fas fa-exclamation-triangle"></i> LIMITE LÉGALE DÉPASSÉE</p>
             </div>
@@ -2934,7 +2973,7 @@ window.limit = limit;
             </div>
 
             <div class="mt-4 md:mt-6 pt-4 border-t border-gray-200">
-                <button onclick="checkWin()" class="w-full py-4 rounded-xl bg-indigo-600 text-white font-bold text-sm hover:bg-indigo-700 shadow-lg shadow-indigo-200 transition transform active:scale-95 flex items-center justify-center gap-2">
+                <button onclick="checkWin()" class="w-full py-4 rounded-xl bg-[#8B2E2E] text-white font-bold text-sm hover:bg-[#6B2020] shadow-lg shadow-[#EDE0CC] transition transform active:scale-95 flex items-center justify-center gap-2">
                     <span>VALIDER LE PLAN</span> <i class="fas fa-check"></i>
                 </button>
                 <button onclick="initUrbanPuzzle()" class="w-full mt-2 py-2 text-xs text-gray-400 font-semibold hover:text-gray-600">Réinitialiser la carte</button>
@@ -2948,7 +2987,7 @@ window.limit = limit;
                 <p id="end-desc" class="text-gray-600 mb-8 max-w-md text-sm md:text-base">Description</p>
                 <div class="flex gap-3">
                     <button onclick="initUrbanPuzzle()" class="bg-gray-200 text-gray-700 px-6 py-3 rounded-full font-bold hover:bg-gray-300 transition">Réessayer</button>
-                    <button onclick="closeUrbanPuzzle()" class="bg-indigo-600 text-white px-6 py-3 rounded-full font-bold shadow-lg hover:bg-indigo-700 transition">Quitter</button>
+                    <button onclick="closeUrbanPuzzle()" class="bg-[#8B2E2E] text-white px-6 py-3 rounded-full font-bold shadow-lg hover:bg-[#6B2020] transition">Quitter</button>
                 </div>
             </div>
             
@@ -2960,8 +2999,8 @@ window.limit = limit;
             </div>
             
             <div class="bg-white px-4 py-2 rounded-full shadow-sm text-xs text-gray-500 border border-gray-100 flex items-center gap-2">
-                <i class="fas fa-info-circle text-indigo-500"></i>
-                <span>Astuce : Le <strong>Logement</strong> <span class="w-2 h-2 inline-block rounded-full bg-orange-400"></span> gagne des points près du <strong>Tram</strong> <span class="w-2 h-2 inline-block rounded-full bg-purple-400"></span>.</span>
+                <i class="fas fa-info-circle text-[#9B3535]"></i>
+                <span>Astuce : Le <strong>Logement</strong> <span class="w-2 h-2 inline-block rounded-full bg-[#D4824A]"></span> gagne des points près du <strong>Tram</strong> <span class="w-2 h-2 inline-block rounded-full bg-[#B04040]"></span>.</span>
             </div>
         </div>
     </div>
@@ -3035,7 +3074,7 @@ function renderPalette() {
         let btn = document.createElement('div');
         let isSelected = selType === t.id;
         
-        btn.className = `p-3 rounded-lg border-2 cursor-pointer transition-all flex items-center justify-between group ${isSelected ? 'border-indigo-500 bg-indigo-50 ring-2 ring-indigo-200' : 'border-gray-200 hover:border-indigo-300 bg-white'}`;
+        btn.className = `p-3 rounded-lg border-2 cursor-pointer transition-all flex items-center justify-between group ${isSelected ? 'border-[#9B3535] bg-[#FAF7F2] ring-2 ring-[#EDE0CC]' : 'border-gray-200 hover:border-[#C8827A] bg-white'}`;
         
         btn.innerHTML = `
             <div class="flex items-center gap-3">
@@ -3044,7 +3083,7 @@ function renderPalette() {
                 </div>
                 <div class="flex flex-col">
                     <span class="text-xs font-bold text-gray-700">${t.label}</span>
-                    <span class="text-[10px] text-gray-400 group-hover:text-indigo-500">Sélectionner</span>
+                    <span class="text-[10px] text-gray-400 group-hover:text-[#9B3535]">Sélectionner</span>
                 </div>
             </div>
             <span class="text-xs font-bold bg-gray-100 px-2 py-1 rounded text-gray-600">x${remain}</span>
@@ -3061,7 +3100,7 @@ function renderPalette() {
     });
 
     if(!hasRemaining) {
-        p.innerHTML = `<div class="col-span-2 text-center py-6 bg-green-50 rounded-lg border border-green-100 text-green-700 text-sm font-bold"><i class="fas fa-check-circle mr-2"></i>Tous les bâtiments sont placés !<br><span class="text-xs font-normal">Vérifiez la jauge ZAN et validez.</span></div>`;
+        p.innerHTML = `<div class="col-span-2 text-center py-6 bg-gray-50 rounded-lg border border-gray-100 text-gray-600 text-sm font-bold"><i class="fas fa-check-circle mr-2"></i>Tous les bâtiments sont placés !<br><span class="text-xs font-normal">Vérifiez la jauge ZAN et validez.</span></div>`;
         selType = null;
     }
 }
@@ -3132,8 +3171,8 @@ function renderZan() {
         txt.className = 'text-sm font-bold text-red-500';
         msg.classList.remove('hidden');
     } else {
-        bar.className = 'h-full bg-green-500 transition-all';
-        txt.className = 'text-sm font-bold text-green-600';
+        bar.className = 'h-full bg-gray-400 transition-all';
+        txt.className = 'text-sm font-bold text-gray-500';
         msg.classList.add('hidden');
     }
 }
@@ -3157,7 +3196,7 @@ function checkWin() {
     } else if(buildings.length < totalNeeded) {
         icon.innerText="📋"; 
         title.innerText="DOSSIER INCOMPLET"; 
-        title.className="text-3xl font-black text-orange-500 mb-2";
+        title.className="text-3xl font-black text-[#C4622D] mb-2";
         desc.innerHTML="Il manque des bâtiments !<br>L'université ne peut pas fonctionner à moitié.<br>Placez tous les éléments de la liste.";
     } else {
         // Calcul Synergie (Logement près de Tram)
@@ -3170,25 +3209,25 @@ function checkWin() {
 
         icon.innerText="🎉"; 
         title.innerText="PERMIS ACCORDÉ"; 
-        title.className="text-3xl font-black text-green-600 mb-2";
-        desc.innerHTML=`<strong>Excellent travail !</strong><br>Le ZAN est respecté et le campus est fonctionnel.<br><br><span class="text-sm bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full">Bonus Synergie : ${synergies} logements bien connectés</span>`;
+        title.className="text-3xl font-black text-gray-500 mb-2";
+        desc.innerHTML=`<strong>Excellent travail !</strong><br>Le ZAN est respecté et le campus est fonctionnel.<br><br><span class="text-sm bg-[#F5F0E8] text-[#5C1A1A] px-3 py-1 rounded-full">Bonus Synergie : ${synergies} logements bien connectés</span>`;
     }
 }
 </script>
 <div id="codex-overlay" class="fixed inset-0 bg-slate-900/95 z-[160] hidden flex-col font-sans fade-in items-center justify-center p-3 md:p-4">
     <div class="w-full max-w-3xl bg-white rounded-xl md:rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
         
-        <div class="bg-indigo-900 p-3 md:p-6 flex justify-between items-center shrink-0">
+        <div class="bg-[#3D0E0E] p-3 md:p-6 flex justify-between items-center shrink-0">
             <div>
                 <h2 class="text-base md:text-xl font-bold text-white tracking-wide title-font flex items-center gap-2">
-                    <i class="fas fa-graduation-cap text-orange-400"></i> CHALLENGE UNIVERSITAIRE
+                    <i class="fas fa-graduation-cap text-[#D4824A]"></i> CHALLENGE UNIVERSITAIRE
                 </h2>
-                <p class="text-[10px] md:text-xs text-indigo-200 hidden md:block">Testez vos connaissances expertes</p>
+                <p class="text-[10px] md:text-xs text-[#EDE0CC] hidden md:block">Testez vos connaissances expertes</p>
             </div>
             
             <div class="flex items-center gap-3">
-                <div class="bg-indigo-800/50 px-4 py-2 rounded-lg border border-indigo-700 flex flex-col items-end">
-                    <span class="text-[10px] text-indigo-300 uppercase font-bold">Crédibilité</span>
+                <div class="bg-[#5C1A1A]/50 px-4 py-2 rounded-lg border border-[#6B2020] flex flex-col items-end">
+                    <span class="text-[10px] text-[#C8827A] uppercase font-bold">Crédibilité</span>
                     <span id="codex-score" class="font-bold text-white text-lg">1000</span>
                 </div>
                 <button onclick="closeCodex()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors">
@@ -3200,7 +3239,7 @@ function checkWin() {
         <div class="flex-grow overflow-y-auto bg-gray-50 p-6 relative">
             
             <div id="codex-screen-wager" class="flex flex-col items-center justify-center h-full text-center space-y-6 py-4">
-                <div class="w-20 h-20 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center text-4xl shadow-inner mb-2">
+                <div class="w-20 h-20 bg-[#F5F0E8] text-[#8B2E2E] rounded-full flex items-center justify-center text-4xl shadow-inner mb-2">
                     <i class="fas fa-question"></i>
                 </div>
                 
@@ -3214,15 +3253,15 @@ function checkWin() {
                 </p>
                 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-md mt-4">
-                    <button onclick="codexStartRound(100)" class="bg-white border-2 border-gray-200 hover:border-indigo-500 hover:bg-indigo-50 p-4 rounded-xl transition-all group shadow-sm text-left relative overflow-hidden">
-                        <div class="absolute top-0 right-0 w-16 h-16 bg-indigo-100 rounded-bl-full -mr-8 -mt-8 z-0"></div>
-                        <span class="block text-xs font-bold text-gray-400 uppercase mb-1 relative z-10 group-hover:text-indigo-600">Prudent</span>
+                    <button onclick="codexStartRound(100)" class="bg-white border-2 border-gray-200 hover:border-[#9B3535] hover:bg-[#FAF7F2] p-4 rounded-xl transition-all group shadow-sm text-left relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-16 h-16 bg-[#F5F0E8] rounded-bl-full -mr-8 -mt-8 z-0"></div>
+                        <span class="block text-xs font-bold text-gray-400 uppercase mb-1 relative z-10 group-hover:text-[#8B2E2E]">Prudent</span>
                         <span class="text-xl font-black text-gray-800 relative z-10">100 PTS</span>
                     </button>
                     
-                    <button onclick="codexStartRound(500)" class="bg-white border-2 border-orange-200 hover:border-orange-500 hover:bg-orange-50 p-4 rounded-xl transition-all group shadow-sm text-left relative overflow-hidden">
-                         <div class="absolute top-0 right-0 w-16 h-16 bg-orange-100 rounded-bl-full -mr-8 -mt-8 z-0"></div>
-                        <span class="block text-xs font-bold text-orange-400 uppercase mb-1 relative z-10 group-hover:text-orange-600">Audacieux</span>
+                    <button onclick="codexStartRound(500)" class="bg-white border-2 border-[#F0D0B0] hover:border-[#C4622D] hover:bg-[#FAF3EC] p-4 rounded-xl transition-all group shadow-sm text-left relative overflow-hidden">
+                         <div class="absolute top-0 right-0 w-16 h-16 bg-[#F5EBE0] rounded-bl-full -mr-8 -mt-8 z-0"></div>
+                        <span class="block text-xs font-bold text-[#D4824A] uppercase mb-1 relative z-10 group-hover:text-[#9E4A20]">Audacieux</span>
                         <span class="text-xl font-black text-gray-800 relative z-10">500 PTS</span>
                     </button>
                 </div>
@@ -3230,7 +3269,7 @@ function checkWin() {
 
             <div id="codex-screen-question" class="hidden flex flex-col h-full">
                 <div class="w-full bg-gray-200 rounded-full h-2 mb-6 overflow-hidden">
-                    <div id="codex-timer-bar" class="bg-indigo-600 h-2 rounded-full transition-all duration-[15000ms] ease-linear w-full"></div>
+                    <div id="codex-timer-bar" class="bg-[#8B2E2E] h-2 rounded-full transition-all duration-[15000ms] ease-linear w-full"></div>
                 </div>
 
                 <div class="flex-grow flex items-center justify-center mb-6">
@@ -3247,7 +3286,7 @@ function checkWin() {
                     <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-100 px-3 py-1 rounded-full text-[10px] font-bold text-gray-500 uppercase tracking-widest border border-gray-200">Le Savoir Expert</div>
                     <p id="codex-fb-expl" class="text-sm text-gray-600 leading-relaxed mt-2"></p>
                 </div>
-                <button onclick="codexNext()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:shadow-xl transition-all flex items-center gap-2 transform hover:-translate-y-1">
+                <button onclick="codexNext()" class="bg-[#8B2E2E] hover:bg-[#6B2020] text-white font-bold py-3 px-8 rounded-full shadow-lg hover:shadow-xl transition-all flex items-center gap-2 transform hover:-translate-y-1">
                     <span>Question Suivante</span> <i class="fas fa-arrow-right"></i>
                 </button>
             </div>
@@ -3278,7 +3317,7 @@ function checkWin() {
                 </div>
                 <div class="hidden md:flex flex-col">
                     <span class="text-[9px] text-gray-400 uppercase font-bold">Connexion Sécurisée</span>
-                    <span class="text-[10px] text-green-600 font-mono"><i class="fas fa-lock text-[8px] mr-1"></i>V.2100.4.1</span>
+                    <span class="text-[10px] text-gray-500 font-mono"><i class="fas fa-lock text-[8px] mr-1"></i>V.2100.4.1</span>
                 </div>
             </div>
             <div class="flex items-center gap-3">
@@ -3379,8 +3418,8 @@ function checkWin() {
                                 <div class="bg-gray-50 p-3 rounded border border-gray-200">
                                     <label class="block text-[10px] font-bold text-gray-400 uppercase mb-2">Analyse Biométrique (Simulation)</label>
                                     <div class="flex items-center gap-2 mb-1">
-                                        <div class="h-1 flex-grow bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-green-500 w-[85%]"></div></div>
-                                        <span class="text-[9px] font-bold text-green-600">Pouls: OK</span>
+                                        <div class="h-1 flex-grow bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-gray-400 w-[85%]"></div></div>
+                                        <span class="text-[9px] font-bold text-gray-500">Pouls: OK</span>
                                     </div>
                                     <div class="flex items-center gap-2">
                                         <div class="h-1 flex-grow bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-yellow-500 w-[45%]"></div></div>
@@ -3486,7 +3525,7 @@ function checkWin() {
                         </div>
                         <div class="text-center relative">
                             <p class="text-[10px] font-bold uppercase mb-8">Le Sujet (Signature + Sang)</p>
-                            <div class="font-script text-2xl text-blue-900 transform -rotate-6">Acceptation Forcée</div>
+                            <div class="font-script text-2xl text-[#3D0E0E] transform -rotate-6">Acceptation Forcée</div>
                             <div id="lease-stamp" class="stamp-animation absolute -top-4 -left-12 border-4 border-red-700 text-red-700 font-black text-4xl p-2 uppercase opacity-0 tracking-widest mix-blend-multiply rounded z-20">
                                 DOSSIER<br>VALIDÉ
                             </div>
@@ -3510,18 +3549,18 @@ function checkWin() {
 .agency-border { border: 1px solid #e5e7eb; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); background: white; }
 
 /* Boutons "Froids" */
-.agency-btn { background: white; border: 1px solid #dc2626; color: #dc2626; padding: 0.5rem 1rem; font-weight: 600; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em; transition: all 0.2s; border-radius: 2px; }
-.agency-btn:hover { background-color: #dc2626; color: white; }
-.agency-btn-primary { background-color: #dc2626; color: white; border: 1px solid #b91c1c; padding: 0.75rem 1.5rem; font-weight: 700; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.1em; border-radius: 2px; box-shadow: 0 2px 4px rgba(220, 38, 38, 0.2); }
-.agency-btn-primary:hover { background-color: #991b1b; transform: translateY(-1px); }
+.agency-btn { background: white; border: 1px solid #8B2E2E; color: #8B2E2E; padding: 0.5rem 1rem; font-weight: 600; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em; transition: all 0.2s; border-radius: 2px; }
+.agency-btn:hover { background-color: #8B2E2E; color: white; }
+.agency-btn-primary { background-color: #8B2E2E; color: white; border: 1px solid #6B1F1F; padding: 0.75rem 1.5rem; font-weight: 700; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.1em; border-radius: 2px; box-shadow: 0 2px 4px rgba(139, 46, 46, 0.2); }
+.agency-btn-primary:hover { background-color: #5C1A1A; transform: translateY(-1px); }
 
 /* Cartes */
 .agency-card { transition: all 0.2s; border: 1px solid #e5e7eb; background: white; position: relative; overflow: hidden; }
-.agency-card:hover { border-color: #dc2626; box-shadow: 0 10px 20px -5px rgba(220, 38, 38, 0.15); transform: translateY(-2px); }
+.agency-card:hover { border-color: #8B2E2E; box-shadow: 0 10px 20px -5px rgba(139, 46, 46, 0.15); transform: translateY(-2px); }
 
 /* Tags */
 .agency-tag { display: inline-flex; align-items: center; background: #f3f4f6; color: #4b5563; padding: 2px 8px; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; border: 1px solid #e5e7eb; border-radius: 2px; }
-.agency-tag-red { background: #fef2f2; color: #dc2626; border-color: #fee2e2; }
+.agency-tag-red { background: #F9F3EC; color: #8B2E2E; border-color: #F0E0D0; }
 
 /* Document Bail (Lease) - Imitation Papier A4 Officiel */
 .lease-paper { 
@@ -3533,29 +3572,36 @@ function checkWin() {
     position: relative;
     color: #000;
 }
-.lease-watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); font-size: 6rem; font-weight: 900; color: rgba(220, 38, 38, 0.05); border: 4px solid rgba(220, 38, 38, 0.05); padding: 1rem; pointer-events: none; white-space: nowrap; z-index: 0; }
+.lease-watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); font-size: 6rem; font-weight: 900; color: rgba(139, 46, 46, 0.05); border: 4px solid rgba(139, 46, 46, 0.05); padding: 1rem; pointer-events: none; white-space: nowrap; z-index: 0; }
 .stamp-animation { animation: stampIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; opacity: 0; transform: scale(3) rotate(-15deg); }
 @keyframes stampIn { 100% { opacity: 0.9; transform: scale(1) rotate(-15deg); } }
 
 /* Loader Bureaucratique */
 .processing-overlay { background: rgba(255,255,255,0.9); backdrop-filter: blur(2px); z-index: 50; display: flex; flex-col; justify-content: center; align-items: center; }
-.scan-line { width: 100%; height: 2px; background: #dc2626; animation: scan 2s linear infinite; position: absolute; top: 0; }
+.scan-line { width: 100%; height: 2px; background: #8B2E2E; animation: scan 2s linear infinite; position: absolute; top: 0; }
 @keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
 /* === STYLES PAGE D'ACCUEIL AMÉLIORÉS === */
 .hero-section { 
-    background: linear-gradient(135deg, #1e3a8a 0%, #312e81 50%, #1e1b4b 100%);
+    background: #FFFFFF;
     min-height: 100vh; 
     position: relative; 
     overflow: hidden;
 }
+/* Textes landing sur fond blanc */
+#landing-page .text-white { color: #3D0E0E !important; }
+#landing-page .text-white\/90 { color: #5C1A1A !important; }
+#landing-page span.text-white { color: #3D0E0E !important; }
+#landing-page h1.text-white { color: #3D0E0E !important; }
+#landing-page .border-white\/30 { border-color: rgba(139,46,46,0.3) !important; }
+#landing-page .bg-white\/20 { background-color: rgba(139,46,46,0.08) !important; }
 
 .hero-pattern {
     position: absolute;
     inset: 0;
-    opacity: 0.08;
+    opacity: 0.04;
     background-image: 
-        radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.4) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(249, 115, 22, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 20% 50%, rgba(196, 98, 45, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(196, 98, 45, 0.3) 0%, transparent 50%),
         url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='1' fill-rule='evenodd'/%3E%3C/svg%3E");
     animation: heroPattern 30s linear infinite;
 }
@@ -3567,15 +3613,18 @@ function checkWin() {
 
 .card-landing {
     backdrop-filter: blur(20px);
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: linear-gradient(135deg, #8B2E2E 0%, #6B2020 100%);
+    border: 1px solid rgba(139, 46, 46, 0.4);
     box-shadow: 
-        0 8px 32px 0 rgba(31, 38, 135, 0.37),
+        0 8px 32px 0 rgba(139, 46, 46, 0.25),
         inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
     transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
     position: relative;
     overflow: hidden;
 }
+.card-landing h3 { color: #ffffff !important; -webkit-text-fill-color: #ffffff !important; }
+.card-landing p { color: rgba(255,255,255,0.85) !important; }
+.card-landing .flex.items-center { color: #F0D0B0 !important; }
 
 .card-landing::before {
     content: '';
@@ -3597,12 +3646,12 @@ function checkWin() {
     box-shadow: 
         0 20px 60px -10px rgba(0, 0, 0, 0.4),
         inset 0 1px 0 0 rgba(255, 255, 255, 0.2),
-        0 0 40px rgba(249, 115, 22, 0.3);
-    border-color: rgba(249, 115, 22, 0.5);
+        0 0 40px rgba(196, 98, 45, 0.3);
+    border-color: rgba(196, 98, 45, 0.5);
 }
 
 .card-landing h3 {
-    background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 100%);
+    background: linear-gradient(135deg, #ffffff 0%, #f5e8e8 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -3613,7 +3662,7 @@ function checkWin() {
 }
 
 .card-landing .flex.items-center {
-    color: #fb923c;
+    color: #D4824A;
 }
 
 .card-landing:hover .flex.items-center {
@@ -3640,7 +3689,7 @@ function checkWin() {
     content: '';
     position: absolute;
     inset: -10px;
-    border: 2px solid rgba(249, 115, 22, 0.5);
+    border: 2px solid rgba(196, 98, 45, 0.5);
     border-radius: 50%;
     animation: pulseRingOuter 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
@@ -3658,24 +3707,16 @@ function checkWin() {
 
 /* Effet sur le titre principal */
 .landing-page h1 {
-    text-shadow: 
-        0 0 10px rgba(255, 255, 255, 0.5),
-        0 0 20px rgba(99, 102, 241, 0.5),
-        0 0 30px rgba(249, 115, 22, 0.3);
-    animation: titleGlow 3s ease-in-out infinite;
-}
-
-@keyframes titleGlow {
-    0%, 100% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(99, 102, 241, 0.5), 0 0 30px rgba(249, 115, 22, 0.3); }
-    50% { text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(99, 102, 241, 0.8), 0 0 40px rgba(249, 115, 22, 0.6); }
+    color: #3D0E0E;
+    text-shadow: none;
 }
 
 /* Badge "Exposition Interactive" amélioré */
 .landing-page .inline-flex.items-center {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    background: rgba(139, 46, 46, 0.08);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+    border: 1px solid rgba(139, 46, 46, 0.25);
+    box-shadow: 0 4px 16px rgba(139, 46, 46, 0.1);
 }
 
 /* Footer crédits */
@@ -3783,8 +3824,8 @@ function checkWin() {
         const gridEl = document.getElementById('codex-options-grid'); gridEl.innerHTML = "";
         codexState.currentQ.opts.forEach((opt, idx) => {
             const btn = document.createElement('button');
-            btn.className = "w-full bg-white border border-gray-200 hover:border-indigo-500 hover:bg-indigo-50 p-4 rounded-xl text-left transition-all flex items-center gap-4 group shadow-sm";
-            btn.innerHTML = `<div class="w-8 h-8 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center font-bold text-sm group-hover:bg-indigo-600 group-hover:text-white transition-colors">${String.fromCharCode(65+idx)}</div><span class="text-gray-700 font-medium group-hover:text-indigo-900">${opt}</span>`;
+            btn.className = "w-full bg-white border border-gray-200 hover:border-[#9B3535] hover:bg-[#FAF7F2] p-4 rounded-xl text-left transition-all flex items-center gap-4 group shadow-sm";
+            btn.innerHTML = `<div class="w-8 h-8 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center font-bold text-sm group-hover:bg-[#8B2E2E] group-hover:text-white transition-colors">${String.fromCharCode(65+idx)}</div><span class="text-gray-700 font-medium group-hover:text-[#3D0E0E]">${opt}</span>`;
             btn.onclick = () => codexCheckAnswer(idx);
             gridEl.appendChild(btn);
         });
@@ -3803,14 +3844,14 @@ function checkWin() {
         
         if(isCorrect) {
             codexState.score += codexState.currentWager;
-            fbTitle.innerText = "Bonne Réponse !"; fbTitle.className = "text-2xl font-bold mb-6 text-green-600";
-            fbIcon.innerHTML = '<i class="fas fa-check"></i>'; fbIcon.className = "w-24 h-24 rounded-full flex items-center justify-center text-5xl mb-6 shadow-lg bg-green-100 text-green-600 scale-100 transition-transform duration-500";
+            fbTitle.innerText = "Bonne Réponse !"; fbTitle.className = "text-2xl font-bold mb-6 text-gray-500";
+            fbIcon.innerHTML = '<i class="fas fa-check"></i>'; fbIcon.className = "w-24 h-24 rounded-full flex items-center justify-center text-5xl mb-6 shadow-lg bg-gray-100 text-gray-500 scale-100 transition-transform duration-500";
         } else {
             codexState.score -= codexState.currentWager; if(codexState.score < 0) codexState.score = 0;
             fbTitle.innerText = idx === -1 ? "Temps Écoulé..." : "Mauvaise Réponse"; fbTitle.className = "text-2xl font-bold mb-6 text-red-500";
             fbIcon.innerHTML = '<i class="fas fa-times"></i>'; fbIcon.className = "w-24 h-24 rounded-full flex items-center justify-center text-5xl mb-6 shadow-lg bg-red-100 text-red-500 scale-100 transition-transform duration-500";
         }
-        document.getElementById('codex-fb-expl').innerHTML = `<div class="mb-3"><span class="text-xs font-bold text-gray-400 uppercase">Réponse correcte :</span><br><strong class="text-indigo-700">${codexState.currentQ.opts[codexState.currentQ.correct]}</strong></div><p>${codexState.currentQ.note}</p>`;
+        document.getElementById('codex-fb-expl').innerHTML = `<div class="mb-3"><span class="text-xs font-bold text-gray-400 uppercase">Réponse correcte :</span><br><strong class="text-[#6B2020]">${codexState.currentQ.opts[codexState.currentQ.correct]}</strong></div><p>${codexState.currentQ.note}</p>`;
         document.getElementById('codex-score').innerText = codexState.score;
         codexShowScreen('feedback');
     }
@@ -3824,7 +3865,7 @@ function checkWin() {
 /* === LOGIQUE ADMIN SECRET === */
 let secretClicks = 0;
 document.addEventListener('DOMContentLoaded', () => {
-    const logoTrigger = document.querySelector('header .bg-orange-500'); 
+    const logoTrigger = document.querySelector('header .bg-[#C4622D]'); 
     if(logoTrigger) {
         logoTrigger.style.cursor = "pointer"; 
         logoTrigger.addEventListener('click', () => {
@@ -3909,7 +3950,7 @@ async function loadAdminCapsules() {
             tbody.innerHTML += `
                 <tr class="hover:bg-gray-50 border-b border-gray-50">
                     <td class="p-3 text-gray-500 whitespace-nowrap font-mono text-xs">${dateStr}</td>
-                    <td class="p-3"><span class="bg-indigo-100 text-indigo-800 text-xs font-bold px-2 py-1 rounded">${d.scenario.toUpperCase()}</span></td>
+                    <td class="p-3"><span class="bg-[#F5F0E8] text-[#5C1A1A] text-xs font-bold px-2 py-1 rounded">${d.scenario.toUpperCase()}</span></td>
                     <td class="p-3 text-gray-800 italic">"${d.message}"</td>
                 </tr>`;
         });
@@ -4349,7 +4390,7 @@ function startLeaseProcess() {
     setTimeout(() => { bar.style.width = "30%"; txt.innerText = "Interrogation Casier Judiciaire..."; }, 500);
     setTimeout(() => { bar.style.width = "60%"; txt.innerText = "Analyse Biométrique..."; }, 1500);
     setTimeout(() => { bar.style.width = "85%"; txt.innerText = "Validation Crédits Sociaux..."; }, 2500);
-    setTimeout(() => { bar.style.width = "100%"; txt.innerText = "Génération du Bail..."; txt.classList.replace('text-gray-800', 'text-green-600'); generateLeaseActual(name); }, 3500);
+    setTimeout(() => { bar.style.width = "100%"; txt.innerText = "Génération du Bail..."; txt.classList.replace('text-gray-800', 'text-gray-500'); generateLeaseActual(name); }, 3500);
 }
 
 function generateLeaseActual(name) {
@@ -4394,14 +4435,14 @@ function downloadLease() {
     
     <div class="flex flex-col h-full p-3 md:p-8 relative z-20">
         
-        <div class="flex justify-between items-end border-b-2 border-[#33ff00] pb-3 md:pb-4 mb-4 md:mb-6 shrink-0">
+        <div class="flex justify-between items-end border-b-2 border-[#C4622D] pb-3 md:pb-4 mb-4 md:mb-6 shrink-0">
             <div class="flex-1 min-w-0">
                 <h1 class="text-base md:text-4xl font-bold glitch-text truncate" data-text="DÉPARTEMENT DES FUTURS RADICAUX">DÉPARTEMENT DES FUTURS RADICAUX</h1>
                 <p class="text-[9px] md:text-xs mt-1 opacity-70">SYS.ADMIN // ACCÈS ROOT</p>
             </div>
             <div class="text-right font-mono ml-2">
                 <div id="fringe-clock" class="text-sm md:text-xl font-bold">--:--:--</div>
-                <button onclick="closeFringeLab()" class="text-xs border border-[#33ff00] px-3 py-1 hover:bg-[#33ff00] hover:text-black transition-colors uppercase mt-2">
+                <button onclick="closeFringeLab()" class="text-xs border border-[#C4622D] px-3 py-1 hover:bg-[#C4622D] hover:text-black transition-colors uppercase mt-2">
                     [ ÉCHAP ] DÉCONNEXION
                 </button>
             </div>
@@ -4409,32 +4450,32 @@ function downloadLease() {
 
         <div class="flex flex-col md:flex-row gap-6 h-full overflow-hidden">
             
-            <div class="w-full md:w-1/3 border-r border-[#33ff00] pr-4 flex flex-col">
-                <p class="text-xs mb-4 bg-[#33ff00] text-black px-2 py-1 font-bold inline-block w-max">FICHIERS ENCRYPTÉS :</p>
+            <div class="w-full md:w-1/3 border-r border-[#C4622D] pr-4 flex flex-col">
+                <p class="text-xs mb-4 bg-[#C4622D] text-black px-2 py-1 font-bold inline-block w-max">FICHIERS ENCRYPTÉS :</p>
                 <div id="fringe-file-list" class="overflow-y-auto flex-grow custom-scrollbar">
                     </div>
                 
-                <div class="mt-4 h-32 bg-black border border-[#33ff00] p-2 text-[10px] font-mono opacity-80 overflow-hidden relative">
-                    <div class="absolute top-0 right-0 px-1 bg-[#33ff00] text-black text-[9px]">LOGS RÉSEAU</div>
-                    <div id="fringe-logs" class="flex flex-col justify-end h-full text-green-700">
+                <div class="mt-4 h-32 bg-black border border-[#C4622D] p-2 text-[10px] font-mono opacity-80 overflow-hidden relative">
+                    <div class="absolute top-0 right-0 px-1 bg-[#C4622D] text-black text-[9px]">LOGS RÉSEAU</div>
+                    <div id="fringe-logs" class="flex flex-col justify-end h-full text-gray-600">
                         <p>> Initialisation du système...</p>
                         <p>> Connexion sécurisée établie.</p>
                     </div>
                 </div>
             </div>
 
-            <div class="w-full md:w-2/3 relative bg-black bg-opacity-80 border border-[#33ff00] shadow-[0_0_30px_rgba(51,255,0,0.1)] flex flex-col">
+            <div class="w-full md:w-2/3 relative bg-black bg-opacity-80 border border-[#C4622D] shadow-[0_0_30px_rgba(51,255,0,0.1)] flex flex-col">
                 
                 <div id="fringe-idle" class="absolute inset-0 flex flex-col items-center justify-center text-center z-10 pointer-events-none">
-                    <i class="fas fa-biohazard text-8xl mb-6 text-[#33ff00] opacity-50 animate-pulse"></i>
+                    <i class="fas fa-biohazard text-8xl mb-6 text-[#C4622D] opacity-50 animate-pulse"></i>
                     <p class="text-sm font-bold tracking-widest animate-pulse">EN ATTENTE DE SÉLECTION</p>
                 </div>
 
                 <div id="fringe-content" class="hidden h-full flex-col p-6 overflow-y-auto">
                     
-                    <div class="flex justify-between items-start mb-6 border-b border-[#33ff00] pb-4">
+                    <div class="flex justify-between items-start mb-6 border-b border-[#C4622D] pb-4">
                         <div>
-                            <span id="fr-id" class="bg-[#33ff00] text-black px-2 py-0.5 text-xs font-bold mb-2 inline-block">ID</span>
+                            <span id="fr-id" class="bg-[#C4622D] text-black px-2 py-0.5 text-xs font-bold mb-2 inline-block">ID</span>
                             <h2 id="fr-title" class="text-3xl font-bold uppercase tracking-tight text-white drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]">TITRE</h2>
                         </div>
                         <i id="fr-icon" class="fas fa-folder text-5xl opacity-80"></i>
@@ -4443,13 +4484,13 @@ function downloadLease() {
                     <div id="decrypt-zone" class="my-auto">
                         <p class="text-sm mb-2 font-bold blink-cursor">> DÉCRYPTAGE DU DOSSIER EN COURS...</p>
                         <div class="decrypt-box"><div id="decrypt-bar" class="decrypt-fill"></div></div>
-                        <div id="decrypt-matrix" class="mt-2 h-24 overflow-hidden text-[10px] text-green-800 font-mono leading-tight"></div>
+                        <div id="decrypt-matrix" class="mt-2 h-24 overflow-hidden text-[10px] text-gray-700 font-mono leading-tight"></div>
                     </div>
 
                     <div id="fr-data" class="hidden space-y-8 animate-fade-in">
                         
-                        <div class="relative pl-6 border-l-2 border-[#33ff00]">
-                            <h3 class="text-xs font-bold text-[#33ff00] uppercase mb-1 flex items-center gap-2">
+                        <div class="relative pl-6 border-l-2 border-[#C4622D]">
+                            <h3 class="text-xs font-bold text-[#C4622D] uppercase mb-1 flex items-center gap-2">
                                 <i class="fas fa-globe"></i> Contexte 2100
                             </h3>
                             <p id="fr-context" class="text-sm md:text-base leading-relaxed text-gray-300"></p>
@@ -4462,14 +4503,14 @@ function downloadLease() {
                             <p id="fr-archi" class="text-sm md:text-base leading-relaxed text-gray-300"></p>
                         </div>
 
-                        <div class="bg-[#33ff00]/10 p-6 border border-[#33ff00] relative mt-4">
-                            <span class="absolute -top-3 left-4 bg-black px-2 text-[10px] text-[#33ff00] border border-[#33ff00]">TRANSCRIPTION AUDIO</span>
+                        <div class="bg-[#C4622D]/10 p-6 border border-[#C4622D] relative mt-4">
+                            <span class="absolute -top-3 left-4 bg-black px-2 text-[10px] text-[#C4622D] border border-[#C4622D]">TRANSCRIPTION AUDIO</span>
                             <p id="fr-narrative" class="italic text-sm font-serif text-white tracking-wide"></p>
                         </div>
 
                         <div class="pt-6 flex justify-between items-center">
                             <p class="text-[10px] uppercase text-red-500 font-bold animate-pulse">! FIN DU FICHIER !</p>
-                            <button onclick="resetFringeView()" class="border border-[#33ff00] px-4 py-2 hover:bg-[#33ff00] hover:text-black transition text-xs uppercase font-bold">Fermer le dossier</button>
+                            <button onclick="resetFringeView()" class="border border-[#C4622D] px-4 py-2 hover:bg-[#C4622D] hover:text-black transition text-xs uppercase font-bold">Fermer le dossier</button>
                         </div>
                     </div>
 
@@ -4859,17 +4900,17 @@ function showScenarioDetail(scenarioKey) {
                             Enjeux Clés
                         </h4>
                         <ul class="space-y-2">
-                            ${s.issues.map(issue => `<li class="flex items-start gap-2 text-gray-700"><i class="fas fa-check-circle text-green-500 mt-1"></i><span>${issue}</span></li>`).join('')}
+                            ${s.issues.map(issue => `<li class="flex items-start gap-2 text-gray-700"><i class="fas fa-check-circle text-gray-400 mt-1"></i><span>${issue}</span></li>`).join('')}
                         </ul>
                     </div>
 
                     ${s.expert ? `
-                    <div class="bg-indigo-50 border-l-4 border-indigo-600 p-4 rounded-r">
-                        <h4 class="text-sm font-bold text-indigo-900 uppercase mb-2 flex items-center gap-2">
+                    <div class="bg-[#FAF7F2] border-l-4 border-[#8B2E2E] p-4 rounded-r">
+                        <h4 class="text-sm font-bold text-[#3D0E0E] uppercase mb-2 flex items-center gap-2">
                             <i class="fas fa-graduation-cap"></i>
                             Analyse Experte
                         </h4>
-                        <p class="text-sm text-indigo-800 leading-relaxed">${s.expert}</p>
+                        <p class="text-sm text-[#5C1A1A] leading-relaxed">${s.expert}</p>
                     </div>
                     ` : ''}
                 </div>
@@ -4892,7 +4933,7 @@ function showScenarioDetail(scenarioKey) {
                     ` : ''}
 
                     <button onclick="compareWithAtrium('${scenarioKey.toUpperCase()}')" 
-                            class="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-3">
+                            class="w-full bg-gradient-to-r from-[#9B3535] to-[#C4622D] hover:from-[#8B2E2E] hover:to-[#9E4A20] text-white font-bold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-3">
                         <i class="fas fa-exchange-alt text-xl"></i>
                         <span>Comparer l'Atrium : Avant/Après</span>
                     </button>
@@ -4914,16 +4955,3 @@ function compareWithAtrium(scenarioId) {
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
