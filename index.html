@@ -4990,6 +4990,13 @@ function compareWithAtrium(scenarioId) {
             <a id="expo-dl-btn" href="#" download class="hidden md:flex items-center gap-2 bg-[#3D0E0E] hover:bg-[#6B2020] text-[#EDE0CC] text-xs font-bold px-3 py-2 rounded-lg transition-colors">
                 <i class="fas fa-download"></i> <span class="hidden md:inline">Télécharger</span>
             </a>
+            <!-- Boutons zoom expo -->
+            <div class="hidden md:flex items-center gap-1 bg-[#3D0E0E] rounded-lg px-1 py-1">
+                <button onclick="expoZoom(-0.25)" class="w-7 h-7 flex items-center justify-center text-[#EDE0CC] hover:bg-[#6B2020] rounded transition-colors text-sm font-bold" title="Dézoomer">−</button>
+                <span id="expo-zoom-label" class="text-[#C8827A] text-xs font-mono w-10 text-center">100%</span>
+                <button onclick="expoZoom(+0.25)" class="w-7 h-7 flex items-center justify-center text-[#EDE0CC] hover:bg-[#6B2020] rounded transition-colors text-sm font-bold" title="Zoomer">+</button>
+                <button onclick="expoZoomReset()" class="w-7 h-7 flex items-center justify-center text-[#EDE0CC] hover:bg-[#6B2020] rounded transition-colors text-xs" title="Réinitialiser"><i class="fas fa-expand-arrows-alt"></i></button>
+            </div>
             <button onclick="closeExpoVirtuelle()" class="bg-[#8B2E2E] hover:bg-[#6B2020] text-white w-8 h-8 rounded-full flex items-center justify-center transition-colors text-sm">
                 <i class="fas fa-times"></i>
             </button>
@@ -5005,8 +5012,8 @@ function compareWithAtrium(scenarioId) {
         </button>
 
         <!-- Visionneuse PDF rendue via PDF.js (contourne X-Frame-Options & Content-Disposition) -->
-        <div id="expo-iframe" class="w-full h-full flex items-center justify-center overflow-auto" style="background:#0D0505;">
-            <canvas id="expo-pdf-canvas" style="max-width:100%; max-height:100%; display:block; margin:auto;"></canvas>
+        <div id="expo-iframe" class="w-full h-full overflow-auto" style="background:#0D0505; cursor:grab; display:flex; align-items:center; justify-content:center;">
+            <canvas id="expo-pdf-canvas" style="display:block; margin:auto; transform-origin:top center; transition:transform 0.15s ease;"></canvas>
         </div>
 
         <!-- Fallback si PDF non trouvé -->
@@ -5213,6 +5220,13 @@ document.addEventListener('keydown', function(e) {
             <a id="projets-dl-btn" href="#" download class="hidden md:flex items-center gap-2 bg-[#3D0E0E] hover:bg-[#6B2020] text-[#EDE0CC] text-xs font-bold px-3 py-2 rounded-lg transition-colors">
                 <i class="fas fa-download"></i> <span class="hidden md:inline">Télécharger</span>
             </a>
+            <!-- Boutons zoom projets -->
+            <div class="hidden md:flex items-center gap-1 bg-[#3D0E0E] rounded-lg px-1 py-1">
+                <button onclick="projetsZoom(-0.25)" class="w-7 h-7 flex items-center justify-center text-[#EDE0CC] hover:bg-[#6B2020] rounded transition-colors text-sm font-bold" title="Dézoomer">−</button>
+                <span id="projets-zoom-label" class="text-[#C8827A] text-xs font-mono w-10 text-center">100%</span>
+                <button onclick="projetsZoom(+0.25)" class="w-7 h-7 flex items-center justify-center text-[#EDE0CC] hover:bg-[#6B2020] rounded transition-colors text-sm font-bold" title="Zoomer">+</button>
+                <button onclick="projetsZoomReset()" class="w-7 h-7 flex items-center justify-center text-[#EDE0CC] hover:bg-[#6B2020] rounded transition-colors text-xs" title="Réinitialiser"><i class="fas fa-expand-arrows-alt"></i></button>
+            </div>
             <button onclick="closeNosProjets()" class="bg-[#8B2E2E] hover:bg-[#6B2020] text-white w-8 h-8 rounded-full flex items-center justify-center transition-colors text-sm">
                 <i class="fas fa-times"></i>
             </button>
@@ -5227,8 +5241,8 @@ document.addEventListener('keydown', function(e) {
             <button onclick="projetsNav(-1)" id="projets-prev" class="absolute left-2 md:left-4 z-20 w-10 h-10 bg-black/60 hover:bg-[#8B2E2E] border border-white/20 text-white rounded-full flex items-center justify-center transition-all text-lg shadow-lg backdrop-blur-sm">
                 <i class="fas fa-chevron-left"></i>
             </button>
-            <div id="projets-viewer" class="w-full h-full flex items-center justify-center overflow-auto" style="background:#0D0505;">
-                <canvas id="projets-pdf-canvas" style="max-width:100%; max-height:100%; display:block; margin:auto;"></canvas>
+            <div id="projets-viewer" class="w-full h-full overflow-auto" style="background:#0D0505; cursor:grab; display:flex; align-items:center; justify-content:center;">
+                <canvas id="projets-pdf-canvas" style="display:block; margin:auto; transform-origin:top center; transition:transform 0.15s ease;"></canvas>
             </div>
             <div id="projets-fallback" class="hidden absolute inset-0 flex flex-col items-center justify-center text-center p-8">
                 <i class="fas fa-file-pdf text-6xl text-[#8B2E2E] mb-4"></i>
@@ -5346,6 +5360,104 @@ document.addEventListener("keydown", function(e) {
     const o=document.getElementById("nos-projets-overlay");
     o.addEventListener("touchstart",e=>{sx=e.touches[0].clientX;},{passive:true});
     o.addEventListener("touchend",e=>{const dx=e.changedTouches[0].clientX-sx; if(Math.abs(dx)>50)projetsNav(dx<0?1:-1);},{passive:true});
+})();
+</script>
+
+
+<script>
+// ══════════════════════════════════════════
+// ZOOM VISIONNEUSES PDF (expo + projets)
+// ══════════════════════════════════════════
+(function() {
+    const viewers = [
+        { viewerId: 'expo-iframe',     canvasId: 'expo-pdf-canvas',    labelId: 'expo-zoom-label',    renderFn: () => typeof expoGoTo === 'function' && expoGoTo(expoCurrent) },
+        { viewerId: 'projets-viewer',  canvasId: 'projets-pdf-canvas', labelId: 'projets-zoom-label', renderFn: () => typeof projetsGoTo === 'function' && projetsGoTo(projetsCurrent) }
+    ];
+
+    // State
+    const state = { 'expo-pdf-canvas': 1, 'projets-pdf-canvas': 1 };
+    const MIN = 0.5, MAX = 4, STEP = 0.25;
+
+    function applyZoom(canvasId, labelId, zoom) {
+        zoom = Math.min(MAX, Math.max(MIN, zoom));
+        state[canvasId] = zoom;
+        const canvas = document.getElementById(canvasId);
+        const label  = document.getElementById(labelId);
+        if (!canvas) return;
+        canvas.style.transform = `scale(${zoom})`;
+        canvas.style.transformOrigin = zoom > 1 ? 'top center' : 'center center';
+        if (label) label.textContent = Math.round(zoom * 100) + '%';
+        // Quand dézoomé, recentrer
+        const viewer = canvas.closest('[id$="-iframe"],[id$="-viewer"]');
+        if (viewer) {
+            viewer.style.alignItems = zoom <= 1 ? 'center' : 'flex-start';
+            viewer.style.justifyContent = 'center';
+        }
+    }
+
+    // Exposer les fonctions globalement
+    window.expoZoom = function(delta) {
+        applyZoom('expo-pdf-canvas', 'expo-zoom-label', state['expo-pdf-canvas'] + delta);
+    };
+    window.expoZoomReset = function() {
+        applyZoom('expo-pdf-canvas', 'expo-zoom-label', 1);
+    };
+    window.projetsZoom = function(delta) {
+        applyZoom('projets-pdf-canvas', 'projets-zoom-label', state['projets-pdf-canvas'] + delta);
+    };
+    window.projetsZoomReset = function() {
+        applyZoom('projets-pdf-canvas', 'projets-zoom-label', 1);
+    };
+
+    // Reset zoom quand on change de planche
+    const origExpoGoTo = window.expoGoTo;
+    const origProjetsGoTo = window.projetsGoTo;
+    document.addEventListener('DOMContentLoaded', function() {
+        // Molette souris sur expo
+        const expoViewer = document.getElementById('expo-iframe');
+        if (expoViewer) {
+            expoViewer.addEventListener('wheel', function(e) {
+                if (document.getElementById('expo-virtuelle-overlay').classList.contains('hidden')) return;
+                e.preventDefault();
+                const delta = e.deltaY < 0 ? STEP : -STEP;
+                applyZoom('expo-pdf-canvas', 'expo-zoom-label', state['expo-pdf-canvas'] + delta);
+            }, { passive: false });
+            // Curseur
+            expoViewer.addEventListener('mousedown', () => expoViewer.style.cursor = 'grabbing');
+            expoViewer.addEventListener('mouseup',   () => expoViewer.style.cursor = 'grab');
+        }
+
+        // Molette souris sur projets
+        const projViewer = document.getElementById('projets-viewer');
+        if (projViewer) {
+            projViewer.addEventListener('wheel', function(e) {
+                if (document.getElementById('nos-projets-overlay').classList.contains('hidden')) return;
+                e.preventDefault();
+                const delta = e.deltaY < 0 ? STEP : -STEP;
+                applyZoom('projets-pdf-canvas', 'projets-zoom-label', state['projets-pdf-canvas'] + delta);
+            }, { passive: false });
+            projViewer.addEventListener('mousedown', () => projViewer.style.cursor = 'grabbing');
+            projViewer.addEventListener('mouseup',   () => projViewer.style.cursor = 'grab');
+        }
+    });
+
+    // Reset zoom à chaque changement de planche (patch expoGoTo / projetsGoTo)
+    // On observe les changements via MutationObserver sur le label
+    const expoLabel = document.getElementById ? document.getElementById('expo-planche-label') : null;
+    const projLabel = document.getElementById ? document.getElementById('projets-planche-label') : null;
+
+    function watchLabel(labelId, canvasId, zoomLabelId) {
+        const el = document.getElementById(labelId);
+        if (!el) return;
+        new MutationObserver(() => {
+            applyZoom(canvasId, zoomLabelId, 1);
+        }).observe(el, { childList: true, characterData: true, subtree: true });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        watchLabel('expo-planche-label', 'expo-pdf-canvas', 'expo-zoom-label');
+        watchLabel('projets-planche-label', 'projets-pdf-canvas', 'projets-zoom-label');
+    });
 })();
 </script>
 
