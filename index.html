@@ -1036,13 +1036,13 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
                 <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border border-gray-100 group border-t-4 border-[#8B2E2E]">
                     <div class="h-48 bg-[#5C1A1A] flex items-center justify-center relative overflow-hidden">
                          <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/world-map.png')]"></div>
-                         <i class="fas fa-globe-americas text-6xl text-[#C8827A] group-hover:text-white group-hover:scale-110 transition-all duration-500"></i>
+                         <i class="fas fa-folder-open text-6xl text-[#C8827A] group-hover:text-white group-hover:scale-110 transition-all duration-500"></i>
                     </div>
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">Contexte International</h3>
-                        <p class="text-sm text-gray-500 mb-4">Visualisez les faits marquants de l'enseignement supérieur à travers le monde : frais, mobilités, classements.</p>
-                        <button onclick="openAtlas()" class="w-full bg-[#8B2E2E] hover:bg-[#6B2020] text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors shadow-md">
-                            <i class="fas fa-map-marked-alt"></i> Ouvrir l'Atlas
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Nos Projets</h3>
+                        <p class="text-sm text-gray-500 mb-4">Consultez les planches de projets des étudiants : diagnostics et propositions urbaines pour Montpellier 2100.</p>
+                        <button onclick="openNosProjets()" class="w-full bg-[#8B2E2E] hover:bg-[#6B2020] text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors shadow-md">
+                            <i class="fas fa-file-pdf"></i> Voir les Projets
                         </button>
                     </div>
                 </div>
@@ -1059,16 +1059,7 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
                         </button>
                     </div>
                 </div>
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border border-gray-100 group">
-                    <div class="h-48 bg-gray-500 flex items-center justify-center relative overflow-hidden">
-                        <i class="fas fa-road text-6xl text-white group-hover:scale-110 transition-transform duration-500"></i>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">La Révolution de la Route de Mende</h3>
-                        <p class="text-sm text-gray-500 mb-4">Transformation d'une coupure routière en boulevard urbain apaisé. Arrivée du Tram 5, élargissement des trottoirs et pistes cyclables pour relier le campus à la ville.</p>
-                        <div class="mt-2 text-xs text-gray-400 italic"><i class="fas fa-check-circle mr-1"></i> Projet en cours</div>
-                    </div>
-                </div>
+
 
                 <!-- CARTE MODIFIÉE : ATRIUM AVEC BOUTON PLEIN ÉCRAN (Cliquable entièrement) -->
                 <div onclick="openAtrium()" class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border border-gray-100 group cursor-pointer">
@@ -5182,6 +5173,163 @@ document.addEventListener('keydown', function(e) {
     }, { passive: true });
 })();
 </script>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     NOS PROJETS — VISIONNEUSE PDF ÉTUDIANTS
+     ═══════════════════════════════════════════════════════════ -->
+<div id="nos-projets-overlay" class="hidden fixed inset-0 z-[500] bg-black flex flex-col" style="touch-action:none;">
+    <div class="flex items-center justify-between px-4 md:px-8 py-3 bg-[#1A0A0A] border-b border-[#3D0E0E] flex-shrink-0">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 bg-[#8B2E2E] rounded-full flex items-center justify-center">
+                <i class="fas fa-folder-open text-white text-xs"></i>
+            </div>
+            <div>
+                <div class="text-white font-bold text-sm title-font tracking-wider">NOS PROJETS</div>
+                <div id="projets-planche-label" class="text-[#C8827A] text-xs font-mono">Planche 1 / 7</div>
+            </div>
+        </div>
+        <div id="projets-planche-titre" class="hidden md:block text-[#EDE0CC] text-sm font-semibold text-center flex-1 mx-4 truncate"></div>
+        <div class="flex items-center gap-2 md:gap-3">
+            <a id="projets-dl-btn" href="#" download class="hidden md:flex items-center gap-2 bg-[#3D0E0E] hover:bg-[#6B2020] text-[#EDE0CC] text-xs font-bold px-3 py-2 rounded-lg transition-colors">
+                <i class="fas fa-download"></i> <span class="hidden md:inline">Télécharger</span>
+            </a>
+            <button onclick="closeNosProjets()" class="bg-[#8B2E2E] hover:bg-[#6B2020] text-white w-8 h-8 rounded-full flex items-center justify-center transition-colors text-sm">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+    <div class="h-1 bg-[#3D0E0E] flex-shrink-0">
+        <div id="projets-progress" class="h-full bg-[#8B2E2E] transition-all duration-300" style="width:14.28%"></div>
+    </div>
+    <div class="flex flex-1 overflow-hidden">
+        <div class="hidden md:flex flex-col w-64 bg-[#120606] border-r border-[#3D0E0E] overflow-y-auto flex-shrink-0" id="projets-sidebar"></div>
+        <div class="flex-1 relative flex items-center justify-center bg-[#0D0505] overflow-hidden">
+            <button onclick="projetsNav(-1)" id="projets-prev" class="absolute left-2 md:left-4 z-20 w-10 h-10 bg-black/60 hover:bg-[#8B2E2E] border border-white/20 text-white rounded-full flex items-center justify-center transition-all text-lg shadow-lg backdrop-blur-sm">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <div id="projets-viewer" class="w-full h-full flex items-center justify-center overflow-auto" style="background:#0D0505;">
+                <canvas id="projets-pdf-canvas" style="max-width:100%; max-height:100%; display:block; margin:auto;"></canvas>
+            </div>
+            <div id="projets-fallback" class="hidden absolute inset-0 flex flex-col items-center justify-center text-center p-8">
+                <i class="fas fa-file-pdf text-6xl text-[#8B2E2E] mb-4"></i>
+                <h3 id="projets-fallback-titre" class="text-white text-xl font-bold mb-2"></h3>
+                <p class="text-[#C8827A] text-sm mb-6 max-w-md">Le fichier PDF n'est pas encore disponible.<br>Placez les PDFs dans le dossier <code class="bg-black/40 px-2 py-1 rounded font-mono text-xs">/planches/</code>.</p>
+                <a id="projets-fallback-dl" href="#" class="bg-[#8B2E2E] hover:bg-[#6B2020] text-white font-bold py-3 px-8 rounded-full transition-colors flex items-center gap-2">
+                    <i class="fas fa-folder-open"></i> Voir le chemin
+                </a>
+            </div>
+            <button onclick="projetsNav(1)" id="projets-next" class="absolute right-2 md:right-4 z-20 w-10 h-10 bg-black/60 hover:bg-[#8B2E2E] border border-white/20 text-white rounded-full flex items-center justify-center transition-all text-lg shadow-lg backdrop-blur-sm">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+    <div class="md:hidden bg-[#1A0A0A] border-t border-[#3D0E0E] flex-shrink-0">
+        <div class="flex items-center gap-1 px-4 py-2 overflow-x-auto" style="scrollbar-width:thin; scrollbar-color:#3D0E0E #0D0505;" id="projets-thumbs-mobile"></div>
+    </div>
+</div>
+
+<script>
+const NOS_PROJETS = [
+    { titre: "Diag — Entre Résidents et Étudiants",           auteur: "Florian Mas",                    fichier: "planches/PROJETS-pages-1.pdf",  scenario: "S4" },
+    { titre: "Projet — Le Savoir comme Bien Commun",       auteur: "Florian Mas",                    fichier: "planches/PROJETS-pages-2.pdf",  scenario: "S4" },
+    { titre: "Diag — Centraliser les Savoirs",                 auteur: "Ilona Grevot",                   fichier: "planches/PROJETS-pages-3.pdf",  scenario: "S1" },
+    { titre: "Projet — Agropolis Campus Agronomie 2100",       auteur: "Ilona Grevot",                   fichier: "planches/PROJETS-pages-4.pdf",  scenario: "S1" },
+    { titre: "Diag — Crise du Logement Étudiant",              auteur: "Camille Paredes & Jeremy Dupuy", fichier: "planches/PROJETS-pages-5.pdf",  scenario: "S1" },
+    { titre: "Projet — Plus de Logements avec le Déjà Là",     auteur: "Camille Paredes",                fichier: "planches/PROJETS-pages-6.pdf",  scenario: "S1" },
+    { titre: "Diag — Du Système Universitaire à la Fabrique",  auteur: "Erwan Da Costa",                 fichier: "planches/PROJETS-pages-7.pdf",  scenario: "S2" },
+    { titre: "Projet — MIT Méditerranéen",                     auteur: "Erwan Da Costa",                 fichier: "planches/PROJETS-pages-8.pdf",  scenario: "S2" },
+];
+
+let projetsCurrent = 0;
+const SCENARIO_COLORS = { S1: "#8B2E2E", S2: "#C4622D", S3: "#5C6BC0", S4: "#2E7D5C", S5: "#7B5EA7" };
+
+function openNosProjets() {
+    projetsCurrent = 0;
+    document.getElementById("nos-projets-overlay").classList.remove("hidden");
+    document.body.style.overflow = "hidden";
+    buildProjetsSidebar();
+    projetsGoTo(0);
+}
+function closeNosProjets() {
+    document.getElementById("nos-projets-overlay").classList.add("hidden");
+    document.body.style.overflow = "";
+    const c = document.getElementById("projets-pdf-canvas");
+    if (c) c.getContext("2d").clearRect(0, 0, c.width, c.height);
+}
+function buildProjetsSidebar() {
+    const sidebar = document.getElementById("projets-sidebar");
+    const mobile  = document.getElementById("projets-thumbs-mobile");
+    sidebar.innerHTML = mobile.innerHTML = "";
+    NOS_PROJETS.forEach((p, i) => {
+        const color = SCENARIO_COLORS[p.scenario] || "#8B2E2E";
+        const active = i === projetsCurrent;
+        const item = document.createElement("button");
+        item.id = "projets-item-" + i;
+        item.onclick = () => projetsGoTo(i);
+        item.className = "w-full text-left px-4 py-3 border-b border-[#2A0808] transition-all flex items-start gap-3 " + (active ? "bg-[#3D0E0E]" : "hover:bg-[#1F0808]");
+        item.innerHTML = `<div class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white mt-0.5" style="background:${color}">${p.scenario}</div><div class="min-w-0"><div class="text-[#EDE0CC] text-xs font-semibold leading-tight">${p.titre}</div><div class="text-[#C8827A] text-[10px] mt-0.5 truncate">${p.auteur}</div></div>`;
+        sidebar.appendChild(item);
+        const btn = document.createElement("button");
+        btn.id = "projets-thumb-" + i;
+        btn.onclick = () => projetsGoTo(i);
+        btn.className = "flex-shrink-0 flex flex-col items-center gap-1 px-2 py-1 rounded-lg transition-all " + (active ? "bg-[#8B2E2E]" : "hover:bg-[#3D0E0E]");
+        btn.innerHTML = `<div class="w-8 h-10 rounded flex items-center justify-center text-xs font-bold text-white" style="background:${color}">${i+1}</div><span class="text-[9px] text-[#C8827A] max-w-[48px] truncate">${p.auteur.split(" ")[0]}</span>`;
+        mobile.appendChild(btn);
+    });
+}
+function projetsGoTo(idx) {
+    projetsCurrent = Math.max(0, Math.min(idx, NOS_PROJETS.length - 1));
+    const p = NOS_PROJETS[projetsCurrent];
+    const total = NOS_PROJETS.length;
+    document.getElementById("projets-planche-label").textContent = "Planche " + (projetsCurrent+1) + " / " + total;
+    document.getElementById("projets-planche-titre").textContent = p.titre;
+    document.getElementById("projets-progress").style.width = ((projetsCurrent+1)/total*100) + "%";
+    const dlBtn = document.getElementById("projets-dl-btn");
+    dlBtn.href = p.fichier; dlBtn.download = p.fichier.split("/").pop();
+    const viewer = document.getElementById("projets-viewer");
+    const fallback = document.getElementById("projets-fallback");
+    viewer.style.display = "flex"; fallback.classList.add("hidden");
+    const canvas = document.getElementById("projets-pdf-canvas");
+    const ctx = canvas.getContext("2d");
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    canvas.style.opacity = "0.3";
+    pdfjsLib.getDocument(p.fichier).promise.then(pdf => pdf.getPage(1)).then(page => {
+        const scale = Math.min((viewer.clientWidth*0.95)/page.getViewport({scale:1}).width, (viewer.clientHeight*0.95)/page.getViewport({scale:1}).height);
+        const vp = page.getViewport({scale});
+        canvas.width = vp.width; canvas.height = vp.height; canvas.style.opacity = "1";
+        return page.render({canvasContext:ctx, viewport:vp}).promise;
+    }).catch(() => {
+        viewer.style.display = "none"; fallback.classList.remove("hidden");
+        document.getElementById("projets-fallback-titre").textContent = p.titre;
+        document.getElementById("projets-fallback-dl").href = p.fichier;
+    });
+    document.getElementById("projets-prev").style.opacity = projetsCurrent===0 ? "0.3":"1";
+    document.getElementById("projets-next").style.opacity = projetsCurrent===total-1 ? "0.3":"1";
+    document.querySelectorAll("[id^=projets-item-]").forEach((el,i) => {
+        el.className = el.className.replace("bg-[#3D0E0E]","").replace("hover:bg-[#1F0808]","").trim() + (i===projetsCurrent?" bg-[#3D0E0E]":" hover:bg-[#1F0808]");
+    });
+    document.querySelectorAll("[id^=projets-thumb-]").forEach((el,i) => {
+        el.className = el.className.replace("bg-[#8B2E2E]","").replace("hover:bg-[#3D0E0E]","").trim() + (i===projetsCurrent?" bg-[#8B2E2E]":" hover:bg-[#3D0E0E]");
+    });
+    const active = document.getElementById("projets-item-"+projetsCurrent);
+    if (active) active.scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+function projetsNav(dir) { projetsGoTo(projetsCurrent+dir); }
+document.addEventListener("keydown", function(e) {
+    if (document.getElementById("nos-projets-overlay").classList.contains("hidden")) return;
+    if (e.key==="ArrowRight"||e.key==="ArrowDown") projetsNav(1);
+    if (e.key==="ArrowLeft"||e.key==="ArrowUp")    projetsNav(-1);
+    if (e.key==="Escape") closeNosProjets();
+});
+(function(){
+    let sx=0;
+    const o=document.getElementById("nos-projets-overlay");
+    o.addEventListener("touchstart",e=>{sx=e.touches[0].clientX;},{passive:true});
+    o.addEventListener("touchend",e=>{const dx=e.changedTouches[0].clientX-sx; if(Math.abs(dx)>50)projetsNav(dx<0?1:-1);},{passive:true});
+})();
+</script>
+
 </body>
 </html>
 
