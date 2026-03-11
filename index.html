@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>Vision Université 2100 - Atelier Atrium</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-    <script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Roboto:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -553,17 +551,16 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
 
     <!-- HEADER AVEC BOUTON MODE EXPERT -->
     <header class="bg-white text-[#3D0E0E] shadow-md z-10 transition-colors duration-300">
-    <div class="w-full flex justify-between items-stretch relative" style="min-height:56px;">
-        <!-- GAUCHE : logo U + Accueil -->
-        <div class="flex items-center px-3 py-2 gap-3 shrink-0">
-            <div class="w-8 h-8 md:w-10 md:h-10 bg-[#C4622D] rounded-full flex items-center justify-center font-bold text-white text-lg md:text-xl shadow-sm">U</div>
-            <button onclick="returnToHome()" class="hidden md:flex items-center gap-2 text-[#3D0E0E] hover:text-[#C4622D] transition-colors text-sm font-semibold">
-                <i class="fas fa-home"></i>
-                <span>Accueil</span>
-            </button>
-        </div>
-        <!-- CENTRE : titre -->
-        <div class="flex flex-col items-center justify-center text-center absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none px-2">
+    <div class="w-full px-3 py-3 flex justify-between items-center relative">
+        <div class="flex items-center justify-start w-auto md:w-1/3 shrink-0">
+            <div class="flex items-center justify-start w-auto md:w-1/3 shrink-0 gap-3">
+    <div class="w-8 h-8 md:w-10 md:h-10 bg-[#C4622D] rounded-full flex items-center justify-center font-bold text-white text-lg md:text-xl shadow-sm">U</div>
+    <button onclick="returnToHome()" class="hidden md:flex items-center gap-2 text-[#3D0E0E] hover:text-[#C4622D] transition-colors text-sm font-semibold">
+        <i class="fas fa-home"></i>
+        <span>Accueil</span>
+    </button>
+</div>
+        <div class="flex flex-col items-center justify-center text-center flex-1 md:w-1/3 md:absolute md:left-1/2 md:transform md:-translate-x-1/2 px-2">
             <h1 class="text-[10px] sm:text-xs md:text-2xl font-extrabold tracking-wider uppercase leading-tight text-[#3D0E0E]">L'UNIVERSITÉ DANS LA VILLE</h1>
             <span class="text-[8px] md:text-xs font-semibold tracking-widest opacity-70 uppercase hidden sm:block text-[#5C1A1A]">Université & Ville de Demain</span>
         </div>
@@ -620,33 +617,15 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
     </div>
 </div>
             
-            <!-- DROITE : Mode Expert + Logos -->
-            <div class="flex items-stretch shrink-0">
-
-                <!-- Mode Expert toggle -->
-                <div class="flex items-center px-3">
-                    <div id="expert-toggle" class="expert-toggle-wrapper" onclick="toggleExpertMode()">
-                        <span class="text-[8px] md:text-xs font-bold uppercase tracking-wider text-gray-500 transition-colors hidden sm:inline" id="expert-label">Mode Expert</span>
-                        <div class="expert-toggle-track"><div class="expert-toggle-thumb"></div></div>
-                    </div>
-                </div>
-
-                <!-- Logos sur fond bordeaux collés au bord droit -->
-                <div class="flex items-center gap-3 bg-[#8B2E2E] px-5">
-                    <img src="logoufr3_noiretblanc.PNG"
-                         alt="UFR3"
-                         class="h-7 w-auto"
-                         style="filter: brightness(0) invert(1);">
-                    <div class="w-px h-6 bg-white/30"></div>
-                    <img src="PROJET_BLANC.png"
-                         alt="Master PROJET"
-                         class="h-5 w-auto">
-                    <div class="w-px h-6 bg-white/30"></div>
-                    <img src="UMPV_BLANC.png"
-                         alt="Université Paul-Valéry"
-                         class="h-6 w-auto">
-                </div>
-            </div>
+            <!-- BOUTON MODE EXPERT AMÉLIORÉ -->
+            <div class="flex items-center justify-end gap-2 w-auto md:w-1/3 shrink-0">
+    <div class="flex flex-col items-end">
+        <div id="expert-toggle" class="expert-toggle-wrapper" onclick="toggleExpertMode()">
+            <span class="text-[8px] md:text-xs font-bold uppercase tracking-wider text-gray-500 transition-colors hidden sm:inline" id="expert-label">Mode Expert</span>
+            <div class="expert-toggle-track"><div class="expert-toggle-thumb"></div></div>
+        </div>
+    </div>
+</div>
         </div>
     </header>
 
@@ -662,7 +641,7 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
                 <div class="text-center mb-16 fade-in">
                     <div class="inline-flex items-center gap-3 bg-white/20 backdrop-blur-sm px-6 py-3 rounded-full mb-6 border border-white/30">
                         <div class="w-3 h-3 rounded-full bg-[#C4622D] pulse-ring"></div>
-                        <span class="text-white font-bold text-sm uppercase tracking-wider">Exposition Interactive 2026</span>
+                        <span class="text-white font-bold text-sm uppercase tracking-wider">Exposition Interactive 2025</span>
                     </div>
                     
                     <h1 class="text-4xl md:text-6xl lg:text-7xl font-black text-white mb-6 leading-tight tracking-tight drop-shadow-2xl">
@@ -1035,33 +1014,34 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
                 </p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 px-4">
-                <!-- CARTE EXPOSITION VIRTUELLE -->
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border border-gray-100 group cursor-pointer" onclick="openExpoVirtuelle()">
-                    <div class="h-48 bg-gradient-to-br from-[#3D0E0E] to-[#8B2E2E] flex items-center justify-center relative overflow-hidden">
-                        <div class="absolute inset-0 opacity-10" style="background-image: repeating-linear-gradient(45deg, #fff 0, #fff 1px, transparent 0, transparent 50%); background-size: 12px 12px;"></div>
-                        <div class="text-center z-10">
-                            <i class="fas fa-images text-5xl text-white mb-2 group-hover:scale-110 transition-transform duration-500 block"></i>
-                            <span class="text-[#E8B48A] font-bold text-sm uppercase tracking-widest">15 planches</span>
-                        </div>
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border border-gray-100 group">
+                    <div class="h-48 bg-[#3D0E0E] flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+                        <i class="fas fa-bullhorn text-6xl text-[#D4824A] group-hover:scale-110 transition-transform duration-500"></i>
                     </div>
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">Exposition Virtuelle</h3>
-                        <p class="text-sm text-gray-500 mb-4">Parcourez toutes les planches de l'exposition dans l'ordre — diagnostic, scénarios, analyses urbaines.</p>
-                        <button class="w-full bg-[#8B2E2E] hover:bg-[#6B2020] text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors shadow-md">
-                            <i class="fas fa-play"></i> Lancer la visite
-                        </button>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Communication & Scénographie</h3>
+                        <p class="text-sm text-gray-500 mb-4">Présentation générale de la démarche, Histoire et Plan de Masse.</p>
+                        <div class="space-y-3">
+                            <button onclick="openCommsGallery()" class="w-full bg-gray-100 hover:bg-[#F5F0E8] text-[#6B2020] font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors">
+                                <i class="fas fa-images"></i> Voir les planches (PDF)
+                            </button>
+                            <button onclick="openTimeline()" class="w-full bg-[#C4622D] hover:bg-[#9E4A20] text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors">
+                                <i class="fas fa-history"></i> Voir la Frise Chronologique
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border border-gray-100 group border-t-4 border-[#8B2E2E]">
-                    <div class="h-48 bg-[#5C1A1A] flex items-center justify-center relative overflow-hidden">
-                         <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/world-map.png')]"></div>
-                         <i class="fas fa-folder-open text-6xl text-[#C8827A] group-hover:text-white group-hover:scale-110 transition-all duration-500"></i>
+                    <div class="h-48 bg-[#3D0E0E] flex items-center justify-center relative overflow-hidden">
+                         <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+                         <i class="fas fa-drafting-compass text-6xl text-[#D4824A] group-hover:scale-110 transition-all duration-500"></i>
                     </div>
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-gray-800 mb-2">Nos Projets</h3>
-                        <p class="text-sm text-gray-500 mb-4">Consultez les planches de projets des étudiants : diagnostics et propositions urbaines pour Montpellier 2100.</p>
-                        <button onclick="openNosProjets()" class="w-full bg-[#8B2E2E] hover:bg-[#6B2020] text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors shadow-md">
-                            <i class="fas fa-file-pdf"></i> Voir les Projets
+                        <p class="text-sm text-gray-500 mb-4">Découvrez les projets urbains réalisés par les étudiants du Master Projet.</p>
+                        <button onclick="openProjetsGallery()" class="w-full bg-[#8B2E2E] hover:bg-[#6B2020] text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors shadow-md">
+                            <i class="fas fa-images"></i> Voir les projets
                         </button>
                     </div>
                 </div>
@@ -1199,7 +1179,11 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
                     </div>
                 </div>
             </div>
-            <div class="mt-12"></div>
+            <div class="mt-12 text-center">
+                <button onclick="closeWorks()" class="text-[#8B2E2E] hover:text-[#C4622D] font-semibold flex items-center justify-center gap-2 mx-auto transition-colors">
+                    <i class="fas fa-arrow-left"></i> Retour aux résultats
+                </button>
+           </div>
         </div>
 
         </div>
@@ -1708,7 +1692,6 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
 
         let currentQuestionIndex = 0;
         let scores = { s1: 0, s2: 0, s3: 0, s4: 0, s5: 0, s6: 0 };
-        let userAnswers = []; // Supabase: détail des réponses
         let synth = window.speechSynthesis;
         let currentUtterance = null;
         let currentStoryText = "";
@@ -1765,15 +1748,6 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
 
         function handleAnswer(impact) {
             scores[impact]++;
-            // Supabase: enregistrer la réponse
-            const q = questions[currentQuestionIndex];
-            const btn = event && event.target ? event.target.closest('button') : null;
-            userAnswers.push({
-                questionIndex: currentQuestionIndex,
-                questionText: q ? q.text : '',
-                answerText: btn ? btn.innerText.trim().substring(0,120) : '',
-                scenarioKey: impact
-            });
             const fact = questions[currentQuestionIndex].didYouKnow;
             if(fact) {
                 factText.innerText = fact;
@@ -1807,7 +1781,15 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
             
             // Format : "Scénario X.png" comme demandé (avec fallback jpg pour le preview)
             const scenarioNum = winnerScenarioId.replace('s', '');
-            const imageName = `Scénario ${scenarioNum}.png`;
+            const scenarioFileMap = {
+                '1': 'SCENARIO-1_page-0001.jpg',
+                '2': 'SCENARIO-2_page-0001.jpg',
+                '3': 'SCENARIO-3_page-0001.jpg',
+                '4': 'SCENAR_4.png',
+                '5': 'SCENAR_5.png',
+                '6': 'SCENAR_5.png'
+            };
+            const imageName = scenarioFileMap[scenarioNum] || `Scénario ${scenarioNum}.png`;
             
             scenarioRevealImg.src = imageName;
             scenarioImageOverlay.classList.remove('hidden');
@@ -1949,51 +1931,35 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
             }
         }
 
-        // SUPABASE LOGIC
+        // FIREBASE LOGIC
         async function enregistrerReponse(winningScenarioId) {
+            if (!window.db || !window.doc) return;
+            const statsRef = window.doc(window.db, "resultats", "global_stats");
             try {
-                // Enregistrer le participant
-                const { data: participant, error } = await window._supa
-                    .from('participants')
-                    .insert({ scenario_final: winningScenarioId, persona_choisi: currentPersona || 'Inconnu' })
-                    .select()
-                    .single();
-                if (error) throw error;
-
-                // Enregistrer les réponses détaillées
-                if (participant && userAnswers && userAnswers.length > 0) {
-                    const rows = userAnswers.map(a => ({
-                        participant_id: participant.id,
-                        question_id: a.questionIndex,
-                        question_texte: a.questionText,
-                        reponse_choisie: a.answerText,
-                        scenario_associe: a.scenarioKey
-                    }));
-                    await window._supa.from('reponses_quiz').insert(rows);
-                }
-
+                await window.updateDoc(statsRef, { [winningScenarioId]: window.increment(1), total: window.increment(1) });
                 afficherResultats();
             } catch (e) {
-                console.error("Erreur Supabase enregistrement:", e);
+                await window.setDoc(statsRef, { s1: winningScenarioId === 's1'?1:0, s2: winningScenarioId === 's2'?1:0, s3: winningScenarioId === 's3'?1:0, s4: winningScenarioId === 's4'?1:0, s5: winningScenarioId === 's5'?1:0, s6: winningScenarioId === 's6'?1:0, total: 1 });
                 afficherResultats();
             }
         }
 
         async function afficherResultats() {
-            try {
-                const { data, error } = await window._supa
-                    .from('participants')
-                    .select('scenario_final');
-                if (error || !data || data.length === 0) return;
-                const total = data.length;
-                const counts = {};
-                data.forEach(r => { counts[r.scenario_final] = (counts[r.scenario_final] || 0) + 1; });
-                let topScenario = Object.entries(counts).sort((a,b) => b[1]-a[1])[0];
-                if (!topScenario) return;
-                const pourcentage = Math.round((topScenario[1] / total) * 100);
-                const scenarioName = scenarios[topScenario[0]] ? scenarios[topScenario[0]].title.split('/')[0] : "Inconnu";
+            if (!window.db || !window.doc) return;
+            const statsRef = window.doc(window.db, "resultats", "global_stats");
+            const docSnap = await window.getDoc(statsRef);
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                const total = data.total || 1;
+                let topScenario = 's1';
+                let maxVotes = 0;
+                for (const [key, value] of Object.entries(data)) {
+                    if (key !== 'total' && value > maxVotes) { maxVotes = value; topScenario = key; }
+                }
+                const pourcentage = Math.round((maxVotes / total) * 100);
+                const scenarioName = scenarios[topScenario] ? scenarios[topScenario].title.split('/')[0] : "Inconnu";
                 document.getElementById("resultat-texte").innerHTML = `<i class="fas fa-users mr-2"></i>La communauté a choisi majoritairement : <br> <strong>${scenarioName} (${pourcentage}%)</strong>`;
-            } catch(e) { console.error("Erreur affichage résultats:", e); }
+            }
         }
 
         function drawChart() {
@@ -2017,24 +1983,16 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
             return defaultWords;
         }
 
-        async function addWord() {
+        function addWord() {
             const input = document.getElementById('user-word');
             const word = input.value.trim();
             if(word && word.length < 20) {
                 const formattedWord = word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-                // Affichage local immédiat
                 let words = getWords();
                 words[formattedWord] = (words[formattedWord] || 0) + 1;
                 localStorage.setItem('atrium_words', JSON.stringify(words));
                 input.value = '';
                 renderWordCloud();
-                // Sauvegarde Supabase
-                try {
-                    await window._supa.from('mots').insert({
-                        mot: formattedWord,
-                        scenario: winnerScenarioId || "Inconnu"
-                    });
-                } catch(e) { console.error("Erreur mot Supabase:", e); }
             } else if (word.length >= 20) { alert("Mot trop long ! Essayez d'être concis."); }
         }
 
@@ -2193,23 +2151,59 @@ function directToWorksFromResult() {
 
         const pdfModal = document.getElementById('pdf-modal');
         const commsPdfs = [
-            { file: "PAGE DE GARDE.pdf", title: "Page de Garde" },
-            { file: "DE L’HISTOIRE A LA PLANIFICATION  LE CAS MONTPELLIERAIN.pdf", title: "Histoire & Planification" },
-            { file: "LES DIFFÉRENTS MODÈLES DE CONSTRCUTION DES UNIVERSITÉS.pdf", title: "Modèles de Construction" },
-            { file: "PLAN DE MASSE-1.pdf", title: "Plan de Masse" }
+            { file: "SCENARIO-1_page-0001.jpg", title: "Scénario 1 – Le Futur en Douceur" },
+            { file: "SCENARIO-2_page-0001.jpg", title: "Scénario 2 – Des Universités Seulement Privées" },
+            { file: "SCENARIO-3_page-0001.jpg", title: "Scénario 3 – IA : Université Zéro M²" },
+            { file: "SCENAR_4.png", title: "Scénario 4" },
+            { file: "SCENAR_5.png", title: "Scénario 5" },
+            { file: "d1.png", title: "Planche 1" },
+            { file: "D2.png", title: "Planche 2" },
+            { file: "D3.png", title: "Planche 3" },
+            { file: "D4.png", title: "Planche 4" },
+            { file: "D5.png", title: "Planche 5" },
+            { file: "D6.png", title: "Planche 6" },
+            { file: "D7.png", title: "Planche 7" },
+            { file: "D8.png", title: "Planche 8" },
+            { file: "D9.png", title: "Planche 9" },
+            { file: "D10.png", title: "Planche 10" },
+            { file: "D11.png", title: "Planche 11" },
+            { file: "D12.png", title: "Planche 12" }
         ];
         let currentPdfIndex = 0; let currentPdfList = [];
         function openCommsGallery() { currentPdfList = commsPdfs; currentPdfIndex = 0; updatePdfViewer(); pdfModal.classList.remove('hidden'); }
+
+        const projetsPngs = [
+            { file: "aku1.png",  title: "Projet Aku – Planche 1" },
+            { file: "aku2.png",  title: "Projet Aku – Planche 2" },
+            { file: "cam1.png",  title: "Projet Cam – Planche 1" },
+            { file: "cam2.png",  title: "Projet Cam – Planche 2" },
+            { file: "dim1.png",  title: "Projet Dim – Planche 1" },
+            { file: "dim2.png",  title: "Projet Dim – Planche 2" },
+            { file: "erw1.png",  title: "Projet Erw – Planche 1" },
+            { file: "erw2.png",  title: "Projet Erw – Planche 2" },
+            { file: "flo1.png",  title: "Projet Flo – Planche 1" },
+            { file: "flo2.png",  title: "Projet Flo – Planche 2" },
+            { file: "ilo1.png",  title: "Projet Ilo – Planche 1" },
+            { file: "ilo2.png",  title: "Projet Ilo – Planche 2" },
+            { file: "jer1.png",  title: "Projet Jer – Planche 1" },
+            { file: "jer2.png",  title: "Projet Jer – Planche 2" }
+        ];
+        function openProjetsGallery() { currentPdfList = projetsPngs; currentPdfIndex = 0; updatePdfViewer(); pdfModal.classList.remove('hidden'); }
         function updatePdfViewer() {
             const pdfObj = currentPdfList[currentPdfIndex];
-            document.getElementById('pdf-title').innerHTML = `<i class="fas fa-book-open mr-2"></i> ${pdfObj.title}`;
-            document.getElementById('page-indicator').innerText = `Page ${currentPdfIndex + 1} / ${currentPdfList.length}`;
+            document.getElementById('pdf-title').innerHTML = `<i class="fas fa-images mr-2"></i> ${pdfObj.title}`;
+            document.getElementById('page-indicator').innerText = `Planche ${currentPdfIndex + 1} / ${currentPdfList.length}`;
             const container = document.getElementById('pdf-container'); container.innerHTML = '';
-            const objectTag = document.createElement('object');
-            objectTag.data = pdfObj.file; objectTag.type = "application/pdf";
-            objectTag.className = "w-full h-full"; objectTag.style.minHeight = "100%";
-            objectTag.innerHTML = `<div class="flex flex-col items-center justify-center h-full text-gray-500 p-4 text-center"><p class="mb-4"><i class="fas fa-file-pdf text-4xl text-red-500 mb-2"></i><br>L'affichage intégré n'est pas supporté par votre mobile.</p><a href="${pdfObj.file}" target="_blank" class="bg-[#8B2E2E] hover:bg-[#6B2020] text-white font-bold py-3 px-6 rounded-full shadow-lg transition flex items-center gap-2"><i class="fas fa-external-link-alt"></i> Ouvrir le PDF (Zoomable)</a></div>`;
-            container.appendChild(objectTag);
+            const img = document.createElement('img');
+            img.src = pdfObj.file;
+            img.alt = pdfObj.title;
+            img.className = "w-full h-full object-contain";
+            img.style.maxHeight = "100%";
+            container.style.display = "flex";
+            container.style.alignItems = "center";
+            container.style.justifyContent = "center";
+            container.style.backgroundColor = "#111";
+            container.appendChild(img);
             document.getElementById('btn-prev').disabled = (currentPdfIndex === 0);
             document.getElementById('btn-next').disabled = (currentPdfIndex === currentPdfList.length - 1);
             document.getElementById('btn-prev').classList.toggle('opacity-50', currentPdfIndex === 0);
@@ -2294,19 +2288,27 @@ async function sendCapsule() {
     btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Archivage...`;
     btn.classList.add('opacity-75');
 
-    try {
-        const { error } = await window._supa.from('capsules').insert({
-            message: text,
-            scenario: winnerScenarioId || "Inconnu"
-        });
-        if (error) throw error;
-        btn.classList.add('hidden');
-        feedback.classList.remove('hidden');
-        input.value = "";
-    } catch (e) {
-        console.error("Erreur Capsule Supabase:", e);
-        btn.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Erreur connexion`;
-        btn.classList.replace('bg-[#C4622D]', 'bg-red-500');
+    if (window.addDoc && window.collection && window.db) {
+        try {
+            await window.addDoc(window.collection(window.db, "capsule_2100"), {
+                message: text,
+                date: new Date(),
+                scenario: winnerScenarioId || "Inconnu",
+                appVersion: "1.0"
+            });
+
+            btn.classList.add('hidden');
+            feedback.classList.remove('hidden');
+            input.value = "";
+
+        } catch (e) {
+            console.error("Erreur Capsule:", e);
+            btn.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Erreur connexion`;
+            btn.classList.replace('bg-[#C4622D]', 'bg-red-500');
+        }
+    } else {
+        console.error("Firebase addDoc/collection non initialisé");
+        alert("Erreur: Base de données non connectée.");
     }
 }
 
@@ -2318,7 +2320,6 @@ document.getElementById('capsule-msg').addEventListener('input', function() {
     stopAudio(); 
     currentQuestionIndex = 0; 
     scores = { s1: 0, s2: 0, s3: 0, s4: 0, s5: 0, s6: 0 };
-    userAnswers = [];
     isManualExploration = false; // NOUVEAU
     setAtmosphere('calm');
     document.getElementById('story-display').classList.add('hidden'); 
@@ -2472,17 +2473,29 @@ document.getElementById('capsule-msg').addEventListener('input', function() {
         glossaryModal.addEventListener('click', (e) => { if(e.target === glossaryModal) closeGlossary(); });
 
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script>
-// ══════════════════════════════════════════
-// SUPABASE — Remplacement Firebase
-// ══════════════════════════════════════════
-const _supa = supabase.createClient(
-    "https://ecpcyqurihrgbpuzfjgz.supabase.co",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVjcGN5cXVyaWhyZ2JwdXpmamd6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMxNDgxODksImV4cCI6MjA4ODcyNDE4OX0.kZM8TRkDRzsFaaFHV-0oN-vdrAPZoW47ytQ-MvM3-k0"
-);
-window._supa = _supa;
-    </script>
+    <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+import { getFirestore, doc, updateDoc, getDoc, increment, setDoc, collection, addDoc, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+const firebaseConfig = { apiKey: "AIzaSyAe7Hc2bT-Scvf032sLHh8TXG9aHnFB-D0", authDomain: "atelier-atrium-d951b.firebaseapp.com", projectId: "atelier-atrium-d951b", storageBucket: "atelier-atrium-d951b.firebasestorage.app", messagingSenderId: "716967590598", appId: "1:716967590598:web:5116e96917e2243fcbb5c7", measurementId: "G-JQ634TGS4M" };
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.db = db;
+window.doc = doc;
+window.updateDoc = updateDoc;
+window.increment = increment;
+window.getDoc = getDoc;
+window.setDoc = setDoc;
+window.collection = collection;
+window.addDoc = addDoc;
+// Nouveaux ajouts pour le dashboard
+window.getDocs = getDocs;
+window.query = query;
+window.orderBy = orderBy;
+window.limit = limit;
+</script>
 <div id="games-hub-overlay" class="fixed inset-0 bg-slate-900/95 hidden z-[140] flex items-center justify-center p-3 md:p-4 font-sans fade-in backdrop-blur-sm">
     <div class="bg-white w-full max-w-3xl rounded-2xl overflow-hidden shadow-2xl relative flex flex-col max-h-[90vh]">
         
@@ -3924,63 +3937,60 @@ function closeAdmin() {
 }
 
 async function loadAdminStats() {
+    if (!window.db || !window.doc || !window.getDoc) return;
     try {
-        const { data, error } = await window._supa.from('participants').select('scenario_final');
-        if (error) throw error;
-        const total = data.length || 1;
-        document.getElementById('adm-total').innerText = total;
-        const counts = {};
-        data.forEach(r => { counts[r.scenario_final] = (counts[r.scenario_final] || 0) + 1; });
-        const container = document.getElementById('adm-stats-list');
-        container.innerHTML = '';
-        ['s1','s2','s3','s4','s5','s6'].forEach(key => {
-            const val = counts[key] || 0;
-            const pct = Math.round((val / total) * 100);
-            const sInfo = scenarios[key];
-            if (!sInfo) return;
-            container.innerHTML += `
-                <div class="mb-2">
-                    <div class="flex justify-between text-xs text-slate-400 mb-1">
-                        <span>${key.toUpperCase()} - ${sInfo.title}</span>
-                        <span>${val} votes (${pct}%)</span>
-                    </div>
-                    <div class="w-full bg-slate-700 h-2 rounded-full overflow-hidden">
-                        <div class="h-full" style="width: ${pct}%; background-color: ${sInfo.color}"></div>
-                    </div>
-                </div>`;
-        });
-    } catch (e) { console.error("Erreur Stats Admin Supabase:", e); }
+        const docRef = window.doc(window.db, "resultats", "global_stats");
+        const docSnap = await window.getDoc(docRef);
+        if (docSnap.exists()) {
+            const data = docSnap.data();
+            const total = data.total || 1;
+            document.getElementById('adm-total').innerText = total;
+            const container = document.getElementById('adm-stats-list');
+            container.innerHTML = '';
+            ['s1', 's2', 's3', 's4', 's5', 's6'].forEach(key => {
+                const val = data[key] || 0;
+                const pct = Math.round((val / total) * 100);
+                const sInfo = scenarios[key]; 
+                container.innerHTML += `
+                    <div class="mb-2">
+                        <div class="flex justify-between text-xs text-slate-400 mb-1">
+                            <span>${key.toUpperCase()} - ${sInfo.title}</span>
+                            <span>${val} votes (${pct}%)</span>
+                        </div>
+                        <div class="w-full bg-slate-700 h-2 rounded-full overflow-hidden">
+                            <div class="h-full" style="width: ${pct}%; background-color: ${sInfo.color}"></div>
+                        </div>
+                    </div>`;
+            });
+        }
+    } catch (e) { console.error("Erreur Stats Admin:", e); }
 }
 
-let cachedCapsules = [];
+let cachedCapsules = []; 
 async function loadAdminCapsules() {
+    if (!window.db || !window.collection || !window.getDocs) return;
     try {
-        const { data, error } = await window._supa
-            .from('capsules')
-            .select('created_at, scenario, message')
-            .order('created_at', { ascending: false })
-            .limit(100);
-        if (error) throw error;
+        const q = window.query(window.collection(window.db, "capsule_2100"), window.orderBy("date", "desc"), window.limit(50));
+        const querySnapshot = await window.getDocs(q);
         const tbody = document.getElementById('adm-table-body');
         tbody.innerHTML = '';
         cachedCapsules = [];
-        (data || []).forEach(d => {
-            const dateStr = d.created_at
-                ? new Date(d.created_at).toLocaleDateString("fr-FR", {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'})
-                : "N/A";
-            cachedCapsules.push({date: dateStr, scenario: d.scenario || '', message: d.message || ''});
+        querySnapshot.forEach((doc) => {
+            const d = doc.data();
+            let dateStr = "N/A";
+            if(d.date && d.date.seconds) {
+                dateStr = new Date(d.date.seconds * 1000).toLocaleDateString("fr-FR", {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'});
+            }
+            cachedCapsules.push({date: dateStr, scenario: d.scenario, message: d.message});
             tbody.innerHTML += `
                 <tr class="hover:bg-gray-50 border-b border-gray-50">
                     <td class="p-3 text-gray-500 whitespace-nowrap font-mono text-xs">${dateStr}</td>
-                    <td class="p-3"><span class="bg-[#F5F0E8] text-[#5C1A1A] text-xs font-bold px-2 py-1 rounded">${(d.scenario||'?').toUpperCase()}</span></td>
+                    <td class="p-3"><span class="bg-[#F5F0E8] text-[#5C1A1A] text-xs font-bold px-2 py-1 rounded">${d.scenario.toUpperCase()}</span></td>
                     <td class="p-3 text-gray-800 italic">"${d.message}"</td>
                 </tr>`;
         });
-        if (!data || data.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="3" class="p-4 text-center text-gray-400">Aucune capsule pour l'instant.</td></tr>`;
-        }
     } catch (e) {
-        console.error("Erreur Capsules Admin Supabase:", e);
+        console.error("Erreur Capsules Admin:", e);
         document.getElementById('adm-table-body').innerHTML = `<tr><td colspan="3" class="p-4 text-center text-red-500">Erreur chargement</td></tr>`;
     }
 }
@@ -4942,7 +4952,7 @@ function showScenarioDetail(scenarioKey) {
 
                 <div class="space-y-6">
                     <div class="relative rounded-xl overflow-hidden shadow-xl border-4 border-white">
-                        <img src="Scénario ${scenarioNum}.png" onerror="this.src='Scénario ${scenarioNum}.jpg'" 
+                        <img src="${{'1':'SCENARIO-1_page-0001.jpg','2':'SCENARIO-2_page-0001.jpg','3':'SCENARIO-3_page-0001.jpg','4':'SCENAR_4.png','5':'SCENAR_5.png','6':'SCENAR_5.png'}[scenarioNum]||'Scénario '+scenarioNum+'.png'}" 
                              alt="Illustration ${s.title}" 
                              class="w-full h-auto object-cover">
                     </div>
@@ -4978,515 +4988,5 @@ function compareWithAtrium(scenarioId) {
 }
 </script>
 </script>
-
-<!-- ═══════════════════════════════════════════════════════════
-     EXPOSITION VIRTUELLE — VISIONNEUSE DIAPORAMA
-     Les PDFs sont référencés par chemin relatif.
-     Structure GitHub attendue : /planches/DIAG_COMMUN-1.pdf etc.
-     ═══════════════════════════════════════════════════════════ -->
-<div id="expo-virtuelle-overlay" class="hidden fixed inset-0 z-[500] bg-black flex flex-col" style="touch-action:none;">
-
-    <!-- Barre haute -->
-    <div class="flex items-center justify-between px-4 md:px-8 py-3 bg-[#1A0A0A] border-b border-[#3D0E0E] flex-shrink-0">
-        <div class="flex items-center gap-3">
-            <div class="w-8 h-8 bg-[#8B2E2E] rounded-full flex items-center justify-center">
-                <i class="fas fa-images text-white text-xs"></i>
-            </div>
-            <div>
-                <div class="text-white font-bold text-sm title-font tracking-wider">EXPOSITION VIRTUELLE</div>
-                <div id="expo-planche-label" class="text-[#C8827A] text-xs font-mono">Planche 1 / 15</div>
-            </div>
-        </div>
-        <!-- Titre de la planche courante -->
-        <div id="expo-planche-titre" class="hidden md:block text-[#EDE0CC] text-sm font-semibold text-center flex-1 mx-4 truncate"></div>
-        <!-- Boutons droite -->
-        <div class="flex items-center gap-2 md:gap-3">
-            <a id="expo-dl-btn" href="#" download class="hidden md:flex items-center gap-2 bg-[#3D0E0E] hover:bg-[#6B2020] text-[#EDE0CC] text-xs font-bold px-3 py-2 rounded-lg transition-colors">
-                <i class="fas fa-download"></i> <span class="hidden md:inline">Télécharger</span>
-            </a>
-            <!-- Boutons zoom expo -->
-            <div class="hidden md:flex items-center gap-1 bg-[#3D0E0E] rounded-lg px-1 py-1">
-                <button onclick="expoZoom(-0.25)" class="w-7 h-7 flex items-center justify-center text-[#EDE0CC] hover:bg-[#6B2020] rounded transition-colors text-sm font-bold" title="Dézoomer">−</button>
-                <span id="expo-zoom-label" class="text-[#C8827A] text-xs font-mono w-10 text-center">100%</span>
-                <button onclick="expoZoom(+0.25)" class="w-7 h-7 flex items-center justify-center text-[#EDE0CC] hover:bg-[#6B2020] rounded transition-colors text-sm font-bold" title="Zoomer">+</button>
-                <button onclick="expoZoomReset()" class="w-7 h-7 flex items-center justify-center text-[#EDE0CC] hover:bg-[#6B2020] rounded transition-colors text-xs" title="Réinitialiser"><i class="fas fa-expand-arrows-alt"></i></button>
-            </div>
-            <button onclick="closeExpoVirtuelle()" class="bg-[#8B2E2E] hover:bg-[#6B2020] text-white w-8 h-8 rounded-full flex items-center justify-center transition-colors text-sm">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-    </div>
-
-    <!-- Visionneuse PDF -->
-    <div class="flex-1 relative flex items-center justify-center bg-[#0D0505] overflow-hidden">
-
-        <!-- Flèche gauche -->
-        <button onclick="expoNav(-1)" id="expo-prev" class="absolute left-2 md:left-6 z-20 w-10 h-10 md:w-14 md:h-14 bg-black/60 hover:bg-[#8B2E2E] border border-white/20 text-white rounded-full flex items-center justify-center transition-all text-lg md:text-xl shadow-lg backdrop-blur-sm">
-            <i class="fas fa-chevron-left"></i>
-        </button>
-
-        <!-- Visionneuse PDF rendue via PDF.js (contourne X-Frame-Options & Content-Disposition) -->
-        <div id="expo-iframe" class="w-full h-full overflow-auto" style="background:#0D0505; cursor:grab; display:flex; align-items:center; justify-content:center;">
-            <canvas id="expo-pdf-canvas" style="display:block; margin:auto; transform-origin:top center; transition:transform 0.15s ease;"></canvas>
-        </div>
-
-        <!-- Fallback si PDF non trouvé -->
-        <div id="expo-fallback" class="hidden absolute inset-0 flex flex-col items-center justify-center text-center p-8">
-            <i class="fas fa-file-pdf text-6xl text-[#8B2E2E] mb-4"></i>
-            <h3 id="expo-fallback-titre" class="text-white text-xl font-bold mb-2"></h3>
-            <p class="text-[#C8827A] text-sm mb-6 max-w-md">Le fichier PDF n'est pas encore disponible.<br>Placez les PDFs dans le dossier <code class="bg-black/40 px-2 py-1 rounded font-mono text-xs">/planches/</code> de votre GitHub.</p>
-            <a id="expo-fallback-dl" href="#" class="bg-[#8B2E2E] hover:bg-[#6B2020] text-white font-bold py-3 px-8 rounded-full transition-colors flex items-center gap-2">
-                <i class="fas fa-folder-open"></i> Voir le chemin du fichier
-            </a>
-        </div>
-
-        <!-- Flèche droite -->
-        <button onclick="expoNav(1)" id="expo-next" class="absolute right-2 md:right-6 z-20 w-10 h-10 md:w-14 md:h-14 bg-black/60 hover:bg-[#8B2E2E] border border-white/20 text-white rounded-full flex items-center justify-center transition-all text-lg md:text-xl shadow-lg backdrop-blur-sm">
-            <i class="fas fa-chevron-right"></i>
-        </button>
-    </div>
-
-    <!-- Barre basse : miniatures + progression -->
-    <div class="bg-[#1A0A0A] border-t border-[#3D0E0E] flex-shrink-0">
-        <!-- Barre de progression -->
-        <div class="h-1 bg-[#3D0E0E]">
-            <div id="expo-progress" class="h-full bg-[#8B2E2E] transition-all duration-300" style="width:6.67%"></div>
-        </div>
-        <!-- Miniatures scrollables -->
-        <div class="flex items-center gap-1 px-4 py-2 overflow-x-auto" style="scrollbar-width:thin; scrollbar-color:#3D0E0E #0D0505;" id="expo-thumbs">
-            <!-- Générées par JS -->
-        </div>
-    </div>
-</div>
-
-<script>
-// ═══════════════════════════════════════════
-// DONNÉES DES PLANCHES — Modifiez les chemins
-// si vous changez la structure de dossiers.
-// ═══════════════════════════════════════════
-const EXPO_PLANCHES = [
-    // ── SCÉNARIOS ──────────────────────────
-    { titre: "S1 — Le Futur en Douceur",                    cat: "Scénario",    fichier: "planches/SCENARIO-1.pdf" },
-    { titre: "S2 — Des Universités Seulement Privées",      cat: "Scénario",    fichier: "planches/SCENARIO-2.pdf" },
-    { titre: "S3 — IA : L'Université Zéro M²",              cat: "Scénario",    fichier: "planches/SCENARIO-3.pdf" },
-    { titre: "S4 — L'Université Sans Frontières",           cat: "Scénario",    fichier: "planches/SCENARIO-4.pdf" },
-    { titre: "S5 — Le Campus à l'Américaine",               cat: "Scénario",    fichier: "planches/SCENARIO-5.pdf" },
-    // ── DIAGNOSTIC ─────────────────────────
-    { titre: "50 Fois Plus d'Étudiants en 100 Ans",        cat: "Diagnostic",  fichier: "planches/DIAG COMMUN-1.pdf" },
-    { titre: "L'Image des Universités en France",           cat: "Diagnostic",  fichier: "planches/DIAG COMMUN-2.pdf" },
-    { titre: "Beaucoup d'Étudiants, Peu de Moyens ?",       cat: "Diagnostic",  fichier: "planches/DIAG COMMUN-3.pdf" },
-    { titre: "Montpellier Ville-Universitaire",             cat: "Diagnostic",  fichier: "planches/DIAG COMMUN-4_page-0001.pdf" },
-    { titre: "Typologies des Villes Universitaires",        cat: "Diagnostic",  fichier: "planches/DIAG COMMUN-5.pdf" },
-    { titre: "L'Architecture au Service de l'Ambition",     cat: "Diagnostic",  fichier: "planches/DIAG COMMUN-6.pdf" },
-    { titre: "Le Projet par le Paysage",                    cat: "Diagnostic",  fichier: "planches/DIAG COMMUN-7.pdf" },
-    { titre: "Connecter le Campus au Centre-Ville",         cat: "Diagnostic",  fichier: "planches/DIAG COMMUN-8.pdf" },
-    { titre: "Vivre un Quartier d'Enseignement Supérieur",  cat: "Diagnostic",  fichier: "planches/DIAG COMMUN-9.pdf" },
-    { titre: "Du Campus à la Start-Up",                     cat: "Diagnostic",  fichier: "planches/DIAG COMMUN-10.pdf" },
-    { titre: "IA-Montpellier",                              cat: "Diagnostic",  fichier: "planches/DIAG COMMUN-11.pdf" },
-    { titre: "Atrium : De la Bibliothèque au Learning Center", cat: "Diagnostic", fichier: "planches/DIAG COMMUN-12.pdf" },
-];
-
-let expoCurrent = 0;
-
-function openExpoVirtuelle() {
-    expoCurrent = 0;
-    document.getElementById('expo-virtuelle-overlay').classList.remove('hidden');
-    document.body.style.overflow = 'hidden';
-    buildExpoThumbs();
-    expoGoTo(0);
-}
-
-function closeExpoVirtuelle() {
-    document.getElementById('expo-virtuelle-overlay').classList.add('hidden');
-    document.body.style.overflow = '';
-    const c = document.getElementById('expo-pdf-canvas');
-    if (c) c.getContext('2d').clearRect(0, 0, c.width, c.height);
-}
-
-function buildExpoThumbs() {
-    const container = document.getElementById('expo-thumbs');
-    container.innerHTML = '';
-    const cats = { Diagnostic: '#8B2E2E', Scénario: '#C4622D' };
-    EXPO_PLANCHES.forEach((p, i) => {
-        const btn = document.createElement('button');
-        btn.id = `expo-thumb-${i}`;
-        btn.onclick = () => expoGoTo(i);
-        btn.className = `flex-shrink-0 flex flex-col items-center gap-1 px-2 py-1 rounded-lg transition-all ${i === expoCurrent ? 'bg-[#8B2E2E]' : 'hover:bg-[#3D0E0E]'}`;
-        btn.innerHTML = `
-            <div class="w-8 h-10 rounded flex items-center justify-center text-xs font-bold text-white" style="background:${cats[p.cat] || '#5C1A1A'}">
-                ${i + 1}
-            </div>
-            <span class="text-[9px] text-[#C8827A] max-w-[48px] truncate leading-tight">${p.titre.split('—').pop().trim().split(' ').slice(0,2).join(' ')}</span>
-        `;
-        container.appendChild(btn);
-    });
-}
-
-function expoGoTo(idx) {
-    expoCurrent = Math.max(0, Math.min(idx, EXPO_PLANCHES.length - 1));
-    const p = EXPO_PLANCHES[expoCurrent];
-    const total = EXPO_PLANCHES.length;
-
-    // Mise à jour UI
-    document.getElementById('expo-planche-label').textContent = `Planche ${expoCurrent + 1} / ${total}`;
-    document.getElementById('expo-planche-titre').textContent = `${p.cat} — ${p.titre}`;
-    document.getElementById('expo-progress').style.width = `${((expoCurrent + 1) / total) * 100}%`;
-
-    // Bouton download
-    const dlBtn = document.getElementById('expo-dl-btn');
-    dlBtn.href = p.fichier;
-    dlBtn.download = p.fichier.split('/').pop();
-
-    // Visionneuse PDF via PDF.js — contourne X-Frame-Options et Content-Disposition
-    const viewer = document.getElementById('expo-iframe');
-    const fallback = document.getElementById('expo-fallback');
-    viewer.classList.remove('hidden');
-    fallback.classList.add('hidden');
-
-    const canvas = document.getElementById('expo-pdf-canvas');
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Afficher un spinner pendant le chargement
-    canvas.style.opacity = '0.3';
-
-    pdfjsLib.getDocument(p.fichier).promise.then(function(pdf) {
-        return pdf.getPage(1);
-    }).then(function(page) {
-        const container = viewer;
-        const scale = Math.min(
-            (container.clientWidth  * 0.95) / page.getViewport({scale:1}).width,
-            (container.clientHeight * 0.95) / page.getViewport({scale:1}).height
-        );
-        const viewport = page.getViewport({ scale });
-        canvas.width  = viewport.width;
-        canvas.height = viewport.height;
-        canvas.style.opacity = '1';
-        return page.render({ canvasContext: ctx, viewport }).promise;
-    }).catch(function() {
-        showExpoFallback(p);
-    });
-
-    // Boutons nav
-    document.getElementById('expo-prev').style.opacity = expoCurrent === 0 ? '0.3' : '1';
-    document.getElementById('expo-next').style.opacity = expoCurrent === total - 1 ? '0.3' : '1';
-
-    // Miniatures
-    document.querySelectorAll('[id^="expo-thumb-"]').forEach((b, i) => {
-        b.className = b.className.replace(/bg-\[#8B2E2E\]|hover:bg-\[#3D0E0E\]/g, '').trim();
-        b.className += i === expoCurrent ? ' bg-[#8B2E2E]' : ' hover:bg-[#3D0E0E]';
-    });
-
-    // Scroll miniature active en vue
-    const activeThumb = document.getElementById(`expo-thumb-${expoCurrent}`);
-    if (activeThumb) activeThumb.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-}
-
-function showExpoFallback(p) {
-    document.getElementById('expo-iframe').classList.add('hidden');
-    document.getElementById('expo-fallback').classList.remove('hidden');
-    document.getElementById('expo-fallback-titre').textContent = p.titre;
-    document.getElementById('expo-fallback-dl').href = p.fichier;
-    document.getElementById('expo-fallback-dl').textContent = p.fichier;
-}
-
-function expoNav(dir) {
-    expoGoTo(expoCurrent + dir);
-}
-
-// Navigation clavier
-document.addEventListener('keydown', function(e) {
-    if (document.getElementById('expo-virtuelle-overlay').classList.contains('hidden')) return;
-    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') expoNav(1);
-    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') expoNav(-1);
-    if (e.key === 'Escape') closeExpoVirtuelle();
-});
-
-// Swipe tactile
-(function() {
-    let startX = 0;
-    const overlay = document.getElementById('expo-virtuelle-overlay');
-    overlay.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
-    overlay.addEventListener('touchend', e => {
-        const dx = e.changedTouches[0].clientX - startX;
-        if (Math.abs(dx) > 50) expoNav(dx < 0 ? 1 : -1);
-    }, { passive: true });
-})();
-</script>
-
-
-<!-- ═══════════════════════════════════════════════════════════
-     NOS PROJETS — VISIONNEUSE PDF ÉTUDIANTS
-     ═══════════════════════════════════════════════════════════ -->
-<div id="nos-projets-overlay" class="hidden fixed inset-0 z-[500] bg-black flex flex-col" style="touch-action:none;">
-    <div class="flex items-center justify-between px-4 md:px-8 py-3 bg-[#1A0A0A] border-b border-[#3D0E0E] flex-shrink-0">
-        <div class="flex items-center gap-3">
-            <div class="w-8 h-8 bg-[#8B2E2E] rounded-full flex items-center justify-center">
-                <i class="fas fa-folder-open text-white text-xs"></i>
-            </div>
-            <div>
-                <div class="text-white font-bold text-sm title-font tracking-wider">NOS PROJETS</div>
-                <div id="projets-planche-label" class="text-[#C8827A] text-xs font-mono">Planche 1 / 7</div>
-            </div>
-        </div>
-        <div id="projets-planche-titre" class="hidden md:block text-[#EDE0CC] text-sm font-semibold text-center flex-1 mx-4 truncate"></div>
-        <div class="flex items-center gap-2 md:gap-3">
-            <a id="projets-dl-btn" href="#" download class="hidden md:flex items-center gap-2 bg-[#3D0E0E] hover:bg-[#6B2020] text-[#EDE0CC] text-xs font-bold px-3 py-2 rounded-lg transition-colors">
-                <i class="fas fa-download"></i> <span class="hidden md:inline">Télécharger</span>
-            </a>
-            <!-- Boutons zoom projets -->
-            <div class="hidden md:flex items-center gap-1 bg-[#3D0E0E] rounded-lg px-1 py-1">
-                <button onclick="projetsZoom(-0.25)" class="w-7 h-7 flex items-center justify-center text-[#EDE0CC] hover:bg-[#6B2020] rounded transition-colors text-sm font-bold" title="Dézoomer">−</button>
-                <span id="projets-zoom-label" class="text-[#C8827A] text-xs font-mono w-10 text-center">100%</span>
-                <button onclick="projetsZoom(+0.25)" class="w-7 h-7 flex items-center justify-center text-[#EDE0CC] hover:bg-[#6B2020] rounded transition-colors text-sm font-bold" title="Zoomer">+</button>
-                <button onclick="projetsZoomReset()" class="w-7 h-7 flex items-center justify-center text-[#EDE0CC] hover:bg-[#6B2020] rounded transition-colors text-xs" title="Réinitialiser"><i class="fas fa-expand-arrows-alt"></i></button>
-            </div>
-            <button onclick="closeNosProjets()" class="bg-[#8B2E2E] hover:bg-[#6B2020] text-white w-8 h-8 rounded-full flex items-center justify-center transition-colors text-sm">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-    </div>
-    <div class="h-1 bg-[#3D0E0E] flex-shrink-0">
-        <div id="projets-progress" class="h-full bg-[#8B2E2E] transition-all duration-300" style="width:14.28%"></div>
-    </div>
-    <div class="flex flex-1 overflow-hidden">
-        <div class="hidden md:flex flex-col w-64 bg-[#120606] border-r border-[#3D0E0E] overflow-y-auto flex-shrink-0" id="projets-sidebar"></div>
-        <div class="flex-1 relative flex items-center justify-center bg-[#0D0505] overflow-hidden">
-            <button onclick="projetsNav(-1)" id="projets-prev" class="absolute left-2 md:left-4 z-20 w-10 h-10 bg-black/60 hover:bg-[#8B2E2E] border border-white/20 text-white rounded-full flex items-center justify-center transition-all text-lg shadow-lg backdrop-blur-sm">
-                <i class="fas fa-chevron-left"></i>
-            </button>
-            <div id="projets-viewer" class="w-full h-full overflow-auto" style="background:#0D0505; cursor:grab; display:flex; align-items:center; justify-content:center;">
-                <canvas id="projets-pdf-canvas" style="display:block; margin:auto; transform-origin:top center; transition:transform 0.15s ease;"></canvas>
-            </div>
-            <div id="projets-fallback" class="hidden absolute inset-0 flex flex-col items-center justify-center text-center p-8">
-                <i class="fas fa-file-pdf text-6xl text-[#8B2E2E] mb-4"></i>
-                <h3 id="projets-fallback-titre" class="text-white text-xl font-bold mb-2"></h3>
-                <p class="text-[#C8827A] text-sm mb-6 max-w-md">Le fichier PDF n'est pas encore disponible.<br>Placez les PDFs dans le dossier <code class="bg-black/40 px-2 py-1 rounded font-mono text-xs">/planches/</code>.</p>
-                <a id="projets-fallback-dl" href="#" class="bg-[#8B2E2E] hover:bg-[#6B2020] text-white font-bold py-3 px-8 rounded-full transition-colors flex items-center gap-2">
-                    <i class="fas fa-folder-open"></i> Voir le chemin
-                </a>
-            </div>
-            <button onclick="projetsNav(1)" id="projets-next" class="absolute right-2 md:right-4 z-20 w-10 h-10 bg-black/60 hover:bg-[#8B2E2E] border border-white/20 text-white rounded-full flex items-center justify-center transition-all text-lg shadow-lg backdrop-blur-sm">
-                <i class="fas fa-chevron-right"></i>
-            </button>
-        </div>
-    </div>
-    <div class="md:hidden bg-[#1A0A0A] border-t border-[#3D0E0E] flex-shrink-0">
-        <div class="flex items-center gap-1 px-4 py-2 overflow-x-auto" style="scrollbar-width:thin; scrollbar-color:#3D0E0E #0D0505;" id="projets-thumbs-mobile"></div>
-    </div>
-</div>
-
-<script>
-const NOS_PROJETS = [
-    { titre: "Diag — Entre Résidents et Étudiants",           auteur: "Florian Mas",                    fichier: "planches/PROJETS-pages-1.pdf",  scenario: "S4" },
-    { titre: "Projet — Le Savoir comme Bien Commun",       auteur: "Florian Mas",                    fichier: "planches/PROJETS-pages-2.pdf",  scenario: "S4" },
-    { titre: "Diag — Centraliser les Savoirs",                 auteur: "Ilona Grevot",                   fichier: "planches/PROJETS-pages-3.pdf",  scenario: "S1" },
-    { titre: "Projet — Agropolis Campus Agronomie 2100",       auteur: "Ilona Grevot",                   fichier: "planches/PROJETS-pages-4.pdf",  scenario: "S1" },
-    { titre: "Diag — Crise du Logement Étudiant",              auteur: "Camille Paredes & Jeremy Dupuy", fichier: "planches/PROJETS-pages-5.pdf",  scenario: "S1" },
-    { titre: "Projet — Plus de Logements avec le Déjà Là",     auteur: "Camille Paredes",                fichier: "planches/PROJETS-pages-6.pdf",  scenario: "S1" },
-    { titre: "Diag — Du Système Universitaire à la Fabrique",  auteur: "Erwan Da Costa",                 fichier: "planches/PROJETS-pages-7.pdf",  scenario: "S2" },
-    { titre: "Projet — MIT Méditerranéen",                     auteur: "Erwan Da Costa",                 fichier: "planches/PROJETS-pages-8.pdf",  scenario: "S2" },
-];
-
-let projetsCurrent = 0;
-const SCENARIO_COLORS = { S1: "#8B2E2E", S2: "#C4622D", S3: "#5C6BC0", S4: "#2E7D5C", S5: "#7B5EA7" };
-
-function openNosProjets() {
-    projetsCurrent = 0;
-    document.getElementById("nos-projets-overlay").classList.remove("hidden");
-    document.body.style.overflow = "hidden";
-    buildProjetsSidebar();
-    projetsGoTo(0);
-}
-function closeNosProjets() {
-    document.getElementById("nos-projets-overlay").classList.add("hidden");
-    document.body.style.overflow = "";
-    const c = document.getElementById("projets-pdf-canvas");
-    if (c) c.getContext("2d").clearRect(0, 0, c.width, c.height);
-}
-function buildProjetsSidebar() {
-    const sidebar = document.getElementById("projets-sidebar");
-    const mobile  = document.getElementById("projets-thumbs-mobile");
-    sidebar.innerHTML = mobile.innerHTML = "";
-    NOS_PROJETS.forEach((p, i) => {
-        const color = SCENARIO_COLORS[p.scenario] || "#8B2E2E";
-        const active = i === projetsCurrent;
-        const item = document.createElement("button");
-        item.id = "projets-item-" + i;
-        item.onclick = () => projetsGoTo(i);
-        item.className = "w-full text-left px-4 py-3 border-b border-[#2A0808] transition-all flex items-start gap-3 " + (active ? "bg-[#3D0E0E]" : "hover:bg-[#1F0808]");
-        item.innerHTML = `<div class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white mt-0.5" style="background:${color}">${p.scenario}</div><div class="min-w-0"><div class="text-[#EDE0CC] text-xs font-semibold leading-tight">${p.titre}</div><div class="text-[#C8827A] text-[10px] mt-0.5 truncate">${p.auteur}</div></div>`;
-        sidebar.appendChild(item);
-        const btn = document.createElement("button");
-        btn.id = "projets-thumb-" + i;
-        btn.onclick = () => projetsGoTo(i);
-        btn.className = "flex-shrink-0 flex flex-col items-center gap-1 px-2 py-1 rounded-lg transition-all " + (active ? "bg-[#8B2E2E]" : "hover:bg-[#3D0E0E]");
-        btn.innerHTML = `<div class="w-8 h-10 rounded flex items-center justify-center text-xs font-bold text-white" style="background:${color}">${i+1}</div><span class="text-[9px] text-[#C8827A] max-w-[48px] truncate">${p.auteur.split(" ")[0]}</span>`;
-        mobile.appendChild(btn);
-    });
-}
-function projetsGoTo(idx) {
-    projetsCurrent = Math.max(0, Math.min(idx, NOS_PROJETS.length - 1));
-    const p = NOS_PROJETS[projetsCurrent];
-    const total = NOS_PROJETS.length;
-    document.getElementById("projets-planche-label").textContent = "Planche " + (projetsCurrent+1) + " / " + total;
-    document.getElementById("projets-planche-titre").textContent = p.titre;
-    document.getElementById("projets-progress").style.width = ((projetsCurrent+1)/total*100) + "%";
-    const dlBtn = document.getElementById("projets-dl-btn");
-    dlBtn.href = p.fichier; dlBtn.download = p.fichier.split("/").pop();
-    const viewer = document.getElementById("projets-viewer");
-    const fallback = document.getElementById("projets-fallback");
-    viewer.style.display = "flex"; fallback.classList.add("hidden");
-    const canvas = document.getElementById("projets-pdf-canvas");
-    const ctx = canvas.getContext("2d");
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    canvas.style.opacity = "0.3";
-    pdfjsLib.getDocument(p.fichier).promise.then(pdf => pdf.getPage(1)).then(page => {
-        const scale = Math.min((viewer.clientWidth*0.95)/page.getViewport({scale:1}).width, (viewer.clientHeight*0.95)/page.getViewport({scale:1}).height);
-        const vp = page.getViewport({scale});
-        canvas.width = vp.width; canvas.height = vp.height; canvas.style.opacity = "1";
-        return page.render({canvasContext:ctx, viewport:vp}).promise;
-    }).catch(() => {
-        viewer.style.display = "none"; fallback.classList.remove("hidden");
-        document.getElementById("projets-fallback-titre").textContent = p.titre;
-        document.getElementById("projets-fallback-dl").href = p.fichier;
-    });
-    document.getElementById("projets-prev").style.opacity = projetsCurrent===0 ? "0.3":"1";
-    document.getElementById("projets-next").style.opacity = projetsCurrent===total-1 ? "0.3":"1";
-    document.querySelectorAll("[id^=projets-item-]").forEach((el,i) => {
-        el.className = el.className.replace("bg-[#3D0E0E]","").replace("hover:bg-[#1F0808]","").trim() + (i===projetsCurrent?" bg-[#3D0E0E]":" hover:bg-[#1F0808]");
-    });
-    document.querySelectorAll("[id^=projets-thumb-]").forEach((el,i) => {
-        el.className = el.className.replace("bg-[#8B2E2E]","").replace("hover:bg-[#3D0E0E]","").trim() + (i===projetsCurrent?" bg-[#8B2E2E]":" hover:bg-[#3D0E0E]");
-    });
-    const active = document.getElementById("projets-item-"+projetsCurrent);
-    if (active) active.scrollIntoView({behavior:"smooth",block:"nearest"});
-}
-function projetsNav(dir) { projetsGoTo(projetsCurrent+dir); }
-document.addEventListener("keydown", function(e) {
-    if (document.getElementById("nos-projets-overlay").classList.contains("hidden")) return;
-    if (e.key==="ArrowRight"||e.key==="ArrowDown") projetsNav(1);
-    if (e.key==="ArrowLeft"||e.key==="ArrowUp")    projetsNav(-1);
-    if (e.key==="Escape") closeNosProjets();
-});
-(function(){
-    let sx=0;
-    const o=document.getElementById("nos-projets-overlay");
-    o.addEventListener("touchstart",e=>{sx=e.touches[0].clientX;},{passive:true});
-    o.addEventListener("touchend",e=>{const dx=e.changedTouches[0].clientX-sx; if(Math.abs(dx)>50)projetsNav(dx<0?1:-1);},{passive:true});
-})();
-</script>
-
-
-<script>
-// ══════════════════════════════════════════
-// ZOOM VISIONNEUSES PDF (expo + projets)
-// ══════════════════════════════════════════
-(function() {
-    const viewers = [
-        { viewerId: 'expo-iframe',     canvasId: 'expo-pdf-canvas',    labelId: 'expo-zoom-label',    renderFn: () => typeof expoGoTo === 'function' && expoGoTo(expoCurrent) },
-        { viewerId: 'projets-viewer',  canvasId: 'projets-pdf-canvas', labelId: 'projets-zoom-label', renderFn: () => typeof projetsGoTo === 'function' && projetsGoTo(projetsCurrent) }
-    ];
-
-    // State
-    const state = { 'expo-pdf-canvas': 1, 'projets-pdf-canvas': 1 };
-    const MIN = 0.5, MAX = 4, STEP = 0.25;
-
-    function applyZoom(canvasId, labelId, zoom) {
-        zoom = Math.min(MAX, Math.max(MIN, zoom));
-        state[canvasId] = zoom;
-        const canvas = document.getElementById(canvasId);
-        const label  = document.getElementById(labelId);
-        if (!canvas) return;
-        canvas.style.transform = `scale(${zoom})`;
-        canvas.style.transformOrigin = zoom > 1 ? 'top center' : 'center center';
-        if (label) label.textContent = Math.round(zoom * 100) + '%';
-        // Quand dézoomé, recentrer
-        const viewer = canvas.closest('[id$="-iframe"],[id$="-viewer"]');
-        if (viewer) {
-            viewer.style.alignItems = zoom <= 1 ? 'center' : 'flex-start';
-            viewer.style.justifyContent = 'center';
-        }
-    }
-
-    // Exposer les fonctions globalement
-    window.expoZoom = function(delta) {
-        applyZoom('expo-pdf-canvas', 'expo-zoom-label', state['expo-pdf-canvas'] + delta);
-    };
-    window.expoZoomReset = function() {
-        applyZoom('expo-pdf-canvas', 'expo-zoom-label', 1);
-    };
-    window.projetsZoom = function(delta) {
-        applyZoom('projets-pdf-canvas', 'projets-zoom-label', state['projets-pdf-canvas'] + delta);
-    };
-    window.projetsZoomReset = function() {
-        applyZoom('projets-pdf-canvas', 'projets-zoom-label', 1);
-    };
-
-    // Reset zoom quand on change de planche
-    const origExpoGoTo = window.expoGoTo;
-    const origProjetsGoTo = window.projetsGoTo;
-    document.addEventListener('DOMContentLoaded', function() {
-        // Molette souris sur expo
-        const expoViewer = document.getElementById('expo-iframe');
-        if (expoViewer) {
-            expoViewer.addEventListener('wheel', function(e) {
-                if (document.getElementById('expo-virtuelle-overlay').classList.contains('hidden')) return;
-                e.preventDefault();
-                const delta = e.deltaY < 0 ? STEP : -STEP;
-                applyZoom('expo-pdf-canvas', 'expo-zoom-label', state['expo-pdf-canvas'] + delta);
-            }, { passive: false });
-            // Curseur
-            expoViewer.addEventListener('mousedown', () => expoViewer.style.cursor = 'grabbing');
-            expoViewer.addEventListener('mouseup',   () => expoViewer.style.cursor = 'grab');
-        }
-
-        // Molette souris sur projets
-        const projViewer = document.getElementById('projets-viewer');
-        if (projViewer) {
-            projViewer.addEventListener('wheel', function(e) {
-                if (document.getElementById('nos-projets-overlay').classList.contains('hidden')) return;
-                e.preventDefault();
-                const delta = e.deltaY < 0 ? STEP : -STEP;
-                applyZoom('projets-pdf-canvas', 'projets-zoom-label', state['projets-pdf-canvas'] + delta);
-            }, { passive: false });
-            projViewer.addEventListener('mousedown', () => projViewer.style.cursor = 'grabbing');
-            projViewer.addEventListener('mouseup',   () => projViewer.style.cursor = 'grab');
-        }
-    });
-
-    // Reset zoom à chaque changement de planche (patch expoGoTo / projetsGoTo)
-    // On observe les changements via MutationObserver sur le label
-    const expoLabel = document.getElementById ? document.getElementById('expo-planche-label') : null;
-    const projLabel = document.getElementById ? document.getElementById('projets-planche-label') : null;
-
-    function watchLabel(labelId, canvasId, zoomLabelId) {
-        const el = document.getElementById(labelId);
-        if (!el) return;
-        new MutationObserver(() => {
-            applyZoom(canvasId, zoomLabelId, 1);
-        }).observe(el, { childList: true, characterData: true, subtree: true });
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-        watchLabel('expo-planche-label', 'expo-pdf-canvas', 'expo-zoom-label');
-        watchLabel('projets-planche-label', 'projets-pdf-canvas', 'projets-zoom-label');
-    });
-})();
-</script>
-
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
