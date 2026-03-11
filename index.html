@@ -1809,9 +1809,9 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
                 '1': 'SCENARIO-1_page-0001.jpg',
                 '2': 'SCENARIO-2_page-0001.jpg',
                 '3': 'SCENARIO-3_page-0001.jpg',
-                '4': 'Scenarrr4.png',
-                '5': 'Scenarrr5.png',
-                '6': 'Scenarrr5.png'
+                '4': 'SCENAR_4.png',
+                '5': 'SCENAR_5.png',
+                '6': 'SCENAR_5.png'
             };
             const imageName = scenarioFileMap[scenarioNum] || `Scénario ${scenarioNum}.png`;
             
@@ -2199,8 +2199,8 @@ function directToWorksFromResult() {
             { file: "SCENARIO-1_page-0001.jpg", title: "Scénario 1 – Le Futur en Douceur" },
             { file: "SCENARIO-2_page-0001.jpg", title: "Scénario 2 – Des Universités Seulement Privées" },
             { file: "SCENARIO-3_page-0001.jpg", title: "Scénario 3 – IA : Université Zéro M²" },
-            { file: "Scenarrr4.png", title: "Scénario 4" },
-            { file: "Scenarrr5.png", title: "Scénario 5" },
+            { file: "SCENAR_4.png", title: "Scénario 4" },
+            { file: "SCENAR_5.png", title: "Scénario 5" },
             { file: "d1.png", title: "Planche 1" },
             { file: "D2.png", title: "Planche 2" },
             { file: "D3.png", title: "Planche 3" },
@@ -5074,7 +5074,7 @@ function showScenarioDetail(scenarioKey) {
 
                 <div class="space-y-6">
                     <div class="relative rounded-xl overflow-hidden shadow-xl border-4 border-white">
-                        <img src="${{'1':'SCENARIO-1_page-0001.jpg','2':'SCENARIO-2_page-0001.jpg','3':'SCENARIO-3_page-0001.jpg','4':'Scenarrr4.png','5':'Scenarrr5.png','6':'Scenarrr5.png'}[scenarioNum]||'Scénario '+scenarioNum+'.png'}" 
+                        <img src="${{'1':'SCENARIO-1_page-0001.jpg','2':'SCENARIO-2_page-0001.jpg','3':'SCENARIO-3_page-0001.jpg','4':'SCENAR_4.png','5':'SCENAR_5.png','6':'SCENAR_5.png'}[scenarioNum]||'Scénario '+scenarioNum+'.png'}" 
                              alt="Illustration ${s.title}" 
                              class="w-full h-auto object-cover">
                     </div>
