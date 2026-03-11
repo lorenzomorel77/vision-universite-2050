@@ -562,8 +562,8 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
             </button>
         </div>
         <!-- CENTRE : titre -->
-        <div class="flex flex-col items-center justify-center text-center absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none px-2">
-            <h1 class="text-[10px] sm:text-xs md:text-2xl font-extrabold tracking-wider uppercase leading-tight text-[#3D0E0E]">L'UNIVERSITÉ DANS LA VILLE</h1>
+        <div class="flex flex-col items-center justify-center text-center absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 px-2 cursor-pointer" onclick="returnToHome()">
+            <h1 class="text-[10px] sm:text-xs md:text-2xl font-extrabold tracking-wider uppercase leading-tight text-[#3D0E0E] hover:text-[#C4622D] transition-colors">L'UNIVERSITÉ DANS LA VILLE</h1>
             <span class="text-[8px] md:text-xs font-semibold tracking-widest opacity-70 uppercase hidden sm:block text-[#5C1A1A]">Université & Ville de Demain</span>
         </div>
 <div id="admin-dashboard" class="fixed inset-0 bg-slate-900 z-[200] hidden flex flex-col font-sans fade-in">
@@ -624,17 +624,17 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
                 <!-- Mode Expert toggle -->
                 <div class="flex items-center px-3">
                     <div id="expert-toggle" class="expert-toggle-wrapper" onclick="toggleExpertMode()">
-                        <span class="text-[8px] md:text-xs font-bold uppercase tracking-wider text-gray-500 transition-colors hidden sm:inline" id="expert-label">Mode Expert</span>
+                        <span class="text-[8px] md:text-xs font-bold uppercase tracking-wider text-gray-500 transition-colors" id="expert-label">Mode Expert</span>
                         <div class="expert-toggle-track"><div class="expert-toggle-thumb"></div></div>
                     </div>
                 </div>
                 <!-- Logos sur fond bordeaux collés au bord droit -->
-                <div class="flex items-center gap-3 bg-[#8B2E2E] px-5">
-                    <img src="logoufr3_noiretblanc.PNG" alt="UFR3" class="h-7 w-auto" style="filter: brightness(0) invert(1);">
+                <div class="flex items-center gap-1.5 md:gap-3 bg-[#8B2E2E] px-2 md:px-5">
+                    <img src="logoufr3_noiretblanc.PNG" alt="UFR3" class="h-5 md:h-7 w-auto" style="filter: brightness(0) invert(1);">
                     <div class="w-px h-6 bg-white/30"></div>
-                    <img src="PROJET_BLANC.png" alt="Master PROJET" class="h-5 w-auto">
+                    <img src="PROJET_BLANC.png" alt="Master PROJET" class="h-4 md:h-5 w-auto">
                     <div class="w-px h-6 bg-white/30"></div>
-                    <img src="UMPV_BLANC.png" alt="Université Paul-Valéry" class="h-6 w-auto">
+                    <img src="UMPV_BLANC.png" alt="Université Paul-Valéry" class="h-5 md:h-6 w-auto">
                 </div>
             </div>
         </div>
@@ -1793,9 +1793,9 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
                 '1': 'SCENARIO-1_page-0001.jpg',
                 '2': 'SCENARIO-2_page-0001.jpg',
                 '3': 'SCENARIO-3_page-0001.jpg',
-                '4': 'SCENAR_4.png',
-                '5': 'SCENAR_5.png',
-                '6': 'SCENAR_5.png'
+                '4': 'Scenarrr4.png',
+                '5': 'Scenarrr5.png',
+                '6': 'Scenarrr5.png'
             };
             const imageName = scenarioFileMap[scenarioNum] || `Scénario ${scenarioNum}.png`;
             
@@ -2162,8 +2162,8 @@ function directToWorksFromResult() {
             { file: "SCENARIO-1_page-0001.jpg", title: "Scénario 1 – Le Futur en Douceur" },
             { file: "SCENARIO-2_page-0001.jpg", title: "Scénario 2 – Des Universités Seulement Privées" },
             { file: "SCENARIO-3_page-0001.jpg", title: "Scénario 3 – IA : Université Zéro M²" },
-            { file: "SCENAR_4.png", title: "Scénario 4" },
-            { file: "SCENAR_5.png", title: "Scénario 5" },
+            { file: "Scenarrr4.png", title: "Scénario 4" },
+            { file: "Scenarrr5.png", title: "Scénario 5" },
             { file: "d1.png", title: "Planche 1" },
             { file: "D2.png", title: "Planche 2" },
             { file: "D3.png", title: "Planche 3" },
@@ -5054,7 +5054,7 @@ function showScenarioDetail(scenarioKey) {
 
                 <div class="space-y-6">
                     <div class="relative rounded-xl overflow-hidden shadow-xl border-4 border-white">
-                        <img src="${{'1':'SCENARIO-1_page-0001.jpg','2':'SCENARIO-2_page-0001.jpg','3':'SCENARIO-3_page-0001.jpg','4':'SCENAR_4.png','5':'SCENAR_5.png','6':'SCENAR_5.png'}[scenarioNum]||'Scénario '+scenarioNum+'.png'}" 
+                        <img src="${{'1':'SCENARIO-1_page-0001.jpg','2':'SCENARIO-2_page-0001.jpg','3':'SCENARIO-3_page-0001.jpg','4':'Scenarrr4.png','5':'Scenarrr5.png','6':'Scenarrr5.png'}[scenarioNum]||'Scénario '+scenarioNum+'.png'}" 
                              alt="Illustration ${s.title}" 
                              class="w-full h-auto object-cover">
                     </div>
