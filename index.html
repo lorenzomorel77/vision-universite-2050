@@ -1031,6 +1031,13 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
 
         <!-- WORKS SCREEN -->
         <div id="works-screen" class="hidden max-w-6xl w-full fade-in">
+            <!-- Bouton retour mobile uniquement -->
+            <div class="flex md:hidden items-center mb-6 px-4">
+                <button onclick="returnToHome()" class="flex items-center gap-2 text-[#8B2E2E] hover:text-[#C4622D] font-semibold transition-colors text-sm">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Retour à l'accueil</span>
+                </button>
+            </div>
             <!-- (Contenu identique) -->
             <div class="text-center mb-10">
                 <h2 class="text-4xl font-extrabold text-[#3D0E0E] mb-2 title-font">L'EXPOSITION VIRTUELLE</h2>
@@ -1202,11 +1209,7 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
                     </div>
                 </div>
             </div>
-            <div class="mt-12 text-center">
-                <button onclick="closeWorks()" class="text-[#8B2E2E] hover:text-[#C4622D] font-semibold flex items-center justify-center gap-2 mx-auto transition-colors">
-                    <i class="fas fa-arrow-left"></i> Retour aux résultats
-                </button>
-           </div>
+
         </div>
 
         </div>
