@@ -2930,7 +2930,7 @@ async function sendLandingCapsule() {
     try {
         const { error } = await window._supa.from('capsules').insert({ message: text, scenario: 'Accueil' });
         if (error) throw error;
-        btn.classList.add('hidden');
+        btn.style.display = 'none';
         feedback.classList.remove('hidden');
     } catch(e) {
         console.error('Erreur Capsule Accueil:', e);
@@ -2958,7 +2958,7 @@ async function sendCapsule() {
             scenario: winnerScenarioId || "Inconnu"
         });
         if (error) throw error;
-        btn.classList.add('hidden');
+        btn.style.display = 'none';
         feedback.classList.remove('hidden');
         input.value = "";
     } catch (e) {
