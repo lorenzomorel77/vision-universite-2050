@@ -833,21 +833,28 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
 
                 <!-- Capsule Temporelle – teaser page d'accueil -->
                 <div class="mt-10 w-full max-w-6xl fade-in">
-                    <div onclick="openLandingCapsule()" class="cursor-pointer group relative overflow-hidden rounded-2xl border border-white/20 bg-black/30 backdrop-blur-sm hover:bg-black/50 transition-all px-8 py-6 flex flex-col md:flex-row items-center justify-between gap-6">
-                        <i class="fas fa-clock absolute -right-4 -bottom-4 text-9xl text-white opacity-5 pointer-events-none"></i>
-                        <div class="flex items-center gap-5">
-                            <div class="w-14 h-14 shrink-0 bg-gradient-to-br from-[#D4824A] to-[#8B2E2E] rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                    <div onclick="openLandingCapsule()" class="cursor-pointer group relative overflow-hidden rounded-2xl transition-all px-8 py-6 flex flex-col md:flex-row items-center justify-between gap-6"
+                        style="background:linear-gradient(135deg,#6B2020 0%,#8B2E2E 45%,#A63A2A 100%);box-shadow:0 8px 32px rgba(90,14,14,0.45);border:1px solid rgba(255,255,255,0.08);">
+                        <!-- Motif cubes décoratif (même que les cartes travaux) -->
+                        <div class="absolute inset-0 opacity-5 pointer-events-none" style="background-image:repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 0,transparent 50%);background-size:12px 12px;"></div>
+                        <!-- Horloge fantôme -->
+                        <i class="fas fa-clock absolute -right-6 -bottom-6 text-white pointer-events-none" style="font-size:9rem;opacity:0.07;"></i>
+                        <!-- Gauche -->
+                        <div class="flex items-center gap-5 relative z-10">
+                            <div class="w-14 h-14 shrink-0 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.2);">
                                 <i class="fas fa-box-open text-white text-2xl"></i>
                             </div>
                             <div>
-                                <p class="text-[10px] font-bold uppercase tracking-widest text-[#D4824A] mb-1">Capsule Temporelle</p>
-                                <h3 class="text-white font-bold text-lg leading-tight">Laissez un message aux étudiants de 2100</h3>
-                                <p class="text-white/60 text-sm mt-1">Votre message sera scellé dans notre base de données jusqu'en 2100.</p>
+                                <p style="font-size:0.6rem;font-weight:800;text-transform:uppercase;letter-spacing:0.18em;color:rgba(255,200,160,0.85);margin-bottom:0.2rem;">Feature exclusive</p>
+                                <h3 class="font-bold text-lg leading-tight" style="font-family:'Montserrat',sans-serif;color:white;">Laissez un message aux étudiants de 2100</h3>
+                                <p class="text-sm mt-1" style="color:rgba(255,255,255,0.6);">Votre message sera scellé dans notre archive numérique.</p>
                             </div>
                         </div>
-                        <div class="shrink-0 flex items-center gap-2 bg-[#C4622D] group-hover:bg-[#9E4A20] text-white font-bold text-sm py-3 px-6 rounded-full transition-all shadow-lg">
-                            <span>Écrire un message</span>
-                            <i class="fas fa-pen group-hover:translate-x-1 transition-transform"></i>
+                        <!-- Droite : CTA -->
+                        <div class="shrink-0 relative z-10 flex items-center gap-2 text-white font-bold text-sm py-3 px-6 rounded-full transition-all"
+                            style="background:rgba(255,255,255,0.18);border:1.5px solid rgba(255,255,255,0.35);backdrop-filter:blur(4px);">
+                            <span style="color:white;">Écrire un message</span>
+                            <i class="fas fa-pen text-xs group-hover:translate-x-1 transition-transform" style="color:white;"></i>
                         </div>
                     </div>
                 </div>
