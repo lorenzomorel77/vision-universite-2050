@@ -2326,8 +2326,13 @@ function directToWorksFromResult() {
             currentPdfList = projetsPngs;
             document.getElementById('sommaire-toggle-btn').classList.remove('hidden');
             buildSommaire();
-            document.getElementById('sommaire-panel').classList.remove('hidden');
-            // Afficher la page sommaire en premier
+            // Sur mobile : panneau caché au départ, visible sur desktop
+            const isMobile = window.innerWidth < 768;
+            if (isMobile) {
+                document.getElementById('sommaire-panel').classList.add('hidden');
+            } else {
+                document.getElementById('sommaire-panel').classList.remove('hidden');
+            }
             showSommairePage();
             pdfModal.classList.remove('hidden');
         }
@@ -2338,8 +2343,8 @@ function directToWorksFromResult() {
             document.getElementById('page-indicator').innerText = 'Sommaire';
             document.getElementById('btn-prev').disabled = true;
             document.getElementById('btn-prev').classList.add('opacity-50');
-            document.getElementById('btn-next').disabled = true;
-            document.getElementById('btn-next').classList.add('opacity-50');
+            document.getElementById('btn-next').disabled = false;
+            document.getElementById('btn-next').classList.remove('opacity-50');
             document.getElementById('btn-fullscreen').classList.add('hidden');
 
             const container = document.getElementById('pdf-container');
@@ -2388,7 +2393,13 @@ function directToWorksFromResult() {
             updateSommaireActive();
         }
 
-        function goToSommairePage() { showSommairePage(); }
+        function goToSommairePage() {
+            const isMobile = window.innerWidth < 768;
+            if (isMobile) {
+                document.getElementById('sommaire-panel').classList.add('hidden');
+            }
+            showSommairePage();
+        }
 
         // ── PLEIN ÉCRAN PLANCHE ────────────────────────────────────────────────
         let fsScale = 1, fsPosX = 0, fsPosY = 0, fsIsDragging = false, fsStartX = 0, fsStartY = 0, fsLastPosX = 0, fsLastPosY = 0;
@@ -2472,6 +2483,8 @@ function directToWorksFromResult() {
 
         function goToProject(index) {
             currentPdfIndex = index;
+            // Afficher la barre latérale dès qu'on choisit un projet (mobile inclus)
+            document.getElementById('sommaire-panel').classList.remove('hidden');
             updatePdfViewer();
             updateSommaireActive();
         }
@@ -2510,7 +2523,10 @@ function directToWorksFromResult() {
             document.getElementById('sommaire-panel').classList.toggle('hidden');
         }
         function updatePdfViewer() {
+            // Si index = -1 : on est sur la page sommaire, ne pas lancer le viewer
+            if (currentPdfIndex === -1) { showSommairePage(); return; }
             const pdfObj = currentPdfList[currentPdfIndex];
+            if (!pdfObj) return;
             document.getElementById('pdf-title').innerHTML = `<i class="fas fa-images mr-2"></i> Exposition`;
             document.getElementById('page-indicator').innerText = `Page ${currentPdfIndex + 1} / ${currentPdfList.length}`;
             const container = document.getElementById('pdf-container');
@@ -2643,8 +2659,14 @@ function directToWorksFromResult() {
             document.getElementById('btn-prev').classList.toggle('opacity-50', currentPdfIndex === 0);
             document.getElementById('btn-next').classList.toggle('opacity-50', currentPdfIndex === currentPdfList.length - 1);
         }
-        function nextPdf() { if (currentPdfIndex < currentPdfList.length - 1) { currentPdfIndex++; updatePdfViewer(); updateSommaireActive(); } }
-        function prevPdf() { if (currentPdfIndex > 0) { currentPdfIndex--; updatePdfViewer(); updateSommaireActive(); } }
+        function nextPdf() {
+            if (currentPdfIndex === -1) { currentPdfIndex = 0; updatePdfViewer(); updateSommaireActive(); return; }
+            if (currentPdfIndex < currentPdfList.length - 1) { currentPdfIndex++; updatePdfViewer(); updateSommaireActive(); }
+        }
+        function prevPdf() {
+            if (currentPdfIndex <= 0) { showSommairePage(); return; }
+            currentPdfIndex--; updatePdfViewer(); updateSommaireActive();
+        }
         function closePdfModal() { pdfModal.classList.add('hidden'); document.getElementById('pdf-container').innerHTML = ''; }
         pdfModal.addEventListener('click', e => { if(e.target === pdfModal) closePdfModal(); });
 
