@@ -2926,7 +2926,7 @@ async function sendLandingCapsule() {
     const text = input.value.trim();
     if (!text) return;
     btn.disabled = true;
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Archivage...';
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
     try {
         const { error } = await window._supa.from('capsules').insert({ message: text, scenario: 'Accueil' });
         if (error) throw error;
@@ -2949,7 +2949,7 @@ async function sendCapsule() {
     if (!text) return;
 
     btn.disabled = true;
-    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Archivage...`;
+    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i>`;
     btn.classList.add('opacity-75');
 
     try {
