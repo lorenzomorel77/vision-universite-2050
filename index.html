@@ -386,9 +386,7 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
 
     <!-- MODAL RÉVÉLATION SCÉNARIO -->
     <div id="scenario-image-overlay" class="fixed inset-0 bg-black z-[100] hidden flex flex-col items-center justify-center fade-in">
-        <div class="absolute top-0 w-full bg-gradient-to-b from-black/80 to-transparent text-white text-center p-6 z-10">
-            <h2 class="text-2xl md:text-3xl font-bold tracking-widest uppercase title-font shadow-black drop-shadow-lg">Votre Vision se dessine...</h2>
-        </div>
+
         <div class="w-full h-full flex items-center justify-center p-4 bg-black">
             <img id="scenario-reveal-img" src="" onerror="this.onerror=null; this.src=this.src.replace('.png', '.jpg');" alt="Illustration Scénario" class="max-w-full max-h-screen object-contain shadow-2xl">
         </div>
@@ -533,6 +531,50 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
             </div>
         </div>
         <div class="text-center text-gray-500 text-xs py-1">Molette pour zoomer · Double-clic pour reset · Echap pour fermer</div>
+    </div>
+
+    <!-- MODALE CAPSULE TEMPORELLE INDÉPENDANTE (page d'accueil) -->
+    <div id="landing-capsule-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden z-[80] flex items-center justify-center p-4 fade-in">
+        <div class="relative w-full max-w-md bg-gradient-to-br from-[#1a0a0a] to-[#2C2C2C] rounded-2xl p-8 shadow-2xl border border-[#6B2020] overflow-hidden">
+            <!-- Horloge décorative -->
+            <i class="fas fa-clock absolute -right-6 -bottom-6 text-[9rem] text-white opacity-5 pointer-events-none"></i>
+            <!-- Fermer -->
+            <button onclick="closeLandingCapsule()" class="absolute top-4 right-4 text-white/40 hover:text-white text-xl transition-colors"><i class="fas fa-times"></i></button>
+
+            <div class="relative z-10">
+                <div class="flex items-center gap-3 mb-2">
+                    <div class="w-10 h-10 bg-gradient-to-br from-[#D4824A] to-[#8B2E2E] rounded-xl flex items-center justify-center shadow-lg shrink-0">
+                        <i class="fas fa-box-open text-white text-lg"></i>
+                    </div>
+                    <h3 class="font-bold text-white text-lg title-font uppercase tracking-widest">Capsule Temporelle</h3>
+                </div>
+                <p class="text-[#EDE0CC] text-xs italic mb-6 leading-relaxed">
+                    Que voulez-vous dire aux étudiants de 2100 ?<br>
+                    Ce message sera scellé dans notre archive numérique.
+                </p>
+
+                <div class="relative">
+                    <textarea id="landing-capsule-msg" maxlength="140" rows="3"
+                        placeholder="Ex : J'espère que le tram est toujours gratuit..."
+                        class="w-full bg-white text-gray-900 text-sm p-3 rounded-lg border border-[#9B3535]/30 focus:border-[#D4824A] focus:ring-1 focus:ring-orange-400 placeholder-gray-400 resize-none outline-none transition-all"></textarea>
+                    <div class="text-[9px] text-right text-[#C8827A] mt-1" id="landing-char-count">0 / 140</div>
+                </div>
+
+                <button onclick="sendLandingCapsule()" id="btn-landing-capsule"
+                    class="w-full mt-4 bg-[#C4622D] hover:bg-[#9E4A20] text-white font-bold py-3 px-4 rounded-xl text-sm transition-all shadow-lg flex justify-center items-center gap-2 active:scale-95">
+                    <span>Sceller le message</span> <i class="fas fa-archive"></i>
+                </button>
+
+                <div id="landing-capsule-feedback" class="hidden mt-4 text-center">
+                    <div class="bg-white/10 rounded-xl py-4 px-3">
+                        <i class="fas fa-check-circle text-[#D4824A] text-2xl mb-2"></i>
+                        <p class="text-white text-sm font-bold">Message archivé pour le futur.</p>
+                        <p class="text-white/50 text-xs mt-1">Les étudiants de 2100 vous liront.</p>
+                    </div>
+                    <button onclick="closeLandingCapsule()" class="mt-4 text-white/50 hover:text-white text-xs underline transition-colors">Fermer</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div id="timeline-modal" class="fixed inset-0 bg-black bg-opacity-80 hidden z-[65] flex items-center justify-center p-2 md:p-6 fade-in">
@@ -784,8 +826,29 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
 
                 </div>
 
+                <!-- Capsule Temporelle – teaser page d'accueil -->
+                <div class="mt-10 w-full max-w-6xl fade-in">
+                    <div onclick="openLandingCapsule()" class="cursor-pointer group relative overflow-hidden rounded-2xl border border-white/20 bg-black/30 backdrop-blur-sm hover:bg-black/50 transition-all px-8 py-6 flex flex-col md:flex-row items-center justify-between gap-6">
+                        <i class="fas fa-clock absolute -right-4 -bottom-4 text-9xl text-white opacity-5 pointer-events-none"></i>
+                        <div class="flex items-center gap-5">
+                            <div class="w-14 h-14 shrink-0 bg-gradient-to-br from-[#D4824A] to-[#8B2E2E] rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                                <i class="fas fa-box-open text-white text-2xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] font-bold uppercase tracking-widest text-[#D4824A] mb-1">Capsule Temporelle</p>
+                                <h3 class="text-white font-bold text-lg leading-tight">Laissez un message aux étudiants de 2100</h3>
+                                <p class="text-white/60 text-sm mt-1">Votre message sera scellé dans notre base de données jusqu'en 2100.</p>
+                            </div>
+                        </div>
+                        <div class="shrink-0 flex items-center gap-2 bg-[#C4622D] group-hover:bg-[#9E4A20] text-white font-bold text-sm py-3 px-6 rounded-full transition-all shadow-lg">
+                            <span>Écrire un message</span>
+                            <i class="fas fa-pen group-hover:translate-x-1 transition-transform"></i>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Footer crédits -->
-                <div class="mt-16 text-center text-white/70 text-sm">
+                <div class="mt-10 text-center text-white/70 text-sm">
                     <p>Master PROJET • Université Paul-Valéry Montpellier 3</p>
                 </div>
 
@@ -2820,6 +2883,47 @@ function directToWorksFromResult() {
         }
         function stopAudio() { if(synth.speaking) synth.cancel(); stopAudioUI(); }
         function stopAudioUI() { document.getElementById('play-audio-btn').classList.remove('hidden'); document.getElementById('stop-audio-btn').classList.add('hidden'); document.getElementById('speaking-indicator').classList.add('hidden'); }
+
+// === CAPSULE TEMPORELLE PAGE D'ACCUEIL ===
+function openLandingCapsule() {
+    document.getElementById('landing-capsule-modal').classList.remove('hidden');
+    document.getElementById('landing-capsule-feedback').classList.add('hidden');
+    document.getElementById('btn-landing-capsule').classList.remove('hidden');
+    document.getElementById('btn-landing-capsule').disabled = false;
+    document.getElementById('btn-landing-capsule').innerHTML = '<span>Sceller le message</span> <i class="fas fa-archive"></i>';
+    document.getElementById('landing-capsule-msg').value = '';
+    document.getElementById('landing-char-count').textContent = '0 / 140';
+}
+function closeLandingCapsule() {
+    document.getElementById('landing-capsule-modal').classList.add('hidden');
+}
+document.addEventListener('DOMContentLoaded', () => {
+    const ta = document.getElementById('landing-capsule-msg');
+    if (ta) ta.addEventListener('input', () => {
+        document.getElementById('landing-char-count').textContent = ta.value.length + ' / 140';
+    });
+    const modal = document.getElementById('landing-capsule-modal');
+    if (modal) modal.addEventListener('click', e => { if (e.target === modal) closeLandingCapsule(); });
+});
+async function sendLandingCapsule() {
+    const input = document.getElementById('landing-capsule-msg');
+    const btn   = document.getElementById('btn-landing-capsule');
+    const feedback = document.getElementById('landing-capsule-feedback');
+    const text = input.value.trim();
+    if (!text) return;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Archivage...';
+    try {
+        const { error } = await window._supa.from('capsules').insert({ message: text, scenario: 'Accueil' });
+        if (error) throw error;
+        btn.classList.add('hidden');
+        feedback.classList.remove('hidden');
+    } catch(e) {
+        console.error('Erreur Capsule Accueil:', e);
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Erreur — réessayer';
+    }
+}
 
 // === LOGIQUE CAPSULE TEMPORELLE ===
 async function sendCapsule() {
