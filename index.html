@@ -1047,25 +1047,27 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
                 </p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 px-4">
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border border-gray-100 group">
+
+                <!-- CARTE 1 : EXPOSITION VIRTUELLE -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border border-gray-100 border-t-4 border-[#8B2E2E] group">
                     <div class="h-48 bg-[#3D0E0E] flex items-center justify-center relative overflow-hidden">
                         <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
                         <i class="fas fa-bullhorn text-6xl text-[#D4824A] group-hover:scale-110 transition-transform duration-500"></i>
                     </div>
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">Exposition Universelle</h3>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Exposition Virtuelle</h3>
                         <p class="text-sm text-gray-500 mb-4">Présentation générale de la démarche, Histoire et Plan de Masse.</p>
-                        <div class="space-y-3">
-                            <button onclick="openCommsGallery()" class="w-full bg-[#8B2E2E] hover:bg-[#6B2020] text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors shadow-md">
-                                <i class="fas fa-images"></i> Exposition Virtuelle
-                            </button>
-                        </div>
+                        <button onclick="openCommsGallery()" class="w-full bg-[#8B2E2E] hover:bg-[#6B2020] text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors shadow-md">
+                            <i class="fas fa-images"></i> Exposition Virtuelle
+                        </button>
                     </div>
                 </div>
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border border-gray-100 group border-t-4 border-[#8B2E2E]">
+
+                <!-- CARTE 2 : NOS PROJETS -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border border-gray-100 border-t-4 border-[#8B2E2E] group">
                     <div class="h-48 bg-[#3D0E0E] flex items-center justify-center relative overflow-hidden">
-                         <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
-                         <i class="fas fa-drafting-compass text-6xl text-[#D4824A] group-hover:scale-110 transition-all duration-500"></i>
+                        <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+                        <i class="fas fa-drafting-compass text-6xl text-[#D4824A] group-hover:scale-110 transition-all duration-500"></i>
                     </div>
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-gray-800 mb-2">Nos Projets</h3>
@@ -1075,10 +1077,12 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
                         </button>
                     </div>
                 </div>
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border border-gray-100 group border-t-4 border-[#8B2E2E]">
-                    <div class="h-48 bg-[#5C1A1A] flex items-center justify-center relative overflow-hidden">
-                         <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/graphy.png')]"></div>
-                         <i class="fas fa-chart-pie text-6xl text-[#C8827A] group-hover:text-white group-hover:scale-110 transition-all duration-500"></i>
+
+                <!-- CARTE 3 : OBSERVATOIRE STATISTIQUE -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border border-gray-100 border-t-4 border-[#8B2E2E] group">
+                    <div class="h-48 bg-[#3D0E0E] flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+                        <i class="fas fa-chart-pie text-6xl text-[#D4824A] group-hover:scale-110 transition-all duration-500"></i>
                     </div>
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-gray-800 mb-2">Observatoire Statistique</h3>
@@ -1089,14 +1093,42 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
                     </div>
                 </div>
 
+                <!-- CARTE 4 : VIDÉOS DES PROJETS EXPOSÉS -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border border-gray-100 border-t-4 border-[#8B2E2E] group">
+                    <div class="h-48 bg-[#3D0E0E] flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+                        <i class="fas fa-play-circle text-6xl text-[#D4824A] group-hover:scale-110 transition-transform duration-500"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Vidéos des projets exposés</h3>
+                        <p class="text-sm text-gray-500 mb-4">Regardez les présentations vidéo des projets urbains réalisés par le Master Projet.</p>
+                        <button onclick="openVideosModal()" class="w-full bg-[#8B2E2E] hover:bg-[#6B2020] text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors shadow-md">
+                            <i class="fab fa-youtube"></i> Voir les vidéos
+                        </button>
+                    </div>
+                </div>
 
-                <!-- CARTE MODIFIÉE : ATRIUM AVEC BOUTON PLEIN ÉCRAN (Cliquable entièrement) -->
-                <div onclick="openAtrium()" class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border border-gray-100 group cursor-pointer">
-                    <div class="h-48 bg-[#8B2E2E] flex items-center justify-center relative overflow-hidden">
+                <!-- CARTE 5 : POINTS DE VUE DES EXPERTS -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border border-gray-100 border-t-4 border-[#8B2E2E] group">
+                    <div class="h-48 bg-[#3D0E0E] flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+                        <i class="fas fa-user-tie text-6xl text-[#D4824A] group-hover:scale-110 transition-transform duration-500"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Points de vue des experts</h3>
+                        <p class="text-sm text-gray-500 mb-4">Écoutez les analyses et regards croisés d'experts sur le futur de l'université et de la ville.</p>
+                        <button onclick="openExpertsModal()" class="w-full bg-[#8B2E2E] hover:bg-[#6B2020] text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors shadow-md">
+                            <i class="fab fa-youtube"></i> Voir les interviews
+                        </button>
+                    </div>
+                </div>
+
+                <!-- CARTE 6 : ATRIUM -->
+                <div onclick="openAtrium()" class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover border border-gray-100 border-t-4 border-[#8B2E2E] group cursor-pointer">
+                    <div class="h-48 bg-[#3D0E0E] flex items-center justify-center relative overflow-hidden">
                         <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
-                        <i class="fas fa-archway text-6xl text-white group-hover:scale-110 transition-transform duration-500 z-10"></i>
-                        <!-- Image de fond floue pour le style (Utilise la nouvelle image) -->
-                        <img src="Atrium 2023.png" onerror="this.src='Atrium 2023.jpg'" class="absolute inset-0 w-full h-full object-cover opacity-30" alt="">
+                        <i class="fas fa-archway text-6xl text-[#D4824A] group-hover:scale-110 transition-transform duration-500 z-10"></i>
+                        <img src="Atrium 2023.png" onerror="this.src='Atrium 2023.jpg'" class="absolute inset-0 w-full h-full object-cover opacity-20" alt="">
                     </div>
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-gray-800 mb-2">L'Atrium : Une Place Publique (2023 vs 2100)</h3>
@@ -5000,6 +5032,125 @@ function backToLanding() {
     document.getElementById('selected-scenario-display').innerHTML = '';
 }
 
+// =============================================
+// MODAL VIDÉOS EXPERTS
+// =============================================
+const expertsVideos = [
+    { id: 'kBM_cbWwo40', title: 'Jean-Paul Volle' },
+    { id: 'Rf434pjZznc', title: 'Hervé Marjoux' },
+    { id: 'SOklj4xIjP0', title: 'Jean-François Mazoin' },
+    { id: 'dQO8lGhbO1A', title: 'Thierry Verdier' },
+    { id: 'TzgUCQW4th8', title: 'Stéphanie Jannin' },
+    { id: 'yWAeqVkV1sE', title: 'Serena Palazzi' },
+    { id: 'QKlSSSu-UJg', title: 'Michaël Delafosse' },
+];
+
+let currentExpertIndex = 0;
+
+function openExpertsModal() {
+    currentExpertIndex = 0;
+    renderExpertsModal();
+    document.getElementById('experts-modal').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeExpertsModal() {
+    document.getElementById('expert-iframe').src = '';
+    document.getElementById('experts-modal').classList.add('hidden');
+    document.body.style.overflow = '';
+}
+
+function renderExpertsModal() {
+    const v = expertsVideos[currentExpertIndex];
+    document.getElementById('expert-iframe').src = `https://www.youtube.com/embed/${v.id}?autoplay=1&rel=0`;
+    document.getElementById('expert-title').textContent = v.title;
+    document.getElementById('expert-counter').textContent = `${currentExpertIndex + 1} / ${expertsVideos.length}`;
+
+    expertsVideos.forEach((vid, i) => {
+        const thumb = document.getElementById(`expert-thumb-${i}`);
+        if (thumb) {
+            thumb.classList.toggle('ring-4', i === currentExpertIndex);
+            thumb.classList.toggle('ring-[#8B2E2E]', i === currentExpertIndex);
+            thumb.classList.toggle('opacity-100', i === currentExpertIndex);
+            thumb.classList.toggle('opacity-60', i !== currentExpertIndex);
+        }
+    });
+
+    document.getElementById('expert-prev').disabled = currentExpertIndex === 0;
+    document.getElementById('expert-next').disabled = currentExpertIndex === expertsVideos.length - 1;
+}
+
+function changeExpertVideo(index) {
+    currentExpertIndex = index;
+    renderExpertsModal();
+}
+
+function prevExpertVideo() {
+    if (currentExpertIndex > 0) { currentExpertIndex--; renderExpertsModal(); }
+}
+
+function nextExpertVideo() {
+    if (currentExpertIndex < expertsVideos.length - 1) { currentExpertIndex++; renderExpertsModal(); }
+}
+const youtubeVideos = [
+    { id: 'lsX-Lz6N7Uw', title: 'Projet 1' },
+    { id: 'q3WGfSnj7aM', title: 'Projet 2' },
+    { id: 'y2wbOr3-8P8', title: 'Projet 3' },
+    { id: '7jrl06WSH3M', title: 'Projet 4' },
+    { id: 'jSqdtlNgazo', title: 'Projet 5' },
+];
+
+let currentVideoIndex = 0;
+
+function openVideosModal() {
+    currentVideoIndex = 0;
+    renderVideoModal();
+    document.getElementById('videos-modal').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeVideosModal() {
+    // Stop video before closing
+    document.getElementById('video-iframe').src = '';
+    document.getElementById('videos-modal').classList.add('hidden');
+    document.body.style.overflow = '';
+}
+
+function renderVideoModal() {
+    const v = youtubeVideos[currentVideoIndex];
+    document.getElementById('video-iframe').src = `https://www.youtube.com/embed/${v.id}?autoplay=1&rel=0`;
+    document.getElementById('video-title').textContent = v.title;
+    document.getElementById('video-counter').textContent = `${currentVideoIndex + 1} / ${youtubeVideos.length}`;
+
+    // Update thumbnails
+    youtubeVideos.forEach((vid, i) => {
+        const thumb = document.getElementById(`thumb-${i}`);
+        if (thumb) {
+            thumb.classList.toggle('ring-4', i === currentVideoIndex);
+            thumb.classList.toggle('ring-[#C4622D]', i === currentVideoIndex);
+            thumb.classList.toggle('opacity-100', i === currentVideoIndex);
+            thumb.classList.toggle('opacity-60', i !== currentVideoIndex);
+        }
+    });
+
+    // Prev/Next buttons
+    document.getElementById('video-prev').disabled = currentVideoIndex === 0;
+    document.getElementById('video-next').disabled = currentVideoIndex === youtubeVideos.length - 1;
+}
+
+function changeVideo(index) {
+    currentVideoIndex = index;
+    renderVideoModal();
+}
+
+function prevVideo() {
+    if (currentVideoIndex > 0) { currentVideoIndex--; renderVideoModal(); }
+}
+
+function nextVideo() {
+    if (currentVideoIndex < youtubeVideos.length - 1) { currentVideoIndex++; renderVideoModal(); }
+}
+
 function renderExploreScenarios() {
     const grid = document.getElementById('scenario-cards-grid');
     grid.innerHTML = '';
@@ -5113,5 +5264,155 @@ function compareWithAtrium(scenarioId) {
 }
 </script>
 </script>
+
+<!-- MODAL VIDÉOS EXPERTS -->
+<div id="experts-modal" class="fixed inset-0 bg-black/90 hidden z-[200] flex items-center justify-center p-3 md:p-6" onclick="if(event.target===this)closeExpertsModal()">
+    <div class="bg-[#111] rounded-2xl overflow-hidden w-full max-w-4xl shadow-2xl border border-white/10 flex flex-col max-h-[95vh]">
+
+        <!-- Header -->
+        <div class="flex items-center justify-between px-5 py-4 bg-[#1a1a1a] border-b border-white/10 shrink-0">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-[#8B2E2E] flex items-center justify-center">
+                    <i class="fas fa-user-tie text-white text-sm"></i>
+                </div>
+                <div>
+                    <h3 id="expert-title" class="text-white font-bold text-base leading-tight">Jean-Paul Volle</h3>
+                    <span id="expert-counter" class="text-gray-400 text-xs">1 / 7</span>
+                </div>
+            </div>
+            <button onclick="closeExpertsModal()" class="text-gray-400 hover:text-white transition-colors w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+        </div>
+
+        <!-- Video player -->
+        <div class="relative w-full bg-black" style="padding-top: 56.25%">
+            <iframe id="expert-iframe"
+                class="absolute inset-0 w-full h-full"
+                src=""
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+            </iframe>
+        </div>
+
+        <!-- Controls + thumbnails -->
+        <div class="bg-[#1a1a1a] px-4 py-4 shrink-0">
+            <div class="flex items-center justify-between mb-4">
+                <button id="expert-prev" onclick="prevExpertVideo()" class="flex items-center gap-2 text-white font-semibold px-4 py-2 rounded-lg bg-white/10 hover:bg-[#8B2E2E] transition-colors disabled:opacity-30 disabled:cursor-not-allowed text-sm">
+                    <i class="fas fa-chevron-left"></i> Précédent
+                </button>
+                <button id="expert-next" onclick="nextExpertVideo()" class="flex items-center gap-2 text-white font-semibold px-4 py-2 rounded-lg bg-white/10 hover:bg-[#8B2E2E] transition-colors disabled:opacity-30 disabled:cursor-not-allowed text-sm">
+                    Suivant <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+
+            <!-- Thumbnails -->
+            <div class="flex gap-2 overflow-x-auto pb-1">
+                <button id="expert-thumb-0" onclick="changeExpertVideo(0)" class="shrink-0 rounded-lg overflow-hidden border-2 border-transparent transition-all w-24 h-14 bg-black relative opacity-60">
+                    <img src="https://img.youtube.com/vi/kBM_cbWwo40/mqdefault.jpg" class="w-full h-full object-cover" alt="Jean-Paul Volle">
+                    <span class="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-[9px] text-center py-0.5 font-bold">Jean-Paul Volle</span>
+                </button>
+                <button id="expert-thumb-1" onclick="changeExpertVideo(1)" class="shrink-0 rounded-lg overflow-hidden border-2 border-transparent transition-all w-24 h-14 bg-black relative opacity-60">
+                    <img src="https://img.youtube.com/vi/Rf434pjZznc/mqdefault.jpg" class="w-full h-full object-cover" alt="Hervé Marjoux">
+                    <span class="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-[9px] text-center py-0.5 font-bold">Hervé Marjoux</span>
+                </button>
+                <button id="expert-thumb-2" onclick="changeExpertVideo(2)" class="shrink-0 rounded-lg overflow-hidden border-2 border-transparent transition-all w-24 h-14 bg-black relative opacity-60">
+                    <img src="https://img.youtube.com/vi/SOklj4xIjP0/mqdefault.jpg" class="w-full h-full object-cover" alt="Jean-François Mazoin">
+                    <span class="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-[9px] text-center py-0.5 font-bold">Jean-François Mazoin</span>
+                </button>
+                <button id="expert-thumb-3" onclick="changeExpertVideo(3)" class="shrink-0 rounded-lg overflow-hidden border-2 border-transparent transition-all w-24 h-14 bg-black relative opacity-60">
+                    <img src="https://img.youtube.com/vi/dQO8lGhbO1A/mqdefault.jpg" class="w-full h-full object-cover" alt="Thierry Verdier">
+                    <span class="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-[9px] text-center py-0.5 font-bold">Thierry Verdier</span>
+                </button>
+                <button id="expert-thumb-4" onclick="changeExpertVideo(4)" class="shrink-0 rounded-lg overflow-hidden border-2 border-transparent transition-all w-24 h-14 bg-black relative opacity-60">
+                    <img src="https://img.youtube.com/vi/TzgUCQW4th8/mqdefault.jpg" class="w-full h-full object-cover" alt="Stéphanie Jannin">
+                    <span class="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-[9px] text-center py-0.5 font-bold">Stéphanie Jannin</span>
+                </button>
+                <button id="expert-thumb-5" onclick="changeExpertVideo(5)" class="shrink-0 rounded-lg overflow-hidden border-2 border-transparent transition-all w-24 h-14 bg-black relative opacity-60">
+                    <img src="https://img.youtube.com/vi/yWAeqVkV1sE/mqdefault.jpg" class="w-full h-full object-cover" alt="Serena Palazzi">
+                    <span class="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-[9px] text-center py-0.5 font-bold">Serena Palazzi</span>
+                </button>
+                <button id="expert-thumb-6" onclick="changeExpertVideo(6)" class="shrink-0 rounded-lg overflow-hidden border-2 border-transparent transition-all w-24 h-14 bg-black relative opacity-60">
+                    <img src="https://img.youtube.com/vi/QKlSSSu-UJg/mqdefault.jpg" class="w-full h-full object-cover" alt="Michaël Delafosse">
+                    <span class="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-[9px] text-center py-0.5 font-bold">Michaël Delafosse</span>
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- MODAL VIDÉOS YOUTUBE -->
+<div id="videos-modal" class="fixed inset-0 bg-black/90 hidden z-[200] flex items-center justify-center p-3 md:p-6" onclick="if(event.target===this)closeVideosModal()">
+    <div class="bg-[#111] rounded-2xl overflow-hidden w-full max-w-4xl shadow-2xl border border-white/10 flex flex-col max-h-[95vh]">
+        
+        <!-- Header -->
+        <div class="flex items-center justify-between px-5 py-4 bg-[#1a1a1a] border-b border-white/10 shrink-0">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-[#C4622D] flex items-center justify-center">
+                    <i class="fab fa-youtube text-white text-sm"></i>
+                </div>
+                <div>
+                    <h3 id="video-title" class="text-white font-bold text-base leading-tight">Projet 1</h3>
+                    <span id="video-counter" class="text-gray-400 text-xs">1 / 5</span>
+                </div>
+            </div>
+            <button onclick="closeVideosModal()" class="text-gray-400 hover:text-white transition-colors w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+        </div>
+
+        <!-- Video player -->
+        <div class="relative w-full bg-black" style="padding-top: 56.25%">
+            <iframe id="video-iframe"
+                class="absolute inset-0 w-full h-full"
+                src=""
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+            </iframe>
+        </div>
+
+        <!-- Controls + thumbnails -->
+        <div class="bg-[#1a1a1a] px-4 py-4 shrink-0">
+            <!-- Navigation arrows -->
+            <div class="flex items-center justify-between mb-4">
+                <button id="video-prev" onclick="prevVideo()" class="flex items-center gap-2 text-white font-semibold px-4 py-2 rounded-lg bg-white/10 hover:bg-[#C4622D] transition-colors disabled:opacity-30 disabled:cursor-not-allowed text-sm">
+                    <i class="fas fa-chevron-left"></i> Précédent
+                </button>
+                <button id="video-next" onclick="nextVideo()" class="flex items-center gap-2 text-white font-semibold px-4 py-2 rounded-lg bg-white/10 hover:bg-[#C4622D] transition-colors disabled:opacity-30 disabled:cursor-not-allowed text-sm">
+                    Suivant <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+
+            <!-- Thumbnails -->
+            <div class="flex gap-2 overflow-x-auto pb-1">
+                <button id="thumb-0" onclick="changeVideo(0)" class="shrink-0 rounded-lg overflow-hidden border-2 border-transparent transition-all w-24 h-14 bg-black relative opacity-60">
+                    <img src="https://img.youtube.com/vi/lsX-Lz6N7Uw/mqdefault.jpg" class="w-full h-full object-cover" alt="Projet 1">
+                    <span class="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-[9px] text-center py-0.5 font-bold">Projet 1</span>
+                </button>
+                <button id="thumb-1" onclick="changeVideo(1)" class="shrink-0 rounded-lg overflow-hidden border-2 border-transparent transition-all w-24 h-14 bg-black relative opacity-60">
+                    <img src="https://img.youtube.com/vi/q3WGfSnj7aM/mqdefault.jpg" class="w-full h-full object-cover" alt="Projet 2">
+                    <span class="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-[9px] text-center py-0.5 font-bold">Projet 2</span>
+                </button>
+                <button id="thumb-2" onclick="changeVideo(2)" class="shrink-0 rounded-lg overflow-hidden border-2 border-transparent transition-all w-24 h-14 bg-black relative opacity-60">
+                    <img src="https://img.youtube.com/vi/y2wbOr3-8P8/mqdefault.jpg" class="w-full h-full object-cover" alt="Projet 3">
+                    <span class="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-[9px] text-center py-0.5 font-bold">Projet 3</span>
+                </button>
+                <button id="thumb-3" onclick="changeVideo(3)" class="shrink-0 rounded-lg overflow-hidden border-2 border-transparent transition-all w-24 h-14 bg-black relative opacity-60">
+                    <img src="https://img.youtube.com/vi/7jrl06WSH3M/mqdefault.jpg" class="w-full h-full object-cover" alt="Projet 4">
+                    <span class="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-[9px] text-center py-0.5 font-bold">Projet 4</span>
+                </button>
+                <button id="thumb-4" onclick="changeVideo(4)" class="shrink-0 rounded-lg overflow-hidden border-2 border-transparent transition-all w-24 h-14 bg-black relative opacity-60">
+                    <img src="https://img.youtube.com/vi/jSqdtlNgazo/mqdefault.jpg" class="w-full h-full object-cover" alt="Projet 5">
+                    <span class="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-[9px] text-center py-0.5 font-bold">Projet 5</span>
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
 </body>
 </html>
