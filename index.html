@@ -534,44 +534,49 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
     </div>
 
     <!-- MODALE CAPSULE TEMPORELLE INDÉPENDANTE (page d'accueil) -->
-    <div id="landing-capsule-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden z-[80] flex items-center justify-center p-4 fade-in">
-        <div class="relative w-full max-w-md bg-gradient-to-br from-[#1a0a0a] to-[#2C2C2C] rounded-2xl p-8 shadow-2xl border border-[#6B2020] overflow-hidden">
-            <!-- Horloge décorative -->
-            <i class="fas fa-clock absolute -right-6 -bottom-6 text-[9rem] text-white opacity-5 pointer-events-none"></i>
-            <!-- Fermer -->
-            <button onclick="closeLandingCapsule()" class="absolute top-4 right-4 text-white/40 hover:text-white text-xl transition-colors"><i class="fas fa-times"></i></button>
-
-            <div class="relative z-10">
-                <div class="flex items-center gap-3 mb-2">
-                    <div class="w-10 h-10 bg-gradient-to-br from-[#D4824A] to-[#8B2E2E] rounded-xl flex items-center justify-center shadow-lg shrink-0">
-                        <i class="fas fa-box-open text-white text-lg"></i>
+    <div id="landing-capsule-modal" class="fixed inset-0 hidden z-[80] flex items-center justify-center p-4 fade-in" style="background:rgba(61,14,14,0.75);backdrop-filter:blur(6px);">
+        <div class="relative w-full max-w-md rounded-2xl overflow-hidden shadow-2xl" style="background:linear-gradient(145deg,#F5EDE4,#EDD9C8);border:1.5px solid #C4622D;">
+            <!-- Bandeau haut -->
+            <div style="background:linear-gradient(90deg,#8B2E2E,#C4622D);padding:1.1rem 1.5rem 1rem;" class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div style="background:rgba(255,255,255,0.15);border-radius:10px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;">
+                        <i class="fas fa-box-open text-white text-base"></i>
                     </div>
-                    <h3 class="font-bold text-white text-lg title-font uppercase tracking-widest">Capsule Temporelle</h3>
+                    <div>
+                        <p style="font-size:0.55rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:800;color:rgba(255,255,255,0.7);">Feature exclusive</p>
+                        <h3 style="font-family:'Montserrat',sans-serif;font-size:1rem;font-weight:900;color:white;line-height:1.2;">Capsule Temporelle</h3>
+                    </div>
                 </div>
-                <p class="text-[#EDE0CC] text-xs italic mb-6 leading-relaxed">
+                <button onclick="closeLandingCapsule()" style="color:rgba(255,255,255,0.6);font-size:1.2rem;background:none;border:none;cursor:pointer;padding:4px;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.6)'"><i class="fas fa-times"></i></button>
+            </div>
+
+            <!-- Corps -->
+            <div class="p-6 relative">
+                <i class="fas fa-clock absolute -right-4 -bottom-4 pointer-events-none" style="font-size:7rem;color:#8B2E2E;opacity:0.06;"></i>
+                <p style="font-size:0.8rem;color:#5C1A1A;font-style:italic;line-height:1.6;margin-bottom:1.25rem;">
                     Que voulez-vous dire aux étudiants de 2100 ?<br>
-                    Ce message sera scellé dans notre archive numérique.
+                    Votre message sera scellé dans notre archive numérique.
                 </p>
 
-                <div class="relative">
-                    <textarea id="landing-capsule-msg" maxlength="140" rows="3"
-                        placeholder="Ex : J'espère que le tram est toujours gratuit..."
-                        class="w-full bg-white text-gray-900 text-sm p-3 rounded-lg border border-[#9B3535]/30 focus:border-[#D4824A] focus:ring-1 focus:ring-orange-400 placeholder-gray-400 resize-none outline-none transition-all"></textarea>
-                    <div class="text-[9px] text-right text-[#C8827A] mt-1" id="landing-char-count">0 / 140</div>
-                </div>
+                <textarea id="landing-capsule-msg" maxlength="140" rows="3"
+                    placeholder="Ex : J'espère que le tram est toujours gratuit..."
+                    style="width:100%;background:white;color:#1a1a1a;font-size:0.85rem;padding:0.75rem;border-radius:10px;border:1.5px solid #C4622D44;resize:none;outline:none;box-sizing:border-box;font-family:'Roboto',sans-serif;transition:border-color 0.2s;"
+                    onfocus="this.style.borderColor='#C4622D'" onblur="this.style.borderColor='#C4622D44'"></textarea>
+                <div id="landing-char-count" style="font-size:0.65rem;text-align:right;color:#C4622D;margin-top:0.2rem;">0 / 140</div>
 
                 <button onclick="sendLandingCapsule()" id="btn-landing-capsule"
-                    class="w-full mt-4 bg-[#C4622D] hover:bg-[#9E4A20] text-white font-bold py-3 px-4 rounded-xl text-sm transition-all shadow-lg flex justify-center items-center gap-2 active:scale-95">
+                    style="width:100%;margin-top:1rem;background:#8B2E2E;color:white;font-weight:800;font-size:0.85rem;padding:0.75rem;border-radius:12px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:0.5rem;transition:background 0.2s;box-shadow:0 4px 14px rgba(139,46,46,0.35);"
+                    onmouseover="this.style.background='#6B2020'" onmouseout="this.style.background='#8B2E2E'">
                     <span>Sceller le message</span> <i class="fas fa-archive"></i>
                 </button>
 
-                <div id="landing-capsule-feedback" class="hidden mt-4 text-center">
-                    <div class="bg-white/10 rounded-xl py-4 px-3">
-                        <i class="fas fa-check-circle text-[#D4824A] text-2xl mb-2"></i>
-                        <p class="text-white text-sm font-bold">Message archivé pour le futur.</p>
-                        <p class="text-white/50 text-xs mt-1">Les étudiants de 2100 vous liront.</p>
+                <div id="landing-capsule-feedback" class="hidden" style="margin-top:1.25rem;text-align:center;">
+                    <div style="background:linear-gradient(135deg,#8B2E2E,#C4622D);border-radius:12px;padding:1.25rem 1rem;">
+                        <i class="fas fa-check-circle" style="color:white;font-size:1.5rem;display:block;margin-bottom:0.5rem;"></i>
+                        <p style="color:white;font-weight:800;font-size:0.9rem;margin:0 0 0.2rem;">Message scellé pour le futur.</p>
+                        <p style="color:rgba(255,255,255,0.65);font-size:0.72rem;">Les étudiants de 2100 vous liront.</p>
                     </div>
-                    <button onclick="closeLandingCapsule()" class="mt-4 text-white/50 hover:text-white text-xs underline transition-colors">Fermer</button>
+                    <button onclick="closeLandingCapsule()" style="margin-top:0.75rem;color:#8B2E2E;font-size:0.75rem;background:none;border:none;cursor:pointer;text-decoration:underline;">Fermer</button>
                 </div>
             </div>
         </div>
