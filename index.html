@@ -491,7 +491,7 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
         </div>
 
         <!-- BODY : sommaire + contenu -->
-        <div class="flex flex-row flex-grow overflow-hidden">
+        <div class="flex flex-row flex-grow overflow-hidden relative">
             <!-- PANNEAU SOMMAIRE -->
             <div id="sommaire-panel" class="hidden w-56 shrink-0 bg-[#1a1a1a] overflow-y-auto flex flex-col border-r border-gray-700">
                 <div class="px-4 py-3 bg-[#3D0E0E] shrink-0 flex items-center justify-between">
@@ -504,6 +504,14 @@ body.is-expert-mode .expert-toggle-thumb { transform: translateX(1.25rem); }
             </div>
             <!-- CONTENU PRINCIPAL -->
             <div id="pdf-container" class="flex-grow bg-gray-200 relative w-full h-full overflow-y-auto" style="-webkit-overflow-scrolling: touch;"></div>
+
+            <!-- FAB MOBILE : bouton flottant pour ouvrir/fermer le sommaire -->
+            <button id="mobile-sommaire-fab"
+                onclick="toggleMobileSommaire()"
+                class="md:hidden hidden fixed z-[80] flex items-center justify-center shadow-lg transition-all"
+                style="bottom: 80px; right: 12px; width: 44px; height: 44px; border-radius: 50%; background: #8B2E2E; color: white; border: 2px solid white;">
+                <i class="fas fa-list text-sm"></i>
+            </button>
         </div>
     </div>
     </div>
@@ -2346,6 +2354,9 @@ function directToWorksFromResult() {
             document.getElementById('btn-next').disabled = false;
             document.getElementById('btn-next').classList.remove('opacity-50');
             document.getElementById('btn-fullscreen').classList.add('hidden');
+            // Cacher le FAB mobile sur la page sommaire
+            const fab = document.getElementById('mobile-sommaire-fab');
+            if (fab) fab.classList.add('hidden');
 
             const container = document.getElementById('pdf-container');
             container.innerHTML = '';
@@ -2483,8 +2494,12 @@ function directToWorksFromResult() {
 
         function goToProject(index) {
             currentPdfIndex = index;
-            // Afficher la barre latérale dès qu'on choisit un projet (mobile inclus)
-            document.getElementById('sommaire-panel').classList.remove('hidden');
+            // Sur mobile : fermer le panneau + montrer le FAB
+            if (window.innerWidth < 768) {
+                document.getElementById('sommaire-panel').classList.add('hidden');
+                const fab = document.getElementById('mobile-sommaire-fab');
+                if (fab) fab.classList.remove('hidden');
+            }
             updatePdfViewer();
             updateSommaireActive();
         }
@@ -2498,7 +2513,13 @@ function directToWorksFromResult() {
                     btn.id = 'sommaire-item-' + index;
                     btn.className = 'w-full text-left px-4 py-3 text-xs text-gray-300 hover:bg-[#8B2E2E] hover:text-white transition-colors border-b border-gray-800 flex items-center gap-2';
                     btn.innerHTML = '<i class="fas fa-user text-[#C4622D] text-[10px] shrink-0"></i><span>' + item.name + '</span>';
-                    btn.onclick = () => goToProject(index);
+                    btn.onclick = () => {
+                        goToProject(index);
+                        // Sur mobile, fermer le panneau après sélection
+                        if (window.innerWidth < 768) {
+                            document.getElementById('sommaire-panel').classList.add('hidden');
+                        }
+                    };
                     list.appendChild(btn);
                 }
             });
@@ -2520,7 +2541,24 @@ function directToWorksFromResult() {
         }
 
         function toggleSommaire() {
-            document.getElementById('sommaire-panel').classList.toggle('hidden');
+            const panel = document.getElementById('sommaire-panel');
+            panel.classList.toggle('hidden');
+            // Sur mobile, fermer le panneau après sélection via le bouton toggle header
+        }
+
+        function toggleMobileSommaire() {
+            const panel = document.getElementById('sommaire-panel');
+            const fab = document.getElementById('mobile-sommaire-fab');
+            const isHidden = panel.classList.contains('hidden');
+            if (isHidden) {
+                // Ouvrir le panneau
+                panel.classList.remove('hidden');
+                if (fab) fab.style.opacity = '0.5'; // indique que le panneau est ouvert
+            } else {
+                // Fermer le panneau
+                panel.classList.add('hidden');
+                if (fab) fab.style.opacity = '1';
+            }
         }
         function updatePdfViewer() {
             // Si index = -1 : on est sur la page sommaire, ne pas lancer le viewer
