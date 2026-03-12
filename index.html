@@ -2238,38 +2238,75 @@ function directToWorksFromResult() {
         function openCommsGallery() { currentPdfList = commsPdfs; currentPdfIndex = 0; updatePdfViewer(); pdfModal.classList.remove('hidden'); }
 
         const projetsPngs = [
-            { file: "aku1.png",  title: "Projet Aku – Planche 1" },
-            { file: "aku2.png",  title: "Projet Aku – Planche 2" },
-            { file: "cam1.png",  title: "Projet Cam – Planche 1" },
-            { file: "cam2.png",  title: "Projet Cam – Planche 2" },
-            { file: "dim1.png",  title: "Projet Dim – Planche 1" },
-            { file: "dim2.png",  title: "Projet Dim – Planche 2" },
-            { file: "erw1.png",  title: "Projet Erw – Planche 1" },
-            { file: "erw2.png",  title: "Projet Erw – Planche 2" },
-            { file: "flo1.png",  title: "Projet Flo – Planche 1" },
-            { file: "flo2.png",  title: "Projet Flo – Planche 2" },
-            { file: "ilo1.png",  title: "Projet Ilo – Planche 1" },
-            { file: "ilo2.png",  title: "Projet Ilo – Planche 2" },
-            { file: "jer1.png",  title: "Projet Jer – Planche 1" },
-            { file: "jer2.png",  title: "Projet Jer – Planche 2" },
-            { file: "lor1.png",  title: "Projet Lor – Planche 1" },
-            { file: "lor2.png",  title: "Projet Lor – Planche 2" },
-            { file: "mame1.png", title: "Projet Mame – Planche 1" },
-            { file: "mame2.png", title: "Projet Mame – Planche 2" },
-            { file: "mar1.png",  title: "Projet Mar – Planche 1" },
-            { file: "mar2.png",  title: "Projet Mar – Planche 2" },
-            { file: "mat1.png",  title: "Projet Mat – Planche 1" },
-            { file: "mat2.png",  title: "Projet Mat – Planche 2" },
-            { file: "rama1.png", title: "Projet Rama – Planche 1" },
-            { file: "rama2.png", title: "Projet Rama – Planche 2" }
+            { type: "PresPage", photo: "Aku_AWUNO.jpeg",          name: "Aku Awuno",            projectTitle: "Projet Universitaire 2100" },
+            { file: "aku1.png",  title: "Aku Awuno – Planche 1" },
+            { file: "aku2.png",  title: "Aku Awuno – Planche 2" },
+            { type: "PresPage", photo: "Camille_PAREDES.jpeg",    name: "Camille Paredes",       projectTitle: "Projet Universitaire 2100" },
+            { file: "cam1.png",  title: "Camille Paredes – Planche 1" },
+            { file: "cam2.png",  title: "Camille Paredes – Planche 2" },
+            { type: "PresPage", photo: "Dimitri_DOEBELIN.jpeg",   name: "Dimitri Doebelin",      projectTitle: "Projet Universitaire 2100" },
+            { file: "dim1.png",  title: "Dimitri Doebelin – Planche 1" },
+            { file: "dim2.png",  title: "Dimitri Doebelin – Planche 2" },
+            { type: "PresPage", photo: "Erwan_DA_COSTA.jpeg",     name: "Erwan Da Costa",        projectTitle: "Projet Universitaire 2100" },
+            { file: "erw1.png",  title: "Erwan Da Costa – Planche 1" },
+            { file: "erw2.png",  title: "Erwan Da Costa – Planche 2" },
+            { type: "PresPage", photo: "Florian_MAS.jpeg",        name: "Florian Mas",           projectTitle: "Projet Universitaire 2100" },
+            { file: "flo1.png",  title: "Florian Mas – Planche 1" },
+            { file: "flo2.png",  title: "Florian Mas – Planche 2" },
+            { type: "PresPage", photo: "Ilona_GREVOT.jpeg",       name: "Ilona Grevot",          projectTitle: "Projet Universitaire 2100" },
+            { file: "ilo1.png",  title: "Ilona Grevot – Planche 1" },
+            { file: "ilo2.png",  title: "Ilona Grevot – Planche 2" },
+            { type: "presPage", photo: "Jeremy_DUPUY.jpeg",       name: "Jérémy Dupuy",          projectTitle: "Projet Universitaire 2100" },
+            { file: "jer1.png",  title: "Jérémy Dupuy – Planche 1" },
+            { file: "jer2.png",  title: "Jérémy Dupuy – Planche 2" },
+            { type: "PresPage", photo: "Lorenzo_MOREL.jpeg",      name: "Lorenzo Morel",         projectTitle: "Projet Universitaire 2100" },
+            { file: "lor1.png",  title: "Lorenzo Morel – Planche 1" },
+            { file: "lor2.png",  title: "Lorenzo Morel – Planche 2" },
+            { type: "PresPage", photo: "Mame_Fata_DIAKHATÉ.jpeg", name: "Mame Fata Diakhaté",    projectTitle: "Projet Universitaire 2100" },
+            { file: "mame1.png", title: "Mame Fata Diakhaté – Planche 1" },
+            { file: "mame2.png", title: "Mame Fata Diakhaté – Planche 2" },
+            { type: "PresPage", photo: "Margeride_EUGSTER.jpeg",  name: "Margeride Eugster",     projectTitle: "Projet Universitaire 2100" },
+            { file: "mar1.png",  title: "Margeride Eugster – Planche 1" },
+            { file: "mar2.png",  title: "Margeride Eugster – Planche 2" },
+            { type: "PresPage", photo: "Mathis_BRUCHET.jpeg",     name: "Mathis Bruchet",        projectTitle: "Projet Universitaire 2100" },
+            { file: "mat1.png",  title: "Mathis Bruchet – Planche 1" },
+            { file: "mat2.png",  title: "Mathis Bruchet – Planche 2" },
+            { type: "PresPage", photo: "Ramatoulaye_NDOYE.jpeg",  name: "Ramatoulaye Ndoye",     projectTitle: "Projet Universitaire 2100" },
+            { file: "rama1.png", title: "Ramatoulaye Ndoye – Planche 1" },
+            { file: "rama2.png", title: "Ramatoulaye Ndoye – Planche 2" }
         ];
         function openProjetsGallery() { currentPdfList = projetsPngs; currentPdfIndex = 0; updatePdfViewer(); pdfModal.classList.remove('hidden'); }
         function updatePdfViewer() {
             const pdfObj = currentPdfList[currentPdfIndex];
             document.getElementById('pdf-title').innerHTML = `<i class="fas fa-images mr-2"></i> Exposition`;
-            document.getElementById('page-indicator').innerText = `Planche ${currentPdfIndex + 1} / ${currentPdfList.length}`;
+            document.getElementById('page-indicator').innerText = `Page ${currentPdfIndex + 1} / ${currentPdfList.length}`;
             const container = document.getElementById('pdf-container');
             container.innerHTML = '';
+
+            // --- PAGE DE PRÉSENTATION ---
+            if (pdfObj.type === 'PresPage' || pdfObj.type === 'presPage') {
+                container.style.cssText = "display:flex;align-items:center;justify-content:center;background-color:#F5F0E8;cursor:default;overflow:hidden;position:relative;";
+                container.innerHTML = `
+                    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;padding:2rem;text-align:center;max-width:480px;width:100%;">
+                        <div style="width:180px;height:180px;border-radius:50%;overflow:hidden;border:5px solid #8B2E2E;box-shadow:0 8px 30px rgba(139,46,46,0.25);flex-shrink:0;">
+                            <img src="${pdfObj.photo}" alt="${pdfObj.name}" style="width:100%;height:100%;object-fit:cover;object-position:center top;">
+                        </div>
+                        <div>
+                            <div style="font-family:'Montserrat',sans-serif;font-size:0.65rem;font-weight:800;text-transform:uppercase;letter-spacing:0.15em;color:#C4622D;margin-bottom:0.4rem;">Master Projet • Université Paul-Valéry</div>
+                            <h2 style="font-family:'Montserrat',sans-serif;font-size:1.8rem;font-weight:900;color:#3D0E0E;margin:0 0 0.75rem 0;line-height:1.1;">${pdfObj.name}</h2>
+                            <div style="width:40px;height:3px;background:#C4622D;margin:0 auto 0.75rem auto;border-radius:2px;"></div>
+                            <p style="font-family:'Roboto',sans-serif;font-size:1rem;font-weight:500;color:#5C1A1A;font-style:italic;margin:0;">${pdfObj.projectTitle}</p>
+                        </div>
+                    </div>
+                `;
+                document.getElementById('btn-prev').disabled = (currentPdfIndex === 0);
+                document.getElementById('btn-next').disabled = (currentPdfIndex === currentPdfList.length - 1);
+                document.getElementById('btn-prev').classList.toggle('opacity-50', currentPdfIndex === 0);
+                document.getElementById('btn-next').classList.toggle('opacity-50', currentPdfIndex === currentPdfList.length - 1);
+                return;
+            }
+
+            // --- PAGE PLANCHE IMAGE ---
             container.style.display = "flex";
             container.style.alignItems = "center";
             container.style.justifyContent = "center";
